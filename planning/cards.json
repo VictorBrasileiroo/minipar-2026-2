@@ -1,0 +1,978 @@
+{
+  "project": "MINIPAR-2026.2",
+  "version": "0.1",
+  "as_of": "2026-10-15",
+  "note": "Backlog proposto. Sem responsáveis nominais B/C, sem Issues criadas; DEPENDÊNCIAS NÃO LIBERAM automaticamente execução. Datas agressivas sujeitas a revisão no G0.",
+  "statuses": [
+    "BACKLOG",
+    "READY",
+    "IN_PROGRESS",
+    "IN_REVIEW",
+    "BLOCKED",
+    "DONE"
+  ],
+  "items": [
+    {
+      "id": "SET-01",
+      "axis": "A",
+      "title": "Criar estrutura e importar base 2026.1",
+      "due": "2026-10-16",
+      "depends_on": [],
+      "priority": "P0",
+      "deliverable": "Código legado imutável e cópia ativa na raiz; registrar origem/commit",
+      "acceptance": "Arquivos ativos presentes; `legacy` preservado; `git status` limpo; scripts de importação conferidos.",
+      "allowed_paths": [
+        "scripts/",
+        "legacy/",
+        "raiz ativa"
+      ],
+      "estimate_hours": 2,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "SET-02",
+      "axis": "A",
+      "title": "Padronizar Python e G++20; executar smoke",
+      "due": "2026-10-18",
+      "depends_on": [
+        "SET-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Instruções reprodutíveis de build; superar GCC 6.3 incompatível",
+      "acceptance": "T01 simples compila e executa em ferramenta suportada; log identifica versões e comandos.",
+      "allowed_paths": [
+        "docs/",
+        "src/",
+        "main.py"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "SET-03",
+      "axis": "A",
+      "title": "Permissões Git, responsáveis B/C, branches e acesso a dois PCs",
+      "due": "2026-10-16",
+      "depends_on": [],
+      "priority": "P0",
+      "deliverable": "Repositório privado acessível aos três, owners nomeados, hosts disponíveis",
+      "acceptance": "Trio confirma acesso/horas; hosts de rede definidos; branch protect quando viável.",
+      "allowed_paths": [
+        "docs/",
+        "planning/"
+      ],
+      "estimate_hours": 1,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CON-01",
+      "axis": "A+C",
+      "title": "Congelar contrato de Fork/Join e destino local/remoto",
+      "due": "2026-10-18",
+      "depends_on": [
+        "SET-01"
+      ],
+      "priority": "P0",
+      "deliverable": "BNF proposta e API runtime aprovadas, tipos/handles/erros delimitados",
+      "acceptance": "A e C aprovam contrato; exemplos/fixtures; mudança via CR; pendências registradas.",
+      "allowed_paths": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ],
+      "estimate_hours": 3,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CON-02",
+      "axis": "A+B",
+      "title": "Congelar contrato serviço de fases para a Web",
+      "due": "2026-10-18",
+      "depends_on": [
+        "SET-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Esquema tokens, AST, símbolos, TAC, C++, compile/run/download",
+      "acceptance": "A e B aprovam fixture de sucesso e três erros; Web poderá usar mocks.",
+      "allowed_paths": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ],
+      "estimate_hours": 2,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CON-03",
+      "axis": "A+B",
+      "title": "Congelar recursos mínimos Teste 11 e saída ARM",
+      "due": "2026-10-18",
+      "depends_on": [
+        "SET-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Contrato strings/listas/T11, estratégia arquivo `.arm` e CPUlator",
+      "acceptance": "A e B aprovam programas de prova com oráculo e responsabilidades.",
+      "allowed_paths": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ],
+      "estimate_hours": 2,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-01",
+      "axis": "C",
+      "title": "Registrar baseline reprodutível dos testes 1–7",
+      "due": "2026-10-18",
+      "depends_on": [
+        "SET-02"
+      ],
+      "priority": "P0",
+      "deliverable": "Matriz baseline dos testes herdados, sem alterar src/; falhas encaminhadas a A",
+      "acceptance": "Execução nativa de cada T01–T07 com status PASS/FAIL/BLOCKED e evidência.",
+      "allowed_paths": [
+        "docs/auditorias/",
+        "tests/",
+        "scripts/"
+      ],
+      "estimate_hours": 3,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-02",
+      "axis": "A",
+      "title": "Remover TAC fixo do Quicksort e corrigir T07",
+      "due": "2026-10-21",
+      "depends_on": [
+        "CORE-01"
+      ],
+      "priority": "P0",
+      "deliverable": "TAC calculado da AST e ordenação segura",
+      "acceptance": "Programa modificado com mesmo nome não reproduz TAC fixo; T07 compila/ordena sem bounds violation.",
+      "allowed_paths": [
+        "src/tac.py",
+        "tests/",
+        "src/codegen.py"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-03",
+      "axis": "A",
+      "title": "Corrigir primitivas strings e coleções usadas por T11",
+      "due": "2026-10-21",
+      "depends_on": [
+        "CON-03",
+        "SET-02"
+      ],
+      "priority": "P0",
+      "deliverable": "`len`, `substr`, `to_string`, string `std::string`, listas textuais mínimas",
+      "acceptance": "Programas de prova T11 compilam/produzem oráculos; regressão anterior sem piora.",
+      "allowed_paths": [
+        "src/codegen.py",
+        "src/semantic.py",
+        "src/cpp_template.py"
+      ],
+      "estimate_hours": 6,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-04",
+      "axis": "A",
+      "title": "Implementar BNF, tokens e AST de Fork/Join",
+      "due": "2026-10-22",
+      "depends_on": [
+        "CON-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Gramática adotada, Lexer/Parser/AST e diagnósticos",
+      "acceptance": "Programas MiniPar positivos/negativos de Fork/Join têm AST correta; BNF coerente.",
+      "allowed_paths": [
+        "src/lexer.py",
+        "src/parser.py",
+        "src/ast_nodes.py",
+        "docs/"
+      ],
+      "estimate_hours": 6,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-05",
+      "axis": "A",
+      "title": "Semântico de Fork/Join e isolamento",
+      "due": "2026-10-23",
+      "depends_on": [
+        "CORE-04"
+      ],
+      "priority": "P0",
+      "deliverable": "Regras semânticas e tipos/handles necessários",
+      "acceptance": "Uso indevido rejeitado; funções e destinos válidos aceitos; semântico preserva regressão.",
+      "allowed_paths": [
+        "src/semantic.py"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-06",
+      "axis": "A",
+      "title": "TAC autêntico para Fork/Join e `par`",
+      "due": "2026-10-25",
+      "depends_on": [
+        "CORE-05",
+        "CORE-02"
+      ],
+      "priority": "P0",
+      "deliverable": "TAC representa criação, sincronização e fluxo; sem hardcodes",
+      "acceptance": "TAC distingue sequência/paralelismo; casos com diferentes tarefas geram representação coerente.",
+      "allowed_paths": [
+        "src/tac.py"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-07",
+      "axis": "A",
+      "title": "Gerar C++ que invoca runtime real de C",
+      "due": "2026-10-26",
+      "depends_on": [
+        "CORE-05",
+        "RUN-01",
+        "RUN-02"
+      ],
+      "priority": "P0",
+      "deliverable": "Backend integra contratos `start/join` locais e remotos",
+      "acceptance": "MiniPar→C++→binário cria tarefa local e remota de teste; join retorna dado correto.",
+      "allowed_paths": [
+        "src/codegen.py",
+        "src/cpp_template.py"
+      ],
+      "estimate_hours": 6,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-08",
+      "axis": "A",
+      "title": "Expor serviço de fases ao eixo Web",
+      "due": "2026-10-25",
+      "depends_on": [
+        "CON-02",
+        "SET-02"
+      ],
+      "priority": "P0",
+      "deliverable": "API Python estruturada com tokens, AST, símbolos, erros, TAC, C++",
+      "acceptance": "Fixtures combinam com resultados reais; IDs evitam cache errado; erro separa fases.",
+      "allowed_paths": [
+        "src/",
+        "app.py"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-09",
+      "axis": "A",
+      "title": "Preservar terminal e Web antiga após mudanças",
+      "due": "2026-10-30",
+      "depends_on": [
+        "CORE-07",
+        "CORE-08"
+      ],
+      "priority": "P0",
+      "deliverable": "CLI e Web original sem regressões relevantes",
+      "acceptance": "Executar cenário básico nas duas interfaces e comparar com versão inicial.",
+      "allowed_paths": [
+        "main.py",
+        "menu.py",
+        "app.py",
+        "templates/",
+        "static/"
+      ],
+      "estimate_hours": 3,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "CORE-10",
+      "axis": "C",
+      "title": "Regressão final T01–T07 com oráculos reais",
+      "due": "2026-10-31",
+      "depends_on": [
+        "CORE-02",
+        "CORE-03",
+        "CORE-07"
+      ],
+      "priority": "P0",
+      "deliverable": "Executar testes 1–7 no código de A e registrar oráculos; A corrige src/",
+      "acceptance": "Não há falsos PASS; bugs remanescentes com risco registrado.",
+      "allowed_paths": [
+        "docs/auditorias/",
+        "tests/",
+        "scripts/"
+      ],
+      "estimate_hours": 3,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "WEB-01",
+      "axis": "B",
+      "title": "Wireframe e fixtures JSON dos painéis didáticos",
+      "due": "2026-10-20",
+      "depends_on": [
+        "CON-02"
+      ],
+      "priority": "P1",
+      "deliverable": "Design de fluxo editor/tokens/AST/semântico/TAC/C++/run",
+      "acceptance": "Todas as fases navegáveis em mock; AST desenhada de fixture; Web original intocada.",
+      "allowed_paths": [
+        "web_didatica/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "WEB-02",
+      "axis": "B",
+      "title": "Implementar AST interativa e painéis de fases",
+      "due": "2026-10-24",
+      "depends_on": [
+        "WEB-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Visão hierárquica realista de AST; tokens, símbolos, diagnósticos, TAC, C++",
+      "acceptance": "AST expandir/recolher; erros legíveis; programas grandes sem travar UI em exemplo.",
+      "allowed_paths": [
+        "web_didatica/"
+      ],
+      "estimate_hours": 7,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "WEB-03",
+      "axis": "B",
+      "title": "Integrar UI ao serviço real fornecido pelo A",
+      "due": "2026-10-28",
+      "depends_on": [
+        "CORE-08",
+        "WEB-02"
+      ],
+      "priority": "P0",
+      "deliverable": "Web didática usa resultados de compilação real",
+      "acceptance": "Exemplo positivo e erro são fiéis à compilação; sem dados hardcoded no fluxo real.",
+      "allowed_paths": [
+        "web_didatica/"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "WEB-04",
+      "axis": "B",
+      "title": "Compilar, executar e baixar binário atual",
+      "due": "2026-10-30",
+      "depends_on": [
+        "WEB-03"
+      ],
+      "priority": "P0",
+      "deliverable": "Ações reais com timeout, stdout/stderr e download",
+      "acceptance": "G++ realmente compila; returncode validado; download é artefato correto; timeout/erro apresentados.",
+      "allowed_paths": [
+        "web_didatica/"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "T11-01",
+      "axis": "B",
+      "title": "Recuperar prova experimental e concluir MVP MiniCompilador",
+      "due": "2026-10-21",
+      "depends_on": [
+        "CON-03",
+        "CORE-03"
+      ],
+      "priority": "P0",
+      "deliverable": "Expressões com parênteses, operadores, tokens, AST por índices, TAC",
+      "acceptance": "Ao menos a primeira expressão obrigatória retorna 22 em programa MiniPar executado.",
+      "allowed_paths": [
+        "tests/2026_2/test11/"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "T11-02",
+      "axis": "B",
+      "title": "Completar semântica, símbolos, erros e emissão ARM do T11",
+      "due": "2026-10-26",
+      "depends_on": [
+        "T11-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Três expressões obrigatórias, tabela símbolos, impressão ARM e `.arm`",
+      "acceptance": "Resultados 22,-84,22; nenhum valor fixo por entrada; erros relevantes rejeitados.",
+      "allowed_paths": [
+        "tests/2026_2/test11/"
+      ],
+      "estimate_hours": 8,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "T11-03",
+      "axis": "B",
+      "title": "Validar Assembly no CPUlator e arquivar evidências",
+      "due": "2026-10-28",
+      "depends_on": [
+        "T11-02"
+      ],
+      "priority": "P0",
+      "deliverable": "Arquivos ARM executados, prints/resultados com registrador final",
+      "acceptance": "Três `.arm` executam com resultados; registrar CPUlator/versão e instruções.",
+      "allowed_paths": [
+        "tests/2026_2/test11/",
+        "docs/evidencias/"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "WEB-05",
+      "axis": "B",
+      "title": "Documentar interface, T11 e preparar screenshots",
+      "due": "2026-11-02",
+      "depends_on": [
+        "WEB-04",
+        "T11-03"
+      ],
+      "priority": "P0",
+      "deliverable": "Pseudocódigo Teste 11, instruções UI, prints e explicações",
+      "acceptance": "Seções prontos para relatório com evidências verificáveis.",
+      "allowed_paths": [
+        "docs/",
+        "web_didatica/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RUN-01",
+      "axis": "C",
+      "title": "Runtime local de start/join com isolamento",
+      "due": "2026-10-21",
+      "depends_on": [
+        "CON-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Funções registry, args isolados, handles e resultados",
+      "acceptance": "`start` retorna sem aguardar tarefa; `join` aguarda e coleta resultado/erro em testes C++ isolados.",
+      "allowed_paths": [
+        "runtime/"
+      ],
+      "estimate_hours": 7,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RUN-02",
+      "axis": "C",
+      "title": "Protocolo TCP robusto e worker pré-compilado",
+      "due": "2026-10-22",
+      "depends_on": [
+        "CON-01"
+      ],
+      "priority": "P0",
+      "deliverable": "framing, send_all/recv_exact, IDs, compatibilidade build, falhas",
+      "acceptance": "Fragmentação, frame inválido, worker indisponível e duas tarefas fora de ordem testados.",
+      "allowed_paths": [
+        "runtime/"
+      ],
+      "estimate_hours": 8,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RUN-03",
+      "axis": "C",
+      "title": "Prova de execução em dois computadores reais",
+      "due": "2026-10-23",
+      "depends_on": [
+        "RUN-02",
+        "SET-03"
+      ],
+      "priority": "P0",
+      "deliverable": "Coordinator/worker em hosts diferentes com cálculo e logs",
+      "acceptance": "Provar IPs distintos e cálculo remoto verdadeiro; join com timeout quando worker cai.",
+      "allowed_paths": [
+        "runtime/",
+        "docs/evidencias/"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RUN-04",
+      "axis": "C",
+      "title": "Handoff de API runtime e integração com backend A",
+      "due": "2026-10-26",
+      "depends_on": [
+        "RUN-01",
+        "RUN-03",
+        "CORE-05"
+      ],
+      "priority": "P0",
+      "deliverable": "Header/build e testes interoperáveis com C++ gerado",
+      "acceptance": "A integra `start/join` em CORE-07; teste simples local/remoto passa sem mexer `src/` via C.",
+      "allowed_paths": [
+        "runtime/",
+        "docs/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "T08-01",
+      "axis": "C",
+      "title": "MiniPar T08: 160 avaliações em quatro trabalhadores",
+      "due": "2026-10-27",
+      "depends_on": [
+        "RUN-04",
+        "CORE-07"
+      ],
+      "priority": "P0",
+      "deliverable": "Programa completo e resultado agregado correto",
+      "acceptance": "40×4=160, sem perda/duplicata, quatro workers, sequência/paralelo comparados corretamente.",
+      "allowed_paths": [
+        "tests/2026_2/test08/"
+      ],
+      "estimate_hours": 6,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "T09-01",
+      "axis": "C",
+      "title": "MiniPar T09: avaliadores + Mandelbrot ASCII",
+      "due": "2026-10-29",
+      "depends_on": [
+        "T08-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Cinco trabalhos, impressão ASCII e resultados de avaliações",
+      "acceptance": "160 avaliações; fractal calculado dinamicamente; cinco tarefas sincronizadas.",
+      "allowed_paths": [
+        "tests/2026_2/test09/"
+      ],
+      "estimate_hours": 6,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "T10-01",
+      "axis": "C",
+      "title": "MiniPar T10: avaliações + Mandelbrot + Sierpinski",
+      "due": "2026-10-30",
+      "depends_on": [
+        "T09-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Seis trabalhos planejados e fractais visualmente verificáveis",
+      "acceptance": "Fractais produzidos; trabalho Sierpinski realmente integrado ao modelo; documentar divergência da referência Python.",
+      "allowed_paths": [
+        "tests/2026_2/test10/"
+      ],
+      "estimate_hours": 7,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RUN-05",
+      "axis": "C",
+      "title": "Benchmarks e falhas distribuídas repetíveis",
+      "due": "2026-10-31",
+      "depends_on": [
+        "T10-01",
+        "RUN-03"
+      ],
+      "priority": "P0",
+      "deliverable": "Tempos justos, speedup, registro de hosts e falhas",
+      "acceptance": "Cargas sequencial/paralela equivalentes; relatório sem confundir workers com núcleos físicos.",
+      "allowed_paths": [
+        "tests/2026_2/",
+        "docs/evidencias/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RUN-06",
+      "axis": "C",
+      "title": "Documentar protocolo, topologia, deploy e testes",
+      "due": "2026-11-02",
+      "depends_on": [
+        "RUN-05"
+      ],
+      "priority": "P0",
+      "deliverable": "README runtime, diagrama e evidências de duas máquinas",
+      "acceptance": "Outro integrante reproduz dois PCs seguindo instruções; logs sem dados pessoais.",
+      "allowed_paths": [
+        "runtime/",
+        "docs/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "INT-01",
+      "axis": "C",
+      "title": "Smoke de integração 3 eixos antes do fechamento",
+      "due": "2026-10-28",
+      "depends_on": [
+        "CORE-07",
+        "WEB-03",
+        "RUN-04"
+      ],
+      "priority": "P0",
+      "deliverable": "Coordenação de smoke da integração; A valida alterações de interfaces do núcleo",
+      "acceptance": "Teste único ponta a ponta reproduzível, resultados anexados, defeitos classificados.",
+      "allowed_paths": [
+        "docs/auditorias/",
+        "tests/",
+        "scripts/"
+      ],
+      "estimate_hours": 3,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "INT-02",
+      "axis": "B",
+      "title": "Regressão integral, três interfaces e rede real",
+      "due": "2026-10-31",
+      "depends_on": [
+        "INT-01",
+        "WEB-04",
+        "T11-03",
+        "T10-01",
+        "CORE-10"
+      ],
+      "priority": "P0",
+      "deliverable": "Coordenação da regressão final; A e C validam respectivamente compilador e runtime",
+      "acceptance": "Cada caso PASS/FAIL/BLOCKED com oráculo; falhas e severidade registradas.",
+      "allowed_paths": [
+        "docs/auditorias/",
+        "tests/",
+        "scripts/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "DOC-01",
+      "axis": "B",
+      "title": "BNF final e pseudocódigos núcleo",
+      "due": "2026-11-02",
+      "depends_on": [
+        "CORE-06"
+      ],
+      "priority": "P0",
+      "deliverable": "Consolidar BNF e pseudocódigos a partir do código de A; A aprova exatidão",
+      "acceptance": "Consistência com implementação real e regras de Fork/Join.",
+      "allowed_paths": [
+        "docs/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "DOC-02",
+      "axis": "B",
+      "title": "UML casos de uso, componentes, classes",
+      "due": "2026-11-02",
+      "depends_on": [
+        "INT-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Produzir UML a partir das interfaces reais dos três eixos; A/C revisam",
+      "acceptance": "Interfaces e classes existentes, geradores TAC/C++ incluídos; peer review dos eixos.",
+      "allowed_paths": [
+        "docs/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "DOC-03",
+      "axis": "C",
+      "title": "Product Backlog, Sprint Backlogs e decisões atualizados",
+      "due": "2026-11-02",
+      "depends_on": [
+        "INT-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Atualizar Product/Sprint Backlogs e decisões com insumos dos três eixos",
+      "acceptance": "Corresponde ao desenvolvimento feito, sem declarar resultado inexistente.",
+      "allowed_paths": [
+        "docs/",
+        "planning/"
+      ],
+      "estimate_hours": 2,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "DOC-04",
+      "axis": "B",
+      "title": "Relatório completo, evidências e GitHub na capa",
+      "due": "2026-11-03",
+      "depends_on": [
+        "INT-02",
+        "DOC-01",
+        "DOC-02",
+        "DOC-03",
+        "WEB-05",
+        "RUN-06"
+      ],
+      "priority": "P0",
+      "deliverable": "Consolidar relatório e evidências de A/B/C com link GitHub na capa; revisão conjunta",
+      "acceptance": "Professor encontra todos entregáveis; referências e anexos testados.",
+      "allowed_paths": [
+        "docs/",
+        "README.md"
+      ],
+      "estimate_hours": 5,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "REL-01",
+      "axis": "A",
+      "title": "Congelar release candidata 03/11",
+      "due": "2026-11-03",
+      "depends_on": [
+        "DOC-04"
+      ],
+      "priority": "P0",
+      "deliverable": "Tag, checklist, instruções, estado conhecido",
+      "acceptance": "Build reproduzível a partir de checkout limpo; evidências acessíveis; pendências explícitas.",
+      "allowed_paths": [
+        "docs/",
+        "README.md"
+      ],
+      "estimate_hours": 2,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "EST-01",
+      "axis": "EQUIPE",
+      "title": "Estudo de módulos e roteiro individual",
+      "due": "2026-11-08",
+      "depends_on": [
+        "REL-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Três pessoas com roteiro e demonstrações compreendidas",
+      "acceptance": "Cada um explica seu eixo e fluxo completo; coordenador reserva tempo CG.",
+      "allowed_paths": [
+        "docs/"
+      ],
+      "estimate_hours": 4,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "EST-02",
+      "axis": "EQUIPE",
+      "title": "Ensaio completo e contingência de demo",
+      "due": "2026-11-10",
+      "depends_on": [
+        "EST-01"
+      ],
+      "priority": "P0",
+      "deliverable": "Ensaio de ponta a ponta, video/log backup, falas",
+      "acceptance": "Cada aluno apresenta e responde conceitos; dois computadores/CPUlator testados.",
+      "allowed_paths": [
+        "docs/"
+      ],
+      "estimate_hours": 3,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    },
+    {
+      "id": "ENT-01",
+      "axis": "EQUIPE",
+      "title": "Entrega final 11/11",
+      "due": "2026-11-11",
+      "depends_on": [
+        "EST-02"
+      ],
+      "priority": "P0",
+      "deliverable": "GitHub, relatório, programas, executáveis e apresentações",
+      "acceptance": "Links conferidos, arquivos entregues, sistema demonstrável e documentação coerente.",
+      "allowed_paths": [
+        "docs/",
+        "README.md"
+      ],
+      "estimate_hours": 2,
+      "status": "BACKLOG",
+      "ready": false,
+      "issue_url": null,
+      "pr_url": null,
+      "evidence": []
+    }
+  ]
+}
