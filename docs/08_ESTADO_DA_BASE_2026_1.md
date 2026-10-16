@@ -42,7 +42,7 @@ TAC e código C++ são produzidos em **ramos independentes**; o gerador C++ não
 
 ## 4. Implicação para o novo projeto
 
-A cópia experimental demonstrou **potencial**, não funcionalidades já disponíveis no novo repositório. Após importar a base, reexecutar a baseline real com toolchain atualizada e reaplicar **seletivamente** patches revisados da auditoria, sem copiar código experimental cegamente.
+A cópia experimental demonstrou **potencial**, não funcionalidades já disponíveis no novo repositório. A base já está copiada na raiz e no snapshot, conforme verificação estrutural SET-01 de 16/10/2026. Reexecutar a baseline real com toolchain validada em SET-02/CORE-01 e reaplicar **seletivamente** patches revisados da auditoria, sem copiar código experimental cegamente.
 
 Os protótipos de T11 e protocolo da rodada 2 devem ser recuperados do computador original por quem os produziu e revisados por responsáveis B/C, respectivamente. Não estão contidos neste ZIP.
 
@@ -53,3 +53,14 @@ Enunciado completo e código Java T11 não estavam no workspace do Codex na audi
 ## 6. Referência
 
 Repositório 2026.1 consultado: https://github.com/luizwhirl/minipar-improvement, branch main em 15/10/2026. Fonte pública sem licença declarada na consulta. Preservar créditos e checar direitos de redistribuição.
+
+## 7. Verificação local SET-01 — 16/10/2026
+
+Esta seção registra verificações feitas **neste workspace**, separadas das rodadas externas acima. Evidências e reprodução: [`auditorias/SET-01_VALIDACAO_ESTRUTURAL.md`](auditorias/SET-01_VALIDACAO_ESTRUTURAL.md).
+
+- Branch de preparação preservada: `setup/ambiente-baseline`; HEAD 2026.2 `a37c168cd60c13ab083782877f6c56b0c588bd1b`; status inicial sem alterações.
+- Snapshot com 36 arquivos; SHA-256 contra raiz: 34 idênticos, dois divergentes (`README.md` e `.gitignore`, reservados ao projeto novo), nenhum ausente. Não houve nova importação nem edição do legado.
+- README histórico credita Emanuele Vitória de Jesus Lima, José Lucas de Oliveira Quintela e Luiz Miguel de Melo Bomfim. README/BNF históricos identificam a origem acima.
+- Não há `ORIGEM_SNAPSHOT.json`, `.git` próprio no snapshot, licença ou autorização local de redistribuição. Commit original e método/data da cópia não comprovados; o HEAD 2026.2 não deve ser usado como origem. Consulta online desta execução indisponível.
+- Importador inspecionado e corrigido pontualmente para excluir arquivos `.env.*` e não herdar commit de diretório ancestral; validação segura sem `--apply` documentada na auditoria.
+- Validador de planejamento executado com Python 3.12.4: 43 cards, IDs/datas/dependências/DAG válidos. Isso não homologa compilação, execução nativa ou testes 1–11.

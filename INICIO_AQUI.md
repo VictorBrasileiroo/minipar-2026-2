@@ -2,6 +2,8 @@
 
 **Este é o pacote inicial de planejamento e estrutura, não o compilador 2026.2 pronto.**
 
+**Atualização SET-01 — 16/10/2026:** a base 2026.1 já está presente na raiz ativa e em `legacy/minipar-2026.1/`; Git e histórico já existem. Comparação SHA-256: 36 arquivos históricos, 34 idênticos, apenas `README.md`/`.gitignore` divergentes e nenhum ausente. Consulte `docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md`. Não repetir importação ou `git init` neste workspace. Funcionamento do compilador ainda não validado neste card.
+
 ## Três decisões já tomadas
 
 - Repositório novo do trio (preferencialmente **privado**, ao menos até verificar atribuição/licenças).
@@ -12,10 +14,10 @@
 
 1. Leia `README.md` e **`docs/01_PLANEJAMENTO_GERAL.md`**. Este último é a base principal de **como agir**.
 2. Leia `docs/02_CONTRATOS_TECNICOS.md` e `AGENTS.md` **antes de iniciar qualquer Codex**.
-3. Abra `docs/10_GUIA_SETUP_REPOSITORIO.md`. Baixe/clone o MiniPar 2026.1 no seu PC.
-4. Na pasta do projeto recém-extraída, rode `python scripts/importar_base.py --source CAMINHO_DA_BASE` (simulação) e depois acrescente `--apply` (importação).
+3. Abra `docs/10_GUIA_SETUP_REPOSITORIO.md` e confira o estado local antes de seguir comandos de criação.
+4. Neste workspace, revise a auditoria SET-01 e prepare o handoff para SET-02. Somente numa estrutura nova sem base importada cabe obter a fonte e simular a importação; conflitos devem ser inspecionados, sem forçar sobrescrita.
 5. Execute `python scripts/validar_planejamento.py`, confirme 43 cards sem erro.
-6. Crie um repositório vazio **privado** no GitHub, `git init`, `git add .`, commit e push de acordo com o guia.
+6. O remoto já está configurado. A revisão de acesso e proteção pertence ao SET-03; a visibilidade e as permissões não foram verificadas no SET-01.
 7. Faça o kickoff para definir B/C, capacidade, ambiente de execução e aprovar os contratos **C-FJ, C-WEB e C-T11**.
 8. Revise `docs/04_BACKLOG.md`/`planning/cards.json`. **Só na próxima etapa** criaremos as Issues e o board.
 
@@ -27,7 +29,7 @@
 
 ## Itens que ainda precisam ser importados ou anexados
 
-- **Código MiniPar 2026.1 completo** (este pacote tem importador, não o código antigo). Fonte: <https://github.com/luizwhirl/minipar-improvement>.
+- **Proveniência complementar da base já copiada:** commit original e autorização de redistribuição não comprovados. Fonte informada: <https://github.com/luizwhirl/minipar-improvement>; créditos preservados no README histórico e no README da raiz.
 - Código Java integral do Teste 11 e fontes Python dos Testes 8/9, se a equipe tiver os arquivos originais.
 - Protótipos e logs originais das auditorias no PC que executou Codex, se forem reutilizados.
 - Vídeo do professor: não incluído por tamanho; análise de seu conteúdo ainda está pendente.

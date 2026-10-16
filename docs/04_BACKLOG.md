@@ -92,13 +92,15 @@
 
 **Prazo:** 16/10/2026 · **Prioridade:** P0 · **Estimativa:** 2 h · **Estado inicial:** BACKLOG
 
+**Estado atual (16/10/2026):** IN_PROGRESS · `ready=true`. Pessoa A/coordenador e agente Codex; sem dependências ou contratos de implementação consumidos neste recorte estrutural. Branch de preparação `setup/ambiente-baseline` preservada por instrução do coordenador. Evidências em `auditorias/SET-01_VALIDACAO_ESTRUTURAL.md`; revisão humana, PR e integração pendentes. Não libera automaticamente SET-02.
+
 **Eixo responsável:** A. **Nome humano:** A (coordenador).
 
 **Dependências:** Nenhuma.
 
 **Entrega objetiva:** Código legado imutável e cópia ativa na raiz; registrar origem/commit
 
-**Critério de aceite:** Arquivos ativos presentes; `legacy` preservado; `git status` limpo; scripts de importação conferidos.
+**Critério de aceite:** Arquivos ativos presentes; `legacy` preservado; scripts de importação conferidos; workspace inicial sem alterações preexistentes indevidas e diff final restrito ao SET-01 (pode haver alterações do card antes do commit).
 
 **Escopo de arquivos autorizado:** `scripts/`, `legacy/`, `raiz ativa`.
 

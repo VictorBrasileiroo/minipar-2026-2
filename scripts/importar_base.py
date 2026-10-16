@@ -41,6 +41,11 @@ def sha256(path: Path) -> str:
 
 def git_head(directory: Path) -> str | None:
     try:
+        top = subprocess.run(["git", "-C", str(directory), "rev-parse", "--show-toplevel"],
+                             check=True, capture_output=True, text=True, timeout=5)
+        # Um ZIP extraído dentro de outro repositório não herda sua proveniência.
+        if Path(top.stdout.strip()).resolve() != directory.resolve():
+            return None
         r = subprocess.run(["git", "-C", str(directory), "rev-parse", "HEAD"],
                            check=True, capture_output=True, text=True, timeout=5)
         return r.stdout.strip() or None
@@ -72,7 +77,8 @@ def main() -> None:
         rel = file.relative_to(src)
         if any(x in IGNORE_DIRS for x in rel.parts[:-1]):
             continue
-        if file.name in IGNORE_FILES or file.suffix.lower() in IGNORE_SUFFIXES:
+        if (file.name in IGNORE_FILES or file.name.startswith(".env.")
+                or file.suffix.lower() in IGNORE_SUFFIXES):
             continue
         source_files.append((file, rel))
 

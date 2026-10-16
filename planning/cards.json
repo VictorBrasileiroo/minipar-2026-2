@@ -20,18 +20,20 @@
       "depends_on": [],
       "priority": "P0",
       "deliverable": "Código legado imutável e cópia ativa na raiz; registrar origem/commit",
-      "acceptance": "Arquivos ativos presentes; `legacy` preservado; `git status` limpo; scripts de importação conferidos.",
+      "acceptance": "Arquivos ativos presentes; `legacy` preservado; scripts de importação conferidos; workspace inicial sem alterações preexistentes indevidas e diff final restrito ao SET-01 (pode haver alterações do card antes do commit).",
       "allowed_paths": [
         "scripts/",
         "legacy/",
         "raiz ativa"
       ],
       "estimate_hours": 2,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "IN_PROGRESS",
+      "ready": true,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md"
+      ]
     },
     {
       "id": "SET-02",
