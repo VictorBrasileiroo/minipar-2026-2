@@ -14,6 +14,30 @@ from cpp_template import _CPP_HEADER
 
 class CppCodeGenerator:
     @staticmethod
+    def _validate_output_name(output_name: str) -> bool:
+        """Aceita um nome simples e impede artefatos fora de output/."""
+        reserved = {"CON", "PRN", "AUX", "NUL", "CONIN$", "CONOUT$"}
+        reserved.update(f"{prefix}{digit}" for prefix in ("COM", "LPT") for digit in "123456789\u00b9\u00b2\u00b3")
+        if (not isinstance(output_name, str) or not output_name
+                or output_name.endswith((" ", "."))
+                or any(ch in '<>:"/\\|?*' or ord(ch) < 32 for ch in output_name)
+                or output_name.split(".", 1)[0].rstrip().upper() in reserved):
+            print("[ERRO] output_name invalido: use apenas um nome de arquivo, sem caminhos ou caracteres reservados.", file=sys.stderr)
+            return False
+        try:
+            output_dir = os.path.join(os.path.realpath(os.curdir), "output")
+            if os.path.normcase(os.path.realpath("output")) != os.path.normcase(output_dir):
+                raise ValueError("diretorio output redirecionado")
+            for extension in ("exe", "cpp", "tac"):
+                path = os.path.join("output", f"{output_name}.{extension}")
+                if os.path.normcase(os.path.dirname(os.path.realpath(path))) != os.path.normcase(output_dir):
+                    raise ValueError("artefato redirecionado para fora de output")
+        except (OSError, ValueError) as exc:
+            print(f"[ERRO] Destino de saida inseguro: {exc}", file=sys.stderr)
+            return False
+        return True
+
+    @staticmethod
     def _escape_string(value: str) -> str:
         res = []
         for ch in value:
@@ -225,6 +249,18 @@ class CppCodeGenerator:
         return self._translate_expression(node)
 
     def generate(self, program: Program, output_name: str) -> bool:
+        if not self._validate_output_name(output_name):
+            return False
+        cpp_path = os.path.join("output", f"{output_name}.cpp")
+        exe_path = os.path.join("output", f"{output_name}.exe")
+        try:
+            os.makedirs("output", exist_ok=True)
+            if os.path.lexists(exe_path):
+                os.remove(exe_path)
+        except OSError as exc:
+            print(f"[ERRO] Nao foi possivel preparar saida: {exc}", file=sys.stderr)
+            return False
+
         cpp_code = _CPP_HEADER
         
         for node in program.statements:
@@ -262,16 +298,45 @@ class CppCodeGenerator:
                 else: cpp_code += self._translate_statement(node, "    ")
         cpp_code += "\n    return 0;\n}\n"
 
-        os.makedirs("output", exist_ok=True)
-        cpp_path = os.path.join("output", f"{output_name}.cpp")
-        exe_path = os.path.join("output", f"{output_name}.exe")
-
         with open(cpp_path, "w", encoding="utf-8") as f: f.write(cpp_code)
         
-        print("[CODEGEN] Compilando via g++ com -std=c++20 e -O3...")
-        result = subprocess.run(["g++", "-std=c++20", "-O3", cpp_path, "-o", exe_path, "-pthread", "-lws2_32"])
-        if result.returncode == 0:
-            print(f"[SUCESSO] Executavel: {exe_path}")
-            return True
-        print("[ERRO] Falha na compilacao.", file=sys.stderr)
+        # CXX e um executavel (nome ou caminho), sem flags ou aspas embutidas.
+        compiler = os.environ.get("CXX") or "g++"
+        command = [compiler, "-std=c++20", "-O3", cpp_path, "-o", exe_path, "-pthread"]
+        if sys.platform == "win32":
+            command.append("-lws2_32")
+        print(f"[CODEGEN] Comando: {command!r}")
+        try:
+            result = subprocess.run(
+                command, capture_output=True, text=True, encoding="utf-8",
+                errors="replace", stdin=subprocess.DEVNULL, timeout=120,
+            )
+        except FileNotFoundError:
+            print(f"[ERRO] Compilador C++ nao encontrado: {compiler}. Configure CXX com o caminho do g++.", file=sys.stderr)
+        except subprocess.TimeoutExpired as exc:
+            print("[ERRO] Timeout na compilacao C++ (120 s).", file=sys.stderr)
+            for diagnostic in (exc.stdout, exc.stderr):
+                if diagnostic:
+                    print(diagnostic.decode("utf-8", errors="replace") if isinstance(diagnostic, bytes) else diagnostic, file=sys.stderr)
+        except OSError as exc:
+            print(f"[ERRO] Nao foi possivel executar compilador C++: {exc}", file=sys.stderr)
+        else:
+            if result.stdout:
+                print(result.stdout, end="")
+            if result.stderr:
+                print(result.stderr, end="", file=sys.stderr)
+            if result.returncode != 0:
+                print(f"[ERRO] Falha na compilacao C++ (exit={result.returncode}).", file=sys.stderr)
+            elif not os.path.isfile(exe_path) or os.path.getsize(exe_path) == 0:
+                print("[ERRO] Compilador retornou sucesso sem gerar binario valido nesta execucao.", file=sys.stderr)
+            else:
+                print(f"[SUCESSO] Executavel: {exe_path}")
+                return True
+
+        # Um compilador que falhou pode ter deixado uma saida parcial.
+        try:
+            if os.path.lexists(exe_path):
+                os.remove(exe_path)
+        except OSError as exc:
+            print(f"[ERRO] Nao foi possivel remover saida parcial: {exc}", file=sys.stderr)
         return False

@@ -52,11 +52,13 @@
         "main.py"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "IN_PROGRESS",
+      "ready": true,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/SET-02_AMBIENTE_E_SMOKE.md"
+      ]
     },
     {
       "id": "SET-03",

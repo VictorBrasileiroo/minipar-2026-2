@@ -112,6 +112,8 @@
 
 **Prazo:** 18/10/2026 · **Prioridade:** P0 · **Estimativa:** 4 h · **Estado inicial:** BACKLOG
 
+**Estado atual (16/10/2026):** IN_PROGRESS · `ready=true`, validação técnica PASS e revisão humana/PR/integração pendentes. Pessoa A/coordenador e agente Codex; SET-01 aprovado tecnicamente e commitado em `0455de3`; continuidade autorizada em `setup/ambiente-baseline`, com commits separados no PR conjunto. G++ UCRT64 16.2.0 e Flask 3.0.0 na venv conferidos; probe C++20/threads/sockets, smoke 14, T02 e negativos PASS. **T01 compilou e executou realmente em teste local controlado: servidor recebeu + 2 3, cliente recebeu 5.000000, exit=0, 0,562 s, sem timeout/stderr.** Script `scripts/testar_set02_t01_offline.ps1` usa modo local por padrão, firewall ativo, cliente 127.0.0.1, portas livres, limite de 10 s e Job Object; offline rigoroso opcional com `-StrictOffline`. Nenhuma configuração de rede/firewall/PATH persistente alterada. Evidência atual na seção 16 de `auditorias/SET-02_AMBIENTE_E_SMOKE.md`; ambiente e critério técnico T01 aprovados nesta rodada, sem afirmar estabilidade universal ou comunicação entre computadores. CORE-01 receberá a evidência quando liberado; SET-03 não iniciado. Sem DONE ou commit.
+
 **Eixo responsável:** A. **Nome humano:** A (coordenador).
 
 **Dependências:** `SET-01`.
