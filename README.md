@@ -1,6 +1,6 @@
 # MiniPar 2026.2 — Compiladores / UFAL
 
-> **Estado:** repositório inicial de planejamento e documentação. **Não é uma implementação executável pronta.**
+> **Estado verificado em 16/10/2026 (SET-01):** base 2026.1 presente na raiz ativa e preservada em `legacy/`, junto ao planejamento 2026.2. A execução funcional ainda depende da validação de ambiente/baseline; não está homologada neste card.
 > **Entrega da disciplina:** 11/11/2026. **Meta de congelamento funcional:** 03/11/2026.
 > **Estudo e ensaios:** 04–10/11/2026.
 
@@ -53,19 +53,21 @@ MINIPAR_2026_2/
 ├── scripts/
 │   ├── importar_base.py               # importa cópia local da base antiga
 │   └── validar_planejamento.py
-├── legacy/minipar-2026.1/             # referência imutável; código AINDA NÃO incluso
+├── src/, main.py, app.py, menu.py     # compilador e interfaces herdados ativos
+├── templates/, static/, tests/        # Web anterior, testes e resultados esperados
+├── legacy/minipar-2026.1/             # referência imutável; 36 arquivos históricos
 ├── runtime/                           # código futuro, Eixo C
 ├── web_didatica/                      # código futuro, Eixo B
 └── tests/2026_2/                      # subpastas por teste futuramente
 ```
 
-**Após importar o projeto anterior**, os arquivos ativos originais (`src/`, `main.py`, `app.py`, `menu.py`, `tests/`, `templates/` etc.) aparecem na **raiz**; uma cópia permanece em `legacy/minipar-2026.1/` como referência.
+Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do SET-01 encontrou **34 dos 36 arquivos históricos idênticos**, diferenças esperadas em `README.md` e `.gitignore`, e nenhum correspondente ausente. Evidências e comandos reproduzíveis em [`docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md`](docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md). Não repetir a importação neste workspace.
 
 ## Como começar
 
-1. Crie um **repositório privado vazio** no GitHub para o trio; não habilite README/licença/.gitignore na criação (o pacote já contém esses arquivos).
-2. Descompacte este ZIP, leia `docs/10_GUIA_SETUP_REPOSITORIO.md`, importe a base 2026.1 local com o script e confira o `git status`.
-3. Publique o projeto; conceda acesso aos dois colegas.
+1. Confira branch, `git status` e a auditoria SET-01: este workspace já tem Git inicializado e remoto configurado. Não reinicialize o repositório nem importe a base novamente.
+2. Leia `docs/10_GUIA_SETUP_REPOSITORIO.md`. As instruções de criação/importação são para uma estrutura nova ainda sem a base; neste workspace o próximo consumidor é SET-02, após revisão/integração do SET-01.
+3. Confira acesso dos colegas e permissões no card SET-03; não foram validados no SET-01.
 4. Na reunião de kickoff, revise os **três contratos**. Não permita que os três agentes alterem `src/` em paralelo.
 5. Execute os cards de preparação e gate G0; **depois** crie as GitHub Issues.
 
@@ -73,7 +75,9 @@ MINIPAR_2026_2/
 
 ## Proveniência e direitos
 
-Base anterior: https://github.com/luizwhirl/minipar-improvement (branch `main`, publicamente acessível, sem licença declarada na consulta de 15/10/2026). A visibilidade pública **não significa** licença irrestrita de redistribuição. A cópia deve preservar a autoria e o histórico pertinente; confirme permissão de reutilização/redistribuição antes de tornar o novo repositório público. Este pacote contém apenas a estrutura/documentação e o importador, **não inclui o código original**.
+Base anterior informada no README e na BNF históricos: <https://github.com/luizwhirl/minipar-improvement>. Créditos preservados: Emanuele Vitória de Jesus Lima ([Manu-Vii](https://github.com/Manu-Vii)), José Lucas de Oliveira Quintela ([lucasqtl](https://github.com/lucasqtl)) e Luiz Miguel de Melo Bomfim ([luizwhirl](https://github.com/luizwhirl)).
+
+O código herdado está incluído neste workspace. O **commit de origem não foi comprovado**: não há manifesto `ORIGEM_SNAPSHOT.json` nem histórico Git próprio no snapshot. O HEAD auditado do repositório **2026.2** é `a37c168cd60c13ab083782877f6c56b0c588bd1b`, não o commit original. Não foram encontrados arquivo de licença ou autorização de redistribuição local; a consulta anterior de 15/10 relatava ausência de licença declarada. A verificação online desta execução não obteve a página. Preservar autoria e confirmar autorização antes de publicação pública; a situação de direitos continua pendente.
 
 ## Documentos não incluídos
 

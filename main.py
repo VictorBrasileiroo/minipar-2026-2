@@ -13,6 +13,16 @@ from codegen import CppCodeGenerator
 def compile_file(source_path: str, output_name: str) -> bool:
     """Processa as 3 Fases do Compilador em um arquivo alvo."""
     print(f"\n=== Compilando: {source_path} ===")
+    if not CppCodeGenerator._validate_output_name(output_name):
+        return False
+    # Invalidar a saida anterior mesmo se a entrada falhar antes do codegen.
+    exe_path = os.path.join("output", f"{output_name}.exe")
+    try:
+        if os.path.lexists(exe_path):
+            os.remove(exe_path)
+    except OSError as exc:
+        print(f"[ERRO] Nao foi possivel invalidar executavel anterior: {exc}", file=sys.stderr)
+        return False
     try:
         with open(source_path, encoding="utf-8") as f:
             source_code = f.read()
