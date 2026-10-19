@@ -37,7 +37,7 @@ Se faltar contrato/recurso, usar `BLOCKED` (marcação auxiliar, explicando caus
 2. Testes executados com logs e oráculos; regressão relevante aprovada.
 3. Casos de erro relevantes verificados.
 4. Integração com consumidores comprovada, não apenas interface inventada.
-5. Documentação necessária atualizada e citações do código real.
+5. **MANDATORY:** documentação impactada verificada após cada implementação, correção, refatoração ou alteração relevante; documentação necessária atualizada na mesma entrega/PR e citações do código real. Sempre verificar se `AGENTS.md` precisa de atualização e aplicar a regra 11 desse arquivo. Registrar a verificação no resumo final e no handoff/PR; se nenhuma atualização documental for necessária, declarar isso explicitamente com justificativa, inclusive para `AGENTS.md` quando não precisar mudar. Sem essa verificação, a implementação não está concluída.
 6. Handoff e evidência anexados; sem bloqueios ocultos.
 7. `main` integra alterações sem regressão conhecida não registrada.
 

@@ -27,9 +27,12 @@ Consumidor:
 O que ficou pendente:
 Riscos:
 
-- [ ] Li `AGENTS.md` e contratos
+- [ ] Consultei `MEMORY.md`, quando existir, e li `AGENTS.md` e contratos
 - [ ] Respeitei ownership
 - [ ] Não alterei `legacy/`
 - [ ] Testes e logs sustentam resultados alegados
 - [ ] Documentei interfaces alteradas
+- [ ] MANDATORY: verifiquei a documentação impactada conforme a regra 11 de `AGENTS.md` e incluí as atualizações necessárias nesta mesma entrega/PR
+- [ ] Sempre revisei a necessidade de atualizar `AGENTS.md`; registrei o resultado no resumo final e no handoff/PR, com justificativa quando não precisar mudar
+- [ ] Registrei documentos verificados/atualizados; se nenhuma atualização documental foi necessária, declarei isso explicitamente no resumo final e no handoff/PR, com justificativa
 - [ ] Solicitei review do consumidor

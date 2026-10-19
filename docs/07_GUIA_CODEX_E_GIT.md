@@ -7,7 +7,7 @@ O maior risco de usar três agentes em paralelo é **alterar contratos e arquivo
 ## 2. Ponto de partida antes de toda sessão
 
 1. Abrir o repositório **novo** e a branch do card; confirmar que não está em `legacy/`.
-2. Ler `AGENTS.md`, `docs/01_PLANEJAMENTO_GERAL.md`, `docs/02_CONTRATOS_TECNICOS.md` e a ficha do card.
+2. Consultar `MEMORY.md`, quando existir, e ler `AGENTS.md`, `docs/01_PLANEJAMENTO_GERAL.md`, `docs/02_CONTRATOS_TECNICOS.md` e a ficha do card antes de iniciar a tarefa.
 3. Confirmar dependências prontas, owners, branch e `git status` limpo.
 4. Registrar tempo disponível da sessão e critério de parada.
 5. Só então dar a tarefa ao Codex. **Não liberar agente B/C para editar `src/`**.
@@ -16,7 +16,7 @@ O maior risco de usar três agentes em paralelo é **alterar contratos e arquivo
 
 ```text
 Você está no MiniPar 2026.2, eixo [A/B/C], card [ID].
-LEIA AGENTS.md e os documentos de contrato/plano ligados ao card.
+CONSULTE MEMORY.md, quando existir, e LEIA AGENTS.md e os documentos de contrato/plano ligados ao card.
 
 Objetivo verificável: [entrega, não descrição vaga].
 Dependências liberadas: [IDs / contrato frozen / fixtures].
@@ -29,6 +29,7 @@ Prazo/timebox: [período, não force solução incorreta].
 Não faça refatoração fora do escopo nem invente resultado esperado.
 Se faltar API/contrato, pare, reporte BLOCKED e descreva pedido de mudança.
 Ao terminar, devolva: resumo do diff, comandos exatos, evidências, FAIL/BLOCKED e HANDOFF.
+MANDATORY: aplique a regra 11 de AGENTS.md antes de concluir: verifique a documentação impactada e sempre revise a necessidade de atualizar AGENTS.md; inclua as atualizações necessárias na mesma entrega/PR. Registre o resultado no resumo final e no HANDOFF; justifique explicitamente quando nenhuma atualização documental for necessária e quando AGENTS.md não precisar mudar.
 Não faça merge em main nem instale dependências globalmente.
 ```
 
@@ -39,6 +40,7 @@ Nomes: `eixo-a/CORE-03-strings`, `eixo-b/T11-02-arm`, `eixo-c/RUN-02-protocolo`.
 PR deve incluir:
 - Card e objetivo.
 - O que mudou.
+- Verificação documental obrigatória (regra 11 de `AGENTS.md`): documentos verificados/atualizados e resultado da revisão de `AGENTS.md`, com justificativa quando não houver atualização necessária.
 - Quais arquivos mudou (comparar com ownership).
 - Como testar e quais comandos foram executados.
 - Saída/oráculo.
