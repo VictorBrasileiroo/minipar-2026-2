@@ -1,4 +1,5 @@
 ## Card e contexto
+Base do PR: `dev`  
 ID:  
 Eixo e dono:  
 Contrato v1:  
@@ -32,4 +33,6 @@ Riscos:
 - [ ] Não alterei `legacy/`
 - [ ] Testes e logs sustentam resultados alegados
 - [ ] Documentei interfaces alteradas
+- [ ] PR aponta para `dev`, não para `main`
 - [ ] Solicitei review do consumidor
+- [ ] Pelo menos um revisor que não é o autor aprovou antes do merge

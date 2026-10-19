@@ -39,7 +39,7 @@ Se faltar contrato/recurso, usar `BLOCKED` (marcação auxiliar, explicando caus
 4. Integração com consumidores comprovada, não apenas interface inventada.
 5. Documentação necessária atualizada e citações do código real.
 6. Handoff e evidência anexados; sem bloqueios ocultos.
-7. `main` integra alterações sem regressão conhecida não registrada.
+7. `dev` integra alterações sem regressão conhecida não registrada.
 
 ---
 
@@ -96,7 +96,7 @@ Se faltar contrato/recurso, usar `BLOCKED` (marcação auxiliar, explicando caus
 
 **Branches:** `eixo-a/CORE-XX-descricao`, `eixo-b/WEB-XX-descricao`, `eixo-c/RUN-XX-descricao`, `integracao/INT-XX-descricao`, `docs/DOC-XX-descricao`.
 
-**Merge:** sempre via PR; não empurrar commits em `main` diretamente quando o trio estiver trabalhando. A coordenação não deve assumir que "PR sem conflito" implica "sem conflito semântico".
+**Merge:** sempre via PR contra `dev`, a branch padrão do repositório, com **pelo menos uma aprovação de revisor diferente do autor**; não empurrar commits diretamente em `dev` nem em `main`. `main` não recebe PRs de card: promoção de `dev` para `main` só por decisão do coordenador. A coordenação não deve assumir que "PR sem conflito" implica "sem conflito semântico".
 
 **Alteração de contrato:** PR do tipo `CR` com versão antiga/nova, dependentes impactados, plano de transição, fixtures e testes; só aplicar após anuência de A + consumidor.
 
@@ -269,13 +269,13 @@ A Web é paralelizável com fixtures; seu vínculo com A ocorre em um **gate exp
 - Cada implementação começa com **smoke test pequeno** e termina com teste de integração no consumidor.
 - O dono do contrato participa do review da integração (A+B ou A+C).
 - Nenhuma tarefa é dada por concluída apenas porque o agente abriu PR.
-- `main` deve permanecer minimamente demonstrável.
+- `dev` deve permanecer minimamente demonstrável.
 - Não criar workflows CI complexos antes de a toolchain estar estabilizada; começar com validação Python, lint/compilação básica e depois ampliar.
 - Entradas/sockets/executáveis devem ser testados em ambiente controlado. Web acadêmica local não é serviço público seguro.
 
 ### 11.1 Política de merge quando o coordenador tem só 3h/dia
 
-**Máximo sugerido: 2 PRs de integração por dia para revisão pelo coordenador.** PRs menores podem ser revisados pelo próprio dono do eixo ou pelo consumidor designado, conforme regras combinadas.
+**Máximo sugerido: 2 PRs de integração por dia para revisão pelo coordenador.** PRs menores podem ser revisados por outro integrante (o consumidor designado ou o dono do eixo afetado), conforme regras combinadas. Todo PR precisa de pelo menos uma aprovação que não seja do autor.
 
 Reserve no calendário 30–60 minutos/dia para reviews/comunicação. Se o coordenador vira gargalo, redistribua revisão de módulos próprios, nunca libere bypass irrestrito em `src/`.
 

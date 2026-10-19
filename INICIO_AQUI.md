@@ -17,7 +17,7 @@
 3. Abra `docs/10_GUIA_SETUP_REPOSITORIO.md` e confira o estado local antes de seguir comandos de criação.
 4. Neste workspace, revise a auditoria SET-01 e prepare o handoff para SET-02. Somente numa estrutura nova sem base importada cabe obter a fonte e simular a importação; conflitos devem ser inspecionados, sem forçar sobrescrita.
 5. Execute `python scripts/validar_planejamento.py`, confirme 43 cards sem erro.
-6. O remoto já está configurado. A revisão de acesso e proteção pertence ao SET-03; a visibilidade e as permissões não foram verificadas no SET-01.
+6. O remoto já está configurado e a **branch padrão é `dev`**: crie branches de card a partir dela e abra PRs contra ela, com pelo menos um revisor que não seja o autor. A revisão de acesso e proteção pertence ao SET-03; a visibilidade e as permissões não foram verificadas no SET-01.
 7. Faça o kickoff para definir B/C, capacidade, ambiente de execução e aprovar os contratos **C-FJ, C-WEB e C-T11**.
 8. Revise `docs/04_BACKLOG.md`/`planning/cards.json`. **Só na próxima etapa** criaremos as Issues e o board.
 
