@@ -68,7 +68,7 @@ Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do S
 
 ## Como começar
 
-1. Confira branch, `git status` e a auditoria SET-01: este workspace já tem Git inicializado e remoto configurado. Não reinicialize o repositório nem importe a base novamente.
+1. Confira branch (a padrão é `dev`; PRs vão para `dev` e exigem ao menos um revisor que não seja o autor), `git status` e a auditoria SET-01: este workspace já tem Git inicializado e remoto configurado. Não reinicialize o repositório nem importe a base novamente.
 2. Leia `docs/10_GUIA_SETUP_REPOSITORIO.md`. As instruções de criação/importação são para uma estrutura nova ainda sem a base; neste workspace o próximo consumidor é SET-02, após revisão/integração do SET-01.
 3. Confira acesso dos colegas e permissões no card SET-03; não foram validados no SET-01.
 4. Na reunião de kickoff, revise os **três contratos**. Não permita que os três agentes alterem `src/` em paralelo.

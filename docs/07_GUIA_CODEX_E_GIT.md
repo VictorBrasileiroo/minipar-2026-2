@@ -6,7 +6,7 @@ O maior risco de usar três agentes em paralelo é **alterar contratos e arquivo
 
 ## 2. Ponto de partida antes de toda sessão
 
-1. Abrir o repositório **novo** e a branch do card; confirmar que não está em `legacy/`.
+1. Abrir o repositório **novo**, atualizar `dev` (`git switch dev` e `git pull`) e criar ou abrir a branch do card a partir dela; confirmar que não está em `legacy/`.
 2. Consultar `MEMORY.md`, quando existir, e ler `AGENTS.md`, `docs/01_PLANEJAMENTO_GERAL.md`, `docs/02_CONTRATOS_TECNICOS.md` e a ficha do card antes de iniciar a tarefa.
 3. Confirmar dependências prontas, owners, branch e `git status` limpo.
 4. Registrar tempo disponível da sessão e critério de parada.
@@ -30,10 +30,14 @@ Não faça refatoração fora do escopo nem invente resultado esperado.
 Se faltar API/contrato, pare, reporte BLOCKED e descreva pedido de mudança.
 Ao terminar, devolva: resumo do diff, comandos exatos, evidências, FAIL/BLOCKED e HANDOFF.
 MANDATORY: aplique a regra 11 de AGENTS.md antes de concluir: verifique a documentação impactada e sempre revise a necessidade de atualizar AGENTS.md; inclua as atualizações necessárias na mesma entrega/PR. Registre o resultado no resumo final e no HANDOFF; justifique explicitamente quando nenhuma atualização documental for necessária e quando AGENTS.md não precisar mudar.
-Não faça merge em main nem instale dependências globalmente.
+Não faça merge (nem em dev nem em main) nem instale dependências globalmente.
 ```
 
 ## 4. Branches e PRs
+
+**Branch padrão: `dev`.** Toda branch de card nasce de `dev` atualizada e todo PR aponta para `dev`. `main` não recebe PRs de card; a promoção de `dev` para `main` é decisão do coordenador.
+
+**Revisão obrigatória:** o merge exige **pelo menos uma aprovação de um revisor que não seja o autor**. Ninguém aprova o próprio PR. PR de contrato ou de integração precisa da aprovação do dono da interface ou do consumidor afetado. Revisão de agente de IA não conta como aprovação.
 
 Nomes: `eixo-a/CORE-03-strings`, `eixo-b/T11-02-arm`, `eixo-c/RUN-02-protocolo`. Separar branches por card, preferir PRs pequenos e apontar `Closes #...` **depois** de criar Issues. PR de contrato usa prefixo `contract/CR-XX`.
 

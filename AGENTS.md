@@ -31,11 +31,11 @@
 
 ## Passo a passo obrigatório por card
 
-**Antes:** identificar ID, dono, objetivo, arquivos autorizados, dependências, critério de aceite; ler contratos; criar branch `eixo-<a|b|c>/<ID>-resumo`.
+**Antes:** identificar ID, dono, objetivo, arquivos autorizados, dependências, critério de aceite; ler contratos; atualizar `dev` e criar a partir dela a branch `eixo-<a|b|c>/<ID>-resumo`.
 
 **Durante:** implementar alteração mínima; adicionar testes locais; verificar regressão pertinente; registrar problemas; não invadir arquivos alheios.
 
-**Depois:** produzir resumo de handoff em `docs/templates/TEMPLATE_HANDOFF.md` ou corpo do PR; demonstrar entradas/saídas; abrir PR contra `main`; não fazer merge sem checagens e aprovação conforme regra do time.
+**Depois:** produzir resumo de handoff em `docs/templates/TEMPLATE_HANDOFF.md` ou corpo do PR; demonstrar entradas/saídas; abrir PR contra `dev` (branch padrão); não fazer merge sem checagens e sem **aprovação de pelo menos um revisor que não seja o autor**. Ninguém aprova o próprio PR. PR de contrato ou integração precisa da aprovação do dono da interface ou do consumidor afetado.
 
 **Ao integrar:** contrato satisfeiro, smoke test, teste de regressão e evidências. O dono da interface verifica a compatibilidade. Documentos atualizados. Só então marcar `DONE`.
 
@@ -53,4 +53,4 @@ Abrir PR/documento com: contrato anterior, novo contrato proposto, motivo, consu
 
 ## Uso de IA
 
-Não afirmar que a revisão por ChatGPT/Codex equivale a execução local. Os responsáveis humanos conferem logs, comandos, diff e demonstração. Manter `main` executável sempre que possível.
+Não afirmar que a revisão por ChatGPT/Codex equivale a execução local. Os responsáveis humanos conferem logs, comandos, diff e demonstração. Manter `dev` executável sempre que possível.

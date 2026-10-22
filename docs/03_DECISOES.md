@@ -22,6 +22,7 @@ Regras: decisões registram **estado** (`CONFIRMADA`, `PROPOSTA`, `EM ABERTO`, `
 | ADR-016 | CONFIRMADA | Hardcode TAC do Quicksort deve ser eliminado e substituído por geração real | Validar mutação de programa |
 | ADR-017 | CONFIRMADA | Não declarar execução distribuída sem duas máquinas reais | Prova em rede |
 | ADR-018 | PROPOSTA | Repositório novo privado inicialmente até esclarecer direitos de redistribuição da base sem licença explícita | Evitar publicação indevida |
+| ADR-019 | CONFIRMADA | `dev` é a branch padrão (remoto com `HEAD` em `dev`, conferido em 19/10/2026): branches de card nascem dela e PRs apontam para ela; `main` só recebe promoção decidida pelo coordenador. Todo merge exige pelo menos uma aprovação de revisor que não seja o autor | Atualiza a regra de PR contra `main` do `AGENTS.md`; configuração da proteção no GitHub conferida no SET-03 |
 
 ## Padrão para novas decisões
 

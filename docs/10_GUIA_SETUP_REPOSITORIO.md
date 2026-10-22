@@ -87,7 +87,9 @@ git push -u origin main
 ## 7. Proteções básicas no GitHub
 
 - Convidar os outros dois.
-- Preferir PR para `main` com revisão, não commits diretos.
+- **Branch padrão: `dev`** (configurada no GitHub). PRs de card apontam para `dev`; `main` só recebe promoção de `dev` decidida pelo coordenador.
+- Sem commits diretos em `dev` ou `main`: todo merge passa por PR com **pelo menos uma aprovação de revisor que não seja o autor**.
+- Configuração recomendada no GitHub para `dev` e `main` (Settings → Branches/Rulesets): exigir pull request antes do merge, **1 aprovação obrigatória**, descartar aprovações antigas quando houver novo push e bloquear force push e exclusão. Quem administra o repositório aplica; o estado real da proteção é conferido no SET-03.
 - Prefixos de branch por eixo (`eixo-a/`, `eixo-b/`, `eixo-c/`).
 - Não criar GitHub Issues ainda; primeiro revisar `docs/01..07` e `planning/cards.json`.
 - Evitar upload de segredos e dados pessoais; conferir `git status` antes de commit.
