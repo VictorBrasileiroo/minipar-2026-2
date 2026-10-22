@@ -1,5 +1,7 @@
 # AGENTS — Contrato operacional para pessoas e agentes Codex
 
+**MANDATORY — Antes de iniciar qualquer nova tarefa:** consultar `MEMORY.md`, quando existir, e este arquivo. A política de manutenção documental da regra 11 é permanente e obrigatória para todas as futuras execuções do Codex neste projeto.
+
 **Obrigatório:** ler `docs/01_PLANEJAMENTO_GERAL.md`, `docs/02_CONTRATOS_TECNICOS.md`, `docs/04_BACKLOG.md`, `docs/05_VALIDACAO_E_ACEITE.md` antes de modificar código. O contexto consolidado está em `docs/00_DOCUMENTO_MESTRE_INICIAL.md`.
 
 ## Regras inegociáveis
@@ -19,6 +21,12 @@
 9. **Operação segura.** Não instalar dependências globalmente, executar comandos destrutivos, sobrescrever arquivos históricos, abrir portas públicas, alterar PATH do sistema ou publicar repositório sem autorização.
 10. **Sem trabalho tácito.** Ao final de cada card registrar: arquivos alterados, testes realizados/comandos, evidências, pendências, impacto de interface, próximo consumidor.
 11. **Documentação acompanha o código.** Diagramas, BNF e pseudocódigos devem refletir a implementação verdadeira.
+    **MANDATORY — Manutenção documental como critério de conclusão:**
+    - Após cada implementação, correção, refatoração ou alteração relevante, verificar a documentação impactada e atualizar o que for necessário (`README.md`, documentação técnica, APIs, guias e demais documentos aplicáveis).
+    - Sempre verificar se `AGENTS.md` precisa de atualização e atualizá-lo quando houver mudanças nas instruções, convenções, arquitetura, padrões ou fluxo de desenvolvimento.
+    - Nenhuma implementação está concluída sem essa verificação. Incluir as atualizações documentais necessárias na mesma entrega/PR da implementação, respeitando ownership, aprovações e CRs existentes.
+    - No resumo final e no handoff/PR, registrar documentos verificados e atualizados e o resultado da revisão de `AGENTS.md`. Se nenhuma atualização documental for necessária, informar isso explicitamente no resumo final, com justificativa; justificar também quando `AGENTS.md` não precisar mudar.
+    - Preservar regras existentes, evitar duplicações e conflitos e não modificar documentos que não foram impactados. Estas obrigações não são recomendações opcionais.
 12. **Escalonar bloqueios cedo.** Se falta API, contrato, ambiente ou teste, registrar `BLOCKED` e comunicar responsável. Não improvisar mudança estrutural.
 
 ## Passo a passo obrigatório por card

@@ -8,6 +8,12 @@
 ### Arquivos alterados
 - ...
 
+### Verificação documental — MANDATORY
+- Documentos verificados e impacto identificado:
+- Documentos atualizados nesta mesma entrega/PR:
+- `AGENTS.md` sempre revisado: atualização realizada ou justificativa para não precisar mudar:
+- Se nenhuma atualização documental for necessária, declarar explicitamente e justificar aqui e no resumo final:
+
 ### Interface exposta ao consumidor
 - Assinatura/campos/versão:
 - Exemplo real de uso:

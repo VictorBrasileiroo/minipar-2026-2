@@ -13,9 +13,11 @@ Evoluir o compilador MiniPar 2026.1, preservando Lexer, Parser/AST, análise sem
 1. [`docs/00_DOCUMENTO_MESTRE_INICIAL.md`](docs/00_DOCUMENTO_MESTRE_INICIAL.md) — o enunciado consolidado, **fonte de requisitos**.
 2. [`docs/01_PLANEJAMENTO_GERAL.md`](docs/01_PLANEJAMENTO_GERAL.md) — **fonte principal para como agir**, prazos, gates, responsáveis, dependências, critérios de parada e contingência.
 3. [`docs/02_CONTRATOS_TECNICOS.md`](docs/02_CONTRATOS_TECNICOS.md) — API e limites de propriedade, ainda com decisões **propostas**.
-4. [`AGENTS.md`](AGENTS.md) — obrigatório para pessoas e agentes antes de modificar qualquer arquivo.
+4. [`AGENTS.md`](AGENTS.md) e [`MEMORY.md`](MEMORY.md), quando existir — leitura obrigatória antes de iniciar qualquer tarefa; `AGENTS.md` rege pessoas e agentes antes de modificar qualquer arquivo.
 5. [`docs/04_BACKLOG.md`](docs/04_BACKLOG.md) — cards internos com IDs. As GitHub Issues serão criadas **depois** de revisar os documentos.
 6. [`docs/05_VALIDACAO_E_ACEITE.md`](docs/05_VALIDACAO_E_ACEITE.md) e [`docs/06_RISCOS_E_CONTINGENCIAS.md`](docs/06_RISCOS_E_CONTINGENCIAS.md).
+
+**MANDATORY:** toda implementação, correção, refatoração ou alteração relevante exige verificar a documentação impactada e a necessidade de atualizar `AGENTS.md`, conforme a [regra 11](AGENTS.md). As atualizações necessárias integram a mesma entrega/PR; a dispensa de atualização deve ser justificada explicitamente no resumo final.
 
 ## Papéis
 
@@ -31,6 +33,7 @@ O domínio de código é definido em [`AGENTS.md`](AGENTS.md). Mudanças nos con
 MINIPAR_2026_2/
 ├── README.md
 ├── AGENTS.md
+├── MEMORY.md
 ├── .gitignore
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
