@@ -17,7 +17,7 @@
 
 **Estado:** `v1 — PROPOSTA DE CONGELAMENTO` redigida pelo B em 19/10/2026 no card `CON-02`. Passa a `v1 FROZEN` quando A aprovar o PR (quadro em 1.11). Até lá, nenhum lado trata nomes e campos abaixo como definitivos.
 
-**Revisão 2 (19/10/2026):** incorpora a revisão do coordenador no PR do `CON-02`: `\n` final explícito nas fixtures, regra única para fases ignoradas, tipos e escopos da tabela de símbolos, algoritmo de truncamento da AST, testes de isolamento/timeout/artefatos e entrega do `.arm` do Teste 11 pela Web.
+**Revisão 2 (19/10/2026):** incorpora a revisão do coordenador no PR do `CON-02`: `\n` final explícito nas fixtures, regra única para fases ignoradas, tipos e escopos da tabela de símbolos, algoritmo de truncamento da AST, testes de isolamento/timeout/artefatos e entrega do `.arm` do Teste 11 pela Web. Ajuste de 22/10/2026: a extração do `.arm` (1.7) segue todos os erros de C-T11-v1 §3.6 item 2 e normaliza CRLF, conferida na integração com o PR do `CON-03`.
 
 **Fornecedor:** A (`CORE-08`, biblioteca Python sobre o compilador real). **Consumidor:** B (`WEB-01` a `WEB-04`, servidor e interface em `web_didatica/`).
 **Objetivo:** permitir que B construa a Web didática com fixtures no formato exato que o serviço real vai devolver, e que A saiba exatamente o que entregar.
@@ -271,11 +271,11 @@ Lista de todos os escopos abertos pelo semântico, na ordem em que são abertos.
 
 **Arquivo `.arm` do Teste 11 — responsabilidade do B, sem nova função no serviço.** O `.arm` não é artefato do compilador hospedeiro: é texto que o MiniCompilador (programa MiniPar) imprime no `stdout`. A Web o obtém assim:
 1. Compila o programa do Teste 11 com `compile_program` e o executa com `execute`, passando a expressão no `stdin`.
-2. O navegador recorta o `stdout` recebido pelas regras de C-T11-v1 §3.6 item 2 (revisão 2): copia literalmente as linhas entre a linha de título, reconhecida pelo texto `Assembly ARMv7 (CPUlator):` no fim da linha, e a primeira linha vazia seguinte. Título ausente ou repetido, bloco vazio ou bloco que não começa com `.global _start` é erro exibido ao usuário. Não há marcadores próprios: os `===MINIPAR_ARM_BEGIN===`/`===MINIPAR_ARM_END===` da revisão 1 de C-T11-v1 foram revogados (§3.6.1).
+2. O navegador recorta o `stdout` recebido pelas regras de C-T11-v1 §3.6 item 2 (revisão 2): copia literalmente as linhas entre a linha de título, reconhecida pelo texto `Assembly ARMv7 (CPUlator):` no fim da linha, e a primeira linha vazia seguinte. Antes de reconhecer e copiar, o `\r` do fim de cada linha é removido, porque o stdout no Windows usa CRLF (C-T11-v1 §3.2). Título ausente ou repetido, bloco vazio, bloco que não começa com `.global _start` ou bloco sem a linha vazia que o fecha é erro exibido ao usuário. Não há marcadores próprios: os `===MINIPAR_ARM_BEGIN===`/`===MINIPAR_ARM_END===` da revisão 1 de C-T11-v1 foram revogados (§3.6.1).
 3. Se `stdout_truncated` for `true`, a Web recusa a extração, porque o bloco pode estar incompleto.
 4. O download é gerado no próprio navegador como `t11_<8 primeiros do artifact_id>.arm`, em UTF-8 com `\n`, terminando com uma linha em branco, como o `.arm` de referência. Não há rota nem função nova: `kind` continua limitado a `cpp`, `tac` e `binary`.
 
-O script de linha de comando do B em `tests/2026_2/test11/` aplica as mesmas regras de §3.6, para que Web e evidências produzam o mesmo arquivo. Essa integração depende de C-T11-v1 estar aprovado (PR do `CON-03`).
+O script de linha de comando do B em `tests/2026_2/test11/` aplica as mesmas regras de §3.6, inclusive a remoção do `\r` e a gravação com `\n`, para que Web e evidências produzam o mesmo arquivo. Essa integração depende de C-T11-v1 estar aprovado (PR do `CON-03`).
 
 ### 1.8 Rotas HTTP da Web didática (responsabilidade do B)
 
@@ -491,7 +491,7 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 - na integração, nenhum dado é fixo no fluxo real: tudo vem do serviço;
 - respostas com `source_hash` diferente do código atual do editor são descartadas (teste: editar o código durante uma análise lenta);
 - execução e download usam o `artifact_id` da compilação exibida, inclusive depois de uma nova compilação em outra aba;
-- extração do `.arm` (1.7) com quatro saídas de teste: bloco válido, título ausente, título repetido e bloco que não começa com `.global _start`; só a primeira gera arquivo, igual byte a byte ao produzido pelo script de `tests/2026_2/test11/`.
+- extração do `.arm` (1.7) com seis saídas de teste: bloco válido com fim de linha `\n`, o mesmo bloco com `\r\n`, título ausente, título repetido, bloco que não começa com `.global _start` e bloco sem linha vazia de fechamento; só as duas primeiras geram arquivo, ambos iguais byte a byte entre si e ao produzido pelo script de `tests/2026_2/test11/`.
 
 **Processo:** campo novo pedido pela Web vira CR (versão `v1.1` se for aditivo). B não edita `src/`.
 
