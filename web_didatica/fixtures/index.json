@@ -1,0 +1,36 @@
+{
+  "contract": "minipar.compile.v1",
+  "mock": true,
+  "fixtures": [
+    {
+      "fixture": "FIX-01",
+      "title": "Sucesso: soma e impressão",
+      "file": "fix-01-sucesso.json"
+    },
+    {
+      "fixture": "FIX-02",
+      "title": "Erro léxico: caractere desconhecido",
+      "file": "fix-02-erro-lexico.json"
+    },
+    {
+      "fixture": "FIX-03",
+      "title": "Erro sintático: expressão faltando",
+      "file": "fix-03-erro-sintatico.json"
+    },
+    {
+      "fixture": "FIX-04",
+      "title": "Erro semântico: variável não declarada",
+      "file": "fix-04-erro-semantico.json"
+    },
+    {
+      "fixture": "PROG-01",
+      "title": "Programa maior: Quicksort com classes (Teste 6)",
+      "file": "prog-01-quicksort-classes.json"
+    },
+    {
+      "fixture": "EXEC-01",
+      "title": "Compilar e executar o código de FIX-01",
+      "file": "exec-01-fix01.json"
+    }
+  ]
+}
