@@ -12,6 +12,7 @@ import argparse
 import os
 import platform
 import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -59,21 +60,83 @@ def run(cmd: list[str], env: dict, timeout: int = 120) -> subprocess.CompletedPr
                           env=env, timeout=timeout)
 
 
-def step_unit(exe: Path, env: dict) -> tuple[bool, str]:
-    p = run([str(exe)], env)
+def step_unit(exe: Path, ctx: dict) -> tuple[bool, str]:
+    p = run([str(exe)], ctx["env"])
     return p.returncode == 0, p.stdout + p.stderr
 
 
-def step_join_or_exit_probe(exe: Path, env: dict) -> tuple[bool, str]:
-    p = run([str(exe)], env)
+def step_join_or_exit_probe(exe: Path, ctx: dict) -> tuple[bool, str]:
+    p = run([str(exe)], ctx["env"])
     ok = (p.returncode == 1 and "ok=42" in p.stdout and "NAO DEVERIA" not in p.stdout
           and "[minipar_rt] join task-2 falhou: TASK_FAILED: erro de proposito" in p.stderr)
     return ok, f"exit={p.returncode}\nstdout: {p.stdout.strip()}\nstderr: {p.stderr.strip()}"
 
 
+def free_ports(n: int) -> list[int]:
+    socks, ports = [], []
+    for _ in range(n):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(("127.0.0.1", 0))
+        socks.append(s)
+        ports.append(s.getsockname()[1])
+    for s in socks:
+        s.close()
+    return ports
+
+
+def start_worker(exe: Path, port: int, log: Path, env: dict) -> subprocess.Popen:
+    fh = open(log, "w", encoding="utf-8")
+    proc = subprocess.Popen([str(exe), "--minipar-worker", str(port)], stdout=subprocess.DEVNULL, stderr=fh, env=env)
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            break
+        if "escutando em" in log.read_text(encoding="utf-8", errors="replace"):
+            return proc
+        time.sleep(0.05)
+    proc.kill()
+    raise RuntimeError(f"worker na porta {port} nao ficou pronto; log: {log.read_text(errors='replace')}")
+
+
+def step_remote(exe: Path, ctx: dict) -> tuple[bool, str]:
+    """Dois processos worker (A e B) no loopback; o teste derruba B de propósito (morrer -> exit 3)."""
+    ok_w, worker_exe, msg = compile_one(ctx["cxx"], TESTS / "test_worker.cpp", ctx["env"])
+    if not ok_w:
+        return False, msg
+    port_a, port_b, port_dead = free_ports(3)
+    log_a, log_b = OUT / "worker_A.log", OUT / "worker_B.log"
+    wa = start_worker(worker_exe, port_a, log_a, ctx["env"])
+    wb = start_worker(worker_exe, port_b, log_b, ctx["env"])
+    env = dict(ctx["env"], MINIPAR_TEST_PORT_A=str(port_a), MINIPAR_TEST_PORT_B=str(port_b),
+               MINIPAR_TEST_PORT_DEAD=str(port_dead))
+    try:
+        p = run([str(exe)], env, timeout=180)
+        try:
+            b_exit = wb.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            b_exit = None
+        a_alive = wa.poll() is None
+    finally:
+        for w in (wa, wb):
+            if w.poll() is None:
+                w.kill()
+                w.wait(timeout=5)
+    log_a_txt = log_a.read_text(encoding="utf-8", errors="replace")
+    log_b_txt = log_b.read_text(encoding="utf-8", errors="replace")
+    ok = p.returncode == 0 and b_exit == 3 and a_alive
+    report = (p.stdout + p.stderr).rstrip() + "\n"
+    report += (f"worker A (porta {port_a}): vivo no fim={a_alive}; linhas TASK={log_a_txt.count('] TASK ')}, "
+               f"conexoes rejeitadas={log_a_txt.count('rejeitada')}\n")
+    report += f"worker B (porta {port_b}): exit={b_exit} (esperado 3, morte proposital); linhas TASK={log_b_txt.count('] TASK ')}\n"
+    report += "primeiras linhas do log do worker A:\n" + "\n".join(log_a_txt.splitlines()[:4])
+    return ok, report
+
+
 STEPS = [
-    ("RUN-01 testes locais", "test_local.cpp", step_unit),
-    ("RUN-01 join_or_exit encerra com codigo 1", "join_or_exit_probe.cpp", step_join_or_exit_probe),
+    ("RUN-01 testes locais", "tests/test_local.cpp", step_unit),
+    ("RUN-01 join_or_exit encerra com codigo 1", "tests/join_or_exit_probe.cpp", step_join_or_exit_probe),
+    ("RUN-02 codec JSON e frames", "tests/test_protocol.cpp", step_unit),
+    ("RUN-02 coordenador <-> 2 workers (processos no loopback)", "tests/test_remote.cpp", step_remote),
 ]
 
 
@@ -91,11 +154,12 @@ def main() -> int:
     ver = run([cxx, "--version"], env).stdout.splitlines()
     print(f"# minipar_rt — {platform.platform()} — {ver[0] if ver else cxx}")
 
+    ctx = {"cxx": cxx, "env": env}
     results = []
     built: dict[str, Path] = {}
     for title, src_name, fn in STEPS:
         if src_name not in built:
-            ok, exe, msg = compile_one(cxx, TESTS / src_name, env)
+            ok, exe, msg = compile_one(cxx, RUNTIME / src_name, env)
             print(msg)
             if not ok:
                 results.append((title, False))
@@ -103,7 +167,10 @@ def main() -> int:
                     break
                 continue
             built[src_name] = exe
-        ok, out = fn(built[src_name], env)
+        try:
+            ok, out = fn(built[src_name], ctx)
+        except (subprocess.TimeoutExpired, RuntimeError) as exc:
+            ok, out = False, f"erro: {exc}"
         print(f"\n## {title}: {'PASS' if ok else 'FAIL'}\n{out.rstrip()}\n")
         results.append((title, ok))
         if not ok and not args.keep_going:

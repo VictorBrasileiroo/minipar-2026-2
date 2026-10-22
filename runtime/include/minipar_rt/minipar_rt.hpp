@@ -4,4 +4,8 @@
 
 #include "value.hpp"
 #include "core.hpp"
+#include "json.hpp"
+#include "net.hpp"
+#include "remote.hpp"
 #include "api.hpp"
+#include "worker.hpp"

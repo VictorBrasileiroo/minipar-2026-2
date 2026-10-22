@@ -12,18 +12,11 @@
 #include <utility>
 
 #include "core.hpp"
+#include "remote.hpp"
 
 namespace minipar_rt {
 
 namespace detail {
-
-// Transporte remoto: implementado no RUN-02. Neste build a tarefa remota termina com erro explícito.
-inline void start_remote(const std::shared_ptr<TaskState>& st, const std::string& /*function_id*/,
-                         TaskArgs /*args*/, const Destination& where) {
-    complete(st, TaskResult::failure(ErrorCode::WORKER_UNAVAILABLE,
-                                     "transporte remoto nao disponivel neste build (destino " + where.text + ")",
-                                     st->task_id));
-}
 
 inline void start_local(const std::shared_ptr<TaskState>& st, const std::string& function_id, TaskArgs args) {
     if (!find_function(function_id)) {
