@@ -271,9 +271,9 @@ Lista de todos os escopos abertos pelo semântico, na ordem em que são abertos.
 
 **Arquivo `.arm` do Teste 11 — responsabilidade do B, sem nova função no serviço.** O `.arm` não é artefato do compilador hospedeiro: é texto que o MiniCompilador (programa MiniPar) imprime no `stdout`. A Web o obtém assim:
 1. Compila o programa do Teste 11 com `compile_program` e o executa com `execute`, passando a expressão no `stdin`.
-2. O navegador recorta o `stdout` recebido pelas regras de C-T11-v1 §3.6: linhas entre `===MINIPAR_ARM_BEGIN===` e `===MINIPAR_ARM_END===`, copiadas literalmente; falta de marcador ou mais de um bloco é erro exibido ao usuário.
+2. O navegador recorta o `stdout` recebido pelas regras de C-T11-v1 §3.6 item 2 (revisão 2): copia literalmente as linhas entre a linha de título, reconhecida pelo texto `Assembly ARMv7 (CPUlator):` no fim da linha, e a primeira linha vazia seguinte. Título ausente ou repetido, bloco vazio ou bloco que não começa com `.global _start` é erro exibido ao usuário. Não há marcadores próprios: os `===MINIPAR_ARM_BEGIN===`/`===MINIPAR_ARM_END===` da revisão 1 de C-T11-v1 foram revogados (§3.6.1).
 3. Se `stdout_truncated` for `true`, a Web recusa a extração, porque o bloco pode estar incompleto.
-4. O download é gerado no próprio navegador como `t11_<8 primeiros do artifact_id>.arm`, em UTF-8 com `\n`. Não há rota nem função nova: `kind` continua limitado a `cpp`, `tac` e `binary`.
+4. O download é gerado no próprio navegador como `t11_<8 primeiros do artifact_id>.arm`, em UTF-8 com `\n`, terminando com uma linha em branco, como o `.arm` de referência. Não há rota nem função nova: `kind` continua limitado a `cpp`, `tac` e `binary`.
 
 O script de linha de comando do B em `tests/2026_2/test11/` aplica as mesmas regras de §3.6, para que Web e evidências produzam o mesmo arquivo. Essa integração depende de C-T11-v1 estar aprovado (PR do `CON-03`).
 
@@ -475,7 +475,7 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 |---|---|---|
 | ACE-01 | `analyze` dos códigos de FIX-01 a FIX-04 | saída igual à fixture, **ignorando apenas** `request_id`, `duration_ms`, ids de `artifacts` e o texto abreviado de `cpp`. FIX-02 só passa depois de PEND-WEB-01 |
 | ACE-02 | `compile_program` + `execute` do código de FIX-01, stdin vazio | `ok: true` nos dois; `stdout` igual a `"5\n"`, `exit_code` 0 |
-| ACE-03 | `compile_program` de código que passa no semântico e falha no g++ (exemplo atual: sonda `P11` de C-T11-v1 §3.2) | `gpp.status: "error"`, diagnóstico `GPP_FAILED`, `binary_id: null`; `get_artifact(id, "binary")` devolve `ARTIFACT_NOT_FOUND`. Se não restar nenhum programa assim, testar com `CXX` apontando para executável inexistente e esperar `GPP_NOT_FOUND` |
+| ACE-03 | `compile_program` de código que passa no semântico e falha no g++ (exemplo atual: sonda "literal string em `var s = "123"` + `len(s)`" de C-T11-v1 §3.2, FAIL no g++ no commit `a37c168`) | `gpp.status: "error"`, diagnóstico `GPP_FAILED`, `binary_id: null`; `get_artifact(id, "binary")` devolve `ARTIFACT_NOT_FOUND`. Se não restar nenhum programa assim, testar com `CXX` apontando para executável inexistente e esperar `GPP_NOT_FOUND` |
 | ACE-04 | **Isolamento sequencial:** `compile_program("print(1);\n")` e depois `compile_program("print(2);\n")` | `request_id` e `source_hash` diferentes; `execute(id1)` dá `"1\n"` e `execute(id2)` dá `"2\n"`; o SHA-256 dos artefatos de `id1` é o mesmo antes e depois da segunda compilação |
 | ACE-05 | **Isolamento concorrente:** as duas compilações de ACE-04 disparadas ao mesmo tempo em duas threads, repetido 5 vezes | em todas as rodadas cada id executa a própria saída; nenhum artefato trocado ou sobrescrito |
 | ACE-06 | **Sem estado residual:** `analyze` do código de FIX-04 seguido de `analyze` do código de FIX-01 | o segundo resultado é idêntico a ACE-01/FIX-01: nenhum diagnóstico, escopo ou símbolo herdado |
@@ -491,7 +491,7 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 - na integração, nenhum dado é fixo no fluxo real: tudo vem do serviço;
 - respostas com `source_hash` diferente do código atual do editor são descartadas (teste: editar o código durante uma análise lenta);
 - execução e download usam o `artifact_id` da compilação exibida, inclusive depois de uma nova compilação em outra aba;
-- extração do `.arm` (1.7) com três saídas de teste: bloco válido, marcador ausente e dois blocos; só a primeira gera arquivo, igual byte a byte ao produzido pelo script de `tests/2026_2/test11/`.
+- extração do `.arm` (1.7) com quatro saídas de teste: bloco válido, título ausente, título repetido e bloco que não começa com `.global _start`; só a primeira gera arquivo, igual byte a byte ao produzido pelo script de `tests/2026_2/test11/`.
 
 **Processo:** campo novo pedido pela Web vira CR (versão `v1.1` se for aditivo). B não edita `src/`.
 
