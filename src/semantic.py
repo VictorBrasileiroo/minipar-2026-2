@@ -82,10 +82,12 @@ class SemanticAnalyzer:
         if isinstance(node, MethodCall):
             return "unknown"
         if isinstance(node, FuncCallExpr):
-            if node.name in ("random", "exp"): return "number"
+            if node.name in ("random", "exp", "len", "to_number"): return "number"
+            if node.name in ("substr", "to_string"): return "string"
             if node.name in ("range", "parse_ints"): return "list"
             return "unknown"
-        if isinstance(node, IndexExpr): return "unknown"
+        if isinstance(node, IndexExpr):
+            return "number" if self._infer_type(node.object) == "list" else "unknown"
         return "unknown"
 
     def _types_compatible(self, declared: str, actual: str) -> bool:
@@ -99,7 +101,8 @@ class SemanticAnalyzer:
             if isinstance(stmt, FuncDecl):
                 self._functions[stmt.name] = Symbol(stmt.name, "FUNC", params=stmt.params)
             elif isinstance(stmt, ClassDecl):
-                attrs = {a.name: a.type for a in stmt.attributes}
+                attrs = {a.name: self._infer_type(a.init_value) if a.type == "var" else a.type
+                         for a in stmt.attributes}
                 methods = {m.name: m.params for m in stmt.methods}
                 self._classes[stmt.name] = Symbol(stmt.name, "CLASS", attributes=attrs, methods=methods)
 
@@ -131,7 +134,10 @@ class SemanticAnalyzer:
         elif isinstance(node, ReceiveExpr):
             self.validate_node(node.channel)
         elif isinstance(node, ListLiteral):
-            for e in node.elements: self.validate_node(e)
+            for e in node.elements:
+                self.validate_node(e)
+                if self._infer_type(e) == "string":
+                    self._report(node.line, "Listas de strings ainda nao suportadas (C-T11-v1 3.4).")
         elif isinstance(node, MatrixCreateExpr):
             self.validate_node(node.rows)
             self.validate_node(node.cols)
@@ -148,8 +154,12 @@ class SemanticAnalyzer:
         elif isinstance(node, BinaryExpr):
             self.validate_node(node.left)
             self.validate_node(node.right)
+            lt, rt = self._infer_type(node.left), self._infer_type(node.right)
+            if node.op in ("+", "==", "!=", "<", "<=", ">", ">="):
+                if ((lt == "string" and rt not in ("string", "var", "unknown"))
+                        or (rt == "string" and lt not in ("string", "var", "unknown"))):
+                    self._report(node.line, f"Operador '{node.op}' entre string e outro tipo exige conversao explicita.")
             if node.op in ("+", "-", "*", "/", "%"):
-                lt, rt = self._infer_type(node.left), self._infer_type(node.right)
                 if node.op != "+" and (lt not in ("number", "int", "var", "unknown") or rt not in ("number", "int", "var", "unknown")):
                     self._report(node.line, f"Operador '{node.op}' exige operandos numericos.")
         elif isinstance(node, UnaryExpr):
@@ -195,7 +205,9 @@ class SemanticAnalyzer:
             self._enter_scope()
             old_class = self._current_class
             self._current_class = node.name
-            for attr in node.attributes: self.validate_node(attr)
+            for attr in node.attributes:
+                self.validate_node(attr)
+                self._classes[node.name].attributes[attr.name] = self._lookup(attr.name).type
             for method in node.methods: self.validate_node(method)
             self._current_class = old_class
             self._exit_scope()
@@ -219,12 +231,28 @@ class SemanticAnalyzer:
                 self._report(node.line, f"Metodo '{node.method_name}' espera {len(cls.methods[node.method_name])} argumento(s), recebeu {len(node.arguments)}.")
             self.validate_node(node.object)
             for arg in node.arguments: self.validate_node(arg)
+            if (obj_type == "list" and node.method_name in ("append", "push_back")
+                    and any(self._infer_type(arg) == "string" for arg in node.arguments)):
+                self._report(node.line, "Listas de strings ainda nao suportadas (C-T11-v1 3.4).")
         elif isinstance(node, FuncCallExpr):
-            if node.name not in self._functions and node.name not in ("exp", "random", "range", "len", "to_number", "parse_ints"):
+            if node.name not in self._functions and node.name not in ("exp", "random", "range", "len", "to_number", "parse_ints", "substr", "to_string"):
                 self._report(node.line, f"Funcao '{node.name}' nao declarada.")
             elif node.name in self._functions and len(self._functions[node.name].params) != len(node.arguments):
                 self._report(node.line, f"Funcao '{node.name}' espera {len(self._functions[node.name].params)} argumento(s), recebeu {len(node.arguments)}.")
             for arg in node.arguments: self.validate_node(arg)
+            native_types = {"substr": ("string", "number", "number"),
+                            "to_string": ("number",), "len": ("collection",)}
+            if node.name in native_types:
+                expected = native_types[node.name]
+                if len(node.arguments) != len(expected):
+                    self._report(node.line, f"Funcao '{node.name}' espera {len(expected)} argumento(s), recebeu {len(node.arguments)}.")
+                else:
+                    for arg, required in zip(node.arguments, expected):
+                        actual = self._infer_type(arg)
+                        allowed = (("string", "list", "matrix") if required == "collection"
+                                   else ("number", "int") if required == "number" else (required,))
+                        if actual not in (*allowed, "var", "unknown"):
+                            self._report(node.line, f"Funcao '{node.name}': esperado {required}, recebido {actual}.")
         elif isinstance(node, PropertyAccess):
             self.validate_node(node.object)
             obj_type = self._infer_type(node.object)
