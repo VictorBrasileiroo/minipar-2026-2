@@ -35,7 +35,17 @@ O gerador **lê** `src/` sem alterar nada: roda o Lexer, o Parser, o Semântico,
 
 O validador confere FIX-01 a FIX-04 contra os blocos JSON do §1.9, campo a campo, ignorando só o texto C++ (abreviado no contrato), e verifica em todas as fixtures o `source_hash`, a ordem das fases, a regra das fases ignoradas, os ids da AST e as regras de truncamento do §1.4 (no máximo 5000 nós emitidos, um marcador `max_nodes` como último filho, emitidos + omitidos = `nodes`). Em PROG-02 exige truncamento em exatamente 5000 nós; em EXEC-01, `stdout` igual a `"5\n"` (ACE-02).
 
-O PROG-02 é o exemplo de desempenho do WEB-02. Linha de base medida no wireframe do WEB-01 (painel interno do Claude Code, Chromium, `PerformanceObserver` do tipo `longtask`), ao abrir cada aba: Tokens 810 ms, TAC 346 ms, Semântico 233 ms, AST 218 ms, C++ 150 ms. O WEB-02 deve baixar esses números.
+O PROG-02 é o exemplo de desempenho do WEB-02. Linha de base medida no wireframe do WEB-01 (painel interno do Claude Code, Chromium, `PerformanceObserver` do tipo `longtask`), ao abrir cada aba: Tokens 810 ms, TAC 346 ms, Semântico 233 ms, AST 218 ms, C++ 150 ms.
+
+Medição antes e depois dos painéis em blocos do WEB-02, nas mesmas condições: mesmo navegador, aba em segundo plano, tempo síncrono do clique em cada aba, incluindo remover o painel anterior. Com a aba em segundo plano o navegador não desenha a tela, então os números não incluem layout e pintura e só valem para comparar entre si.
+
+| Aba (PROG-02) | Antes (após AST recolhível) | Depois (blocos de 500) | Elementos no painel depois |
+|---|---|---|---|
+| Tokens | 2264 ms | 32 ms | 2512 (antes 45 286) |
+| Semântico | 248 ms | 42 ms | 3072 |
+| TAC | 300 ms | 13 ms | 506 |
+| C++ | 167 ms | 15 ms | 506 |
+| AST | 322 ms | 54 ms | 3845 |
 
 ## Limitações conhecidas
 

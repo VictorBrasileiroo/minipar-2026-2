@@ -115,6 +115,11 @@ th { text-align: left; font: 600 0.7rem/1 var(--mono); text-transform: uppercase
 td { padding: 4px 14px 4px 0; border-bottom: 1px solid var(--linha); font-family: var(--mono); white-space: nowrap;
   font-variant-numeric: tabular-nums; }
 td.desconhecido { color: var(--erro); font-weight: 600; }
+tr[data-linha] { cursor: pointer; }
+tr[data-linha]:hover td { background: var(--destaque-fundo); }
+.mais-blocos { display: block; margin-top: 8px; font-size: 0.85rem; }
+#filtro-simbolos { display: block; width: min(100%, 320px); margin-bottom: 8px; padding: 6px 10px;
+  border: 1px solid var(--linha); border-radius: 6px; background: var(--superficie); }
 td.vazio { color: var(--suave); }
 
 pre.codigo { margin: 0; font: 13px/1.6 var(--mono); background: var(--rebaixado); border: 1px solid var(--linha);
