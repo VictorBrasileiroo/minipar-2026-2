@@ -1,5 +1,7 @@
 // Web didática — wireframe navegável (WEB-01). Desenha as fases a partir do envelope C-WEB-v1.
 import * as fonte from "./fonte_mock.js";
+import { criarArvoreAst } from "./arvore_ast.js";
+import { contextoErros, criarCartaoErro } from "./erros.js";
 
 const FASES = [
   { chave: "lexer", ancora: "tokens", nome: "Tokens" },
@@ -22,7 +24,8 @@ const EXPLICA = {
 };
 
 const $ = (id) => document.getElementById(id);
-const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false };
+const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false, arvore: null, linhaDestacada: null,
+  filtroSimbolos: "" };
 
 function h(tag, atributos = {}, ...filhos) {
   const el = document.createElement(tag);
@@ -70,6 +73,33 @@ function atualizarNumeros() {
   $("numeros").textContent = Array.from({ length: linhas }, (_, i) => i + 1).join("\n");
 }
 
+// Faixa atrás do texto do editor marcando uma linha (nó da AST selecionado ou diagnóstico).
+function posicionarDestaque() {
+  const faixa = $("linha-destaque");
+  const linha = estado.linhaDestacada;
+  faixa.hidden = !linha;
+  if (!linha) return;
+  const area = $("codigo");
+  const estilo = getComputedStyle(area);
+  const altura = parseFloat(estilo.lineHeight);
+  faixa.style.top = `${parseFloat(estilo.paddingTop) + (linha - 1) * altura - area.scrollTop}px`;
+  faixa.style.height = `${altura}px`;
+}
+
+function destacarLinha(linha) {
+  estado.linhaDestacada = linha || null;
+  if (linha) {
+    const area = $("codigo");
+    const altura = parseFloat(getComputedStyle(area).lineHeight);
+    const topo = (linha - 1) * altura;
+    if (topo < area.scrollTop || topo + altura > area.scrollTop + area.clientHeight - altura) {
+      area.scrollTop = Math.max(0, topo - area.clientHeight / 2);
+      $("numeros").scrollTop = area.scrollTop;
+    }
+  }
+  posicionarDestaque();
+}
+
 function selecionarLinha(linha) {
   const texto = $("codigo").value;
   let inicio = 0;
@@ -96,19 +126,27 @@ function desenharDiagnosticos() {
     lista.append(h("li", { class: "diag-vazio" }, "Nenhum diagnóstico."));
     return;
   }
-  for (const d of diagnosticos) {
-    const onde = [d.line ? `linha ${d.line}` : null, d.column ? `coluna ${d.column}` : null].filter(Boolean).join(", ");
-    lista.append(h("li", { class: d.severity === "warning" ? "diag-aviso" : "diag-erro" },
-      h("button", {
-        type: "button",
-        onclick: () => {
-          if (NOME_FASE[d.phase] && d.phase !== "internal") selecionarFase(d.phase);
-          if (d.line) selecionarLinha(d.line);
-        },
-      },
-        h("span", { class: "diag-codigo" }, `${d.code} · ${NOME_FASE[d.phase] || d.phase}${onde ? " · " + onde : ""}`),
-        h("span", {}, d.message))));
+  const ctx = contextoDosErros();
+  for (const d of diagnosticos) lista.append(h("li", {}, criarCartaoErro(d, ctx, { aoAbrir: abrirDiagnostico })));
+}
+
+function contextoDosErros() {
+  return contextoErros(estado.exemplo.codigo, dadosFase("lexer").tokens || []);
+}
+
+function abrirDiagnostico(d) {
+  if (NOME_FASE[d.phase] && d.phase !== "internal") selecionarFase(d.phase);
+  if (d.line) {
+    selecionarLinha(d.line);
+    destacarLinha(d.line);
   }
+}
+
+// Cartões dos diagnósticos de uma fase, repetidos no painel dela.
+function cartoesDaFase(fase) {
+  const ctx = contextoDosErros();
+  return estado.exemplo.analise.diagnostics.filter((d) => d.phase === fase)
+    .map((d) => criarCartaoErro(d, ctx, { aoAbrir: (x) => x.line && destacarLinha(x.line) }));
 }
 
 // ---------------------------------------------------------------- trilha de fases
@@ -156,49 +194,69 @@ function caixaPulada(dados) {
     h("span", {}, `A fase ${NOME_FASE[falhou] || "anterior"} terminou com erro, então esta não rodou.`));
 }
 
-function tabela(colunas, linhas) {
-  return h("table", {},
-    h("thead", {}, h("tr", {}, colunas.map((c) => h("th", { scope: "col" }, c)))),
-    h("tbody", {}, linhas));
+// Listas longas (tokens, linhas de TAC/C++, símbolos) são desenhadas em blocos: o primeiro bloco
+// aparece na hora e o resto só quando o usuário pede, para o painel não travar em programas grandes.
+const LOTE_LINHAS = 500;
+
+function emBlocos(container, total, criar, nomeItens) {
+  let feitos = 0;
+  const botao = h("button", { type: "button", class: "mais-blocos" });
+  const desenhar = () => {
+    const fim = Math.min(total, feitos + LOTE_LINHAS);
+    const fragmento = document.createDocumentFragment();
+    for (let i = feitos; i < fim; i++) fragmento.append(criar(i));
+    container.append(fragmento);
+    feitos = fim;
+    const faltam = total - feitos;
+    botao.hidden = faltam === 0;
+    botao.textContent = `Mostrar mais ${Math.min(LOTE_LINHAS, faltam)} ${nomeItens} (faltam ${faltam})`;
+  };
+  botao.addEventListener("click", desenhar);
+  desenhar();
+  return botao;
 }
 
 function painelTokens(dados) {
-  const linhas = dados.tokens.map((t) => h("tr", {},
-    h("td", { class: t.type === "UNKNOWN" ? "desconhecido" : null }, t.type),
-    h("td", {}, t.type === "STRING_LITERAL" ? JSON.stringify(t.lexeme) : t.lexeme),
-    h("td", {}, t.line), h("td", {}, t.column)));
+  const tokens = dados.tokens;
+  const corpo = h("tbody", {
+    // Passar o mouse ou clicar num token destaca a linha dele no editor.
+    onmouseover: (e) => { const tr = e.target.closest("tr[data-linha]"); if (tr) destacarLinha(+tr.dataset.linha); },
+    onclick: (e) => { const tr = e.target.closest("tr[data-linha]"); if (tr) destacarLinha(+tr.dataset.linha); },
+  });
+  const mais = emBlocos(corpo, tokens.length, (i) => {
+    const t = tokens[i];
+    return h("tr", { "data-linha": t.line },
+      h("td", { class: t.type === "UNKNOWN" ? "desconhecido" : null }, t.type),
+      h("td", {}, t.type === "STRING_LITERAL" ? JSON.stringify(t.lexeme) : t.lexeme),
+      h("td", {}, t.line), h("td", {}, t.column));
+  }, "tokens");
   return [
     dados.status === "error" ? h("div", { class: "caixa erro" }, h("strong", {}, "Erro léxico"),
       h("span", {}, "Os tokens abaixo foram lidos mesmo assim; o token inválido aparece em vermelho.")) : null,
-    h("p", { class: "estat" }, `${dados.tokens.length} tokens (END_OF_FILE não entra na lista)`),
-    tabela(["tipo", "lexema", "linha", "coluna"], linhas),
+    dados.status === "error" ? h("div", { class: "cartoes-fase" }, cartoesDaFase("lexer")) : null,
+    h("p", { class: "estat" }, `${tokens.length} tokens (END_OF_FILE não entra na lista) · passe o mouse num token para ver a linha no código`),
+    h("table", { class: "tabela-tokens" },
+      h("thead", {}, h("tr", {}, ["tipo", "lexema", "linha", "coluna"].map((c) => h("th", { scope: "col" }, c)))),
+      corpo),
+    mais,
   ];
-}
-
-function noAst(no) {
-  const atributos = Object.entries(no.attributes)
-    .filter(([, v]) => v !== null && !(Array.isArray(v) && !v.length))
-    .map(([k, v]) => `${k}=${Array.isArray(v) ? "[" + v.join(", ") + "]" : JSON.stringify(v)}`);
-  const papel = no.role === null ? null : no.index === null ? no.role : `${no.role}[${no.index}]`;
-  return h("li", {},
-    h("span", { class: `no${no.kind === "Truncated" ? " no-truncado" : ""}` },
-      h("span", { class: "no-rotulo", title: no.kind }, no.label),
-      papel ? h("span", { class: "no-papel" }, papel) : null,
-      atributos.length && no.kind !== "Truncated" ? h("span", { class: "no-attr" }, atributos.join(" ")) : null,
-      h("span", { class: "no-linha" }, `L${no.line}`)),
-    no.children.length ? h("ul", {}, no.children.map(noAst)) : null);
 }
 
 function painelAst(dados) {
   if (!dados.ast) {
-    return h("div", { class: "caixa erro" }, h("strong", {}, "Erro sintático"),
-      h("span", {}, "O parser para no primeiro erro e não devolve AST. O diagnóstico ao lado mostra onde."));
+    return [
+      h("div", { class: "caixa erro" }, h("strong", {}, "Erro sintático"),
+        h("span", {}, "O parser para no primeiro erro e não devolve AST. Veja abaixo onde ele parou e por quê.")),
+      h("div", { class: "cartoes-fase" }, cartoesDaFase("parser")),
+    ];
   }
   const s = dados.ast_stats;
+  // A árvore guarda o que está aberto; criada uma vez por exemplo, sobrevive à troca de aba.
+  estado.arvore ??= criarArvoreAst(dados.ast, { aoSelecionar: destacarLinha });
   return [
     h("p", { class: "estat" },
-      `${s.emitted} de ${s.nodes} nós · profundidade ${s.depth}${s.truncated ? " · árvore truncada" : ""}`),
-    h("ul", { class: "arvore" }, noAst(dados.ast)),
+      `${s.emitted} de ${s.nodes} nós · profundidade ${s.depth}${s.truncated ? " · árvore truncada no limite do contrato" : ""}`),
+    estado.arvore.elemento,
   ];
 }
 
@@ -206,38 +264,94 @@ function rotuloEscopo(e) {
   return e.name ? `${e.kind} ${e.name}` : e.kind;
 }
 
-function painelSemantico(dados) {
+function linhaSimbolo(s) {
+  return h("tr", { "data-linha": s.line },
+    h("td", {}, s.name), h("td", {}, s.kind), h("td", { class: s.type === null ? "vazio" : null }, s.type ?? "—"),
+    h("td", {}, s.line), h("td", { class: s.params.length ? null : "vazio" }, s.params.join(", ") || "—"));
+}
+
+// Árvore de escopos com os símbolos de cada um. Com filtro, só aparecem os escopos que têm
+// (direta ou indiretamente) símbolos cujo nome contém o texto.
+function arvoreEscopos(dados, filtro) {
+  const termo = filtro.trim().toLowerCase();
   const filhos = new Map();
   for (const e of dados.scopes) {
     if (!filhos.has(e.parent)) filhos.set(e.parent, []);
     filhos.get(e.parent).push(e);
   }
   const porEscopo = new Map();
+  let encontrados = 0;
   for (const s of dados.symbols) {
+    if (termo && !s.name.toLowerCase().includes(termo)) continue;
+    encontrados++;
     if (!porEscopo.has(s.scope)) porEscopo.set(s.scope, []);
     porEscopo.get(s.scope).push(s);
   }
+  const temSimbolos = new Map();
+  const conta = (e) => {
+    const n = (porEscopo.get(e.id)?.length || 0) + (filhos.get(e.id) || []).reduce((acc, f) => acc + conta(f), 0);
+    temSimbolos.set(e.id, n);
+    return n;
+  };
+  (filhos.get(null) || []).forEach(conta);
   const escopo = (e) => {
     const simbolos = porEscopo.get(e.id) || [];
+    const visiveis = (filhos.get(e.id) || []).filter((f) => !termo || temSimbolos.get(f.id));
+    let tabelaSimbolos = null;
+    if (simbolos.length) {
+      const corpo = h("tbody", {});
+      const mais = emBlocos(corpo, simbolos.length, (i) => linhaSimbolo(simbolos[i]), "símbolos");
+      tabelaSimbolos = h("div", { class: "simbolos" },
+        h("table", {}, h("thead", {}, h("tr", {}, ["nome", "categoria", "tipo", "linha", "parâmetros"].map((c) => h("th", { scope: "col" }, c)))), corpo),
+        mais);
+    }
     return h("li", { class: "escopo" },
       h("div", { class: "escopo-cab" }, rotuloEscopo(e), " ", h("small", {}, `${e.id} · linha ${e.line}`)),
-      simbolos.length ? h("div", { class: "simbolos" }, tabela(["nome", "categoria", "tipo", "linha", "parâmetros"],
-        simbolos.map((s) => h("tr", {},
-          h("td", {}, s.name), h("td", {}, s.kind), h("td", { class: s.type === null ? "vazio" : null }, s.type ?? "—"),
-          h("td", {}, s.line), h("td", { class: s.params.length ? null : "vazio" }, s.params.join(", ") || "—"))))) : null,
-      filhos.has(e.id) ? h("ul", {}, filhos.get(e.id).map(escopo)) : null);
+      tabelaSimbolos,
+      visiveis.length ? h("ul", {}, visiveis.map(escopo)) : null);
   };
+  const raizes = (filhos.get(null) || []).filter((e) => !termo || temSimbolos.get(e.id));
+  return {
+    lista: h("ul", {
+      class: "escopos",
+      onclick: (ev) => { const tr = ev.target.closest("tr[data-linha]"); if (tr) destacarLinha(+tr.dataset.linha); },
+    }, raizes.map(escopo)),
+    encontrados,
+  };
+}
+
+function painelSemantico(dados) {
+  const resumo = h("p", { class: "estat" });
+  const local = h("div", {});
+  const desenhar = () => {
+    const { lista, encontrados } = arvoreEscopos(dados, estado.filtroSimbolos);
+    resumo.textContent = estado.filtroSimbolos.trim()
+      ? `${encontrados} de ${dados.symbols.length} símbolos com “${estado.filtroSimbolos.trim()}” no nome`
+      : `${dados.scopes.length} escopos · ${dados.symbols.length} símbolos · clique num símbolo para ver a linha no código`;
+    local.replaceChildren(lista);
+  };
+  const filtro = h("input", {
+    type: "search", id: "filtro-simbolos", placeholder: "Filtrar símbolos pelo nome", "aria-label": "Filtrar símbolos pelo nome",
+    oninput: (e) => { estado.filtroSimbolos = e.target.value; desenhar(); },
+  });
+  filtro.value = estado.filtroSimbolos;
+  desenhar();
   return [
     dados.status === "error" ? h("div", { class: "caixa erro" }, h("strong", {}, "Erro semântico"),
-      h("span", {}, "O semântico percorre o programa inteiro; abaixo está tudo o que foi registrado até o fim.")) : null,
-    h("p", { class: "estat" }, `${dados.scopes.length} escopos · ${dados.symbols.length} símbolos`),
-    h("ul", { class: "escopos" }, (filhos.get(null) || []).map(escopo)),
+      h("span", {}, "O semântico percorre o programa inteiro e acumula todos os erros; os escopos e símbolos registrados aparecem depois deles.")) : null,
+    dados.status === "error" ? h("div", { class: "cartoes-fase" }, cartoesDaFase("semantic")) : null,
+    filtro,
+    resumo,
+    local,
   ];
 }
 
+// Código numerado (TAC, C++, saída), desenhado em blocos de LOTE_LINHAS linhas.
 function blocoCodigo(texto) {
   const linhas = texto.endsWith("\n") ? texto.slice(0, -1).split("\n") : texto.split("\n");
-  return h("pre", { class: "codigo" }, linhas.map((l) => h("span", {}, l || " ")));
+  const pre = h("pre", { class: "codigo" });
+  const mais = emBlocos(pre, linhas.length, (i) => h("span", {}, linhas[i] || " "), "linhas");
+  return mais.hidden ? pre : h("div", { class: "codigo-em-blocos" }, pre, mais);
 }
 
 function painelTac(dados) {
@@ -283,6 +397,7 @@ function desenharPainel() {
   const f = FASES.find((x) => x.chave === estado.fase);
   painel.setAttribute("aria-labelledby", `aba-${f.ancora}`);
   painel.replaceChildren(h("h3", {}, f.nome), h("p", { class: "explica" }, EXPLICA[f.chave]));
+  destacarLinha(null);
   if (estado.descartada) {
     painel.append(h("div", { class: "caixa descartado" }, h("strong", {}, "Resposta descartada"),
       h("span", {}, "O código no editor não é mais o que foi analisado (o source_hash mudou). No modo mock não há reanálise: restaure o código do exemplo ou, na integração, use Analisar.")));
@@ -292,6 +407,11 @@ function desenharPainel() {
   if (dados.status === "skipped") painel.append(caixaPulada(dados));
   else painel.append(...[PAINEIS[f.chave](dados)].flat().filter(Boolean));
   painel.scrollTop = 0;
+  if (f.chave === "parser" && dados.ast) estado.arvore.anunciar(); // reaplica a linha do nó selecionado
+  else {
+    const erro = estado.exemplo.analise.diagnostics.find((d) => d.phase === f.chave && d.line);
+    if (erro) destacarLinha(erro.line);
+  }
 }
 
 // ---------------------------------------------------------------- rodapé e exemplo
@@ -320,6 +440,8 @@ function desenharTudo() {
 async function abrirExemplo(arquivo) {
   estado.exemplo = await fonte.carregarExemplo(arquivo);
   estado.descartada = false;
+  estado.arvore = null;
+  estado.filtroSimbolos = "";
   $("codigo").value = estado.exemplo.codigo;
   $("aviso-mock").title = estado.exemplo.notas.join("\n");
   atualizarNumeros();
@@ -337,7 +459,10 @@ $("codigo").addEventListener("input", async () => {
     desenharTudo();
   }
 });
-$("codigo").addEventListener("scroll", () => { $("numeros").scrollTop = $("codigo").scrollTop; });
+$("codigo").addEventListener("scroll", () => {
+  $("numeros").scrollTop = $("codigo").scrollTop;
+  posicionarDestaque();
+});
 $("restaurar").addEventListener("click", () => {
   $("codigo").value = estado.exemplo.codigo;
   $("codigo").dispatchEvent(new Event("input"));

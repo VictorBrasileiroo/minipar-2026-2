@@ -28,6 +28,11 @@
       "file": "prog-01-quicksort-classes.json"
     },
     {
+      "fixture": "PROG-02",
+      "title": "Programa grande: mais de 5000 nós (AST truncada)",
+      "file": "prog-02-grande-truncado.json"
+    },
+    {
       "fixture": "EXEC-01",
       "title": "Compilar e executar o código de FIX-01",
       "file": "exec-01-fix01.json"

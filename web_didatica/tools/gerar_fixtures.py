@@ -462,11 +462,36 @@ FIXTURES = (
 )
 LARGE_PROGRAM = ("prog-01-quicksort-classes", "PROG-01", "Programa maior: Quicksort com classes (Teste 6)",
                  "tests/teste6_quicksort_classes.minipar")
+HUGE_PROGRAM = ("prog-02-grande-truncado", "PROG-02", "Programa grande: mais de 5000 nós (AST truncada)")
+HUGE_DECLARATIONS = 1000  # 6 nós por declaração: passa de MAX_NODES e força o marcador max_nodes
 
 
-def write(name: str, data: dict) -> None:
+def huge_program_source() -> str:
+    """Programa determinístico para o teste de desempenho do WEB-02: uma função com laço e mil declarações."""
+    lines = [
+        "# PROG-02: gerado por web_didatica/tools/gerar_fixtures.py para testar a Web com mais de 5000 nos.",
+        "func soma_quadrados(n) {",
+        "    var total = 0;",
+        "    var i = 1;",
+        "    while (i <= n) {",
+        "        total = total + i * i;",
+        "        i = i + 1;",
+        "    }",
+        "    return total;",
+        "}",
+        "",
+    ]
+    lines += [f"var v{i} = {i} + {i} * 2;" for i in range(HUGE_DECLARATIONS)]
+    lines += ["", "print(soma_quadrados(10));", f"print(v{HUGE_DECLARATIONS - 1});"]
+    return "\n".join(lines) + "\n"
+
+
+def write(name: str, data: dict, compact: bool = False) -> None:
     path = FIXTURES_DIR / f"{name}.json"
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    # Fixtures grandes saem compactas para não pesar no repositório; as demais ficam legíveis.
+    text = json.dumps(data, ensure_ascii=False, separators=(",", ":")) if compact \
+        else json.dumps(data, ensure_ascii=False, indent=2)
+    path.write_text(text + "\n", encoding="utf-8", newline="\n")
     print(f"gravado {path.relative_to(ROOT)}")
 
 
@@ -487,6 +512,18 @@ def main() -> int:
     write(name, {"fixture": fid, "title": title, "mock": True, "source": source,
                  "notes": common_notes + [f"Código de {path} com fim de linha normalizado para \\n, "
                                           "como o editor do navegador envia."], "analyze": response})
+    index.append({"fixture": fid, "title": title, "file": f"{name}.json"})
+
+    # request_id 7: os ids de 1 a 6 já pertencem às fixtures do WEB-01 e não mudam.
+    name, fid, title = HUGE_PROGRAM
+    source = huge_program_source()
+    response, _ = envelope(source, "analyze", f"{len(FIXTURES) + 3:032x}")
+    write(name, {"fixture": fid, "title": title, "mock": True, "source": source,
+                 "notes": common_notes + [
+                     f"Programa gerado com {HUGE_DECLARATIONS} declarações para passar de {MAX_NODES} nós "
+                     "e exercitar o truncamento do §1.4 e o desempenho da Web (WEB-02).",
+                     "JSON compacto (sem indentação) para reduzir o tamanho no repositório."],
+                 "analyze": response}, compact=True)
     index.append({"fixture": fid, "title": title, "file": f"{name}.json"})
 
     compiler = os.environ.get("CXX") or "g++"
