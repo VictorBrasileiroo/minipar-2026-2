@@ -11,6 +11,7 @@ from ast_nodes import (
     CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign
 )
 from cpp_template import _CPP_HEADER
+from ast_nodes import find_fork_join
 
 class CppCodeGenerator:
     @staticmethod
@@ -263,6 +264,11 @@ class CppCodeGenerator:
                 os.remove(exe_path)
         except OSError as exc:
             print(f"[ERRO] Nao foi possivel preparar saida: {exc}", file=sys.stderr)
+            return False
+
+        unsupported = find_fork_join(program)
+        if unsupported is not None:
+            print(f"[ERRO BACKEND] Linha {unsupported.line}: Fork/Join requer CORE-07; C++ nao gerado.", file=sys.stderr)
             return False
 
         cpp_code = _CPP_HEADER

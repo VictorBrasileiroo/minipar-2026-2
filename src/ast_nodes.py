@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from typing import List, Optional
 
 class ASTNode:
@@ -137,6 +137,21 @@ class FuncCallExpr(ASTNode):
     line: int = 1
 
 @dataclass
+class ForkExpr(ASTNode):
+    function_name: str
+    arguments: List[ASTNode]
+    destination: Optional[ASTNode] = None
+    line: int = 1
+    column: int = 1
+
+@dataclass
+class JoinExpr(ASTNode):
+    handle: ASTNode
+    timeout: Optional[ASTNode] = None
+    line: int = 1
+    column: int = 1
+
+@dataclass
 class PropertyAccess(ASTNode):
     object: ASTNode
     property_name: str
@@ -209,3 +224,21 @@ class IndexAssign(ASTNode):
 class Program(ASTNode):
     statements: List[ASTNode] = field(default_factory=list)
     line: int = 1
+
+def iter_child_nodes(node: ASTNode):
+    """Percorre apenas os campos estruturais da AST (sem metadados semanticos)."""
+    for item in fields(node):
+        value = getattr(node, item.name)
+        if isinstance(value, ASTNode):
+            yield value
+        elif isinstance(value, list):
+            yield from (child for child in value if isinstance(child, ASTNode))
+
+def find_fork_join(node: ASTNode) -> Optional[ASTNode]:
+    pending = [node]
+    while pending:
+        current = pending.pop()
+        if isinstance(current, (ForkExpr, JoinExpr)):
+            return current
+        pending.extend(iter_child_nodes(current))
+    return None
