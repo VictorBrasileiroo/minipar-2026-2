@@ -514,7 +514,11 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 
 ## 2. C-FJ-v1 — Fork/Join, execução local e remota
 
-**Fornecedores conjuntos:** A (linguagem/código gerado) e C (runtime). **Consumidores:** A + testes C. **Congelamento:** 18/10.
+**Estado:** `v1 — PROPOSTA DE CONGELAMENTO, revisão 2` (23/10/2026), redigida pelo C (Erasmo) no card `CON-01`. A revisão 1 é de 22/10/2026; a revisão 2 atende à revisão do PR #7 (tipagem do `task`, retorno do `join`, wrappers e isolamento), alinhada ao que o A implementou no `CORE-04`/`CORE-05` (PR #15), e registra os ajustes de robustez do `RUN-02` (envio assíncrono com limite, `RESULT` grande, versão em toda mensagem). Passa a `v1 FROZEN` quando A aprovar o PR (quadro em 2.10). Até lá, nenhum lado trata as sintaxes abaixo como definitivas.
+
+**Fornecedores conjuntos:** A (linguagem, semântico e código gerado: `CORE-04`, `CORE-05`, `CORE-06`, `CORE-07`) e C (runtime: `RUN-01`, `RUN-02`, `RUN-03`, `RUN-04`). **Consumidores:** A (backend) e os testes 8–10 do C. **Prazo:** contrato no Marco 1 (22/10).
+
+**Divisão de responsabilidades nesta proposta.** As seções 2.3 a 2.7 (API C++, tipos, erros e protocolo) são a parte do C: estão **implementadas e testadas** em `runtime/` nos cards `RUN-01` e `RUN-02` (prova isolada em C++, sem `src/`). A seção 2.2 (sintaxe e semântica MiniPar) é **proposta do C para decisão do A**: A pode trocar palavras-chave ou a forma da produção sem mudar a API, desde que mantenha os efeitos de 2.1.
 
 ### 2.1 Modelo semântico alvo
 
@@ -527,68 +531,214 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 - Tarefa remota executa de fato trabalho em outro processo/computador; localhost é prova de protocolo, não prova remota.
 - `join` associa corretamente cada resultado à tarefa e não depende da ordem de resposta.
 
-### 2.2 Gramática — proposta para discussão, **NÃO sintaxe aceita**
+### 2.2 Linguagem — proposta do C para decisão do A
 
-Exemplo ilustrativo da intenção:
+Respostas propostas às sete perguntas do G0:
 
-```text
-handle1 = fork avaliar(bloco1) on local
-handle2 = fork avaliar(bloco2) on computador_2
-resultado1 = join(handle1)
-resultado2 = join(handle2)
+| # | Pergunta | Proposta | Motivo |
+|---|---|---|---|
+| 1 | Fork é expressão ou statement? | **Expressão** que devolve um valor do tipo `task` (handle) | T08 guarda 4 handles em lista/variáveis e faz `join` depois; expressão cobre os dois usos |
+| 2 | Onde fica o destino? | No código: sufixo opcional `on <expressao_string>`; sem sufixo = `"local"`. A string é `"local"` ou `"host:porta"` | O enunciado pede o programa descrevendo a distribuição; uma expressão permite ler o host de `input()` na demo sem recompilar |
+| 3 | O que o `join` recebe? | Um handle: `join(h)`; com limite opcional `join(h, timeout_ms)`. Lista de handles = laço em MiniPar | Mantém a API mínima; lista não exige tipo novo |
+| 4 | Que funções podem ser tarefas? | Só `func` declaradas no **nível global** (não métodos, não blocos). O ID da função é o próprio nome | O worker precisa da função já compilada e registrada por nome |
+| 5 | Tipos que cruzam a rede | `number` (inteiro ou real), `bool`, `string`, e listas desses (inclusive aninhadas). **Não** cruzam: objetos de classe, `c_channel`, `task` | Cobre T08–T10 (notas, coordenadas, linhas de fractal como strings) |
+| 6 | Relação com `par` e captura | `par` continua como está (blocos compartilham escopo por referência). `fork` **copia** os argumentos no momento do disparo; a função da tarefa só usa seus parâmetros e variáveis locais | Isolamento verificável e igual no local e no remoto |
+| 7 | Erros | Semântico (A) rejeita os casos de 2.2.2; runtime devolve `TaskResult` com código de 2.5; `join` que falha encerra o programa com mensagem e código 1 (2.2.3) | Erro explícito, nunca bloqueio infinito nem valor inventado |
+
+#### 2.2.1 Produções propostas (adição à BNF 2026.1)
+
+```bnf
+<expressao_fork> ::= "fork" <IDENTIFIER> "(" [ <lista_argumentos> ] ")" [ "on" <expressao> ]
+<expressao_join> ::= "join" "(" <expressao> [ "," <expressao> ] ")"
+<primario>       ::= ... | <expressao_fork> | <expressao_join>
 ```
 
-**Atenção:** a sintaxe acima **não faz parte da BNF aprovada** nem afirma que `handle` é um tipo já suportado. A deve projetar a produção mínima compatível com a BNF 2026.1, com regras de função, retorno, variáveis e endereços. C não implementa um parser próprio.
+Palavras reservadas novas: `fork`, `join`, `on`. Exemplo (o T08 real fica no `T08-01`):
 
-**G0 deve resolver:**
-1. Fork é expressão que retorna handle ou statement com identificação explícita?
-2. Destino `local/remoto` faz parte do código MiniPar, do canal ou da configuração da execução?
-3. Join recebe handle individual, lista de handles ou bloco?
-4. A tarefa pode chamar quais funções do programa? Como registrar funções elegíveis?
-5. Quais tipos podem cruzar rede? Definir um subconjunto seguro para testes 8–10.
-6. Relação com `par` existente e regras de captura/cópia.
-7. Tratamento de erros no semântico e no runtime.
+```minipar
+func avaliar(inicio, fim) {
+    var soma = 0;
+    var i = inicio;
+    while (i < fim) { soma = soma + i * i; i = i + 1; }
+    return soma;
+}
 
-### 2.3 API C++ proposta para o runtime (assinaturas conceituais)
-
-```cpp
-namespace minipar_rt {
-  struct Destination;    // local ou remote(host,port)
-  struct TaskArgs;       // dados copiáveis e serializáveis
-  struct TaskHandle;     // identificador único
-  struct TaskResult;     // payload ou erro explícito
-  TaskHandle start(const std::string& function_id,
-                   const TaskArgs& args,
-                   const Destination& where);
-  TaskResult join(const TaskHandle& handle, int timeout_ms);
+seq {
+    var destino = input("Worker (host:porta ou local): ");
+    var h1 = fork avaliar(0, 40);
+    var h2 = fork avaliar(40, 80) on destino;
+    print("Resultados:", join(h1), join(h2, 30000));
 }
 ```
 
-Estas assinaturas indicam a **fronteira**, não uma decisão sobre uso de classes JSON, templates ou bibliotecas externas. Nome do namespace, headers, status e tipos ficam definidos no G0. A não deve assumir assinatura antes de C aprovar compilação de um `hello_task`.
+#### 2.2.2 Regras semânticas propostas (A implementa no `CORE-05`)
 
-### 2.4 Mensagens e protocolo remoto
+| ID | Rejeitar na compilação |
+|---|---|
+| FJ-SEM-01 | `fork` de nome que não é `func` global (método, variável, classe, inexistente) |
+| FJ-SEM-02 | Número de argumentos diferente do número de parâmetros |
+| FJ-SEM-03 | `join` aplicado a expressão cujo tipo conhecido não é `task` |
+| FJ-SEM-04 | `timeout_ms` ou destino com tipo conhecido incompatível (número / string) |
+| FJ-SEM-05 | Função usada em `fork` que lê ou escreve variável global mutável (só parâmetros e locais), direta ou transitivamente; detalhes em 2.2.5 |
+| FJ-SEM-06 | Argumento ou retorno de tipo que não cruza a rede (objeto de classe, `c_channel`, `task`) |
 
-**Proposta robusta e mínima:** TCP com prefixo de tamanho (4 bytes em ordem de rede) + payload com campos `protocol_version`, `request_id`, `task_id`, `function_id`, `args`, `status`, `result`, `error`. Impor tamanho máximo de frame e timeouts. `send_all` e `recv_exact`; protocolo compatível com processo worker em computador distinto.
+Destino com valor inválido em tempo de execução (ex.: `"host:abc"`) não é erro de compilação: gera `BAD_DESTINATION` no `join`.
 
-Exemplo meramente conceitual:
-```json
-{"protocol_version":1,"type":"TASK","request_id":"run-2",
- "task_id":"task-004","function_id":"avaliar","args":[20,35]}
+#### 2.2.3 Tradução proposta para C++ (A implementa no `CORE-07`)
+
+- O programa gerado inclui `#include "minipar_rt/minipar_rt.hpp"` e compila com `-I <repo>/runtime/include`. Não há biblioteca para linkar além de `-pthread` e, no Windows, `-lws2_32`.
+- Para cada `func` usada em `fork`, A gera um **wrapper** `minipar_rt::TaskFn` que converte `TaskArgs` para os tipos do parâmetro (`value_cast<T>`), chama a função e devolve `to_value(retorno)`, e o registra com `register_function("<nome>", wrapper)` antes de qualquer `start`. Regras do wrapper:
+
+  | Regra | Conteúdo |
+  |---|---|
+  | Um por função | Um wrapper e um `register_function` por `func` global que aparece em algum `fork`, identificado pelo **nome** (não um por ponto de chamada). Função forkada em vários pontos usa o mesmo `function_id` |
+  | Em todo binário | O registro ocorre no início do `main`, antes de `worker_main_if_requested` e de qualquer `start`; como coordenador e worker são o mesmo binário, as duas pontas têm o mesmo registro |
+  | Tipos conhecidos | Uma única assinatura em `fork_signatures` com tipos conhecidos: `value_cast<T>` por parâmetro e `to_value` no retorno |
+  | Tipos variados ou desconhecidos | Mais de uma assinatura distinta, ou `unknown`: o wrapper recebe `Value` e despacha pelo `kind()` em tempo de execução, **ou** A rejeita o programa de forma conservadora. Escolha do A (PEND-FJ-02) |
+  | Erro de conversão | `value_cast` com forma incompatível lança `std::invalid_argument`; o runtime devolve `TASK_FAILED` (2.4), nunca valor inventado |
+  | Sem retorno | Função sem `return` devolve `Value` `none` (2.2.4) |
+- `set_build_id("<sha256 do fonte MiniPar>")` é chamado no início do `main`, e logo depois vem `if (int rc = minipar_rt::worker_main_if_requested(argc, argv); rc >= 0) return rc;`. O **mesmo binário** vira worker com `programa --minipar-worker <porta> [--bind <ip>]`. É esse o "worker pré-compilado": compilado do mesmo fonte em cada máquina, e o build id garante que as duas pontas têm as mesmas funções.
+- `fork f(a, b) on d` → `minipar_rt::start("f", {to_value(a), to_value(b)}, minipar_rt::Destination::parse(d))`.
+- `join(h)` / `join(h, t)` → `minipar_rt::join_or_exit(h)` / `join_or_exit(h, t)`, que devolve o `Value` ou imprime `[minipar_rt] join <task_id> falhou: <CODIGO>: <mensagem>` em stderr e encerra com código 1.
+
+#### 2.2.4 Tipo `task` e retorno do `join`
+
+| Item | Contrato |
+|---|---|
+| Tipo `task` | Tipo estático do handle devolvido por `fork`, com o tipo de resultado associado (conceitualmente `task<T>`, `T` = retorno da função; no semântico do A, `ValueType("task", result=T)`) |
+| Usos permitidos | Guardar em variável, atribuir, copiar e colocar em lista homogênea de `task`; passar para `join` |
+| Usos proibidos | Cruzar tarefas como argumento ou retorno (FJ-SEM-06); aritmética (FJ-SEM-06); `join` em expressão de tipo conhecido diferente de `task` (FJ-SEM-03) |
+| Cópia | Copiar um handle **não** cria tarefa nova: as cópias apontam para a mesma tarefa. O primeiro `join` em qualquer cópia coleta o resultado; outro `join` (na mesma ou em outra cópia) dá `INVALID_HANDLE` (RT-07) e, em MiniPar, encerra o programa |
+| Representação C++ | `minipar_rt::TaskHandle` (struct copiável de `id` e `task_id`); listas de `task` viram `std::vector<TaskHandle>` |
+| Tipo do `join(h)` | `T` da assinatura do `fork` que gerou `h` (`fork_signatures`). Em C++, `join_or_exit` devolve `Value`; o backend converte com `value_cast<T>` quando `T` é conhecido e mantém `Value` quando não é |
+| Função sem `return` | O resultado é `Value` `none` (o tipo `void` é aceito no transporte). Se usar esse valor em expressão é erro de compilação ou de execução é decisão do A (PEND-FJ-07) |
+| `timeout_ms` | Expressão numérica (FJ-SEM-04). O backend converte para `int` truncando. Valor negativo equivale a sem limite: local espera o tempo que for, remoto usa o padrão de 60 s (RT-06), como `join(h, -1)` da API |
+| Falha no `join` MiniPar | Qualquer erro, inclusive `TIMEOUT`, encerra o programa com código 1 via `join_or_exit`. "Handle continua válido depois do `TIMEOUT`" (RT-05) vale só para a API C++ `join`; MiniPar v1 não tem nova tentativa |
+
+#### 2.2.5 Isolamento das funções de tarefa (FJ-SEM-05)
+
+Verificado pelo semântico do A (`CORE-05`):
+
+| Regra | Conteúdo |
+|---|---|
+| Dados acessíveis | Só parâmetros e variáveis locais da função. Ler ou escrever variável global que não seja `func` ou `class` é erro |
+| Transitividade | A verificação percorre as funções chamadas, os métodos e os inicializadores de objetos usados pela tarefa, inclusive ciclos recursivos, com escopo léxico global (nunca os locais de quem chamou) |
+| `this` | Proibido em função global usada como tarefa |
+| Método de tipo desconhecido | Chamada rejeitada, porque não dá para comprovar o isolamento |
+| Entrada | Argumentos copiados no disparo (RT-03); listas são valores copiados |
+
+Fora do que é verificado no v1:
+
+- `print` dentro da tarefa sai no stdout do processo que a executa: o worker, quando remoto. O resultado volta ao coordenador só pelo `return`.
+- `input`, `c_channel`, `send` e `receive` dentro da tarefa não fazem parte do contrato v1. Rejeitar ou permitir é decisão do A (PEND-FJ-06).
+- A inferência de tipos genéricos, retornos recursivos e coleções mutadas é parcial; o que não é comprovado fica em `unresolved_fj` (handoff do `CORE-04`/`05`).
+
+### 2.3 API C++ do runtime (implementada no `RUN-01`/`RUN-02`)
+
+Biblioteca **header-only** em `runtime/include/minipar_rt/` (C++20, só biblioteca padrão e sockets do SO). Assinaturas públicas:
+
+```cpp
+namespace minipar_rt {
+  class Value;                                   // ver 2.4
+  using TaskArgs = std::vector<Value>;
+  using TaskFn   = std::function<Value(const TaskArgs&)>;
+
+  enum class ErrorCode { NONE, TASK_FAILED, UNKNOWN_FUNCTION, TIMEOUT, WORKER_UNAVAILABLE,
+                         WORKER_LOST, INVALID_HANDLE, PROTOCOL_ERROR, VERSION_MISMATCH, BAD_DESTINATION };
+  struct TaskError  { ErrorCode code; std::string message; };
+  struct TaskHandle { std::uint64_t id; std::string task_id; };          // task_id = "task-<n>"
+  struct TaskResult { bool ok; Value value; TaskError error; std::string task_id;
+                      std::string executed_by; };                       // "local:<pid>" ou "<host>:<pid>"
+  struct Destination {
+    static Destination local();
+    static Destination remote(std::string host, std::uint16_t port);
+    static Destination parse(const std::string& text);                  // "local" | "host:porta"
+  };
+
+  void register_function(const std::string& function_id, TaskFn fn);
+  void set_build_id(std::string build_id);
+  TaskHandle start(const std::string& function_id, TaskArgs args,
+                   const Destination& where = Destination::local());
+  TaskResult join(const TaskHandle& handle, int timeout_ms = -1);
+  Value      join_or_exit(const TaskHandle& handle, int timeout_ms = -1);
+  int  run_worker(std::uint16_t port, const std::string& bind_address = "127.0.0.1");
+  int  worker_main_if_requested(int argc, char** argv);                 // -1 se não é modo worker
+}
 ```
-Resposta:
+
+Garantias:
+
+| ID | Garantia |
+|---|---|
+| RT-01 | `start` **não espera** o cálculo nem a rede: dispara uma thread local, ou coloca o `TASK` na fila da conexão (uma thread escritora por conexão faz o envio), e retorna o handle |
+| RT-02 | `start` nunca lança exceção por falha de destino; a falha aparece no `join` (`WORKER_UNAVAILABLE`, `BAD_DESTINATION`, `VERSION_MISMATCH`) |
+| RT-03 | `args` é recebido **por valor** (cópia ou `move`); mudar a variável original depois do `start` não afeta a tarefa |
+| RT-04 | `join` devolve o resultado do handle certo, qualquer que seja a ordem de término |
+| RT-05 | `join(h, t)` com `t >= 0` devolve `TIMEOUT` se a tarefa não acabou em `t` ms; o handle **continua válido** e um `join` posterior pode coletar o resultado |
+| RT-06 | `join(h)` sem limite: tarefa local espera o tempo que for; tarefa remota usa o limite padrão de 60 s (`MINIPAR_RT_REMOTE_TIMEOUT_MS`) |
+| RT-07 | Depois de um resultado coletado (ok ou erro final), novo `join` no mesmo handle → `INVALID_HANDLE`. Handle desconhecido → `INVALID_HANDLE` |
+| RT-08 | Exceção lançada pela função da tarefa → `TASK_FAILED` com a mensagem; o processo não cai |
+| RT-09 | Conexão com o worker perdida com tarefas pendentes → todas recebem `WORKER_LOST`, sem bloqueio. Vale também para envio parado: se o `send` não progride por `MINIPAR_RT_SEND_TIMEOUT_MS` (padrão 10000 ms), a conexão é fechada |
+| RT-10 | Thread-safe: `start`/`join` podem ser chamados de threads diferentes (inclusive dentro de `par`) |
+
+### 2.4 Tipos que cruzam tarefas (`Value`)
+
+`Value` é um tipo-valor com uma das formas: `none`, `int` (`int64`), `float` (`double`), `bool`, `string` (UTF-8), `list` (vetor de `Value`). Conversões fornecidas:
+
+- `to_value(x)` para inteiros, `double`, `bool`, `std::string`, `const char*`, `std::vector<T>` (recursivo) e `Value`;
+- `value_cast<T>(v)` para os mesmos tipos. Entre `int` e `float` a conversão é numérica; para os demais tipos, uma forma diferente lança `std::invalid_argument`, que a tarefa devolve como `TASK_FAILED`.
+
+### 2.5 Códigos de erro
+
+| Código | Quando |
+|---|---|
+| `TASK_FAILED` | A função lançou exceção (local ou no worker), um valor não pôde ser convertido, ou o `TASK`/`RESULT` passaria de 8 MiB (o worker responde o erro em vez de ficar calado) |
+| `UNKNOWN_FUNCTION` | `function_id` não registrado (local ou no worker) |
+| `TIMEOUT` | Limite do `join` esgotado (handle continua válido, RT-05) |
+| `WORKER_UNAVAILABLE` | Não conectou ao `host:porta` (recusado, sem rota, host não resolvido) dentro de 3 s |
+| `WORKER_LOST` | Conexão caiu com a tarefa pendente (worker morto, rede caiu) ou o envio ficou parado por mais de `MINIPAR_RT_SEND_TIMEOUT_MS` (worker que não lê) |
+| `INVALID_HANDLE` | Handle desconhecido ou já coletado |
+| `PROTOCOL_ERROR` | Frame inválido, JSON inválido, mensagem fora de ordem |
+| `VERSION_MISMATCH` | `protocol_version` (em qualquer mensagem) ou `build_id` diferentes entre coordenador e worker |
+| `BAD_DESTINATION` | Texto de destino que não é `local` nem `host:porta` válido |
+
+### 2.6 Protocolo remoto (implementado no `RUN-02`)
+
+**Transporte:** TCP, **uma conexão persistente por destino** (`host:porta`), aberta no primeiro `start` para ele e reutilizada. Várias tarefas ficam pendentes na mesma conexão; o worker executa cada `TASK` em sua própria thread e responde na ordem em que terminar. No coordenador, o `start` só enfileira o `TASK`; uma thread escritora por conexão envia, com limite de envio parado (RT-09).
+
+**Frame:** 4 bytes de tamanho em ordem de rede (big-endian, sem sinal), seguidos de `N` bytes de JSON UTF-8 com um objeto. `1 <= N <= 8 MiB`; `N = 0` ou `N > 8 MiB` é `PROTOCOL_ERROR`. Leitura com `recv_exact` (acumula até completar o tamanho, aceitando fragmentação) e escrita com `send_all`. A codificação JSON é própria do runtime (subconjunto estrito, sem biblioteca externa).
+
+**Codificação de `Value` no JSON:** `none` → `null`; `bool` → `true`/`false`; `int` → número sem ponto nem expoente; `float` → número **sempre** com ponto ou expoente (ex.: `2.0`); `string` → string JSON; `list` → array. `NaN` e infinito não são enviados (`TASK_FAILED` na origem).
+
+**Mensagens** (todos os objetos têm `"protocol_version": 1` e `"type"`):
+
+| type | Sentido | Campos | Observação |
+|---|---|---|---|
+| `HELLO` | coord → worker | `build_id`, `request_id` | Obrigatória e primeira em cada conexão |
+| `HELLO_OK` | worker → coord | `worker_id`, `host`, `pid`, `build_id` | `worker_id = "<host>:<pid>"` |
+| `TASK` | coord → worker | `request_id`, `task_id`, `function_id`, `args` (array) | |
+| `RESULT` | worker → coord | `request_id`, `task_id`, `status` (`ok`/`error`), `result` ou `error{code,message}`, `worker_id` | Associado pelo `task_id`, nunca pela ordem |
+| `ERROR` | qualquer | `error{code,message}` | Erro de conexão (versão, frame); quem envia fecha a conexão em seguida |
+
+Exemplos:
+
 ```json
-{"protocol_version":1,"type":"RESULT","request_id":"run-2",
- "task_id":"task-004","status":"ok","result":55}
-```
-Falha:
-```json
-{"protocol_version":1,"type":"RESULT","request_id":"run-2",
- "task_id":"task-004","status":"error","error":{"code":"TASK_FAILED","message":"..."}}
+{"protocol_version":1,"type":"HELLO","build_id":"3f2a...","request_id":"run-4120-1"}
+{"protocol_version":1,"type":"HELLO_OK","worker_id":"pc-lab-2:7744","host":"pc-lab-2","pid":7744,"build_id":"3f2a..."}
+{"protocol_version":1,"type":"TASK","request_id":"run-4120-1","task_id":"task-4","function_id":"avaliar","args":[20,35]}
+{"protocol_version":1,"type":"RESULT","request_id":"run-4120-1","task_id":"task-4","status":"ok","result":55,"worker_id":"pc-lab-2:7744"}
+{"protocol_version":1,"type":"RESULT","request_id":"run-4120-1","task_id":"task-5","status":"error","error":{"code":"TASK_FAILED","message":"divisao por zero"},"worker_id":"pc-lab-2:7744"}
 ```
 
-Pode usar outro formato se documentado e testado. **Não pressupor biblioteca JSON nativa em C++**; a escolha da implementação é de C, preservando o contrato. Verificar versão do worker/build para rejeitar execução incompatível.
+**Versão:** `protocol_version` é conferido em **toda** mensagem, nos dois lados; `build_id` é conferido no `HELLO`. Se diferem, o worker responde `ERROR` `VERSION_MISMATCH` e fecha a conexão; o coordenador que recebe mensagem de outra versão fecha a conexão. Em ambos os casos as tarefas daquela conexão terminam com `VERSION_MISMATCH`.
 
-### 2.5 Critérios de teste do runtime
+**Resultado grande:** se o `RESULT` passaria de 8 MiB, o worker responde `RESULT` com `status` `error` e `TASK_FAILED`, sem fechar a conexão.
+
+**Robustez do worker:** frame ou JSON inválido em uma conexão gera `ERROR` `PROTOCOL_ERROR` e fecha **só essa conexão**; o worker continua aceitando outras. O worker registra em stderr `worker_id`, host, PID, endereço do coordenador, `task_id`, função e duração de cada tarefa.
+
+**Segurança operacional:** o worker escuta em `127.0.0.1` por padrão; escutar na rede exige `--bind <ip>` explícito (necessário no `RUN-03`). Ele só executa funções **registradas no binário**; nada de código recebido pela rede. Uso acadêmico em rede local, sem autenticação nem criptografia: não expor à internet.
+
+### 2.7 Critérios de teste do runtime
 
 - `start` retorna antes do cálculo longo terminar (assíncrono).
 - `join` aguarda conclusão real e devolve resultados identificados.
@@ -601,9 +751,33 @@ Pode usar outro formato se documentado e testado. **Não pressupor biblioteca JS
 - Teste 8 divide 160 tarefas sem perda/duplicação.
 - As funções são reais, não apenas strings prontas devolvidas para a demonstração.
 
-### 2.6 Compatibilidade com runtime antigo
+O mapeamento de cada critério para o teste automatizado que o cobre está em `runtime/README.md`.
 
-`MiniParChannel` atual usa TCP básico com listener a cada mensagem e `send`/`recv` únicos. C deve decidir se cria wrapper novo ou corrige o existente **sem mudar interfaces de A sem CR**. A pode continuar emitindo `c_channel` existente se a correção for compatível; regressão Teste 1 é obrigatória.
+### 2.8 Compatibilidade com runtime antigo
+
+`MiniParChannel` atual usa TCP básico com listener a cada mensagem e `send`/`recv` únicos. O baseline do `CORE-01` mostrou que isso trava o T01 de forma intermitente (DEF-01 em `docs/auditorias/CORE-01_BASELINE_T01_T07.md`). **Decisão proposta:** o runtime de Fork/Join é um componente **novo** (`runtime/`) e não altera `c_channel`/`send`/`receive`; a correção do canal herdado é card de A. Se A quiser, pode reaproveitar `minipar_rt/net.hpp` (`send_all`, `recv_exact`, frames) nessa correção, sem mudar a interface MiniPar do canal. Regressão do Teste 1 é obrigatória em qualquer mudança.
+
+### 2.9 Pendências registradas
+
+| ID | Pendência | Dono | Impacto se não resolver |
+|---|---|---|---|
+| PEND-FJ-01 | A decide palavras-chave e forma final de 2.2 (pode trocar `on` ou a forma do `join` sem mudar a API de 2.3) | A | `CORE-04` não começa |
+| PEND-FJ-02 | Wrapper com tipos variados ou desconhecidos (2.2.3): despachar pelo `kind()` do `Value` em tempo de execução ou rejeitar o programa. O `CORE-05` já entrega `fork_signatures` e `unresolved_fj` | A | Wrapper do `CORE-07` |
+| PEND-FJ-03 | Prova em duas máquinas físicas (`RUN-03`): depende de duas máquinas na mesma rede e de liberar a porta do worker no firewall de uma delas, ação da pessoa que roda a prova | C + equipe | G1 sem prova remota (plano de contingência do doc 01, M1) |
+| PEND-FJ-04 | Limite padrão de 60 s do `join` remoto sem timeout (RT-06): confirmar com as cargas do T08–T10 | C | Join remoto longo encerrado cedo |
+| PEND-FJ-05 | Interpretação do professor sobre despacho remoto automático (doc 00, P02). Esta proposta faz despacho **explícito** por destino no código | Trio | Reabrir 2.2 se o professor exigir alocação automática |
+| PEND-FJ-06 | `input`, `c_channel`, `send` e `receive` dentro de função de tarefa (2.2.5): rejeitar no semântico ou permitir com comportamento documentado | A | Tarefa remota esperando stdin do worker ou canal sem par |
+| PEND-FJ-07 | Uso do resultado de `join` de função sem `return` (`none`, 2.2.4): erro de compilação ou de execução | A | Valor `none` usado em expressão no C++ gerado |
+
+### 2.10 Aprovação
+
+| Parte | Responsável | Decisão | Data |
+|---|---|---|---|
+| C — runtime | Erasmo | Proposta revisão 1: API, tipos, erros e protocolo implementados e testados (`RUN-01`/`RUN-02`); linguagem proposta para decisão do A | 22/10/2026 |
+| C — runtime | Erasmo | Revisão 2: tipo `task`, retorno do `join`, wrappers e isolamento detalhados (2.2.3–2.2.5) conforme `CORE-04`/`05`; envio assíncrono com limite, `RESULT` grande e versão em toda mensagem (2.3, 2.5, 2.6); PEND-FJ-06/07 | 23/10/2026 |
+| A — linguagem e backend | Coordenador (Victor) | *pendente* | |
+
+Mudança depois do congelamento segue a seção 4 (CR). Funções novas no runtime que não mudam as assinaturas acima entram como `v1.1` aditiva.
 
 ---
 
@@ -1310,11 +1484,11 @@ Data:
 
 | ID | Decisão | Donos | Prazo |
 |---|---|---|---|
-| CT-01 | Sintaxe definitiva Fork/Join na BNF 2026.2 | A+C | 18/10 |
-| CT-02 | API runtime C++ final e registry de workers | A+C | 18/10 |
+| CT-01 | Sintaxe definitiva Fork/Join na BNF 2026.2 — proposta do C em C-FJ-v1 §2.2 (revisão 2, 23/10), adotada pelo A no `CORE-04`/`05` (PR #15), aguardando aprovação formal do A | A+C | 18/10 |
+| CT-02 | API runtime C++ final e registry de workers — proposta em C-FJ-v1 §2.3–2.5, implementada no `RUN-01`/`RUN-02`, aguardando A | A+C | 18/10 |
 | CT-03 | Estrutura JSON e API da Web | A+B | 18/10 |
 | CT-04 | Primitivas para strings/coleções Teste 11 — proposta em C-T11-v1 §3.3–3.5 (revisão 2, 22/10), aguardando A | A+B | 18/10 |
-| CT-05 | Modelo de deploy dos workers entre hosts | C+A | 18/10 |
+| CT-05 | Modelo de deploy dos workers entre hosts — proposta em C-FJ-v1 §2.2.3 e §2.6: mesmo binário compilado em cada máquina, modo `--minipar-worker`, `build_id` conferido no `HELLO` | C+A | 18/10 |
 | CT-06 | CPUlator e escrita `.arm` — proposta em C-T11-v1 §3.6–3.7, alinhada à referência do professor; escrita direta desnecessária (PEND-T11-02 resolvida em 22/10) | B+A | 19/10 |
 | CT-07 | Saída gráfica do T10 | C | 20/10 |
 
