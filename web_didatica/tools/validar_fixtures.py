@@ -8,7 +8,9 @@ Oráculos:
     docs/02_CONTRATOS_TECNICOS.md, ignorando só o texto de `cpp` (abreviado no contrato).
     O contrato já usa request_id fixo e duration_ms 0, então esses campos também são comparados.
   - Todas: `source_hash` é o SHA-256 do `source` gravado; seis fases na ordem; regra das
-    fases ignoradas; listas nunca nulas; ids de AST únicos e em pré-ordem.
+    fases ignoradas; listas nunca nulas; ids de AST únicos e em pré-ordem; limites e
+    marcadores de truncamento do §1.4 (emitidos + omitidos = nodes).
+  - PROG-02: AST com mais de 5000 nós, truncada em exatamente 5000 emitidos.
   - EXEC-01: `compile` com ok true e ids iguais ao request_id; `execute` com stdout "5\n" (ACE-02).
 Sai com código 1 se qualquer verificação falhar.
 """
@@ -24,6 +26,8 @@ ROOT = Path(__file__).resolve().parents[2]
 FIXTURES_DIR = ROOT / "web_didatica" / "fixtures"
 CONTRACT = ROOT / "docs" / "02_CONTRATOS_TECNICOS.md"
 PHASES = ["lexer", "parser", "semantic", "tac", "cpp", "gpp"]
+MAX_NODES = 5000
+MAX_DEPTH = 200
 REQUESTED = {"analyze": PHASES[:5], "compile": PHASES}
 
 failures: list[str] = []
@@ -93,6 +97,36 @@ def check_envelope(name: str, source: str, env: dict) -> None:
         check(len(set(ids)) == len(ids), f"{name}: ids da AST repetidos")
         stats = env["phases"]["parser"]["ast_stats"]
         check(stats["emitted"] == len(real), f"{name}: ast_stats.emitted != nós emitidos")
+        check_truncation(name, ast, stats)
+
+
+def check_truncation(name: str, ast: dict, stats: dict) -> None:
+    """Regras de limite e marcador do §1.4."""
+    check(stats["max_nodes"] == MAX_NODES and stats["max_depth"] == MAX_DEPTH, f"{name}: limites fora do contrato")
+    check(stats["emitted"] <= MAX_NODES, f"{name}: mais de {MAX_NODES} nós emitidos")
+    check(stats["truncated"] == (stats["emitted"] < stats["nodes"]), f"{name}: truncated incoerente com nodes/emitted")
+    markers, stack = [], [(ast, 1)]
+    while stack:
+        node, depth = stack.pop()
+        check(depth <= MAX_DEPTH, f"{name}: nó {node['id']} além de max_depth")
+        kids = node["children"]
+        own = [k for k in kids if k["kind"] == "Truncated"]
+        check(sum(k["attributes"]["reason"] == "max_nodes" for k in own) <= 1,
+              f"{name}: nó {node['id']} com mais de um marcador max_nodes")
+        for k in own:
+            if k["attributes"]["reason"] == "max_nodes":
+                check(k is kids[-1], f"{name}: marcador {k['id']} max_nodes não é o último filho")
+        markers += own
+        stack.extend((k, depth + 1) for k in reversed(kids))
+    omitted = 0
+    for m in markers:
+        attrs = m["attributes"]
+        check(attrs["reason"] in ("max_nodes", "max_depth"), f"{name}: marcador {m['id']} com reason inválido")
+        check(m["children"] == [], f"{name}: marcador {m['id']} com filhos")
+        check(m["label"] == f"Truncated({attrs['omitted_nodes']} nós)", f"{name}: rótulo do marcador {m['id']}")
+        omitted += attrs["omitted_nodes"]
+    check(sorted(int(m["id"][1:]) for m in markers) == list(range(len(markers))), f"{name}: ids de marcador fora de x0..")
+    check(stats["emitted"] + omitted == stats["nodes"], f"{name}: emitidos + omitidos != nodes")
 
 
 def main() -> int:
@@ -115,6 +149,11 @@ def main() -> int:
                 actual["phases"]["cpp"]["text"] = reference["phases"]["cpp"]["text"]
             for d in diff(reference, actual):
                 failures.append(f"{name}: {d}")
+        if name == "PROG-02":
+            stats = data["analyze"]["phases"]["parser"]["ast_stats"]
+            check(data["analyze"]["ok"] is True, "PROG-02: analyze deveria ser ok")
+            check(stats["nodes"] > MAX_NODES and stats["emitted"] == MAX_NODES and stats["truncated"] is True,
+                  f"PROG-02: esperado truncamento em {MAX_NODES} nós, obtido {stats}")
         if name == "EXEC-01":
             comp, run = data["compile"], data["execute"]
             rid = comp["request_id"]

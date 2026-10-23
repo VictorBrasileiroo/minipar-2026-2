@@ -11,6 +11,7 @@ Respostas de exemplo no formato do contrato **C-WEB-v1** (`docs/02_CONTRATOS_TEC
 | `fix-03-erro-sintatico.json` | FIX-03 | `analyze` | expressão faltando → `SYN_EXPECTED_EXPRESSION` |
 | `fix-04-erro-semantico.json` | FIX-04 | `analyze` | `y` não declarado → `SEM_UNDECLARED_VARIABLE` |
 | `prog-01-quicksort-classes.json` | PROG-01 | `analyze` | Teste 6 (classe, cinco métodos, laços): 149 nós, 17 escopos, 24 símbolos |
+| `prog-02-grande-truncado.json` | PROG-02 | `analyze` | programa gerado (função com laço e mil declarações): 6029 nós, AST truncada em 5000 com dois marcadores `max_nodes`; 9055 tokens, 3019 linhas de TAC. JSON compacto (1,4 MB) |
 | `exec-01-fix01.json` | EXEC-01 | `compile` + `execute` | código de FIX-01 compilado com g++ e executado: `stdout` `"5\n"` |
 | `index.json` | — | — | lista das fixtures para a interface |
 
@@ -32,7 +33,9 @@ O gerador **lê** `src/` sem alterar nada: roda o Lexer, o Parser, o Semântico,
 | PEND-WEB-03 (semântico descarta escopos) | uma subclasse do `SemanticAnalyzer` registra escopos e símbolos no momento em que são criados |
 | PEND-WEB-04 (tradução e g++ juntos) | lê o `.cpp` gravado pelo gerador atual num diretório temporário; em `analyze` o g++ aponta para um executável inexistente de propósito |
 
-O validador confere FIX-01 a FIX-04 contra os blocos JSON do §1.9, campo a campo, ignorando só o texto C++ (abreviado no contrato), e verifica em todas as fixtures o `source_hash`, a ordem das fases, a regra das fases ignoradas e os ids da AST. Em EXEC-01 exige `stdout` igual a `"5\n"` (ACE-02).
+O validador confere FIX-01 a FIX-04 contra os blocos JSON do §1.9, campo a campo, ignorando só o texto C++ (abreviado no contrato), e verifica em todas as fixtures o `source_hash`, a ordem das fases, a regra das fases ignoradas, os ids da AST e as regras de truncamento do §1.4 (no máximo 5000 nós emitidos, um marcador `max_nodes` como último filho, emitidos + omitidos = `nodes`). Em PROG-02 exige truncamento em exatamente 5000 nós; em EXEC-01, `stdout` igual a `"5\n"` (ACE-02).
+
+O PROG-02 é o exemplo de desempenho do WEB-02. Linha de base medida no wireframe do WEB-01 (painel interno do Claude Code, Chromium, `PerformanceObserver` do tipo `longtask`), ao abrir cada aba: Tokens 810 ms, TAC 346 ms, Semântico 233 ms, AST 218 ms, C++ 150 ms. O WEB-02 deve baixar esses números.
 
 ## Limitações conhecidas
 
