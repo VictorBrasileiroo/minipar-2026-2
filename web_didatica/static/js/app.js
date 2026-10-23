@@ -1,5 +1,6 @@
 // Web didática — wireframe navegável (WEB-01). Desenha as fases a partir do envelope C-WEB-v1.
 import * as fonte from "./fonte_mock.js";
+import { criarArvoreAst } from "./arvore_ast.js";
 
 const FASES = [
   { chave: "lexer", ancora: "tokens", nome: "Tokens" },
@@ -22,7 +23,7 @@ const EXPLICA = {
 };
 
 const $ = (id) => document.getElementById(id);
-const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false };
+const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false, arvore: null };
 
 function h(tag, atributos = {}, ...filhos) {
   const el = document.createElement(tag);
@@ -175,30 +176,18 @@ function painelTokens(dados) {
   ];
 }
 
-function noAst(no) {
-  const atributos = Object.entries(no.attributes)
-    .filter(([, v]) => v !== null && !(Array.isArray(v) && !v.length))
-    .map(([k, v]) => `${k}=${Array.isArray(v) ? "[" + v.join(", ") + "]" : JSON.stringify(v)}`);
-  const papel = no.role === null ? null : no.index === null ? no.role : `${no.role}[${no.index}]`;
-  return h("li", {},
-    h("span", { class: `no${no.kind === "Truncated" ? " no-truncado" : ""}` },
-      h("span", { class: "no-rotulo", title: no.kind }, no.label),
-      papel ? h("span", { class: "no-papel" }, papel) : null,
-      atributos.length && no.kind !== "Truncated" ? h("span", { class: "no-attr" }, atributos.join(" ")) : null,
-      h("span", { class: "no-linha" }, `L${no.line}`)),
-    no.children.length ? h("ul", {}, no.children.map(noAst)) : null);
-}
-
 function painelAst(dados) {
   if (!dados.ast) {
     return h("div", { class: "caixa erro" }, h("strong", {}, "Erro sintático"),
       h("span", {}, "O parser para no primeiro erro e não devolve AST. O diagnóstico ao lado mostra onde."));
   }
   const s = dados.ast_stats;
+  // A árvore guarda o que está aberto; criada uma vez por exemplo, sobrevive à troca de aba.
+  estado.arvore ??= criarArvoreAst(dados.ast);
   return [
     h("p", { class: "estat" },
-      `${s.emitted} de ${s.nodes} nós · profundidade ${s.depth}${s.truncated ? " · árvore truncada" : ""}`),
-    h("ul", { class: "arvore" }, noAst(dados.ast)),
+      `${s.emitted} de ${s.nodes} nós · profundidade ${s.depth}${s.truncated ? " · árvore truncada no limite do contrato" : ""}`),
+    estado.arvore.elemento,
   ];
 }
 
@@ -320,6 +309,7 @@ function desenharTudo() {
 async function abrirExemplo(arquivo) {
   estado.exemplo = await fonte.carregarExemplo(arquivo);
   estado.descartada = false;
+  estado.arvore = null;
   $("codigo").value = estado.exemplo.codigo;
   $("aviso-mock").title = estado.exemplo.notas.join("\n");
   atualizarNumeros();

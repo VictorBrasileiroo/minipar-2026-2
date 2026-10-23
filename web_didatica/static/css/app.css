@@ -111,9 +111,22 @@ pre.codigo span { display: block; padding-inline: 12px; }
 pre.codigo span::before { counter-increment: linha; content: counter(linha); display: inline-block; width: 3.2em;
   margin-right: 12px; text-align: right; color: var(--suave); }
 
+.arvore-barra { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-bottom: 10px; }
+.arvore-barra button { font-size: 0.82rem; padding: 4px 10px; }
+.arvore-contagem { margin: 0 0 0 4px; }
 .arvore, .arvore ul { list-style: none; margin: 0; padding: 0; }
-.arvore ul { margin-left: 8px; padding-left: 18px; border-left: 1px solid var(--linha); }
-.arvore li { padding: 2px 0; }
+.arvore { border-radius: 6px; padding: 4px; overflow-x: auto; }
+.arvore .no { flex-wrap: nowrap; white-space: nowrap; }
+.arvore .item-linha { width: max-content; }
+.arvore ul { margin-left: 13px; padding-left: 12px; border-left: 1px solid var(--linha); }
+.arvore li { padding: 1px 0; }
+.item-linha { display: flex; gap: 4px; align-items: baseline; padding: 1px 6px 1px 2px; border-radius: 4px; cursor: pointer; }
+.item-linha:hover { background: var(--rebaixado); }
+[aria-selected="true"] > .item-linha { background: var(--destaque-fundo); box-shadow: inset 2px 0 0 var(--destaque); }
+.alternar { flex: none; width: 1.3em; text-align: center; color: var(--suave); font: 13px/1.5 var(--mono); user-select: none; }
+.item-mais .no { color: var(--destaque); font: 13px/1.5 var(--fonte); text-decoration: underline; text-underline-offset: 2px; }
+.ocultos { color: var(--pulado); font-size: 0.72rem; }
+.ocultos:empty { display: none; }
 .no { display: inline-flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; font: 13px/1.5 var(--mono); }
 .no-rotulo { background: var(--destaque-fundo); padding: 1px 7px; border-radius: 4px; }
 .no-truncado .no-rotulo { background: var(--pulado-fundo); color: var(--pulado); }
