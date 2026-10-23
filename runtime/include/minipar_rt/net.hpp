@@ -132,6 +132,20 @@ inline void set_recv_timeout(socket_t s, int ms) {
 #endif
 }
 
+// Limite para um send sem progresso (buffer cheio porque o outro lado parou de ler). 0 = sem limite.
+// Estourado, o send falha e quem envia deve fechar a conexão: o estado do socket fica indefinido.
+inline void set_send_timeout(socket_t s, int ms) {
+#ifdef _WIN32
+    DWORD v = static_cast<DWORD>(ms < 0 ? 0 : ms);
+    setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, reinterpret_cast<const char*>(&v), sizeof v);
+#else
+    timeval tv{};
+    tv.tv_sec = ms / 1000;
+    tv.tv_usec = (ms % 1000) * 1000;
+    setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof tv);
+#endif
+}
+
 inline void set_nodelay(socket_t s) {
     int one = 1;
     setsockopt(s, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&one), sizeof one);

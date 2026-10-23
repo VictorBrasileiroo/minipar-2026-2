@@ -108,7 +108,7 @@ def step_remote(exe: Path, ctx: dict) -> tuple[bool, str]:
     wa = start_worker(worker_exe, port_a, log_a, ctx["env"])
     wb = start_worker(worker_exe, port_b, log_b, ctx["env"])
     env = dict(ctx["env"], MINIPAR_TEST_PORT_A=str(port_a), MINIPAR_TEST_PORT_B=str(port_b),
-               MINIPAR_TEST_PORT_DEAD=str(port_dead))
+               MINIPAR_TEST_PORT_DEAD=str(port_dead), MINIPAR_RT_SEND_TIMEOUT_MS="1500")
     try:
         p = run([str(exe)], env, timeout=180)
         try:

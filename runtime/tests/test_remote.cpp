@@ -3,8 +3,10 @@
 //   MINIPAR_TEST_PORT_A, MINIPAR_TEST_PORT_B (workers vivos), MINIPAR_TEST_PORT_DEAD (sem ninguém escutando).
 // Loopback prova o PROTOCOLO, não a execução entre computadores (isso é o RUN-03).
 #include <chrono>
+#include <condition_variable>
 #include <cstdlib>
 #include <map>
+#include <mutex>
 #include <set>
 #include <string>
 #include <thread>
@@ -244,6 +246,107 @@ TEST_CASE("coordenador: RESULT fragmentado e frame invalido de servidor falso") 
     TaskResult r2 = join(start("qualquer", {}, Destination::remote("127.0.0.1", port)), 5000);
     CHECK_MSG(!r2.ok && r2.error.code == ErrorCode::PROTOCOL_ERROR, to_string(r2.error.code));
     fake.join();
+}
+
+TEST_CASE("worker que para de ler: start nao trava e as tarefas viram WORKER_LOST") {
+    // Servidor falso responde ao HELLO e depois nunca mais lê: o buffer TCP enche com TASKs de ~7 MiB.
+    // O runner define MINIPAR_RT_SEND_TIMEOUT_MS=1500 para este binário.
+    std::string err;
+    net::Socket l = net::listen_tcp("127.0.0.1", 0, err);
+    CHECK_MSG(l.valid(), err);
+    std::uint16_t port = net::local_port(l.get());
+    std::mutex m;
+    std::condition_variable cv;
+    bool release = false;
+    std::thread fake([&] {
+        std::string peer, f, e;
+        net::Socket s = net::accept_tcp(l.get(), peer);
+        net::read_frame(s.get(), f, e);  // HELLO
+        net::write_frame(s.get(), detail::make_message("HELLO_OK", {{"worker_id", "mudo:1"}, {"host", "mudo"},
+                                                                    {"pid", 1}, {"build_id", kBuild}})
+                                      .dump());
+        std::unique_lock<std::mutex> lk(m);
+        cv.wait_for(lk, std::chrono::seconds(30), [&] { return release; });
+    });
+    // Libera e junta o servidor falso também quando um CHECK falha (thread joinable no destrutor aborta).
+    struct Release {
+        std::mutex& m;
+        std::condition_variable& cv;
+        bool& release;
+        std::thread& t;
+        ~Release() {
+            {
+                std::lock_guard<std::mutex> lk(m);
+                release = true;
+            }
+            cv.notify_all();
+            if (t.joinable()) t.join();
+        }
+    } guard{m, cv, release, fake};
+    std::string big(7 * 1024 * 1024, 'x');
+    Destination d = Destination::remote("127.0.0.1", port);
+    std::vector<TaskHandle> hs;
+    long long t0 = now_ms();
+    for (int i = 0; i < 4; ++i) {
+        long long ts = now_ms();
+        hs.push_back(start("qualquer", {big}, d));
+        long long dt = now_ms() - ts;
+        CHECK_MSG(dt < 1000, "start " + std::to_string(i) + " levou " + std::to_string(dt) + " ms");
+    }
+    for (auto& h : hs) {
+        TaskResult r = join(h, 15000);
+        CHECK_MSG(!r.ok && r.error.code == ErrorCode::WORKER_LOST, std::string(to_string(r.error.code)) + ": " + r.error.message);
+    }
+    long long dt = now_ms() - t0;
+    CHECK_MSG(dt < 10000, "falha detectada em " + std::to_string(dt) + " ms");
+}
+
+TEST_CASE("resultado acima de 8 MiB vira TASK_FAILED, sem esperar o timeout") {
+    long long t0 = now_ms();
+    TaskResult r = join(start("gera_texto", {9 * 1024 * 1024}, A()), 15000);
+    long long dt = now_ms() - t0;
+    CHECK_MSG(!r.ok && r.error.code == ErrorCode::TASK_FAILED, std::string(to_string(r.error.code)) + ": " + r.error.message);
+    CHECK_MSG(dt < 5000, "levou " + std::to_string(dt) + " ms");
+    TaskResult ok = join(start("eco", {2}, A()));  // a conexão continua boa
+    CHECK(ok.ok);
+}
+
+TEST_CASE("TASK com protocol_version diferente: ERROR VERSION_MISMATCH e fecha a conexao") {
+    net::Socket s = raw_connect(env_port("MINIPAR_TEST_PORT_A"));
+    std::string w = frame_of(hello());
+    net::send_all(s.get(), w.data(), w.size());
+    CHECK(read_json(s).at("type").str() == "HELLO_OK");
+    Json::Object task{{"protocol_version", 2}, {"type", "TASK"}, {"request_id", "raw-test"}, {"task_id", "raw-v2"},
+                      {"function_id", "eco"}, {"args", Json(Json::Array{Json(1)})}};
+    net::write_frame(s.get(), Json(std::move(task)).dump());
+    Json e = read_json(s);
+    CHECK(e.at("type").str() == "ERROR" && e.at("error").at("code").str() == "VERSION_MISMATCH");
+    std::string f, err;
+    CHECK(net::read_frame(s.get(), f, err) == net::FrameStatus::Closed);
+}
+
+TEST_CASE("coordenador: RESULT com protocol_version diferente vira VERSION_MISMATCH") {
+    std::string err;
+    net::Socket l = net::listen_tcp("127.0.0.1", 0, err);
+    CHECK_MSG(l.valid(), err);
+    std::uint16_t port = net::local_port(l.get());
+    std::thread fake([&] {
+        std::string peer, f, e;
+        net::Socket s = net::accept_tcp(l.get(), peer);
+        net::read_frame(s.get(), f, e);  // HELLO
+        net::write_frame(s.get(), detail::make_message("HELLO_OK", {{"worker_id", "falso:2"}, {"host", "falso"},
+                                                                    {"pid", 2}, {"build_id", kBuild}})
+                                      .dump());
+        net::read_frame(s.get(), f, e);  // TASK
+        std::string id = Json::parse(f).at("task_id").str();
+        Json::Object res{{"protocol_version", 2}, {"type", "RESULT"}, {"request_id", "r"}, {"task_id", id},
+                         {"status", "ok"}, {"result", 1}, {"worker_id", "falso:2"}};
+        net::write_frame(s.get(), Json(std::move(res)).dump());
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    });
+    TaskResult r = join(start("qualquer", {}, Destination::remote("127.0.0.1", port)), 5000);
+    fake.join();
+    CHECK_MSG(!r.ok && r.error.code == ErrorCode::VERSION_MISMATCH, to_string(r.error.code));
 }
 
 TEST_CASE("RT-05 remoto: TIMEOUT mantem o handle valido") {
