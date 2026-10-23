@@ -76,19 +76,6 @@ Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do S
 
 **Não declare testes aprovados nem código anterior importado até haver execução e evidências no novo repositório.**
 
-## Validação local do CORE-02
-
-O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo gerador genérico, sem selecionar saída pelo nome da função. Implementação e evidências locais de 23/10/2026: [`CORE-02_TAC_QUICKSORT.md`](docs/auditorias/CORE-02_TAC_QUICKSORT.md). A entrega aguarda revisão humana; não altera o estado do card.
-
-```powershell
-.\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
-.\.venv\Scripts\python.exe -B scripts/baseline_t01_t07.py --only T07
-.\.venv\Scripts\python.exe -B scripts/baseline_t01_t07.py --only T06
-.\.venv\Scripts\python.exe -B tests/validate_core02_native.py
-```
-
-Os validadores nativos usam `CXX`, o G++ UCRT64 local ou `--cxx CAMINHO_GPP`, sem alterar o PATH do sistema. Os artefatos e logs ficam em `output/`, ignorado pelo Git. O `.expected.tac` do T07 permanece como referência histórica; igualdade textual não é o critério de aceite.
-
 ## Proveniência e direitos
 
 Base anterior informada no README e na BNF históricos: <https://github.com/luizwhirl/minipar-improvement>. Créditos preservados: Emanuele Vitória de Jesus Lima ([Manu-Vii](https://github.com/Manu-Vii)), José Lucas de Oliveira Quintela ([lucasqtl](https://github.com/lucasqtl)) e Luiz Miguel de Melo Bomfim ([luizwhirl](https://github.com/luizwhirl)).
