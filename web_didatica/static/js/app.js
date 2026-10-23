@@ -1,6 +1,7 @@
 // Web didática — wireframe navegável (WEB-01). Desenha as fases a partir do envelope C-WEB-v1.
 import * as fonte from "./fonte_mock.js";
 import { criarArvoreAst } from "./arvore_ast.js";
+import { contextoErros, criarCartaoErro } from "./erros.js";
 
 const FASES = [
   { chave: "lexer", ancora: "tokens", nome: "Tokens" },
@@ -124,22 +125,27 @@ function desenharDiagnosticos() {
     lista.append(h("li", { class: "diag-vazio" }, "Nenhum diagnóstico."));
     return;
   }
-  for (const d of diagnosticos) {
-    const onde = [d.line ? `linha ${d.line}` : null, d.column ? `coluna ${d.column}` : null].filter(Boolean).join(", ");
-    lista.append(h("li", { class: d.severity === "warning" ? "diag-aviso" : "diag-erro" },
-      h("button", {
-        type: "button",
-        onclick: () => {
-          if (NOME_FASE[d.phase] && d.phase !== "internal") selecionarFase(d.phase);
-          if (d.line) {
-            selecionarLinha(d.line);
-            destacarLinha(d.line);
-          }
-        },
-      },
-        h("span", { class: "diag-codigo" }, `${d.code} · ${NOME_FASE[d.phase] || d.phase}${onde ? " · " + onde : ""}`),
-        h("span", {}, d.message))));
+  const ctx = contextoDosErros();
+  for (const d of diagnosticos) lista.append(h("li", {}, criarCartaoErro(d, ctx, { aoAbrir: abrirDiagnostico })));
+}
+
+function contextoDosErros() {
+  return contextoErros(estado.exemplo.codigo, dadosFase("lexer").tokens || []);
+}
+
+function abrirDiagnostico(d) {
+  if (NOME_FASE[d.phase] && d.phase !== "internal") selecionarFase(d.phase);
+  if (d.line) {
+    selecionarLinha(d.line);
+    destacarLinha(d.line);
   }
+}
+
+// Cartões dos diagnósticos de uma fase, repetidos no painel dela.
+function cartoesDaFase(fase) {
+  const ctx = contextoDosErros();
+  return estado.exemplo.analise.diagnostics.filter((d) => d.phase === fase)
+    .map((d) => criarCartaoErro(d, ctx, { aoAbrir: (x) => x.line && destacarLinha(x.line) }));
 }
 
 // ---------------------------------------------------------------- trilha de fases
@@ -201,6 +207,7 @@ function painelTokens(dados) {
   return [
     dados.status === "error" ? h("div", { class: "caixa erro" }, h("strong", {}, "Erro léxico"),
       h("span", {}, "Os tokens abaixo foram lidos mesmo assim; o token inválido aparece em vermelho.")) : null,
+    dados.status === "error" ? h("div", { class: "cartoes-fase" }, cartoesDaFase("lexer")) : null,
     h("p", { class: "estat" }, `${dados.tokens.length} tokens (END_OF_FILE não entra na lista)`),
     tabela(["tipo", "lexema", "linha", "coluna"], linhas),
   ];
@@ -208,8 +215,11 @@ function painelTokens(dados) {
 
 function painelAst(dados) {
   if (!dados.ast) {
-    return h("div", { class: "caixa erro" }, h("strong", {}, "Erro sintático"),
-      h("span", {}, "O parser para no primeiro erro e não devolve AST. O diagnóstico ao lado mostra onde."));
+    return [
+      h("div", { class: "caixa erro" }, h("strong", {}, "Erro sintático"),
+        h("span", {}, "O parser para no primeiro erro e não devolve AST. Veja abaixo onde ele parou e por quê.")),
+      h("div", { class: "cartoes-fase" }, cartoesDaFase("parser")),
+    ];
   }
   const s = dados.ast_stats;
   // A árvore guarda o que está aberto; criada uma vez por exemplo, sobrevive à troca de aba.
@@ -248,7 +258,8 @@ function painelSemantico(dados) {
   };
   return [
     dados.status === "error" ? h("div", { class: "caixa erro" }, h("strong", {}, "Erro semântico"),
-      h("span", {}, "O semântico percorre o programa inteiro; abaixo está tudo o que foi registrado até o fim.")) : null,
+      h("span", {}, "O semântico percorre o programa inteiro e acumula todos os erros; os escopos e símbolos registrados aparecem depois deles.")) : null,
+    dados.status === "error" ? h("div", { class: "cartoes-fase" }, cartoesDaFase("semantic")) : null,
     h("p", { class: "estat" }, `${dados.scopes.length} escopos · ${dados.symbols.length} símbolos`),
     h("ul", { class: "escopos" }, (filhos.get(null) || []).map(escopo)),
   ];
@@ -313,6 +324,10 @@ function desenharPainel() {
   else painel.append(...[PAINEIS[f.chave](dados)].flat().filter(Boolean));
   painel.scrollTop = 0;
   if (f.chave === "parser" && dados.ast) estado.arvore.anunciar(); // reaplica a linha do nó selecionado
+  else {
+    const erro = estado.exemplo.analise.diagnostics.find((d) => d.phase === f.chave && d.line);
+    if (erro) destacarLinha(erro.line);
+  }
 }
 
 // ---------------------------------------------------------------- rodapé e exemplo
