@@ -1,8 +1,12 @@
 // minipar_rt — lado coordenador do protocolo remoto (C-FJ-v1 §2.6).
-// Uma conexão persistente por destino; conexão e HELLO acontecem fora do start (RT-01);
-// RESULT é associado pelo task_id (RT-04); queda da conexão conclui as pendentes com WORKER_LOST (RT-09).
+// Uma conexão persistente por destino; conexão, HELLO e envio dos TASK acontecem fora do start (RT-01):
+// o start só enfileira, e uma thread escritora por conexão envia. RESULT é associado pelo task_id (RT-04);
+// queda da conexão ou envio parado além do limite conclui as pendentes com WORKER_LOST (RT-09).
 #pragma once
 
+#include <condition_variable>
+#include <cstdlib>
+#include <deque>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -23,6 +27,26 @@ namespace detail {
 inline const std::string& run_request_id() {
     static const std::string id = "run-" + std::to_string(current_pid());
     return id;
+}
+
+// Limite de um envio sem progresso (worker que parou de ler); estourado, a conexão é encerrada.
+inline int send_timeout_ms() {
+    static const int value = [] {
+        const char* env = std::getenv("MINIPAR_RT_SEND_TIMEOUT_MS");
+        if (env && *env) {
+            char* end = nullptr;
+            long v = std::strtol(env, &end, 10);
+            if (end && *end == '\0' && v > 0 && v < 24L * 3600 * 1000) return static_cast<int>(v);
+        }
+        return 10000;
+    }();
+    return value;
+}
+
+// Toda mensagem recebida (não só o HELLO) precisa ter a versão do protocolo deste binário.
+inline bool same_protocol_version(const Json& msg) {
+    const Json* v = msg.find("protocol_version");
+    return v && v->is_int() && v->integer() == kProtocolVersion;
 }
 
 inline Json make_message(const char* type, Json::Object fields) {
@@ -76,23 +100,17 @@ public:
             return;
         }
         pending_[st->task_id] = st;
-        if (state_ == State::Connecting) {
-            queued_.push_back(std::move(payload));
-            return;
-        }
+        // Nunca envia aqui: um worker que parou de ler bloquearia o start (RT-01). A escritora envia.
+        queued_.push_back(std::move(payload));
         lk.unlock();
-        if (!send_frame(payload)) fail_all(ErrorCode::WORKER_LOST, "falha ao enviar TASK para " + key_);
+        send_cv_.notify_one();
     }
 
 private:
     enum class State { Connecting, Ready, Dead };
 
-    bool send_frame(const std::string& payload) {
-        std::lock_guard<std::mutex> lk(write_m_);
-        return sock_.valid() && net::write_frame(sock_.get(), payload);
-    }
-
     void run();
+    void write_loop(net::socket_t fd);
     void fail_all(ErrorCode code, const std::string& msg);
 
     Destination dest_;
@@ -100,11 +118,12 @@ private:
     std::mutex m_;
     State state_ = State::Connecting;
     std::unordered_map<std::string, std::shared_ptr<TaskState>> pending_;
-    std::vector<std::string> queued_;
+    std::deque<std::string> queued_;
+    std::condition_variable send_cv_;
     ErrorCode dead_code_ = ErrorCode::WORKER_LOST;
     std::string dead_msg_;
     std::string worker_id_;
-    std::mutex write_m_;
+    std::mutex sock_m_;  // protege só a atribuição e o shutdown de sock_; os envios usam o fd sem trava
     net::Socket sock_;
 };
 
@@ -151,10 +170,12 @@ inline void RemoteConnection::fail_all(ErrorCode code, const std::string& msg) {
         queued_.clear();
         by = worker_id_;
     }
+    send_cv_.notify_all();  // a escritora vê Dead e termina
     ConnectionPool::get().remove(key_, this);  // próximo start para o destino abre conexão nova
     {
-        std::lock_guard<std::mutex> lk(write_m_);
-        sock_.shutdown_both();  // acorda a thread de leitura, se for outra
+        // Não espera envio em curso: shutdown acorda a leitura e faz um send bloqueado falhar.
+        std::lock_guard<std::mutex> lk(sock_m_);
+        sock_.shutdown_both();
     }
     for (auto& kv : victims) complete(kv.second, TaskResult::failure(code, msg, kv.first, by));
 }
@@ -167,15 +188,16 @@ inline void RemoteConnection::run() {
         return;
     }
     net::socket_t fd = s.get();
+    net::set_send_timeout(fd, send_timeout_ms());
     {
-        std::lock_guard<std::mutex> lk(write_m_);
+        std::lock_guard<std::mutex> lk(sock_m_);
         sock_ = std::move(s);
     }
 
     // Handshake: HELLO -> HELLO_OK (ou ERROR VERSION_MISMATCH), com limite de 5 s.
     net::set_recv_timeout(fd, 5000);
     Json hello = make_message("HELLO", {{"build_id", build_id()}, {"request_id", run_request_id()}});
-    if (!send_frame(hello.dump())) {
+    if (!net::write_frame(fd, hello.dump())) {
         fail_all(ErrorCode::WORKER_UNAVAILABLE, "falha ao enviar HELLO para " + key_);
         return;
     }
@@ -195,7 +217,11 @@ inline void RemoteConnection::run() {
             fail_all(error_code_from_string(e.at("code").str()), "worker " + key_ + ": " + e.at("message").str());
             return;
         }
-        if (type != "HELLO_OK" || reply.at("protocol_version").integer() != kProtocolVersion) {
+        if (!same_protocol_version(reply)) {
+            fail_all(ErrorCode::VERSION_MISMATCH, "protocol_version do worker " + key_ + " difere");
+            return;
+        }
+        if (type != "HELLO_OK") {
             fail_all(ErrorCode::PROTOCOL_ERROR, "resposta inesperada ao HELLO de " + key_ + ": " + type);
             return;
         }
@@ -210,19 +236,18 @@ inline void RemoteConnection::run() {
     }
     net::set_recv_timeout(fd, 0);
 
-    std::vector<std::string> to_send;
     {
         std::lock_guard<std::mutex> lk(m_);
         if (state_ == State::Dead) return;
         state_ = State::Ready;
         worker_id_ = worker_id;
-        to_send.swap(queued_);
     }
-    for (const auto& p : to_send) {
-        if (!send_frame(p)) {
-            fail_all(ErrorCode::WORKER_LOST, "falha ao enviar TASK para " + key_);
-            return;
-        }
+    auto self = shared_from_this();
+    try {
+        Executor::get().submit([self, fd] { self->write_loop(fd); });
+    } catch (const std::system_error& ex) {
+        fail_all(ErrorCode::WORKER_LOST, std::string("sem thread de envio para ") + key_ + ": " + ex.what());
+        return;
     }
 
     // Leitura dos RESULT até a conexão cair.
@@ -238,6 +263,10 @@ inline void RemoteConnection::run() {
         }
         try {
             Json msg = Json::parse(frame);
+            if (!same_protocol_version(msg)) {
+                fail_all(ErrorCode::VERSION_MISMATCH, "mensagem de " + key_ + " com protocol_version diferente");
+                return;
+            }
             const std::string& type = msg.at("type").str();
             if (type == "RESULT") {
                 std::string task_id = msg.at("task_id").str();
@@ -266,6 +295,26 @@ inline void RemoteConnection::run() {
             }
         } catch (const std::exception& ex) {
             fail_all(ErrorCode::PROTOCOL_ERROR, "mensagem invalida de " + key_ + ": " + ex.what());
+            return;
+        }
+    }
+}
+
+// Única thread que envia TASK nesta conexão, na ordem do start. Um envio que não progride por
+// send_timeout_ms() falha (SO_SNDTIMEO) e encerra a conexão: o coordenador nunca fica preso no send.
+inline void RemoteConnection::write_loop(net::socket_t fd) {
+    for (;;) {
+        std::string payload;
+        {
+            std::unique_lock<std::mutex> lk(m_);
+            send_cv_.wait(lk, [this] { return state_ == State::Dead || !queued_.empty(); });
+            if (state_ == State::Dead) return;
+            payload = std::move(queued_.front());
+            queued_.pop_front();
+        }
+        if (!net::write_frame(fd, payload)) {
+            fail_all(ErrorCode::WORKER_LOST, "envio de TASK para " + key_ + " falhou ou ficou parado por mais de " +
+                                                 std::to_string(send_timeout_ms()) + " ms");
             return;
         }
     }
