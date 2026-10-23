@@ -30,6 +30,10 @@ int main(int argc, char** argv) {
         for (long long i = 0; i < a.at(0).as_int(); ++i) l.push_back(Value(i));
         return Value(std::move(l));
     });
+    // gera_texto(n) -> string com n bytes (resultado maior que o frame máximo quando n > 8 MiB)
+    register_function("gera_texto", [](const TaskArgs& a) {
+        return Value(std::string(static_cast<std::size_t>(a.at(0).as_int()), 'y'));
+    });
     // morrer(): encerra o processo do worker no meio da tarefa (simula queda da máquina/processo).
     register_function("morrer", [](const TaskArgs&) -> Value {
         std::fprintf(stderr, "[test_worker] morrer() chamado: encerrando com codigo 3\n");

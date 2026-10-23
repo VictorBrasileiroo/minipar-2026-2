@@ -1,6 +1,7 @@
 // minipar_rt — processo worker (C-FJ-v1 §2.6). Executa só funções registradas no próprio binário.
 // Cada conexão: HELLO obrigatório -> HELLO_OK; cada TASK roda em uma thread e responde RESULT quando termina.
-// Frame/JSON inválido ou versão diferente: ERROR e fecha SÓ aquela conexão; o worker continua aceitando outras.
+// Frame/JSON inválido ou versão diferente (em qualquer mensagem): ERROR e fecha SÓ aquela conexão; o worker
+// continua aceitando outras. RESULT acima do frame máximo vira TASK_FAILED; envio parado fecha a conexão.
 #pragma once
 
 #include <chrono>
@@ -77,13 +78,26 @@ inline void run_task(const std::shared_ptr<WorkerConnection>& c, std::string req
     }
     fields.emplace_back("worker_id", worker_id());
     std::string payload = make_message("RESULT", std::move(fields)).dump();
-    bool sent = false;
-    if (payload.size() <= net::kMaxFrame) {
+    if (payload.size() > net::kMaxFrame) {
+        // Sem isso o coordenador ficaria sem resposta até o timeout do join.
+        r = TaskResult::failure(ErrorCode::TASK_FAILED,
+                                "resultado de " + std::to_string(payload.size()) + " bytes excede o frame maximo de 8 MiB", {});
+        payload = make_message("RESULT", {{"request_id", request_id},
+                                          {"task_id", task_id},
+                                          {"status", "error"},
+                                          {"error", Json(Json::Object{{"code", to_string(r.error.code)},
+                                                                      {"message", r.error.message}})},
+                                          {"worker_id", worker_id()}})
+                      .dump();
+    }
+    bool sent;
+    {
         std::lock_guard<std::mutex> lk(c->write_m);
         sent = net::write_frame(c->sock.get(), payload);
+        if (!sent) c->sock.shutdown_both();  // coordenador sumiu ou parou de ler: encerra a conexão
     }
     worker_log("RESULT %s fn=%s %s em %lld ms%s", task_id.c_str(), function_id.c_str(),
-               r.ok ? "ok" : to_string(r.error.code), ms, sent ? "" : " (nao entregue: conexao fechada)");
+               r.ok ? "ok" : to_string(r.error.code), ms, sent ? "" : " (nao entregue: conexao fechada ou parada)");
 }
 
 inline void serve_connection(std::shared_ptr<WorkerConnection> c) {
@@ -91,6 +105,7 @@ inline void serve_connection(std::shared_ptr<WorkerConnection> c) {
     std::string frame, err;
 
     net::set_recv_timeout(fd, 10000);  // HELLO precisa chegar em 10 s
+    net::set_send_timeout(fd, send_timeout_ms());
     net::FrameStatus fs = net::read_frame(fd, frame, err);
     if (fs == net::FrameStatus::Invalid) return c->reject(ErrorCode::PROTOCOL_ERROR, err);
     if (fs == net::FrameStatus::Closed) {
@@ -131,6 +146,9 @@ inline void serve_connection(std::shared_ptr<WorkerConnection> c) {
         TaskArgs args;
         try {
             Json msg = Json::parse(frame);
+            if (!same_protocol_version(msg))
+                return c->reject(ErrorCode::VERSION_MISMATCH,
+                                 "mensagem com protocol_version diferente (worker usa " + std::to_string(kProtocolVersion) + ")");
             if (msg.at("type").str() != "TASK")
                 return c->reject(ErrorCode::PROTOCOL_ERROR, "mensagem inesperada: " + msg.at("type").str());
             request_id = msg.at("request_id").str();
