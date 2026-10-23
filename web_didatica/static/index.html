@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MiniPar · Web didática</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <h1>MiniPar <span>· Web didática</span></h1>
+      <p class="aviso-mock" role="status" id="aviso-mock">MOCK · dados de fixtures do contrato C-WEB-v1, sem compilador real</p>
+    </div>
+    <label class="seletor">
+      <span>Exemplo</span>
+      <select id="fixture"></select>
+    </label>
+  </header>
+
+  <main class="bancada">
+    <section class="editor" aria-labelledby="titulo-editor">
+      <div class="cabecalho-painel">
+        <h2 id="titulo-editor">Código</h2>
+        <button type="button" id="restaurar" hidden>Restaurar código do exemplo</button>
+      </div>
+      <div class="area-codigo">
+        <pre class="numeros" id="numeros" aria-hidden="true"></pre>
+        <textarea id="codigo" spellcheck="false" autocomplete="off" aria-label="Código MiniPar"></textarea>
+      </div>
+      <div class="acoes">
+        <button type="button" id="analisar" disabled title="Disponível na integração com o serviço real (WEB-03)">Analisar</button>
+        <button type="button" id="compilar" disabled title="Disponível na integração com o serviço real (WEB-04)">Compilar e executar</button>
+      </div>
+      <h3 class="subtitulo">Diagnósticos</h3>
+      <ul class="diagnosticos" id="diagnosticos"></ul>
+    </section>
+
+    <section class="fases" aria-label="Fases da compilação">
+      <div class="trilha" role="tablist" id="trilha" aria-label="Fases"></div>
+      <div class="painel" role="tabpanel" id="painel" tabindex="0"></div>
+    </section>
+  </main>
+
+  <footer class="rodape" id="rodape"></footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
