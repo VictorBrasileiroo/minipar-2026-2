@@ -36,7 +36,17 @@ function preparar(raiz) {
   return { nos, porId };
 }
 
-export function criarArvoreAst(raiz) {
+// O parser atual não grava `line` em SeqBlock/ParBlock (fica 1); a Web não aponta linha errada.
+const LINHA_NAO_CONFIAVEL = new Set(["SeqBlock", "ParBlock"]);
+const CAMINHO_MAX = 6; // ancestrais mostrados antes de abreviar com "…"
+
+const EXPLICA_TRUNCADO = {
+  max_nodes: (n) => `A AST foi enviada só até o limite de 5000 nós do contrato. ${n} nós desta parte da árvore ficaram de fora.`,
+  max_depth: (n) => `Esta subárvore passava do limite de 200 níveis do contrato. ${n} nós ficaram de fora.`,
+};
+
+// aoSelecionar(linha | null): chamado a cada seleção, com a linha do nó quando ela é confiável.
+export function criarArvoreAst(raiz, { aoSelecionar = () => {} } = {}) {
   const { nos, porId } = preparar(raiz);
   const primeiro = nos[0];
   let selecionado = primeiro;
@@ -61,9 +71,105 @@ export function criarArvoreAst(raiz) {
   }
   barra.append(contagem);
 
+  const detalhes = document.createElement("aside");
+  detalhes.className = "ast-detalhes";
+  detalhes.setAttribute("aria-label", "Detalhes do nó selecionado");
+
+  const corpo = document.createElement("div");
+  corpo.className = "ast-corpo";
+  corpo.append(lista, detalhes);
+
   const elemento = document.createElement("div");
   elemento.className = "arvore-ast";
-  elemento.append(barra, lista);
+  elemento.append(barra, corpo);
+
+  // ------------------------------------------------------------ detalhes do nó
+
+  function linhaConfiavel(no) {
+    return !no.ehMais && !LINHA_NAO_CONFIAVEL.has(no.dado.kind);
+  }
+
+  function par(dl, rotulo, valor) {
+    const dt = document.createElement("dt");
+    dt.textContent = rotulo;
+    const dd = document.createElement("dd");
+    if (valor instanceof Node) dd.append(valor);
+    else dd.textContent = valor;
+    dl.append(dt, dd);
+  }
+
+  function caminhoAte(no) {
+    const ancestrais = [];
+    for (let p = no.pai; p; p = p.pai) ancestrais.unshift(p);
+    const nav = document.createElement("nav");
+    nav.className = "ast-caminho";
+    nav.setAttribute("aria-label", "Caminho até a raiz");
+    const mostrados = ancestrais.length > CAMINHO_MAX ? [ancestrais[0], null, ...ancestrais.slice(-(CAMINHO_MAX - 1))] : ancestrais;
+    for (const anc of mostrados) {
+      if (anc === null) {
+        nav.append(span("ast-caminho-sep", "… ›"));
+        continue;
+      }
+      const botao = document.createElement("button");
+      botao.type = "button";
+      botao.textContent = anc.dado.label;
+      botao.addEventListener("click", () => {
+        selecionar(anc);
+        lista.focus({ preventScroll: true });
+      });
+      nav.append(botao, span("ast-caminho-sep", "›"));
+    }
+    nav.append(span("ast-caminho-atual", no.ehMais ? "mais filhos" : no.dado.label));
+    return nav;
+  }
+
+  function desenharDetalhes(no) {
+    const titulo = document.createElement("h4");
+    const dl = document.createElement("dl");
+    if (no.ehMais) {
+      titulo.textContent = "Mais filhos";
+      par(dl, "nó pai", no.pai.dado.label);
+      par(dl, "ainda ocultos", `${partes(no.pai).restantes} filhos`);
+      detalhes.replaceChildren(titulo, dl, caminhoAte(no));
+      return;
+    }
+    const { dado } = no;
+    titulo.textContent = dado.label;
+    par(dl, "tipo", dado.kind);
+    par(dl, "papel no pai", dado.role === null ? "raiz" : dado.index === null ? dado.role : `${dado.role}[${dado.index}]`);
+    par(dl, "linha", linhaConfiavel(no) ? String(dado.line) : `${dado.line} (não confiável)`);
+    par(dl, "nível", String(no.nivel));
+    if (dado.kind !== "Truncated") {
+      par(dl, "filhos", `${no.filhos.length} diretos · ${no.descendentes} no total`);
+      const atributos = Object.entries(dado.attributes);
+      if (atributos.length) {
+        const tabela = document.createElement("dl");
+        tabela.className = "ast-atributos";
+        for (const [k, v] of atributos) par(tabela, k, v === null ? "null" : Array.isArray(v) ? `[${v.join(", ")}]` : JSON.stringify(v));
+        par(dl, "atributos", tabela);
+      }
+    }
+    const partesDetalhe = [titulo, dl];
+    if (dado.kind === "Truncated") {
+      const { reason, omitted_nodes: omitidos } = dado.attributes;
+      const aviso = document.createElement("p");
+      aviso.className = "ast-aviso";
+      aviso.textContent = (EXPLICA_TRUNCADO[reason] || ((n) => `${n} nós ficaram de fora.`))(omitidos);
+      partesDetalhe.push(aviso);
+    } else if (!linhaConfiavel(no)) {
+      const aviso = document.createElement("p");
+      aviso.className = "ast-aviso";
+      aviso.textContent = "O parser atual não registra a linha de blocos seq/par e devolve sempre 1. Por isso a linha não é destacada no editor. A correção é do Eixo A.";
+      partesDetalhe.push(aviso);
+    }
+    partesDetalhe.push(caminhoAte(no));
+    detalhes.replaceChildren(...partesDetalhe);
+  }
+
+  function anunciar() {
+    desenharDetalhes(selecionado);
+    aoSelecionar(linhaConfiavel(selecionado) && !selecionado.ehMais ? selecionado.dado.line : null);
+  }
 
   // ------------------------------------------------------------ DOM sob demanda
 
@@ -205,6 +311,7 @@ export function criarArvoreAst(raiz) {
     if (selecionado.ehMais) selecionado = selecionado.pai; // o item "mostrar mais" é recriado
     if (!estaVisivel(selecionado)) selecionado = primeiro;
     desenharTudo();
+    anunciar();
   }
 
   function estaVisivel(no) {
@@ -223,6 +330,7 @@ export function criarArvoreAst(raiz) {
     selecionado = no;
     marcarSelecionado();
     selecionado.li?.querySelector(".item-linha")?.scrollIntoView({ block: "nearest" });
+    anunciar();
   }
 
   // Ordem visível (pré-ordem pelos nós abertos, respeitando o lote e o "mostrar mais"), para as setas.
@@ -302,5 +410,6 @@ export function criarArvoreAst(raiz) {
   });
 
   desenharTudo();
-  return { elemento };
+  desenharDetalhes(selecionado);
+  return { elemento, anunciar };
 }

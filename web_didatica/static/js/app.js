@@ -23,7 +23,7 @@ const EXPLICA = {
 };
 
 const $ = (id) => document.getElementById(id);
-const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false, arvore: null };
+const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false, arvore: null, linhaDestacada: null };
 
 function h(tag, atributos = {}, ...filhos) {
   const el = document.createElement(tag);
@@ -71,6 +71,33 @@ function atualizarNumeros() {
   $("numeros").textContent = Array.from({ length: linhas }, (_, i) => i + 1).join("\n");
 }
 
+// Faixa atrás do texto do editor marcando uma linha (nó da AST selecionado ou diagnóstico).
+function posicionarDestaque() {
+  const faixa = $("linha-destaque");
+  const linha = estado.linhaDestacada;
+  faixa.hidden = !linha;
+  if (!linha) return;
+  const area = $("codigo");
+  const estilo = getComputedStyle(area);
+  const altura = parseFloat(estilo.lineHeight);
+  faixa.style.top = `${parseFloat(estilo.paddingTop) + (linha - 1) * altura - area.scrollTop}px`;
+  faixa.style.height = `${altura}px`;
+}
+
+function destacarLinha(linha) {
+  estado.linhaDestacada = linha || null;
+  if (linha) {
+    const area = $("codigo");
+    const altura = parseFloat(getComputedStyle(area).lineHeight);
+    const topo = (linha - 1) * altura;
+    if (topo < area.scrollTop || topo + altura > area.scrollTop + area.clientHeight - altura) {
+      area.scrollTop = Math.max(0, topo - area.clientHeight / 2);
+      $("numeros").scrollTop = area.scrollTop;
+    }
+  }
+  posicionarDestaque();
+}
+
 function selecionarLinha(linha) {
   const texto = $("codigo").value;
   let inicio = 0;
@@ -104,7 +131,10 @@ function desenharDiagnosticos() {
         type: "button",
         onclick: () => {
           if (NOME_FASE[d.phase] && d.phase !== "internal") selecionarFase(d.phase);
-          if (d.line) selecionarLinha(d.line);
+          if (d.line) {
+            selecionarLinha(d.line);
+            destacarLinha(d.line);
+          }
         },
       },
         h("span", { class: "diag-codigo" }, `${d.code} · ${NOME_FASE[d.phase] || d.phase}${onde ? " · " + onde : ""}`),
@@ -183,7 +213,7 @@ function painelAst(dados) {
   }
   const s = dados.ast_stats;
   // A árvore guarda o que está aberto; criada uma vez por exemplo, sobrevive à troca de aba.
-  estado.arvore ??= criarArvoreAst(dados.ast);
+  estado.arvore ??= criarArvoreAst(dados.ast, { aoSelecionar: destacarLinha });
   return [
     h("p", { class: "estat" },
       `${s.emitted} de ${s.nodes} nós · profundidade ${s.depth}${s.truncated ? " · árvore truncada no limite do contrato" : ""}`),
@@ -272,6 +302,7 @@ function desenharPainel() {
   const f = FASES.find((x) => x.chave === estado.fase);
   painel.setAttribute("aria-labelledby", `aba-${f.ancora}`);
   painel.replaceChildren(h("h3", {}, f.nome), h("p", { class: "explica" }, EXPLICA[f.chave]));
+  destacarLinha(null);
   if (estado.descartada) {
     painel.append(h("div", { class: "caixa descartado" }, h("strong", {}, "Resposta descartada"),
       h("span", {}, "O código no editor não é mais o que foi analisado (o source_hash mudou). No modo mock não há reanálise: restaure o código do exemplo ou, na integração, use Analisar.")));
@@ -281,6 +312,7 @@ function desenharPainel() {
   if (dados.status === "skipped") painel.append(caixaPulada(dados));
   else painel.append(...[PAINEIS[f.chave](dados)].flat().filter(Boolean));
   painel.scrollTop = 0;
+  if (f.chave === "parser" && dados.ast) estado.arvore.anunciar(); // reaplica a linha do nó selecionado
 }
 
 // ---------------------------------------------------------------- rodapé e exemplo
@@ -327,7 +359,10 @@ $("codigo").addEventListener("input", async () => {
     desenharTudo();
   }
 });
-$("codigo").addEventListener("scroll", () => { $("numeros").scrollTop = $("codigo").scrollTop; });
+$("codigo").addEventListener("scroll", () => {
+  $("numeros").scrollTop = $("codigo").scrollTop;
+  posicionarDestaque();
+});
 $("restaurar").addEventListener("click", () => {
   $("codigo").value = estado.exemplo.codigo;
   $("codigo").dispatchEvent(new Event("input"));
