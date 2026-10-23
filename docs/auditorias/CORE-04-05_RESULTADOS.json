@@ -1,0 +1,1209 @@
+{
+  "date": "2026-10-23",
+  "branch": "eixo-a/CORE-04-05-fork-join",
+  "base": "a21f172412073d5dc351644b72764e520aafdd4c",
+  "scope": "Lexer -> Parser -> AST -> semantic; Fork/Join backend explicitly refused",
+  "final_runs": {
+    "frontend": "output\\core0405\\run-jwif3fmr\\summary.json",
+    "core03_selection": "output\\core03\\run-rg8rh1vu\\summary.json"
+  },
+  "classification": {
+    "frontend_tests": "90 PASS",
+    "core03_selection": "9 PASS",
+    "unexpected_failures": 0,
+    "static_generic_transport": "PARTIAL",
+    "fork_join_execution": "UNTESTED",
+    "T01_T11_full_regression_network_CPUlator": "UNTESTED"
+  },
+  "frontend": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "tests": 90,
+    "results": [
+      {
+        "test": "__main__.BackendBoundaryTests.test_cli_refuses_before_artifacts",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.BackendBoundaryTests.test_direct_generators_refuse_nested_fork",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.BackendBoundaryTests.test_legacy_native_smoke",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_ast_fields_and_location",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_ast_optional_fields",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_destination_consumes_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_keywords",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_00",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_01",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_02",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_03",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_04",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_05",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_06",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_07",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_08",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_09",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_10",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_11",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_builtin",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_class",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_method",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_missing",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_nested",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_variable",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_02_extra_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_02_missing_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_generic_bad_call",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_number",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_object",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_string",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_unknown",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_boolean_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_destination",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_destination_function",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_after_block",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_before_local",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_caller_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_index_write",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_initializer_global",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_method_transitive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_mutual_recursive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_property_read",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_read",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_recursive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_this_capture",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_transitive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_write",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_arg_from_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_channel_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_channel_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_helper_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_append",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_index_assign",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_object",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_task",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_mixed_returns",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_object_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_object_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_shadow_list_initializer",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_arithmetic",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_core03_string_list",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_core03_string_mix",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_caller_local_not_capture",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_copied_list_value",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_destination_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_destination_invalid_value_runtime",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_for_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_forward_function",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_generic_collect_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_handle_alias_assignment",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_legacy_in_fj_program",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_list_append_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_list_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_call_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_method",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_remote",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_variables",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_mutual_recursion_isolation",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_nested_lists",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_parameter_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_transitive_parameter_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_precedence_calls_properties_and_blocks",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_recursive_unknown_is_recorded",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_task_and_join_result_metadata",
+        "status": "PASS"
+      }
+    ],
+    "evidence": [
+      {
+        "command": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+          "-B",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core0405\\run-jwif3fmr\\tmp5l1prh2u\\program.minipar",
+          "program"
+        ],
+        "exit": 1,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core0405\\run-jwif3fmr\\tmp5l1prh2u\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n",
+        "stderr": "[ERRO BACKEND] Linha 1: Fork/Join validado apenas ate o semantico; TAC/C++ dependem de CORE-06/CORE-07.\n"
+      },
+      {
+        "command": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+          "-B",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core0405\\run-jwif3fmr\\tmp1w44lz2m\\legacy_smoke.minipar",
+          "smoke"
+        ],
+        "exit": 0,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core0405\\run-jwif3fmr\\tmp1w44lz2m\\legacy_smoke.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\smoke.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\smoke.cpp', '-o', 'output\\\\smoke.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\smoke.exe\n=== Processo Finalizado ===\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core0405\\run-jwif3fmr\\tmp1w44lz2m\\output\\smoke.exe"
+        ],
+        "exit": 0,
+        "stdout": "120 ok! b\npar\n",
+        "stderr": ""
+      },
+      {
+        "ast": {
+          "statements": [
+            {
+              "name": "h",
+              "init_value": {
+                "function_name": "f",
+                "arguments": [
+                  {
+                    "value": "2",
+                    "line": 2
+                  },
+                  {
+                    "value": "x",
+                    "line": 2
+                  }
+                ],
+                "destination": {
+                  "value": "host:9000",
+                  "line": 2
+                },
+                "line": 2,
+                "column": 11
+              },
+              "type": "var",
+              "line": 2
+            },
+            {
+              "handle": {
+                "name": "h",
+                "line": 3
+              },
+              "timeout": {
+                "value": "20",
+                "line": 3
+              },
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "line": 1
+        }
+      },
+      {
+        "source": "fork ;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado nome de funcao global apos fork (Encontrado: ';')\n"
+      },
+      {
+        "source": "fork ();",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado nome de funcao global apos fork (Encontrado: '(')\n"
+      },
+      {
+        "source": "fork f;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado '(' apos funcao de fork (Encontrado: ';')\n"
+      },
+      {
+        "source": "fork f(;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "fork f(1;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado ')' apos argumentos de fork (Encontrado: ';')\n"
+      },
+      {
+        "source": "fork f() on ;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "fork f(,1);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "fork f(1,);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "join();",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "join(h;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado ')' apos handle/timeout de join (Encontrado: ';')\n"
+      },
+      {
+        "source": "join(h,);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "join(h,1,2);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado ')' apos handle/timeout de join (Encontrado: ',')\n"
+      },
+      {
+        "source": "var h=fork len([1]);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'len'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} var h=fork A();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'A'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{func method(){return 1;}} var h=fork method();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'method'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var h=fork missing();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'missing'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "seq{func f(){return 1;} var h=fork f();}",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'f'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } seq{var f=3;var h=fork f(1);}",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'f'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var f=3; var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'f'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1,2);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-02: 'f' espera 1 argumento(s), recebeu 2.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-02: 'f' espera 1 argumento(s), recebeu 0.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func collect(h){return join(h);} print(collect(2));",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: collect): FJ-SEM-03: join exige handle task reconhecido, recebeu number.\n",
+        "unresolved": [
+          "Linha 1: join generico depende do tipo do argumento na chamada."
+        ]
+      },
+      {
+        "source": "join(1);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu number.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} join(new A());",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu A.\n",
+        "unresolved": []
+      },
+      {
+        "source": "join(\"task-1\");",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu string.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var h; join(h);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu var.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);join(h,true);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: timeout de join deve ser numerico.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1) on 3;",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: destino de fork deve ser string.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func dest(){return 3;} func f(){return 1;} var h=fork f() on dest();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: destino de fork deve ser string.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);join(h,\"3\");",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: timeout de join deve ser numerico.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){seq{var g=2;}return g;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){var x=g;var g=2;return x;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func helper(){return g;}func f(){var g=2;return helper();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: helper): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=[1];func f(){g[0]=2;return 1;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;class A{var n=g;}func f(){var a=new A();return a.n;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: <inicializacao>): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;class A{func get(){return g;}}func f(){var a=new A();return a.get();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: get): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func a(n){return b(n);}func b(n){if(n==0){return g;}return a(n-1);}var h=fork a(2);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: b): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "class A{var n=1;}var g=new A();func f(){return g.n;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){return g;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(n){if(n==0){return g;}return f(n-1);}var h=fork f(3);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "func f(){return this.n;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa global nao pode capturar this.\n",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "var g=1;func helper(){return g;}func f(){return helper();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: helper): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){g=2;return 1;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func helper(){return new A();}func f(x) { return x; } var h=fork f(helper());",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var c=c_channel(\"local\",9000);var h=fork f(c);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo c_channel nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo c_channel nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(){return c_channel(\"local\",9000);}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo c_channel nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func helper(){return new A();}func f(){return helper();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var v=[];v.append(new A());var h=fork f(v);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var v=[1];v[0]=new A();var h=fork f(v);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var h=fork f([[new A()]]);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var k=fork f([h]);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(n){if(n==0){return 1;}return new A();}var h=fork f(2);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var h=fork f(new A());",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(){return new A();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var v=[fork f(1)];seq{var v=v;var h=fork f(v);}",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var k=fork f(h);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var k=fork f(h+1);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: objeto, canal ou handle nao admite operacao aritmetica.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(){return 1;}func bad(){return fork f();}var h=fork bad();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var v=[\"x\"];",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);print(\"x\"+3);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: Operador '+' entre string e outro tipo exige conversao explicita.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=3; func helper(g){return g;} func f(x){var g=x; return helper(g);} var h=fork f(2);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var v=[1];var a=v;a.append(fork f(2));var h=fork f(v);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var d=\"local\"; var h=fork f(1) on d + \"\"; join(h, len(d));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1) on \"host:abc\"; join(h,-1);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var i=10; func f(n) {var s=0; for(var i in range(n)){s=s+i;} return s;} var h=fork f(4);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var h=fork f(3); func f(x){return x;} join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } func collect(h){return join(h);} var h=fork f(2); print(collect(h));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: join generico depende do tipo do argumento na chamada."
+        ]
+      },
+      {
+        "source": "func f(x) { return x; } var h; h=fork f(1); var a=h; print(join(a));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var s=\"x\";func get(){return this.s+\"!\";}} func f(s){var v=[1,2];v.append(3);return s+to_string(len(v));} seq{par{var h=fork f(\"a\");print(join(h));}}",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var hs=[]; hs.append(fork f(1)); hs.append(fork f(2)); join(hs[0]);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var hs=[fork f(1),fork f(2)]; print(join(hs[0])+join(hs[1]));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var n=1;func get(){return this.n;}}func make(){return new A();}func f(){return make().get();}var h=fork f();",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var n=1;} func make(){return new A();} func f(){var a=make();return a.n;} var h=fork f();",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var n=1; func get(){return this.n;}} func f(){var a=new A();return a.get();} var h=fork f();",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var a=fork f(2); var b=fork f(3) on \"host:9000\"; print(join(a)+join(b,3000)*2);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) {var sum=0; for(var i=0;i<x;i=i+1) {sum=sum+i;} return sum;} var h=fork f(5); join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(n){if(n==0){return 0;} return g(n-1);} func g(n){if(n==0){return 0;} return f(n-1);} var h=fork f(4);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f([[1,2],[3,4]]); var r=join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var g=10; func f(g) {var x=g; seq {var g=4; x=x+g;} return x;} var h=fork f(2); join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var g=10; func helper(g){return g;} func f(x){return helper(x);} var h=fork f(2);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(n) { if (n == 0) {return n;} return f(n-1); } var h=fork f(3);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "func f(x) { return x; } var h = fork f(\"ok\"); var r = join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      }
+    ],
+    "hashes": {
+      "src/lexer.py": "dc6b7ea113c0af92257bc99560abe55515768ff82d49732982b8c8913a15db5e",
+      "src/parser.py": "c505aee174d16ad845cc17160e198c24ff34da46044478c9481e5a442526a9f1",
+      "src/ast_nodes.py": "9405cb694307c8f4da5e7375f9dd8d12a05712f965d35064de5c70f00bcb59e7",
+      "src/semantic.py": "bfb6a2f9d1b6df9ff5198fb20f7d9ad5537ff03239a4bdbd52d4d736b91f6d3d",
+      "src/tac.py": "f2283a26ed30ca5f3ce111875cc20f480650affe6ede6ad28e1260966267ead8",
+      "src/codegen.py": "72fb239aa74690600f2759818d30316a2506c4f2193944238ee98c5eb50af8c4",
+      "main.py": "0fbd2f367030fafe700ec1f9d6eb2f56309b6ef7af4c4537adb52a774a75573d",
+      "tests/2026_2/core0405/verify_core0405.py": "a9341a13423f37ab316c23e92e1671947274ecbd67dacbaad27f79fd2c638b03"
+    }
+  },
+  "core03_selection": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "compiler": {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\g++.exe",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stderr": ""
+    },
+    "hashes": {
+      "main.py": "0fbd2f367030fafe700ec1f9d6eb2f56309b6ef7af4c4537adb52a774a75573d",
+      "src/semantic.py": "bfb6a2f9d1b6df9ff5198fb20f7d9ad5537ff03239a4bdbd52d4d736b91f6d3d",
+      "src/codegen.py": "72fb239aa74690600f2759818d30316a2506c4f2193944238ee98c5eb50af8c4",
+      "src/cpp_template.py": "09c17cfbba51eee49aa5ab424fb3fef06de8ee3bd565df3866972a02c506e95b",
+      "docs/02_CONTRATOS_TECNICOS.md": "a325c69e9d2da2d01bee8f2d8cd5b66fe243a7f776290d22213c508bc65b08ff",
+      "tests/2026_2/core03/verify_core03.py": "d9e215913766fc4514d14c7262e060f4e712bfdc53c567d942dc760d6406885c"
+    },
+    "results": [
+      {
+        "case": {
+          "id": "PROVA-08",
+          "source": "class Buffer {\n    var texto = \"\";\n    func add(s) {\n        this.texto = this.texto + s;\n    }\n}\n\nfunc rotulo(n) {\n    return \"t\" + to_string(n);\n}\n\nvar e = input();\nprint(\"a\" + \"b\");\nprint(\"[\" + \"\" + \"]\");\nvar x = \"R\";\nprint(x + to_string(3) + \", #\" + to_string(0 - 84));\nprint(to_string(7) + \"*\" + substr(e, 2, 1));\nprint(e + \"\\n\" + \"fim\");\nprint(rotulo(1) + \" = \" + rotulo(2));\nvar buf = new Buffer();\nbuf.add(\"MOV\");\nbuf.add(\" R0\");\nbuf.add(\", #\" + to_string(22));\nprint(buf.texto);\nvar acc = \"\";\nvar k = 0;\nwhile (k < 3) {\n    acc = acc + to_string(k) + \";\";\n    k = k + 1;\n}\nprint(acc);\nprint(len(\"ab\" + \"cd\"));\n",
+          "stdin": "((2+4)*7)-(5*4)\n",
+          "stdout": "ab\n[]\nR3, #-84\n7*2\n((2+4)*7)-(5*4)\nfim\nt1 = t2\nMOV R0, #22\n0;1;2;\n4\n"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-08\\program.minipar",
+            "program"
+          ],
+          "exit_code": 0,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-08\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\program.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-08\\output\\program.exe"
+          ],
+          "exit_code": 0,
+          "stdout": "ab\n[]\nR3, #-84\n7*2\n((2+4)*7)-(5*4)\nfim\nt1 = t2\nMOV R0, #22\n0;1;2;\n4\n",
+          "stderr": ""
+        }
+      },
+      {
+        "case": {
+          "id": "PROVA-09",
+          "source": "func mnemonico(op) {\n    if (op == 0) {\n        return \"ADD\";\n    }\n    if (op == 1) {\n        return \"SUB\";\n    }\n    return \"MUL\";\n}\n\nfunc folha(e, n) {\n    if (n == 0) {\n        return \"?\";\n    }\n    return substr(e, 0, n);\n}\n\nvar e = input();\nprint(\"    \" + mnemonico(1) + \"    r2\");\nvar m = mnemonico(2);\nm = m + \"!\";\nprint(m);\nprint(\"[\" + folha(e, 0) + \"|\" + folha(e, 2) + \"]\");\nprint(\"⚙️ Assembly ARMv7 (CPUlator):\");\nprint(\"🔹 \" + substr(e, 2, 1) + \" → CONST\");\n",
+          "stdin": "((2+4)*7)-(5*4)\n",
+          "stdout": "    SUB    r2\nMUL!\n[?|((]\n⚙️ Assembly ARMv7 (CPUlator):\n🔹 2 → CONST\n"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-09\\program.minipar",
+            "program"
+          ],
+          "exit_code": 0,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-09\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\program.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-09\\output\\program.exe"
+          ],
+          "exit_code": 0,
+          "stdout": "    SUB    r2\nMUL!\n[?|((]\n⚙️ Assembly ARMv7 (CPUlator):\n🔹 2 → CONST\n",
+          "stderr": ""
+        }
+      },
+      {
+        "case": {
+          "id": "PROVA-INT",
+          "source": "class Tokens {\n    var tipos = [];\n    var valores = [];\n    func adicionar(tipo, valor) {\n        this.tipos.append(tipo);\n        this.valores.append(valor);\n    }\n}\n\nvar e = input();\nvar tk = new Tokens();\nvar i = 0;\nwhile (i < len(e)) {\n    var c = substr(e, i, 1);\n    if (c >= \"0\" && c <= \"9\") {\n        var num = \"\";\n        while (i < len(e) && substr(e, i, 1) >= \"0\" && substr(e, i, 1) <= \"9\") {\n            num = num + substr(e, i, 1);\n            i = i + 1;\n        }\n        tk.adicionar(0, to_number(num));\n    } else {\n        if (c != \" \") {\n            tk.adicionar(1, i);\n        }\n        i = i + 1;\n    }\n}\n\nvar j = 0;\nvar linha = \"\";\nwhile (j < len(tk.tipos)) {\n    if (j > 0) {\n        linha = linha + \" \";\n    }\n    if (tk.tipos[j] == 0) {\n        linha = linha + \"NUM(\" + to_string(tk.valores[j]) + \")\";\n    } else {\n        linha = linha + \"SIM(\" + substr(e, tk.valores[j], 1) + \")\";\n    }\n    j = j + 1;\n}\nprint(linha);\nprint(\"total=\" + to_string(len(tk.tipos)));\n",
+          "stdin": "((10 -8*7)+4)*2\n",
+          "stdout": "SIM(() SIM(() NUM(10) SIM(-) NUM(8) SIM(*) NUM(7) SIM()) SIM(+) NUM(4) SIM()) SIM(*) NUM(2)\ntotal=13\n"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-INT\\program.minipar",
+            "program"
+          ],
+          "exit_code": 0,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-INT\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\program.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\PROVA-INT\\output\\program.exe"
+          ],
+          "exit_code": 0,
+          "stdout": "SIM(() SIM(() NUM(10) SIM(-) NUM(8) SIM(*) NUM(7) SIM()) SIM(+) NUM(4) SIM()) SIM(*) NUM(2)\ntotal=13\n",
+          "stderr": ""
+        }
+      },
+      {
+        "case": {
+          "id": "NEG-01",
+          "source": "print(\"R\" + 3);",
+          "compile_error": true,
+          "diagnostic": "conversao explicita"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\NEG-01\\program.minipar",
+            "program"
+          ],
+          "exit_code": 1,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\NEG-01\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n",
+          "stderr": "[ERRO SEMANTICO] Linha 1: Operador '+' entre string e outro tipo exige conversao explicita.\n[ERRO] Falha na Analise Semantica. Compilacao abortada.\n"
+        }
+      },
+      {
+        "case": {
+          "id": "REG-LISTA",
+          "source": "func montar(n) {\n    var v = []; for (var i in range(n)) { v.append(i); } return v;\n}\nvar v = montar(3); v[0] = 7; print(v.pop(), v[0], len(v));\nvar vazio = []; print(len(vazio) - 1);\n",
+          "stdout": "2 7 2\n-1\n"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-LISTA\\program.minipar",
+            "program"
+          ],
+          "exit_code": 0,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-LISTA\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\program.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-LISTA\\output\\program.exe"
+          ],
+          "exit_code": 0,
+          "stdout": "2 7 2\n-1\n",
+          "stderr": ""
+        }
+      },
+      {
+        "case": {
+          "id": "REG-RECURSAO",
+          "source": "func fat(n) {\n    if (n <= 1) { return 1; } return n * fat(n - 1);\n}\nprint(fat(6));\n",
+          "stdout": "720\n"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-RECURSAO\\program.minipar",
+            "program"
+          ],
+          "exit_code": 0,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-RECURSAO\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\program.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-RECURSAO\\output\\program.exe"
+          ],
+          "exit_code": 0,
+          "stdout": "720\n",
+          "stderr": ""
+        }
+      },
+      {
+        "case": {
+          "id": "REG-CLASSE",
+          "source": "class Estado {\n    var v = []; var total = 0;\n    func add(n) { this.v.append(n); }\n    func soma(i) {\n        if (i >= len(this.v)) { return 0.0; }\n        this.total = this.total + this.v[i]; return this.v[i] + this.soma(i + 1);\n    }\n    func texto(i) {\n        if (i >= len(this.v)) { return \"fim\"; }\n        return to_string(this.v[i]) + \":\" + this.texto(i + 1);\n    }\n}\nfunc preencher(obj, n) {\n    if (n <= 0) { return; } obj.add(n); preencher(obj, n - 1);\n}\nvar obj = new Estado(); preencher(obj, 3);\nprint(obj.soma(0), obj.total, obj.texto(0));\n",
+          "stdout": "6 6 3:2:1:fim\n"
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-CLASSE\\program.minipar",
+            "program"
+          ],
+          "exit_code": 0,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-CLASSE\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\program.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\REG-CLASSE\\output\\program.exe"
+          ],
+          "exit_code": 0,
+          "stdout": "6 6 3:2:1:fim\n",
+          "stderr": ""
+        }
+      },
+      {
+        "case": {
+          "id": "EXTRA-NEG-LISTA-STRING",
+          "source": "var l = [\"a\", \"b\"]; print(l[1]);",
+          "compile_error": true
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\EXTRA-NEG-LISTA-STRING\\program.minipar",
+            "program"
+          ],
+          "exit_code": 1,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\EXTRA-NEG-LISTA-STRING\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n",
+          "stderr": "[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n[ERRO] Falha na Analise Semantica. Compilacao abortada.\n"
+        }
+      },
+      {
+        "case": {
+          "id": "EXTRA-NEG-APPEND-STRING",
+          "source": "var l = []; l.append(\"x\");",
+          "compile_error": true
+        },
+        "status": "PASS",
+        "compile": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\EXTRA-NEG-APPEND-STRING\\program.minipar",
+            "program"
+          ],
+          "exit_code": 1,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core03\\run-rg8rh1vu\\EXTRA-NEG-APPEND-STRING\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n",
+          "stderr": "[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n[ERRO] Falha na Analise Semantica. Compilacao abortada.\n"
+        }
+      }
+    ]
+  },
+  "checks": {
+    "python_syntax": "PASS (compile(source, filename, exec), no bytecode)",
+    "tested_source_hashes_match_workspace": "PASS"
+  },
+  "documentation_hashes": {
+    "BNF-grammar.md": "992f562013108ddfe39e271a4db073ee81f3a67152088f8144bd93e193b660cd",
+    "docs/auditorias/CORE-04-05_FORK_JOIN.md": "030b35805def7b83110e4206c4b42768c906a30585abd097d71910fffd25222f"
+  }
+}

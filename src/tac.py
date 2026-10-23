@@ -1,6 +1,7 @@
 from __future__ import annotations
 import os
 from typing import Optional
+from ast_nodes import find_fork_join
 from ast_nodes import (
     ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock, BinaryExpr,
     UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
@@ -222,6 +223,9 @@ class TACGenerator:
             self._emit(f"endfunc {node.name}")
 
     def generate_text(self, program: Program) -> str:
+        unsupported = find_fork_join(program)
+        if unsupported is not None:
+            raise NotImplementedError(f"Linha {unsupported.line}: Fork/Join requer CORE-06; TAC nao gerado.")
         if any(isinstance(stmt, FuncDecl) and stmt.name == "quicksort_iterativo" for stmt in program.statements):
             return EXPECTED_QUICKSORT_TAC
         for stmt in program.statements:

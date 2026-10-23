@@ -11,6 +11,7 @@ from ast_nodes import (
     CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign
 )
 from cpp_template import _CPP_HEADER
+from ast_nodes import find_fork_join
 
 class CppCodeGenerator:
     @staticmethod
@@ -51,7 +52,7 @@ class CppCodeGenerator:
     def _translate_expression(self, node: Optional[ASTNode]) -> str:
         if node is None: return "0"
         if isinstance(node, NumberExpr): return node.value
-        if isinstance(node, StringExpr): return f'"{self._escape_string(node.value)}"'
+        if isinstance(node, StringExpr): return f'std::string("{self._escape_string(node.value)}")'
         if isinstance(node, BoolExpr): return "true" if node.value else "false"
         if isinstance(node, IdentifierExpr): return node.name
         if isinstance(node, UnaryExpr): return f"({node.op}{self._translate_expression(node.operand)})"
@@ -81,7 +82,11 @@ class CppCodeGenerator:
             if node.name == "random":
                 return "random_val()"
             if node.name == "len":
-                return f"{self._translate_expression(node.arguments[0])}.size()"
+                return f"__minipar_len({args})"
+            if node.name == "substr":
+                return f"__minipar_substr({args})"
+            if node.name == "to_string":
+                return f"__minipar_to_string({args})"
             if node.name == "range":
                 return f"__minipar_range({args})"
             if node.name == "to_number":
@@ -158,7 +163,7 @@ class CppCodeGenerator:
     def _translate_statement(self, node: Optional[ASTNode], indent: str = "") -> str:
         if node is None: return ""
         if isinstance(node, VarDecl):
-            expr = self._translate_expression(node.init_value) if node.init_value else "0"
+            expr = self._translate_expression(node.init_value) if node.init_value else ('std::string()' if node.type == "string" else "0")
             return f"{indent}auto {node.name} = {expr};\n"
         if isinstance(node, Assignment):
             return f"{indent}{node.name} = {self._translate_expression(node.value)};\n"
@@ -238,7 +243,7 @@ class CppCodeGenerator:
     def _translate_for_part(self, node: Optional[ASTNode]) -> str:
         if node is None: return ""
         if isinstance(node, VarDecl):
-            expr = self._translate_expression(node.init_value) if node.init_value else "0"
+            expr = self._translate_expression(node.init_value) if node.init_value else ('std::string()' if node.type == "string" else "0")
             return f"auto {node.name} = {expr}"
         if isinstance(node, Assignment):
             return f"{node.name} = {self._translate_expression(node.value)}"
@@ -259,6 +264,11 @@ class CppCodeGenerator:
                 os.remove(exe_path)
         except OSError as exc:
             print(f"[ERRO] Nao foi possivel preparar saida: {exc}", file=sys.stderr)
+            return False
+
+        unsupported = find_fork_join(program)
+        if unsupported is not None:
+            print(f"[ERRO BACKEND] Linha {unsupported.line}: Fork/Join requer CORE-07; C++ nao gerado.", file=sys.stderr)
             return False
 
         cpp_code = _CPP_HEADER

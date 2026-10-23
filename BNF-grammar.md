@@ -13,6 +13,13 @@
 > o relatório técnico do projeto e as especificações formais fornecidas pelo professor.
 > Ela descreve **toda** a sintaxe aceita pelo compilador MiniPar 2026.1.
 
+> **Atualização MiniPar 2026.2 — CORE-03 (23/10/2026):** primitivas de strings
+> de C-T11-v1 §3.3 implementadas nas seções 14, 15 e nas notas de implementação.
+> `substr` e `to_string` usam a produção existente `<chamada_funcao>` (`FuncCallExpr`),
+> sem novos tokens ou produções. Os créditos e a gramática de origem foram preservados.
+> **CORE-04/05 (23/10/2026):** tokens e produções Fork/Join na seção 10 e BNF
+> consolidada; análise semântica implementada, geração/execução pendentes de CORE-06/07.
+
 ---
 
 ## Sumário
@@ -62,7 +69,7 @@ Comentários iniciados por `#` são descartados pelo lexer antes da geração de
 class  extends  new  func  var
 if  else  while  do  for  in
 break  continue  return
-seq  par  this
+seq  par  this  fork  join  on
 c_channel  send  receive  input  print  matrix
 true  false
 number  int  string  bool  void  list  dict
@@ -202,6 +209,8 @@ class Cachorro extends Animal {
             | <comando_continue>
             | <chamada_funcao> ";"
             | <chamada_metodo> ";"
+            | <expressao_fork> ";"
+            | <expressao_join> ";"
 ```
 
 ### 5.1 Atribuição
@@ -534,8 +543,61 @@ As expressões seguem a hierarquia de precedência implementada no parser (da me
                        | <expressao_input>
                        | <expressao_lista>
                        | <expressao_matrix>
+                       | <expressao_fork>
+                       | <expressao_join>
                        | "(" <expressao> ")"
 ```
+
+### Fork/Join — CORE-04/05 (2026.2)
+
+```bnf
+<expressao_fork> ::= "fork" <IDENTIFIER> "(" [ <lista_argumentos> ] ")" [ "on" <expressao> ]
+<expressao_join> ::= "join" "(" <expressao> [ "," <expressao> ] ")"
+```
+
+São expressões primárias, também aceitas como comandos terminados por `;`.
+O sufixo `on` consome uma expressão completa como destino; para aplicar um
+operador ao handle depois do destino, delimitar o fork com parênteses.
+Sem `on`, `destination=None` representa execução local. `"local"` e
+`"host:porta"` são valores string; a validade do endereço pertence ao runtime.
+Os argumentos e o destino permanecem expressões da AST, sem captura implícita.
+`fork` retorna `task`, um tipo **inferido**, sem nova palavra de tipo declarativo.
+`join` devolve o tipo do resultado da tarefa quando conhecido, ou `unknown`.
+Chamadas, propriedades, índices e precedência aritmética existentes são preservados.
+
+```minipar
+func dobro(n) { var r = n * 2; return r; }
+seq {
+    var h1 = fork dobro(3);
+    var h2 = fork dobro(4) on "local";
+    print(join(h1) + join(h2, 1000));
+}
+```
+
+Este exemplo passa pelo Lexer/Parser/AST/semântico; **não executa ainda**.
+Até CORE-06/07, o pipeline recusa Fork/Join explicitamente antes de gerar TAC/C++.
+
+| Regra | Validação implementada |
+|---|---|
+| FJ-SEM-01 | Nome deve resolver função global, sem variável ou função local sombreando-o |
+| FJ-SEM-02 | Aridade igual à quantidade de parâmetros |
+| FJ-SEM-03 | Handle reconhecido como `task`; funções genéricas são verificadas novamente nas chamadas conhecidas |
+| FJ-SEM-04 | Destino string e timeout numérico, quando os tipos são conhecidos |
+| FJ-SEM-05 | Proibir leitura/escrita de global mutável na tarefa e nas funções/métodos chamados, respeitando escopos e sombreamento |
+| FJ-SEM-06 | Proibir objetos, canais e handles nos argumentos/retornos, inclusive dentro das coleções conhecidas |
+
+Parâmetros e locais são analisados com os tipos dos argumentos de cada chamada;
+a análise de uma função global não herda os locais do chamador. Chamadas recursivas
+não são expandidas indefinidamente: retornos não demonstrados ficam `unknown`.
+São transportáveis números, booleanos, strings e listas desses valores; `matrix`
+é tratada como coleção aninhada na verificação parcial. Retorno vazio representa
+`none` do runtime. A restrição temporária de listas de strings do CORE-03 continua.
+O acompanhamento de listas é conservador: não representa posições individuais nem
+remove tipos após `pop`/sobrescrita; listas heterogêneas podem produzir `unknown`.
+Mutação através de chamadas/atributos e fluxos genéricos não têm inferência completa.
+Ausência de diagnóstico nesses casos **não comprova** serialização nem execução.
+Detalhes da AST, metadados, evidências e limites em
+[`docs/auditorias/CORE-04-05_FORK_JOIN.md`](docs/auditorias/CORE-04-05_FORK_JOIN.md).
 
 ### Tabela de Precedência (maior nível = avaliado primeiro)
 
@@ -613,8 +675,14 @@ var dado = receive(c_channel("127.0.0.1", 5000));
 ```minipar
 var vazio = [];
 var numeros = [1, 2, 3, 4, 5];
-var misto = [0, "texto", true];
+var negativos = [0, -1, -2];
 ```
+
+O backend atual armazena listas numéricas como `std::vector<double>`. Listas de
+strings continuam previstas na sintaxe da linguagem, mas ainda não têm implementação
+completa (C-T11-v1 §3.4, PEND-T11-03). Literais e `append`/`push_back` de strings
+identificados pelo semântico são rejeitados com diagnóstico; tipos desconhecidos
+ficam sujeitos à checagem do C++. CORE-03 não implementa listas de strings.
 
 ### 12.2 Indexação
 
@@ -695,7 +763,10 @@ var numero = to_number(input("Digite um número: "));
 <literal_numero> ::= <digito> { <digito> } [ "." { <digito> } ]
 ```
 
-Representa inteiros e ponto flutuante. Internamente ambos são tratados como `double` no C++ gerado.
+Representa inteiros e ponto flutuante. O C++ deduz o tipo dos literais (`int` ou
+ponto flutuante); elementos das listas numéricas e `to_number` usam `double`.
+`len` devolve um inteiro com sinal (`std::ptrdiff_t`), portanto `len("") - 1`
+e `len([]) - 1` resultam em `-1`.
 
 **Exemplos:** `0`, `42`, `3.14`, `0.5`
 
@@ -710,6 +781,22 @@ Representa inteiros e ponto flutuante. Internamente ambos são tratados como `do
                      | "\\" '"'    # aspas duplas
                      | "\\" "\\"   # barra invertida
 ```
+
+Literais são traduzidos para `std::string`, inclusive quando inicializam variáveis
+ou atributos e quando são retornados por funções/métodos. Uma função pode retornar
+literal em um ramo e string calculada em outro. `string s;` inicia uma string vazia.
+UTF-8 é preservado na saída; `len` e `substr` contam **bytes**, sem decodificar Unicode
+(as expressões do Teste 11 são ASCII).
+
+`+` concatena dois valores string: literais, variáveis, atributos, retornos de
+funções/métodos e resultados de `substr`/`to_string`, incluindo acumulação em laço.
+String + número exige `to_string` explícito. Comparações `==`, `!=`, `<`, `<=`, `>`
+e `>=` entre strings usam conteúdo e ordem lexicográfica por byte, inclusive entre
+dois literais; `"10" < "9"` é verdadeiro. String comparada com número é rejeitada.
+Operandos de tipos conhecidos incompatíveis falham no semântico; parâmetros e
+retornos ainda desconhecidos são verificados pelo compilador C++.
+`&&` e `||` preservam o curto-circuito do C++, permitindo proteger `substr` com
+`i < len(s) && substr(s, i, 1) == "x"`.
 
 ### 14.3 Booleano
 
@@ -739,9 +826,28 @@ As seguintes funções são reconhecidas pelo analisador semântico e traduzidas
 | `exp(x)` | `exp(number)` → `number` | Exponencial natural (eˣ) |
 | `random()` | `random()` → `number` | Número aleatório entre 0 e 1 |
 | `range(n)` / `range(a,b)` | `range(int)` → `list` | Gera sequência inteira |
-| `len(col)` | `len(list\|string)` → `number` | Comprimento de coleção |
+| `len(col)` | `len(list\|string)` → `number` | Comprimento com sinal; bytes em strings (também aceita matrizes) |
+| `substr(s, inicio, tamanho)` | `substr(string, number, number)` → `string` | Cópia de recorte base 0, com índices inteiros e limites estritos |
+| `to_string(x)` | `to_string(number)` → `string` | Inteiros, inclusive em `double`, sem casas decimais e com sinal negativo |
 | `to_number(s)` | `to_number(string)` → `number` | Converte string para número |
 | `parse_ints(s)` | `parse_ints(string)` → `list` | Parseia inteiros de string separados por espaço |
+
+`substr` exige exatamente três argumentos; `len` e `to_string`, exatamente um.
+Aridade e tipos conhecidos são verificados no semântico. Para `substr`, índices
+numéricos com valor inteiro exato (`2`, `2.0`, valor de lista numérica) são aceitos.
+Exigem-se valores finitos e `0 <= inicio <= len(s)`,
+`0 <= tamanho <= len(s) - inicio`. Não há truncamento, arredondamento, índice negativo
+nem redução automática do tamanho. São válidos `substr(s, len(s), 0)` e
+`substr("", 0, 0)`; a string original não muda. Valores fracionários, NaN, infinito
+ou fora dos limites escrevem diagnóstico com `substr`, `inicio`, `tamanho` e `len`
+no stderr, descarregam o stdout anterior e encerram o processo com código **1**.
+
+`to_string` formata valores inteiros sem converter para um tipo inteiro de faixa
+menor: `42.0` vira `"42"`, `-46.0` vira `"-46"` e zero negativo vira `"0"`.
+Para valores fracionários usa a precisão `max_digits10` do tipo C++, com locale
+clássico (ponto decimal, sem separador de milhar); notação científica pode aparecer.
+NaN e infinito seguem a representação do stream C++. Esses valores não inteiros
+não fazem parte das entradas exigidas pelo T11.
 
 ### Métodos de Lista (acesso via ponto)
 
@@ -825,6 +931,8 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
             | <comando_continue>
             | <chamada_funcao> ";"
             | <chamada_metodo> ";"
+            | <expressao_fork> ";"
+            | <expressao_join> ";"
 
 <atribuicao>        ::= <alvo_atribuicao> "=" <expressao> ";"
 <alvo_atribuicao>   ::= <IDENTIFIER>
@@ -888,6 +996,12 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
 (* send já listado em <comando_send> *)
 
 
+(* ─── FORK/JOIN — 2026.2; frontend implementado, backend pendente ─── *)
+
+<expressao_fork> ::= "fork" <IDENTIFIER> "(" [ <lista_argumentos> ] ")" [ "on" <expressao> ]
+<expressao_join> ::= "join" "(" <expressao> [ "," <expressao> ] ")"
+
+
 (* ─── COLEÇÕES ─── *)
 
 <expressao_lista>   ::= "[" [ <expressao> { "," <expressao> } ] "]"
@@ -937,6 +1051,8 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
                        | <expressao_input>
                        | <expressao_lista>
                        | <expressao_matrix>
+                       | <expressao_fork>
+                       | <expressao_join>
                        | "(" <expressao> ")"
 
 <lista_argumentos>   ::= <expressao> { "," <expressao> }
@@ -985,8 +1101,12 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 | `input(...)` | `string` |
 | `new Classe(...)` | `Classe` |
 | `this` | nome da classe atual |
+| `fork f(...)` | `task`, com resultado parcial associado ao handle |
+| `join(h[, timeout])` | tipo conhecido do resultado de `h`, ou `unknown` |
 | `op` relacional / lógico | `bool` |
 | `"a" + "b"` (concatenação) | `string` |
+| `substr(...)`, `to_string(...)` | `string` |
+| `len(...)`, `to_number(...)` | `number` |
 | Operação aritmética | `number` |
 | Identificador | tipo declarado na tabela de símbolos |
 | Desconhecido | `unknown` (compatível com qualquer tipo) |
@@ -1000,6 +1120,9 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 | Incompatibilidade de tipos | `Tipo incompatível em atribuição de 'x'.` |
 | Função não declarada | `Função 'f' não declarada.` |
 | Aridade errada (função) | `Função 'f' espera N argumento(s), recebeu M.` |
+| `substr`, `to_string`, `len` com tipo conhecido incorreto | `Funcao 'f': esperado tipo, recebido tipo.` |
+| `+` ou comparação entre string e outro tipo conhecido | `Operador 'op' entre string e outro tipo exige conversao explicita.` |
+| Lista literal ou append de string conhecida | `Listas de strings ainda nao suportadas (C-T11-v1 3.4).` |
 | Classe não declarada | `Classe 'C' não declarada.` |
 | Superclasse não declarada | `Superclasse 'S' não declarada.` |
 | Método inexistente | `Método 'm' não declarado em 'C'.` |
@@ -1023,7 +1146,12 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 | `exp(x)` | `std::exp(x)` |
 | `random()` | `random_val()` |
 | `to_number(s)` | `std::stod(s)` |
-| `len(x)` | `x.size()` |
+| Literal `"texto"` | `std::string("texto")` (armazenamento e retornos reais) |
+| `a + b` entre strings | `a + b` sobre `std::string` |
+| Comparações entre strings | operadores C++ sobre `std::string` (conteúdo/lexicografia) |
+| `len(x)` | `__minipar_len(x)` → `std::ptrdiff_t` |
+| `substr(s, inicio, tamanho)` | `__minipar_substr(s, inicio, tamanho)` → `std::string` (validação antes de `s.substr`) |
+| `to_string(x)` | `__minipar_to_string(x)` → `std::string` (stream com formatação numérica) |
 | `range(n)` | `__minipar_range(n)` |
 | `input(p)` | `input(p)` (helper C++) |
 
