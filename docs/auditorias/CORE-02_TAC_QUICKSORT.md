@@ -1,11 +1,11 @@
 # CORE-02 — TAC autêntico e Quicksort iterativo seguro
 
 **Responsável:** Eixo A / coordenador, execução assistida por Codex.  
-**Data:** 23/10/2026. **Branch local:** `eixo-a/CORE-02-tac-quicksort`.  
+**Data inicial:** 23/10/2026. **Revisão:** 26/10/2026. **Branch publicada:** `eixo-a/CORE-02-tac-quicksort-review` (PR #16).
 **Base:** `origin/dev` atualizado por `git fetch origin dev`, commit `577df2091340aba1879d3dc958433a9f7b1dd460`.  
 **Referências:** ADR-015/016, card CORE-02, doc 05 §2 e baseline CORE-01 (DEF-03/04).
 
-Execução exclusivamente local autorizada pelo coordenador apesar de `ready=false` no backlog. Árvore inicialmente limpa, na branch CORE-04/05; a nova branch nasceu diretamente de `origin/dev`. Nenhum commit, push, PR, merge, rebase ou cherry-pick realizado; estados, cards e aprovações preservados. **Avaliação técnica: pronto para revisão humana; não é DONE nem integração aprovada.**
+Execução exclusivamente local autorizada pelo coordenador apesar de `ready=false` no backlog. Árvore inicialmente limpa, na branch CORE-04/05; a nova branch nasceu diretamente de `origin/dev`. Essa descrição refere-se à execução local inicial; a publicação posterior e a recuperação estão registradas abaixo. Estados dos cards preservados. **Avaliação técnica: pronto para revisão humana; não é DONE nem integração aprovada.**
 
 ## Causas e correções
 
@@ -134,3 +134,19 @@ Verificados `AGENTS.md`, `MEMORY.md`, `README.md`, docs 01/02/03/04/05, doc 08, 
 - **Planejamento, contratos e backlog:** não alterados. A correção executa a ADR-016 e o aceite existente do CORE-02, sem mudança de assinatura/campo/evento ou aprovação automática.
 
 **Handoff:** revisão humana do coordenador/Eixo A; após autorização de publicação, revisão de consumidor para integração. CORE-06 recebe o TAC genérico; CORE-10 pode reproduzir a regressão e CORE-08 consumir o texto real. Nenhum outro eixo nem `legacy/` foi modificado.
+
+## Auditoria de manutenção — 26/10/2026 (PR #16)
+
+Autorização expressa do coordenador nesta tarefa: corrigir documentação pertinente, commitar e publicar na branch original e comentar no PR. Abrange README e notas documentais compartilhadas. A exceção inicial com `ready=false` foi autorizada pelo coordenador para execução local; não transforma contratos pendentes em aprovados nem cards em DONE.
+
+Histórico verificado por `git log origin/dev`: `a61d61e` foi publicado em dev e revertido por `dc7bf47`; `d5d0b52` foi publicado e revertido por `c67f061`. A correção foi reapresentada em `5d0429671111d550fa7e78262082c4f4b992ceb1`, na branch deste PR. Esses commits e reverts são preservados. `origin/dev` consultado nesta auditoria está em `84934b9` e inclui #7/#8/#9; nenhuma publicação desta manutenção tem dev/main como destino.
+
+Erasmo aprovou o PR em 26/10 com ressalvas não bloqueantes. Este novo commit documental poderá exigir renovação da aprovação. Publicação é verificável pelo head remoto e pelo comentário de handoff; não se declara merge ou aprovação deste agente.
+
+Validação novamente executada com Python 3.12.4 da `.venv` e G++ UCRT64 16.2.0 (os mesmos quatro comandos acima): 5/5 testes TAC PASS; T07 PASS, mutação PASS, limites PASS e comparação textual com snapshot INFO/diferente; T06 PASS; 17/17 casos nativos e 17/17 com assertions PASS. Evidências: `output/core01/run-20261026-175616/baseline.json`, `output/core01/run-20261026-175627/baseline.json`, `output/core02/run-20261026-175631-174923/validation.json`. `git diff --check`: PASS. T01/T02 intermitentes e T04 parcial permanecem como baseline histórica; não reexecutados neste recorte documental.
+
+Pendências fora do CORE-02: underflow genérico de `len(x)-1` neste backend (o CORE-03 contém a correção de comprimento com sinal); TAC de for-in sem laço real; continue de do-while pulando a condição; fallback `?`; break/continue fora de laço com labels inexistentes; parâmetros formais ausentes na declaração TAC; parâmetros intercalados em chamadas aninhadas. São achados preexistentes da revisão, não corrigidos nem certificados por esta rodada. Exigem card/aceite próprios antes de ampliar o gerador (consumidores CORE-06/08/10).
+
+O snapshot `.expected.tac` permanece byte a byte intacto, com aviso no seu diretório. Docs 00/08 preservam o diagnóstico histórico, acrescentando referência ao estado deste PR; doc 11 mantém o aceite de integração aberto. O catálogo C-WEB-v1 e PEND-WEB-05 não foram removidos: a proposta `docs/CR-CORE02-TAC-STATUS.md` registra a atualização dependente de aprovação de A/B. Nenhuma assinatura/campo/evento foi alterada.
+
+Documentos verificados: AGENTS, MEMORY, README, docs 00/01/02/03/04/05/08/11, BNF, baseline e template de handoff. Atualizados README, este handoff, notas 00/08/11, CR e aviso dos oráculos. AGENTS e MEMORY não precisam mudar: não houve nova regra permanente, ownership ou fluxo; a autorização é específica desta tarefa. BNF e diagramas não precisam mudar, pois o código funcional e a sintaxe foram preservados. Próximos consumidores: revisores do #16 e CORE-06/08/10.

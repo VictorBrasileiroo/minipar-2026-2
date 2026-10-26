@@ -78,7 +78,7 @@ Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do S
 
 ## Validação local do CORE-02
 
-O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo gerador genérico, sem selecionar saída pelo nome da função. Implementação e evidências locais de 23/10/2026: [`CORE-02_TAC_QUICKSORT.md`](docs/auditorias/CORE-02_TAC_QUICKSORT.md). A entrega aguarda revisão humana; não altera o estado do card.
+O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo gerador genérico, sem selecionar saída pelo nome da função. Implementação e evidências locais de 23/10/2026: [`CORE-02_TAC_QUICKSORT.md`](docs/auditorias/CORE-02_TAC_QUICKSORT.md). O estado de revisão e publicação está no handoff e no PR #16; a integração depende de decisão humana.
 
 ```powershell
 .\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
