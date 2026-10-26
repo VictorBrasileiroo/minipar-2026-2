@@ -8,10 +8,9 @@ from ast_nodes import (
     UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
     DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
     ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
-    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign
+    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign, find_fork_join
 )
 from cpp_template import _CPP_HEADER
-from ast_nodes import find_fork_join
 
 class CppCodeGenerator:
     @staticmethod
@@ -166,10 +165,10 @@ class CppCodeGenerator:
             expr = self._translate_expression(node.init_value) if node.init_value else ('std::string()' if node.type == "string" else "0")
             return f"{indent}auto {node.name} = {expr};\n"
         if isinstance(node, Assignment):
-            return f"{indent}{node.name} = {self._translate_expression(node.value)};\n"
+            return f"{indent}__minipar_assign({node.name}, {self._translate_expression(node.value)});\n"
         if isinstance(node, PropertyAssign):
             obj = self._translate_expression(node.object)
-            return f"{indent}{obj}->{node.property_name} = {self._translate_expression(node.value)};\n"
+            return f"{indent}__minipar_assign({obj}->{node.property_name}, {self._translate_expression(node.value)});\n"
         if isinstance(node, IndexAssign):
             tgt = self._translate_expression(node.target)
             return f"{indent}{tgt} = {self._translate_expression(node.value)};\n"
@@ -246,9 +245,9 @@ class CppCodeGenerator:
             expr = self._translate_expression(node.init_value) if node.init_value else ('std::string()' if node.type == "string" else "0")
             return f"auto {node.name} = {expr}"
         if isinstance(node, Assignment):
-            return f"{node.name} = {self._translate_expression(node.value)}"
+            return f"__minipar_assign({node.name}, {self._translate_expression(node.value)})"
         if isinstance(node, PropertyAssign):
-            return f"{self._translate_expression(node.object)}->{node.property_name} = {self._translate_expression(node.value)}"
+            return f"__minipar_assign({self._translate_expression(node.object)}->{node.property_name}, {self._translate_expression(node.value)})"
         if isinstance(node, IndexAssign):
             return f"{self._translate_expression(node.target)} = {self._translate_expression(node.value)}"
         return self._translate_expression(node)

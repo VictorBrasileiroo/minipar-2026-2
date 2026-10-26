@@ -199,19 +199,23 @@
         "SET-02"
       ],
       "priority": "P0",
-      "deliverable": "`len`, `substr`, `to_string`, string `std::string`, listas textuais mínimas",
+      "deliverable": "`len`, `substr`, `to_string`, string `std::string`; listas numéricas para T11; rejeição temporária de listas textuais (C-T11-v1 §3.4)",
       "acceptance": "Programas de prova T11 compilam/produzem oráculos; regressão anterior sem piora.",
       "allowed_paths": [
         "src/codegen.py",
         "src/semantic.py",
-        "src/cpp_template.py"
+        "src/cpp_template.py",
+        "BNF-grammar.md",
+        "tests/2026_2/core03/",
+        "docs/auditorias/CORE-03_*"
       ],
       "estimate_hours": 6,
       "status": "BACKLOG",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "scope_authorization": "26/10/2026: coordenador autoriza auditoria/correção e atualização do PR #14, incluindo testes, BNF e evidências. Listas textuais completas ficam em PEND-T11-03; ready/status e aprovação contratual não são alterados por esta manutenção."
     },
     {
       "id": "CORE-04",
@@ -228,14 +232,20 @@
         "src/lexer.py",
         "src/parser.py",
         "src/ast_nodes.py",
-        "docs/"
+        "docs/",
+        "BNF-grammar.md",
+        "main.py",
+        "src/tac.py",
+        "src/codegen.py",
+        "tests/2026_2/core0405/"
       ],
       "estimate_hours": 6,
       "status": "BACKLOG",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "scope_authorization": "26/10/2026: coordenador autoriza corrigir o PR #15, integrar CORE-03 sem rebase e publicar um commit na branch original. Extensão cobre BNF, guardas mínimas contra backend prematuro, testes e evidências; não libera CORE-06/07 nem altera ready/status/aprovações."
     },
     {
       "id": "CORE-05",
@@ -249,14 +259,21 @@
       "deliverable": "Regras semânticas e tipos/handles necessários",
       "acceptance": "Uso indevido rejeitado; funções e destinos válidos aceitos; semântico preserva regressão.",
       "allowed_paths": [
-        "src/semantic.py"
+        "src/semantic.py",
+        "BNF-grammar.md",
+        "main.py",
+        "src/tac.py",
+        "src/codegen.py",
+        "tests/2026_2/core0405/",
+        "docs/"
       ],
       "estimate_hours": 4,
       "status": "BACKLOG",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "scope_authorization": "26/10/2026: coordenador autoriza corrigir o PR #15, integrar CORE-03 sem rebase e publicar um commit na branch original. Extensão cobre BNF, guardas mínimas contra backend prematuro, testes e evidências; não libera CORE-06/07 nem altera ready/status/aprovações."
     },
     {
       "id": "CORE-06",

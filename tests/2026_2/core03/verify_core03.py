@@ -21,6 +21,28 @@ EXPRESSION = "((2+4)*7)-(5*4)"
 
 
 def cases():
+    # Review regressions: numeric assignments must never become C++ char writes.
+    review_negatives = {
+        "REVIEW-ATRIBUTO": 'class C { var t = ""; } var c = new C(); c.t = 65; print(c.t);',
+        "REVIEW-METODO": 'class C { var t = ""; func set(n) { this.t = n; } } var c = new C(); c.set(72); print(c.t);',
+        "REVIEW-RETORNO-FUNCAO": 'func n() { return 67; } var s = "z"; s = n(); print(s);',
+        "REVIEW-RETORNO-METODO": 'class C { func n() { return 67; } } var c = new C(); var s = "z"; s = c.n(); print(s);',
+        "REVIEW-PARAMETRO": 'func set(n) { var s = ""; s = n; return s; } print(set(72));',
+        "REVIEW-FOR": 'func n() { return 65; } var s = ""; for (var i = 0; i < 1; s = n()) { i = i + 1; } print(s);',
+    }
+    for name, source in review_negatives.items():
+        yield dict(id=name, source=source, compile_error=True,
+                   diagnostic="Tipo incompativel" if name == "REVIEW-ATRIBUTO" else "atribuicao")
+    for native in ("to_string", "substr", "len", "range", "exp", "random", "to_number", "parse_ints"):
+        yield dict(id="REVIEW-NOME-" + native, source=f'func {native}(a) {{ return a * 2; }} print({native}(21));',
+                   compile_error=True, diagnostic="reservado")
+    yield dict(id="REVIEW-STRINGS-VALIDAS", source='''
+class C { var t = ""; func set(s) { this.t = s; } func get() { return this.t; } }
+func texto(s) { var r = ""; r = s; return r; }
+var c = new C(); c.t = "a"; c.set("b"); var s = ""; s = c.get();
+s = texto(s); for (var i = 0; i < 1; s = "c") { i = i + 1; }
+print(c.t, s, texto("ok"));
+''', stdout="b c ok\n")
     contract = (ROOT / "docs/02_CONTRATOS_TECNICOS.md").read_text(encoding="utf-8")
     section = contract.split("### 3.5 ", 1)[1].split("### 3.6 ", 1)[0]
     sources = dict(re.findall(r"#### (PROVA-(?:\d+|INT))[^\n]*\n.*?```minipar\n(.*?)```", section, re.S))

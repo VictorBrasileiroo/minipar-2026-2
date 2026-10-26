@@ -42,6 +42,15 @@ std::string input(const std::string& prompt) {
     return input();
 }
 
+// Bloqueia a conversao silenciosa std::string = numero/char em caminhos genericos.
+template<typename T, typename V>
+decltype(auto) __minipar_assign(T& target, const V& value) {
+    constexpr bool invalid = std::is_same_v<std::decay_t<T>, std::string>
+                             && std::is_arithmetic_v<std::decay_t<V>>;
+    static_assert(!invalid, "Tipo incompativel em atribuicao: string exige texto");
+    if constexpr (!invalid) return target = value;
+}
+
 // C-T11-v1: comprimento assinado; strings sao medidas em bytes.
 template<typename T>
 std::ptrdiff_t __minipar_len(const T& value) {

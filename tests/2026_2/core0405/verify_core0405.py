@@ -8,6 +8,7 @@ from __future__ import annotations
 from contextlib import redirect_stderr
 from dataclasses import asdict
 import hashlib
+import importlib.util
 import io
 import json
 import os
@@ -32,6 +33,14 @@ from codegen import CppCodeGenerator
 IDENTITY = 'func f(x) { return x; } '
 WORK = None
 EVIDENCE = []
+
+
+def portable(value):
+    if isinstance(value, str):
+        return value.replace(str(ROOT).replace('\\', '\\\\'), '.').replace(str(ROOT), '.').replace(ROOT.as_posix(), '.')
+    if isinstance(value, list): return [portable(item) for item in value]
+    if isinstance(value, dict): return {key: portable(item) for key, item in value.items()}
+    return value
 
 
 def parse(source):
@@ -108,6 +117,12 @@ class FrontendTests(unittest.TestCase):
         self.assertTrue(ok, err)
         self.assertTrue(semantic.unresolved_fj, 'Recursao nao pode ser declarada tipada por completo')
 
+    def test_unknown_join_is_unresolved(self):
+        ok, err, semantic, _ = analyze('var h; join(h);')
+        self.assertTrue(ok, err)
+        self.assertEqual(err, '')
+        self.assertTrue(semantic.unresolved_fj)
+
 
 POSITIVES = {
     'local_remote': IDENTITY + 'var a=fork f(2); var b=fork f(3) on "host:9000"; print(join(a)+join(b,3000)*2);',
@@ -144,7 +159,6 @@ NEGATIVES = {
     '02_extra_arg': (IDENTITY + 'var h=fork f(1,2);', 'FJ-SEM-02'),
     '03_number': ('join(1);', 'FJ-SEM-03'),
     '03_string': ('join("task-1");', 'FJ-SEM-03'),
-    '03_unknown': ('var h; join(h);', 'FJ-SEM-03'),
     '03_object': ('class A{} join(new A());', 'FJ-SEM-03'),
     '03_generic_bad_call': ('func collect(h){return join(h);} print(collect(2));', 'FJ-SEM-03'),
     '04_destination': (IDENTITY + 'var h=fork f(1) on 3;', 'FJ-SEM-04'),
@@ -311,11 +325,17 @@ if __name__ == '__main__':
     parent.mkdir(parents=True, exist_ok=True)
     WORK = Path(tempfile.mkdtemp(prefix='run-', dir=parent))
     suite = unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__])
+    spec = importlib.util.spec_from_file_location('core0405_review', Path(__file__).with_name('test_review_regressions.py'))
+    review = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(review)
+    suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(review))
     result = unittest.TextTestRunner(verbosity=2, resultclass=RecordingResult).run(suite)
     files = ['src/lexer.py', 'src/parser.py', 'src/ast_nodes.py', 'src/semantic.py',
-             'src/tac.py', 'src/codegen.py', 'main.py', 'tests/2026_2/core0405/verify_core0405.py']
+             'src/tac.py', 'src/codegen.py', 'main.py', 'tests/2026_2/core0405/verify_core0405.py',
+             'tests/2026_2/core0405/test_review_regressions.py']
     summary = dict(python=sys.version, tests=result.testsRun, results=result.records, evidence=EVIDENCE,
-                   hashes={p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in files})
-    (WORK / 'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
-    print(f'Evidencias: {WORK / "summary.json"}')
+                   hash_normalization='UTF-8 text with LF',
+                   hashes={p: hashlib.sha256((ROOT / p).read_text(encoding='utf-8').encode('utf-8')).hexdigest() for p in files})
+    (WORK / 'summary.json').write_text(json.dumps(portable(summary), ensure_ascii=False, indent=2), encoding='utf-8')
+    print(f'Evidencias: {(WORK / "summary.json").relative_to(ROOT)}')
     raise SystemExit(not result.wasSuccessful())

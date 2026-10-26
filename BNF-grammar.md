@@ -581,17 +581,23 @@ Até CORE-06/07, o pipeline recusa Fork/Join explicitamente antes de gerar TAC/C
 |---|---|
 | FJ-SEM-01 | Nome deve resolver função global, sem variável ou função local sombreando-o |
 | FJ-SEM-02 | Aridade igual à quantidade de parâmetros |
-| FJ-SEM-03 | Handle reconhecido como `task`; funções genéricas são verificadas novamente nas chamadas conhecidas |
+| FJ-SEM-03 | Tipo conhecido diferente de `task` é rejeitado; `var`/`unknown` fica em `unresolved_fj`; `for-in` recebe os tipos dos elementos; `fork` como comando que descarta handle é rejeitado |
 | FJ-SEM-04 | Destino string e timeout numérico, quando os tipos são conhecidos |
-| FJ-SEM-05 | Proibir leitura/escrita de global mutável na tarefa e nas funções/métodos chamados, respeitando escopos e sombreamento |
+| FJ-SEM-05 | Proibir global mutável transitivo, inclusive em inicializadores ancestrais e métodos herdados; rejeitar input/c_channel/send/receive dentro de tarefa |
 | FJ-SEM-06 | Proibir objetos, canais e handles nos argumentos/retornos, inclusive dentro das coleções conhecidas |
 
-Parâmetros e locais são analisados com os tipos dos argumentos de cada chamada;
-a análise de uma função global não herda os locais do chamador. Chamadas recursivas
+Parâmetros e locais relevantes a Fork/Join são analisados com os tipos dos argumentos;
+o cache distingue função, assinatura, isolamento, classe, tipos globais e fase provisória. A análise
+normal produz os diagnósticos comuns uma vez; a especialização mantém os diagnósticos
+FJ e não fixa o tipo de variáveis genéricas do código independente. A análise de
+uma função global não herda os locais do chamador. Chamadas recursivas
 não são expandidas indefinidamente: retornos não demonstrados ficam `unknown`.
 São transportáveis números, booleanos, strings e listas desses valores; `matrix`
 é tratada como coleção aninhada na verificação parcial. Retorno vazio representa
-`none` do runtime. A restrição temporária de listas de strings do CORE-03 continua.
+`none` do runtime: `join(h);` é permitido, mas usar o resultado `none` conhecido
+como valor (inclusive print ou atribuição) é erro FJ-SEM-06. As decisões de A e
+limites para CORE-07 estão em `docs/CR-CORE05-FJ-DECISOES.md`; não aprovam o contrato
+compartilhado por inferência. A restrição temporária de listas de strings do CORE-03 continua.
 O acompanhamento de listas é conservador: não representa posições individuais nem
 remove tipos após `pop`/sobrescrita; listas heterogêneas podem produzir `unknown`.
 Mutação através de chamadas/atributos e fluxos genéricos não têm inferência completa.
@@ -683,6 +689,9 @@ strings continuam previstas na sintaxe da linguagem, mas ainda não têm impleme
 completa (C-T11-v1 §3.4, PEND-T11-03). Literais e `append`/`push_back` de strings
 identificados pelo semântico são rejeitados com diagnóstico; tipos desconhecidos
 ficam sujeitos à checagem do C++. CORE-03 não implementa listas de strings.
+
+Exemplo sintaticamente previsto, ainda rejeitado pelo backend atual:
+`var misto = [0, "texto", true];`. Não é programa de prova do C-T11-v1.
 
 ### 12.2 Indexação
 
@@ -795,6 +804,10 @@ e `>=` entre strings usam conteúdo e ordem lexicográfica por byte, inclusive e
 dois literais; `"10" < "9"` é verdadeiro. String comparada com número é rejeitada.
 Operandos de tipos conhecidos incompatíveis falham no semântico; parâmetros e
 retornos ainda desconhecidos são verificados pelo compilador C++.
+Reatribuir número ou booleano a uma string é erro, inclusive em atributos e
+retornos genéricos: `__minipar_assign` impede a conversão silenciosa para `char`.
+Parâmetro genérico com valor string permanece aceito; a instanciação C++ valida
+o tipo que não pôde ser resolvido estaticamente.
 `&&` e `||` preservam o curto-circuito do C++, permitindo proteger `substr` com
 `i < len(s) && substr(s, i, 1) == "x"`.
 
@@ -816,6 +829,11 @@ retornos ainda desconhecidos são verificados pelo compilador C++.
 ---
 
 ## 15. Biblioteca Nativa
+
+Os nomes de funções nativas `exp`, `random`, `range`, `len`, `to_number`,
+`parse_ints`, `substr` e `to_string` são reservados para declarações de funções
+de usuário. Redefini-los é erro semântico explícito (`Nome nativo reservado`),
+evitando divergência entre a função validada e a chamada gerada pelo backend.
 
 As seguintes funções são reconhecidas pelo analisador semântico e traduzidas diretamente pelo gerador de código C++:
 

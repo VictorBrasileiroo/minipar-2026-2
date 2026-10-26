@@ -1,0 +1,243 @@
+{
+  "date": "2026-10-26",
+  "branch": "eixo-a/CORE-03-strings-t11",
+  "previous_head": "a21f172412073d5dc351644b72764e520aafdd4c",
+  "before_evidence": "output/core03/run-by2v48l6/summary.json",
+  "after_evidence": "output/core03/run-fsy8fvt1/summary.json",
+  "baseline_evidence": "output/core01/run-20261026-180046/baseline.json",
+  "before": [
+    {
+      "status": "FAIL",
+      "error": "Rejeicao esperada sem binario"
+    },
+    {
+      "status": "FAIL",
+      "error": "Rejeicao esperada sem binario"
+    },
+    {
+      "status": "FAIL",
+      "error": "Rejeicao esperada sem binario"
+    },
+    {
+      "status": "FAIL",
+      "error": "Rejeicao esperada sem binario"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "FAIL",
+      "error": "Rejeicao esperada sem binario"
+    },
+    {
+      "status": "FAIL",
+      "error": "Rejeicao esperada sem binario"
+    },
+    {
+      "status": "FAIL",
+      "error": "Diagnostico incorreto"
+    },
+    {
+      "status": "FAIL",
+      "error": "Diagnostico incorreto"
+    },
+    {
+      "status": "FAIL",
+      "error": "Compilacao falhou"
+    }
+  ],
+  "after": [
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "KNOWN_FAIL"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    }
+  ],
+  "baseline": {
+    "T01": "PASS",
+    "T02": "PASS",
+    "T03": "PASS",
+    "T04": "PARTIAL",
+    "T05": "PASS",
+    "T06": "PASS",
+    "T07": "PASS"
+  },
+  "baseline_exit": 1,
+  "notes": [
+    "T01/T02 3/3 nesta rodada; historicamente intermitentes",
+    "T04 PARTIAL; T07 mutacao e limites FAIL herdados, correcao separada no PR #16",
+    "58 PASS, 1 KNOWN_FAIL, 0 FAIL; known fail nao e PASS funcional"
+  ]
+}

@@ -1,9 +1,11 @@
 # HANDOFF — CORE-04 + CORE-05
 
-**Responsável:** Eixo A/coordenador + Codex. **Data:** 23/10/2026.
-**Branch local:** `eixo-a/CORE-04-05-fork-join`.
-**Base:** `a21f172412073d5dc351644b72764e520aafdd4c`, igual ao head do
-[PR #14](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/14), ainda aberto na consulta desta execução.
+**Responsável:** Eixo A/coordenador + Codex. **Data inicial:** 23/10/2026; revisão corretiva: 26/10/2026 (PR #15).
+**Branch publicada:** `eixo-a/CORE-04-05-fork-join`.
+**Base original empilhada:** `a21f172412073d5dc351644b72764e520aafdd4c`.
+**CORE-03 corrigido integrado:** `df36500f818a892a238af526cc092f0a5d6b9fe0`
+([PR #14](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/14)).
+**Base configurada do PR #15:** `dev`; o histórico permanece empilhado sobre #14.
 Workspace inicialmente limpo. A branch original CORE-03 foi preservada.
 
 ## Autorização e contrato consultado
@@ -12,9 +14,10 @@ O coordenador autorizou expressamente este recorte local, a base empilhada sobre
 CORE-03, a BNF, testes próprios e uma proteção mínima contra falso sucesso do backend.
 O JSON/backlog ainda registra `ready=false`; esta autorização rege a execução,
 sem alterar estados históricos, aprovações, `DONE` ou `FROZEN`.
-Nenhum commit, push, PR, merge, rebase ou cherry-pick foi realizado.
+A afirmação de execução exclusivamente local era da rodada inicial; publicação
+e integração não destrutiva desta manutenção estão registradas abaixo.
 
-Contrato usado: **C-FJ-v1, proposta de congelamento, revisão 1**, §2.1/2.2 do
+Contrato da rodada inicial: **C-FJ-v1, proposta de congelamento, revisão 1**, §2.1/2.2 do
 [PR #7](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7), head
 `6856a20ef9e2e6ea9a5016d442677848a5157819`, lido com `git show` sem integração.
 A sintaxe dessa proposta foi adotada pela autorização do A nesta tarefa;
@@ -48,12 +51,12 @@ canais ou handles. Nenhum código de runtime foi incorporado ou executado.
 |---|---|
 | FJ-SEM-01 | Função global, inclusive declarada depois; rejeitar nome inexistente, variável, classe, builtin, método isolado, função de bloco e sombreamento local |
 | FJ-SEM-02 | Aridade exata; rejeitar argumentos ausentes/extras |
-| FJ-SEM-03 | Reconhecer `task` em variáveis, atribuição, cópia de handle e listas homogêneas; rejeitar número, string, objeto e variável sem tipo; verificar helper genérico nas chamadas conhecidas |
+| FJ-SEM-03 | Reconhecer `task` em variáveis, atribuição, cópia de handle e listas homogêneas; rejeitar número, string e objeto; registrar variável sem tipo como unresolved; verificar helper genérico nas chamadas conhecidas |
 | FJ-SEM-04 | Destino string e timeout numérico quando conhecidos, inclusive resultados de funções; valor `"host:abc"` fica para o runtime |
 | FJ-SEM-05 | Resolução lexical para leitura/escrita de globais; percorrer funções, métodos e inicializadores de objetos usados pela tarefa, inclusive ciclos recursivos; respeitar parâmetros, locais, `for`, blocos e sombreamento; recusar captura de `this` em função global |
 | FJ-SEM-06 | Rejeitar argumentos/retornos conhecidos de objeto, canal ou task, inclusive listas aninhadas, append, escrita por índice, chamadas auxiliares e ramos de retorno; recusar aritmética que esconda esses tipos |
 
-Cada chamada examinada recebe os tipos parciais dos seus argumentos e um escopo
+Cada chamada relevante examinada recebe os tipos parciais dos seus argumentos e um escopo
 baseado nas declarações globais. Os locais do chamador não são usados para resolver
 nomes do corpo chamado. O acompanhamento de listas respeita cópia por valor:
 alterar a cópia local de uma lista não altera a informação da original.
@@ -120,7 +123,7 @@ permanece expressão numérica; validação/conversão de valor para `int` ainda
 ao backend/runtime. Remover as proteções somente quando esses ramos tiverem
 implementação e oráculos próprios; não basta deixar `generate` retornar sucesso.
 
-## Validação e reprodução
+## Validação inicial (23/10) e reprodução
 
 Python 3.12.4 da venv e G++ UCRT64 16.2.0. Configuração somente no processo:
 
@@ -184,5 +187,129 @@ ramos AST → TAC/AST → C++ e fluxo de trabalho continuam válidos. A exceçã
 e entrega exclusivamente local é autorização desta tarefa, não mudança permanente.
 Nenhum arquivo de `runtime/`, `web_didatica/` ou `legacy/` foi alterado.
 
-**Próximo consumidor:** Eixo A, CORE-06 e CORE-07; revisão humana local antes de
-qualquer publicação. Cards não marcados como concluídos e PRs relacionados não integrados.
+**Próximo consumidor:** revisores do PR #15, Eixo A, CORE-06 e CORE-07;
+publicação desta manutenção autorizada expressamente pelo coordenador. Cards não marcados como concluídos e PRs relacionados não integrados.
+
+## Auditoria corretiva de Erasmo e Riquelme — 26/10/2026
+
+SHA anterior: `e973ebd7df26239a5e721d9157dd147d584e5cbf`. Antes de qualquer troca,
+a árvore estava limpa. CORE-03 corrigido (`df36500`) foi integrado com
+`git merge --no-ff --no-commit eixo-a/CORE-03-strings-t11`, sem conflito;
+a correção própria compõe o mesmo commit de merge. Preservam-se os pais e todos
+os commits publicados. Não há rebase, force push, push em dev/main ou merge de PR.
+
+A autorização expressa de 26/10 abrange src de A, testes próprios, documentação e
+publicação nas branches originais. A extensão de escopo CORE-04/05 (BNF, guardas
+em main/TAC/C++, testes e evidências) está nos cards e doc 04. ready/status não foram
+transformados em aprovação. Nenhum arquivo de C ou B foi alterado pela correção.
+
+Referência atual consultada via git show: **C-FJ-v1 proposta revisão 2**, §2.2.1–2.2.5,
+§2.9/2.10 de `origin/dev` em `84934b96299337ed140a29678cec083a566a780a`;
+essa dev inclui #7/#8/#9. A assinatura de A ainda consta pendente. O documento de
+contrato desta branch é anterior e foi preservado: este handoff distingue essa
+versão histórica da revisão consultada; nenhuma aprovação foi inventada.
+
+### Reprodução antes da correção
+
+`python -B tests/2026_2/core0405/test_review_regressions.py` antes de modificar o
+semântico: 20 métodos de teste, 22 falhas de assertions/subtests e um erro de timeout,
+6,649 s; log local `output/core0405-review-before.log`. F1 rejeitava o iterador de
+handles e perdia concatenações; F2 aceitava globais nos ancestrais; F3 repetia
+diagnósticos e alterava código independente. A cadeia de profundidade 10 com três
+chamadas por nível produziu **1.180.931 visitas** (limite do teste: 1.500); a cadeia
+independente de profundidade 16 excedeu 3 s. F4 aceitou IO/descarte e usos de none.
+Os testes foram ampliados durante a correção; um helper comum que recebia handle
+e devolvia lista ainda perdia os metadados, foi reproduzido e corrigido antes do aceite.
+
+### Correções e limites
+
+- **F1:** for-in deriva `value_type` dos elementos, sem fixar `Symbol.type` de
+  iteradores genéricos do código independente. Listas por atribuição, concatenação,
+  append, índice e helpers relevantes mantêm alternativas conhecidas; cópias são
+  independentes. Join conhecido não-task é erro; alternativas conhecidas inválidas
+  também são recusadas. Unknown/var real vira `unresolved_fj`, sem erro nem prova
+  de segurança. O antigo teste que exigia rejeitar `var h; join(h);` foi substituído
+  pelo oráculo exigido no contrato; não se relaxaram os negativos conhecidos.
+- **F2:** percorre a cadeia de inicializadores na ordem ancestral → descendente,
+  com a classe dona de cada inicializador; atributos da subclasse não escondem
+  acessos do ancestral. Resolve membros herdados e recusa herança cíclica. Chamadas
+  transitivas, recursão de funções/métodos e sombreamento continuam exercitados.
+- **F3:** a passada normal continua produzindo os diagnósticos ordinários. A
+  especialização emite FJ e é dirigida por funções contendo FJ, seus chamadores,
+  dados contendo handles e expressões de fronteira; o fecho de funções/métodos/
+  inicializadores de tarefa é analisado isolado. Cache imutável de tipo por
+  `(função, argumentos ValueType, isolated, classe dona, tipos globais, fase provisória)`; escopos e
+  mapas de expressão são salvos/restaurados e símbolos globais copiados. Contextos
+  ativos encerram a recursão com unknown explícito; nenhum cache não isolado prova
+  isolamento. Diagnósticos FJ repetidos são deduplicados por origem/contexto.
+  Não se desativaram as verificações de isolamento.
+- **F4:** decisões explicitadas em `docs/CR-CORE05-FJ-DECISOES.md`: IO de tarefa
+  rejeitado (FJ-SEM-05); join com none conhecido só como comando, uso como valor
+  rejeitado (FJ-SEM-06); fork como comando descartando handle rejeitado (FJ-SEM-03).
+  Não há análise completa de consumo de handles armazenados. Assinaturas provisórias
+  da declaração ficam separadas das chamadas reais; múltiplas assinaturas reais e
+  unknown não são apagados. CORE-07 deve agregar por função e rejeitar casos sem
+  prova até implementar despacho seguro; number/int/float ainda depende desse card.
+- **Menores:** imports de AST consolidados; hashes do executor normalizam LF;
+  JSONs atuais usam caminhos relativos à raiz. O backend continua recusando FJ
+  explicitamente; não se implementou CORE-06/07 nem se alterou runtime.
+
+### Validação desta manutenção
+
+```powershell
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/verify_core0405.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core03/verify_core03.py
+.\.venv\Scripts\python.exe -B output/audit-baseline-t01-t07.py --repeat 3
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+git diff --check
+```
+
+G++ UCRT64 16.2.0, Python da venv 3.12.4; CXX/PATH só no processo. O script baseline
+foi extraído de `84934b9:scripts/baseline_t01_t07.py` para output, ajustando somente
+REPO à raiz (a branch não contém o script); oráculos preservados.
+
+**116/116 PASS** no executor CORE-04/05, incluindo 26 métodos adversariais,
+smoke nativo, AST, negativos e guardas diretas/CLI contra TAC/C++ prematuro.
+Rodada final: `output/core0405/run-oanl55sv/summary.json` (2,742 s).
+CORE-03 integral: **58 PASS, 1 KNOWN_FAIL, 0 FAIL**, saída 0,
+`output/core03/run-frvtxb35/summary.json`. Essa rodada precede só os ajustes finais de
+propagação de argumento contendo handle e fase de assinaturas provisórias; os caminhos sem FJ do CORE-03 não mudam.
+O smoke nativo e a suíte FJ completa foram repetidos depois desses ajustes.
+A fase provisória é herdada transitivamente, impedindo que chamadas na declaração
+poluam as assinaturas reais de um fork em helper; o teste adicional falhou antes
+de acrescentar a fase à chave do cache e passou após a correção.
+
+Medição adicional (`output/core0405/review-metrics.json`): profundidades 4/8/10/16,
+três chamadas por nível, 95/179/221/347 visitas e 5/9/11/17 contextos no cache,
+respectivamente; ~0,001–0,004 s nesta máquina. O teste usa limite de visitas e
+subprocesso de 3 s, não exige igualdade de tempo entre máquinas.
+
+Baseline final (`output/core01/run-20261026-181014/baseline.json`), saída 1:
+T01/T02 3/3 PASS nesta rodada, sem declarar estabilidade; T03/T05/T06 e ordenação
+T07 PASS; T04 PARTIAL; T07-mutação/limites FAIL herdados, corrigidos separadamente
+no #16. Regressões não foram ocultadas por exit 0. Planejamento e diff --check PASS.
+T08–T11, execução FJ local/remota e CPUlator continuam UNTESTED nesta manutenção.
+
+A inferência continua parcial: não há análise de fluxo/ponto fixo geral, tempo de
+vida de handles nem efeito completo de mutações em atributos através de chamadas.
+Unknown exige decisão conservadora no consumidor. O aceite dos testes não certifica
+serialização, rede ou funcionamento do backend FJ ainda ausente.
+
+### Documentos e integração
+
+Verificados AGENTS, MEMORY, README, docs 00/01/02/03/04/05, BNF, contratos de runtime,
+card e template de handoff. Atualizados BNF, cards CORE-04/05 e espelho doc 04,
+este handoff, JSON de evidências e registro CR das decisões. CORE-03 corrigido e
+seus documentos foram recebidos pelo merge. AGENTS/MEMORY não precisam mudar:
+nenhum ownership, convenção ou fluxo permanente novo; a organização interna da
+análise está documentada aqui, dentro do pipeline existente. README não detalha
+esse algoritmo, portanto não precisa mudar. Contrato compartilhado preservado;
+escolhas que precisem ratificação estão explícitas, não tratadas como FROZEN.
+
+O PR #15 permanece com base **dev**, histórico empilhado sobre #14. Não se alterou a
+base: depois do merge humano do #14 em dev, conferir ancestralidade e diff real;
+se #14 entrar preservando os commits, o diff do #15 exclui naturalmente CORE-03.
+Se a integração escolher squash, a coordenação deve planejar a sincronização não
+destrutiva e revisar o diff, sem rebase/force push nesta manutenção. Antes de
+CORE-06/07: ratificar contrato A/C e decisões acima, integrar #14/#16/#15 com revisão
+independente, conferir runtime atualizado e planejar provas TAC e nativas próprias.
