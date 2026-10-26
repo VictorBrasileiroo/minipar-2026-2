@@ -18,6 +18,8 @@ class Symbol:
     attributes: Dict[str, str] = field(default_factory=dict)
     methods: Dict[str, List[str]] = field(default_factory=dict)
 
+NATIVE_FUNCTIONS = frozenset(("exp", "random", "range", "len", "to_number", "parse_ints", "substr", "to_string"))
+
 class SemanticAnalyzer:
     def __init__(self) -> None:
         self._scopes: List[Dict[str, Symbol]] = []
@@ -91,7 +93,7 @@ class SemanticAnalyzer:
         return "unknown"
 
     def _types_compatible(self, declared: str, actual: str) -> bool:
-        if declared in ("var", "unknown") or actual == "unknown": return True
+        if declared in ("var", "unknown") or actual in ("var", "unknown"): return True
         if declared == "int" and actual == "number": return True
         if declared == "number" and actual == "int": return True
         return declared == actual
@@ -99,6 +101,8 @@ class SemanticAnalyzer:
     def _collect_declarations(self, program: Program) -> None:
         for stmt in program.statements:
             if isinstance(stmt, FuncDecl):
+                if stmt.name in NATIVE_FUNCTIONS:
+                    self._report(stmt.line, f"Nome nativo reservado: '{stmt.name}'.")
                 self._functions[stmt.name] = Symbol(stmt.name, "FUNC", params=stmt.params)
             elif isinstance(stmt, ClassDecl):
                 attrs = {a.name: self._infer_type(a.init_value) if a.type == "var" else a.type
@@ -266,6 +270,8 @@ class SemanticAnalyzer:
             cls = self._classes.get(obj_type)
             if cls and node.property_name not in cls.attributes:
                 self._report(node.line, f"Atributo '{node.property_name}' nao declarado em '{obj_type}'.")
+            elif cls and not self._types_compatible(cls.attributes[node.property_name], self._infer_type(node.value)):
+                self._report(node.line, f"Tipo incompativel em atribuicao do atributo '{node.property_name}'.")
         elif isinstance(node, NewExpr):
             if node.class_name not in self._classes:
                 self._report(node.line, f"Classe '{node.class_name}' nao declarada.")

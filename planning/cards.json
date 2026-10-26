@@ -199,19 +199,23 @@
         "SET-02"
       ],
       "priority": "P0",
-      "deliverable": "`len`, `substr`, `to_string`, string `std::string`, listas textuais mínimas",
+      "deliverable": "`len`, `substr`, `to_string`, string `std::string`; listas numéricas para T11; rejeição temporária de listas textuais (C-T11-v1 §3.4)",
       "acceptance": "Programas de prova T11 compilam/produzem oráculos; regressão anterior sem piora.",
       "allowed_paths": [
         "src/codegen.py",
         "src/semantic.py",
-        "src/cpp_template.py"
+        "src/cpp_template.py",
+        "BNF-grammar.md",
+        "tests/2026_2/core03/",
+        "docs/auditorias/CORE-03_*"
       ],
       "estimate_hours": 6,
       "status": "BACKLOG",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "scope_authorization": "26/10/2026: coordenador autoriza auditoria/correção e atualização do PR #14, incluindo testes, BNF e evidências. Listas textuais completas ficam em PEND-T11-03; ready/status e aprovação contratual não são alterados por esta manutenção."
     },
     {
       "id": "CORE-04",

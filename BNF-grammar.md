@@ -627,6 +627,9 @@ completa (C-T11-v1 §3.4, PEND-T11-03). Literais e `append`/`push_back` de strin
 identificados pelo semântico são rejeitados com diagnóstico; tipos desconhecidos
 ficam sujeitos à checagem do C++. CORE-03 não implementa listas de strings.
 
+Exemplo sintaticamente previsto, ainda rejeitado pelo backend atual:
+`var misto = [0, "texto", true];`. Não é programa de prova do C-T11-v1.
+
 ### 12.2 Indexação
 
 ```bnf
@@ -738,6 +741,10 @@ e `>=` entre strings usam conteúdo e ordem lexicográfica por byte, inclusive e
 dois literais; `"10" < "9"` é verdadeiro. String comparada com número é rejeitada.
 Operandos de tipos conhecidos incompatíveis falham no semântico; parâmetros e
 retornos ainda desconhecidos são verificados pelo compilador C++.
+Reatribuir número ou booleano a uma string é erro, inclusive em atributos e
+retornos genéricos: `__minipar_assign` impede a conversão silenciosa para `char`.
+Parâmetro genérico com valor string permanece aceito; a instanciação C++ valida
+o tipo que não pôde ser resolvido estaticamente.
 `&&` e `||` preservam o curto-circuito do C++, permitindo proteger `substr` com
 `i < len(s) && substr(s, i, 1) == "x"`.
 
@@ -759,6 +766,11 @@ retornos ainda desconhecidos são verificados pelo compilador C++.
 ---
 
 ## 15. Biblioteca Nativa
+
+Os nomes de funções nativas `exp`, `random`, `range`, `len`, `to_number`,
+`parse_ints`, `substr` e `to_string` são reservados para declarações de funções
+de usuário. Redefini-los é erro semântico explícito (`Nome nativo reservado`),
+evitando divergência entre a função validada e a chamada gerada pelo backend.
 
 As seguintes funções são reconhecidas pelo analisador semântico e traduzidas diretamente pelo gerador de código C++:
 
