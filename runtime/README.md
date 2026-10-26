@@ -1,12 +1,12 @@
 # Runtime de tarefas `minipar_rt` (Eixo C)
 
-Biblioteca C++20 **header-only** que executa as tarefas de Fork/Join do MiniPar 2026.2: `start` dispara uma tarefa e `join` coleta o resultado ou um erro explícito.
+Biblioteca C++20 **header-only** que executa as tarefas de Fork/Join do MiniPar 2026.2, no mesmo processo ou em um worker remoto via TCP. `start` dispara uma tarefa e `join` coleta o resultado ou um erro explícito.
 Contrato: [`docs/02_CONTRATOS_TECNICOS.md` §2 (C-FJ-v1)](../docs/02_CONTRATOS_TECNICOS.md). Dono: Eixo C. O backend do compilador (`src/`, Eixo A) **consome** esta API no `CORE-07`; o runtime não altera `src/`.
 
 | Card | Escopo | Estado |
 |---|---|---|
-| `RUN-01` | Runtime local: registry, `start`/`join`, isolamento, erros, `Value` | implementado e testado (seção 4) |
-| `RUN-02` | Protocolo TCP, worker pré-compilado | pendente neste build: destino remoto termina com `WORKER_UNAVAILABLE` |
+| `RUN-01` | Runtime local: registry, `start`/`join`, isolamento, erros, `Value` | implementado e testado |
+| `RUN-02` | Protocolo TCP enquadrado, worker pré-compilado, falhas | implementado e testado **no loopback** (prova de protocolo) |
 
 ## 1. Arquivos
 
@@ -16,12 +16,19 @@ runtime/
 │   ├── minipar_rt.hpp   # cabeçalho único para incluir
 │   ├── value.hpp        # Value, to_value, value_cast (C-FJ-v1 §2.4)
 │   ├── core.hpp         # ErrorCode, TaskHandle, TaskResult, Destination, registry, Executor
-│   └── api.hpp          # start, join, join_or_exit (§2.3)
+│   ├── api.hpp          # start, join, join_or_exit (§2.3)
+│   ├── json.hpp         # JSON estrito das mensagens (§2.6)
+│   ├── net.hpp          # sockets Winsock/POSIX, send_all/recv_exact, frames
+│   ├── remote.hpp       # lado coordenador: conexão por destino, HELLO, RESULT por task_id
+│   └── worker.hpp       # run_worker, worker_main_if_requested
 └── tests/
     ├── run_tests.py         # compila e executa todos os testes
     ├── test_util.hpp        # mini framework (TEST_CASE/CHECK)
     ├── test_local.cpp       # RUN-01
-    └── join_or_exit_probe.cpp
+    ├── join_or_exit_probe.cpp
+    ├── test_protocol.cpp    # RUN-02: JSON e frames
+    ├── test_worker.cpp      # RUN-02: worker usado nos testes
+    └── test_remote.cpp      # RUN-02: coordenador <-> 2 processos worker
 ```
 
 ## 2. Uso
@@ -32,16 +39,21 @@ using namespace minipar_rt;
 
 long long soma_quadrados(long long n) { long long s = 0; for (long long i = 0; i < n; ++i) s += i * i; return s; }
 
-int main() {
+int main(int argc, char** argv) {
+    set_build_id("<hash do fonte>");                       // o mesmo nas duas máquinas
     register_function("soma_quadrados", [](const TaskArgs& a) {
         return to_value(soma_quadrados(value_cast<long long>(a.at(0))));
     });
-    TaskHandle h1 = start("soma_quadrados", {1000});                    // local
-    TaskHandle h2 = start("soma_quadrados", {2000}, Destination::parse("local"));
+    if (int rc = worker_main_if_requested(argc, argv); rc >= 0) return rc;   // modo worker
+
+    TaskHandle h1 = start("soma_quadrados", {1000});                          // local
+    TaskHandle h2 = start("soma_quadrados", {2000}, Destination::parse("192.168.0.20:7000"));  // remoto
     TaskResult r = join(h1);                    // r.ok, r.value, r.error.code, r.task_id, r.executed_by
-    Value v = join_or_exit(h2, 5000);           // valor, ou mensagem em stderr e exit(1)
+    Value v = join_or_exit(h2, 30000);          // valor, ou mensagem em stderr e exit(1)
 }
 ```
+
+O **mesmo binário** é o worker: `programa --minipar-worker 7000 [--bind <ip>]`. O worker escuta em `127.0.0.1` por padrão; para aceitar conexões de outro computador, passe `--bind` com o IP da máquina na rede local.
 
 Compilação (o mesmo comando vale para o C++ gerado pelo compilador):
 
@@ -49,37 +61,65 @@ Compilação (o mesmo comando vale para o C++ gerado pelo compilador):
 g++ -std=c++20 -O2 -pthread -I runtime/include programa.cpp -o programa   [+ -lws2_32 no Windows]
 ```
 
-## 3. Comportamento garantido (RUN-01)
+**Integração com o C++ gerado (Eixo A):** o cabeçalho inclui `<winsock2.h>`/`<ws2tcpip.h>` no Windows, igual ao prelúdio de `src/cpp_template.py`. Em 22/10/2026, um `.cpp` com o `_CPP_HEADER` atual seguido de `#include "minipar_rt/minipar_rt.hpp"` compilou com `-Wall` e rodou uma tarefa (exit 0). Nenhum arquivo de `src/` foi alterado.
 
-| ID | Garantia | Teste que cobre (`test_local.cpp`) |
+## 3. Comportamento garantido
+
+| ID | Garantia | Teste que cobre |
 |---|---|---|
-| RT-01 | `start` não espera o cálculo; `join` espera o resultado real | `RT-01 start nao espera...`, `RT-01 join devolve calculo real` |
-| RT-02 | Destino inválido não lança no `start`; `join` devolve `BAD_DESTINATION` | `RT-02 destino invalido...` |
-| RT-03 | Argumentos copiados no `start` | `RT-03 argumentos copiados...` |
-| RT-04 | Resultado certo independentemente da ordem de término | `RT-04 tarefas terminam fora de ordem...` |
-| RT-05 | `TIMEOUT` mantém o handle válido | `RT-05 TIMEOUT mantem o handle valido` |
-| RT-07 | Handle coletado ou desconhecido → `INVALID_HANDLE`; dois joins concorrentes, só um coleta | `RT-07 ...` (2 casos) |
-| RT-08 | Exceção da tarefa → `TASK_FAILED` | `RT-08 excecao na tarefa...` |
-| RT-10 | `start`/`join` de várias threads | `RT-10 start/join de varias threads...` |
-| — | Execução concorrente real (16 × 200 ms em menos de 3,2 s, sobreposição medida) | `execucao concorrente real...` |
-| — | 160 tarefas sem perda/duplicação (prévia do T08) | `160 tarefas sem perda nem duplicacao` |
-| — | `join_or_exit`: valor ou `[minipar_rt] join <task> falhou: <CODIGO>: <msg>` e código 1 | `join_or_exit_probe.cpp` |
+| RT-01 | `start` não espera o cálculo nem a rede (local e remoto): o `TASK` vai para a fila da conexão e uma thread escritora envia | `test_local`: `RT-01 ...`; `test_remote`: `RT-01 remoto ...` e `worker que para de ler ...` (4 `start` de ~7 MiB cada para um worker que não lê retornam em menos de 1 s) |
+| RT-02 | Destino inválido não lança no `start`; `join` devolve `BAD_DESTINATION` | `test_local`: `RT-02 ...` |
+| RT-03 | Argumentos copiados no `start` | `test_local`: `RT-03 ...` |
+| RT-04 | Resultado certo qualquer que seja a ordem de término, inclusive duas tarefas na mesma conexão | `test_local`/`test_remote`: `RT-04 ...` |
+| RT-05 | `TIMEOUT` mantém o handle válido | `test_local`/`test_remote`: `RT-05 ...` |
+| RT-06 | `join` remoto sem limite usa 60 s (`MINIPAR_RT_REMOTE_TIMEOUT_MS`) | implementação em `core.hpp`/`api.hpp` (não há teste de 60 s) |
+| RT-07 | Handle coletado/desconhecido → `INVALID_HANDLE` | `test_local`: `RT-07 ...` |
+| RT-08 | Exceção da tarefa → `TASK_FAILED` (local e remoto) | `test_local`: `RT-08`; `test_remote`: `erros remotos ...` |
+| RT-09 | Worker morre com tarefas pendentes, ou o envio fica parado mais que `MINIPAR_RT_SEND_TIMEOUT_MS` (padrão 10000 ms) → `WORKER_LOST` sem travar | `test_remote`: `RT-09 worker morre no meio da tarefa` (processo encerrado de fato, exit 3 conferido pelo runner) e `worker que para de ler ...` (o runner usa limite de 1500 ms) |
+| RT-10 | `start`/`join` de várias threads | `test_local`: `RT-10 ...` |
+
+Critérios do card `RUN-02` ("fragmentação, frame inválido, worker indisponível e duas tarefas fora de ordem"):
+
+| Critério | Teste |
+|---|---|
+| Fragmentação | `test_protocol`: `frame: recebido byte a byte`; `test_remote`: `worker aceita HELLO e TASK fragmentados byte a byte`, `coordenador: RESULT fragmentado ...` |
+| Mensagens maiores que um `recv` | `test_protocol`: `frame: ... maior que 1 MiB`; `test_remote`: `mensagens maiores que 1 MiB nos dois sentidos` |
+| Frame inválido | `test_protocol`: tamanho 0, acima de 8 MiB e fim no meio; `test_remote`: `frame invalido no worker ...` (4 casos: tamanho 0, 2 GiB, JSON quebrado, TASK antes do HELLO; o worker continua atendendo) e servidor falso que manda frame inválido → `PROTOCOL_ERROR` |
+| Worker indisponível | `test_remote`: `worker indisponivel ...` e `depois da queda ...` → `WORKER_UNAVAILABLE` |
+| Duas tarefas fora de ordem | `test_remote`: `RT-04 remoto: duas tarefas fora de ordem na mesma conexao` |
+| IDs / compatibilidade de build | `test_remote`: `160 tarefas em 2 workers ...` (80 por worker, sem perda/duplicação), `build_id diferente vira VERSION_MISMATCH` e `protocol_version` diferente em `TASK` (worker) e em `RESULT` (coordenador) → `VERSION_MISMATCH` |
+| Resultado acima de 8 MiB | `test_remote`: `resultado acima de 8 MiB vira TASK_FAILED ...` (resposta imediata, sem esperar o timeout; a conexão continua boa) |
 
 **Execução local:** cada tarefa roda em uma thread de um executor interno que cresce sob demanda. Tarefas simultâneas ganham threads distintas e rodam de fato em paralelo quando há núcleos livres. O runtime **não usa `std::thread::detach`**: com o MinGW-w64/winpthreads do G++ 16.2 UCRT64, uma thread destacada às vezes nunca executava (cerca de 1 em 2000 num teste com 4000 threads), e o `join` ficava esperando para sempre. O teste `estresse: 2000 tarefas...` protege contra essa regressão.
 
-## 4. Testes
+## 4. Protocolo (resumo de C-FJ-v1 §2.6)
+
+- **TCP com conexão persistente por destino.** Frame = 4 bytes de tamanho big-endian + JSON UTF-8, com 1 a 8 MiB.
+- **Mensagens:** `HELLO` (`build_id`) → `HELLO_OK` (`worker_id = host:pid`), depois `TASK` (`task_id`, `function_id`, `args`) → `RESULT` (`status` ok/error). `ERROR` fecha a conexão. `protocol_version` é conferido em toda mensagem, nos dois lados.
+- **Envio:** o coordenador nunca envia na thread do `start`; uma thread escritora por conexão envia os `TASK` na ordem. Coordenador e worker usam `SO_SNDTIMEO` = `MINIPAR_RT_SEND_TIMEOUT_MS` (padrão 10000 ms): um envio sem progresso por esse tempo fecha a conexão (pendentes → `WORKER_LOST`). O limite é por falta de progresso, não pelo tempo total, então mensagens grandes em rede lenta não são cortadas enquanto avançam.
+- **Resultado grande:** `RESULT` que passaria de 8 MiB volta como `status` `error` / `TASK_FAILED`.
+- **Worker:** registra em stderr `worker_id`, endereço do coordenador, `task_id`, função, resultado e duração de cada tarefa.
+- **Segurança:** o worker só executa funções compiladas e registradas no binário; nenhum código chega pela rede. Ele não tem autenticação nem criptografia: é para uso em rede local de laboratório, nunca exposto à internet.
+
+## 5. Testes
 
 ```powershell
-python runtime/tests/run_tests.py                 # compila com -Wall -Wextra -Werror e executa
+python runtime/tests/run_tests.py                 # compila com -Wall -Wextra -Werror e executa tudo
 python runtime/tests/run_tests.py --cxx g++       # outro compilador
 ```
 
-Binários em `output/runtime-tests/` (ignorado pelo Git). Usa `CXX` ou, no Windows, `C:\msys64\ucrt64\bin\g++.exe` quando existir.
+O runner sobe dois processos `test_worker` em portas livres de `127.0.0.1` e encerra os dois no final. O worker B **se encerra de propósito** no teste RT-09 (exit 3, conferido pelo runner). Binários e logs (`worker_A.log`, `worker_B.log`) ficam em `output/runtime-tests/` (ignorado pelo Git).
 
-Resultado em 22/10/2026 (Windows 11, G++ 16.2.0 UCRT64): 15/15 casos PASS e probe PASS; a suíte local repetida 30 vezes seguidas não teve falha nem travamento. Linux: `UNTESTED`.
+Resultado em 22/10/2026 (Windows 11, G++ 16.2.0 UCRT64): 15 casos locais + probe, 7 de protocolo e 15 remotos, **todos PASS**. A suíte completa rodou 5 vezes seguidas sem falha; a suíte local, 30 vezes.
 
-## 5. Limitações conhecidas
+Resultado em 23/10/2026, depois da correção da revisão do PR #9 (envio assíncrono com limite, `RESULT` acima de 8 MiB, `protocol_version` em toda mensagem): 15 locais + probe, 7 de protocolo e **19 remotos**, todos PASS no Windows 11 (G++ 16.2.0 UCRT64, 3 rodadas completas) e no Linux/WSL2 Ubuntu (G++ 15.2.0, 5 rodadas completas). Antes da correção, os 4 casos novos falhavam: o `start` ficava preso no envio, o resultado de 9 MiB só terminava no `TIMEOUT` e as mensagens com outra versão eram aceitas.
 
-- Destino remoto ainda não implementado neste card (`RUN-02`).
-- Uma tarefa local que estoura o `timeout` continua executando; não existe cancelamento (o contrato não pede).
-- Threads ociosas do executor ficam vivas até o fim do processo, o que é intencional.
+**O que estes testes NÃO provam:** execução entre dois computadores. Os testes remotos usam processos diferentes no mesmo host (loopback), ou seja, provam o protocolo. A prova em duas máquinas é o card `RUN-03`.
+
+## 6. Limitações conhecidas
+
+- Destino só IPv4 (`host:porta`); IPv6 literal não é aceito.
+- Uma tarefa que estoura o `timeout` continua executando; não existe cancelamento (o contrato não pede).
+- Worker sem autenticação/TLS (ver seção 4).
+- Um worker que para de ler só é detectado depois de `MINIPAR_RT_SEND_TIMEOUT_MS` sem progresso no envio; se o worker ainda lê mas nunca responde, quem limita é o timeout do `join` (60 s remoto por padrão).
+- Threads ociosas do executor e de conexões ficam vivas até o fim do processo; programas de demonstração encerram com `std::_Exit` depois de imprimir tudo.
