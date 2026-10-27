@@ -21,6 +21,7 @@ EXPRESSION = "((2+4)*7)-(5*4)"
 
 
 def cases():
+    yield from index_cases()
     # Review regressions: numeric assignments must never become C++ char writes.
     review_negatives = {
         "REVIEW-ATRIBUTO": 'class C { var t = ""; } var c = new C(); c.t = 65; print(c.t);',
@@ -176,6 +177,51 @@ def run(command, cwd, env, stdin="", timeout=150):
                 stderr=result.stderr.decode("utf-8").replace("\r\n", "\n"))
 
 
+def index_cases():
+    negatives = {
+        "READ-PLUS": 'var s = "abc"; print(s[0] + 1);',
+        "READ-ASSIGN": 'var s = "abc"; var n = 0; n = s[0]; print(n);',
+        "WRITE": 'var s = "abc"; s[0] = 65; print(s);',
+        "PROPERTY-WRITE": 'class C { var t = "abc"; } var c = new C(); c.t[1] = 66; print(c.t);',
+        "READ-BOUNDS": 'var s = "abc"; print("[" + s[10] + "]");',
+        "WRITE-BOUNDS": 'var s = "abc"; s[100] = 65; print(s);',
+        "GENERIC-READ": 'func get(s) { return s[0]; } print(get("abc"));',
+        "GENERIC-WRITE": 'func set(s) { s[0] = 65; return s; } print(set("abc"));',
+        "GENERIC-PROPERTY": 'class C { var t = "abc"; } func set(c) { c.t[0] = 65; } var c = new C(); set(c);',
+        "INHERITED-READ": 'class A { var t = "abc"; } class B extends A {} var b = new B(); print(b.t[0]);',
+        "INHERITED-WRITE": 'class A { var t = "abc"; } class B extends A {} var b = new B(); b.t[0] = 65;',
+        "GENERIC-INHERITED": 'class A { var t = "abc"; } class B extends A {} func get(b) { return b.t[0]; } print(get(new B()));',
+        "CHAIN-READ": 'var s = "abc"; print(s[0][0]);',
+        "CHAIN-WRITE": 'var s = "abc"; s[0][0] = 65;',
+        "MATRIX-STRING-READ": 'var m = matrix(2, 2, "abc"); print(m[0][0][0]);',
+        "MATRIX-STRING-WRITE": 'var m = matrix(2, 2, "abc"); m[0][0][0] = 65;',
+        "FOR-WRITE": 'var s = "abc"; for (var i = 0; i < 1; s[0] = 65) { i = i + 1; }',
+        "SUBSTR-READ": 'print(substr("abc", 0, 2)[0]);',
+    }
+    for name, source in negatives.items():
+        yield dict(id="INDEX-" + name, source=source, compile_error=True,
+                   diagnostic="substr(s, i, 1)", seed_binary=True)
+    yield dict(id="INDEX-COLLECTIONS", source='''
+func get(v, i) { return v[i]; }
+func set(v, i, n) { v[i] = n; return v; }
+func make() { return matrix(2, 2, 3); }
+var v = [1, 2]; v[0] = 7; v = set(v, 1, 9);
+var m = matrix(2, 2, 0); m[0][1] = get(v, 1);
+for (var i = 0; i < 1; m[1][0] = 5) { i = i + 1; }
+var text = matrix(1, 1, "a"); text[0][0] = "ok";
+print(substr("abc", 1, 1), get(v, 0), v[1], m[0][1], m[1][0], make()[1][1], text[0][0]);
+''', stdout="b 7 9 9 5 3 ok\n")
+    yield dict(id="INDEX-SINGLE-EVALUATION", source='''
+class C {
+    var calls = 0; var v = matrix(1, 1, 2);
+    func rows() { this.calls = this.calls + 1; return this.v; }
+    func idx() { this.calls = this.calls + 1; return 0; }
+}
+var c = new C(); print(c.rows()[c.idx()][c.idx()], c.calls);
+c.v[c.idx()][c.idx()] = 8; print(c.v[0][0], c.calls);
+''', stdout="2 3\n8 5\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case", action="append", help="Executar somente o ID informado (repetivel)")
@@ -198,6 +244,10 @@ def main():
         source.write_text(case["source"], encoding="utf-8", newline="\n")
         result = dict(case=case, status="FAIL")
         try:
+            if case.get("seed_binary"):
+                stale = folder / "output/program.exe"
+                stale.parent.mkdir()
+                stale.write_bytes(b"stale executable sentinel")
             compilation = run([sys.executable, str(ROOT / "main.py"), str(source), "program"], folder, env)
             result["compile"] = compilation
             binary = folder / "output/program.exe"

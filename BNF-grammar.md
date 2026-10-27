@@ -695,6 +695,20 @@ Exemplo sintaticamente previsto, ainda rejeitado pelo backend atual:
 
 ### 12.2 Indexação
 
+No recorte atual C-T11-v1, `s[i]` em string é rejeitado, tanto na leitura
+quanto na escrita: use `substr(s, i, 1)` para obter um caractere como string.
+O semântico diagnostica tipos textuais conhecidos com a linha MiniPar, inclusive
+atributos herdados. Tipos genéricos permanecem aceitos para coleções; a instanciação
+C++ de `__minipar_index<linha>` rejeita `std::string` por `static_assert`, também
+em índices encadeados e no incremento de `for`. Nesse caso o diagnóstico é do G++;
+a linha MiniPar aparece como parâmetro `MiniParLine` da instanciação, sem conversão
+para o envelope Web. A produção sintática continua a mesma.
+
+Listas e matrizes preservam leitura/escrita por referência à coleção original.
+Objeto e índice são avaliados uma vez; temporários do chamador permanecem vivos
+até o fim da expressão completa, sem criar referência a uma cópia local do helper.
+Essa proteção não acrescenta verificação geral de limites das coleções.
+
 ```bnf
 <expressao_indice> ::= <expressao_posfixo> "[" <expressao> "]"
 ```
@@ -1168,6 +1182,7 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 | `a + b` entre strings | `a + b` sobre `std::string` |
 | Comparações entre strings | operadores C++ sobre `std::string` (conteúdo/lexicografia) |
 | `len(x)` | `__minipar_len(x)` → `std::ptrdiff_t` |
+| `colecao[i]` (leitura/escrita) | `__minipar_index<linha>(colecao, i)`; rejeita string, preserva referências |
 | `substr(s, inicio, tamanho)` | `__minipar_substr(s, inicio, tamanho)` → `std::string` (validação antes de `s.substr`) |
 | `to_string(x)` | `__minipar_to_string(x)` → `std::string` (stream com formatação numérica) |
 | `range(n)` | `__minipar_range(n)` |

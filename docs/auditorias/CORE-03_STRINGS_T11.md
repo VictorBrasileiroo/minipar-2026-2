@@ -231,3 +231,70 @@ AGENTS/MEMORY não precisam mudar: nenhuma convenção permanente, ownership ou 
 mudou. README não detalha a política interna; nenhuma alteração necessária ali.
 Não foram modificados runtime, web, Teste 11 de B ou legacy. Próximo consumidor:
 Eixo B/revisor do #14 e CORE-04/05, que deve integrar este commit sem rebase.
+
+## Rodada final dirigida — 27/10/2026: indexação textual
+
+Autorização explícita do coordenador: manutenção do #14 na branch original,
+testes/evidências, commit/push explícito e resposta à re-revisão de Erasmo.
+Head inicial local/remoto `df36500f818a892a238af526cc092f0a5d6b9fe0`, árvore limpa;
+fetch e conferência remota precederam alterações. Não se modificaram dev/main,
+branch do #16, runtime, Web, Teste 11 de B ou oráculos históricos.
+
+Antes: os seis negativos novos falharam contra o head anterior (compilação aceita).
+Executados os binários correspondentes: `98`, `97`, `Abc`, `aBc`, `[\0]`, `abc`,
+todos exit 0. Os últimos dois são acessos inválidos, sem garantia sobre seu efeito.
+Logs: `output/core03/run-98cyj1bo/before-executions.json`. Uma tentativa inicial de
+execução sem o PATH das DLLs UCRT64 falhou por ambiente; a reprodução acima foi
+feita novamente com o mesmo PATH dos testes, sem atribuir essa falha ao compilador.
+
+Correção em duas camadas: `IndexExpr` de objeto string conhecido é rejeitado pelo
+semântico com linha MiniPar e `substr(s, i, 1)`; `IndexAssign` percorre seu alvo e
+recebe a mesma proteção. A resolução local da guarda inclui atributos herdados,
+sem reformular a inferência geral de membros. Toda indexação C++ passa por
+`__minipar_index<linha>(colecao, indice)`: static_assert recusa std::string em
+parâmetros genéricos, propriedades e índices encadeados. O helper encaminha a
+coleção e preserva a referência original; não cria cópia local nem avalia novamente
+objeto/índice. Temporários do chamador vivem até o fim da expressão completa.
+Não adiciona bounds checking geral nem suporte a indexação textual.
+
+Arquivos desta rodada: `src/semantic.py`, `src/codegen.py`, `src/cpp_template.py`,
+`tests/2026_2/core03/verify_core03.py`, `BNF-grammar.md`, este handoff e
+`CORE-03_INDEXACAO_RESULTADOS.json`. Testes novos: 18 negativos (seis casos do
+review, parâmetros, propriedades, herança, encadeamento, matriz textual, for e
+substr) e dois positivos (listas/matrizes numéricas e textuais válidas, coleções
+temporárias, leitura/escrita genéricas e contagem de efeitos). Cada negativo
+pré-cria um executável sentinela e exige retorno 1, diagnóstico e remoção da saída.
+
+Validação real, Python 3.12.4 / G++ UCRT64 16.2.0, CXX/PATH só no processo:
+
+```powershell
+.\.venv\Scripts\python.exe -B tests/2026_2/core03/verify_core03.py
+.\.venv\Scripts\python.exe -B output/audit-baseline-t01-t07.py --repeat 3
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+git diff --check
+```
+
+**78 PASS, 1 KNOWN_FAIL herdado, 0 FAIL**, saída 0, em
+`output/core03/run-le1k7hs2/summary.json`. As correções anteriores e todos os
+oráculos contratuais foram preservados. `substr("abc", 1, 1)` imprime `b` no novo
+positivo. Sonda semântica multilinha verificou exatamente `Linha 4` e recomendação.
+Sonda C++ independente em `output/core03/index-helper/helper.cpp`, compilada com
+`-std=c++20 -O1 -D_GLIBCXX_ASSERTIONS -lws2_32`, conferiu tipos `double&`/`const double&`,
+escrita encadeada e temporários vector/matrix: stdout exato `7 4 9 5`, exit 0,
+stderr vazio. O executor MiniPar valida avaliação única com stdout `2 3\n8 5\n`.
+
+Baseline `output/core01/run-20261027-093358/baseline.json`, saída 1 real:
+T01/T02 3/3 PASS nesta rodada (a intermitência DEF-01/02 continua conhecida),
+T03/T05/T06/ordenação T07 PASS; T04 PARTIAL; T07-mutação/limites FAIL herdados,
+tratados no #16. O comando literal em scripts não está disponível nesta branch;
+usado o executor previamente extraído de origin/dev `84934b9`, com apenas REPO
+apontando à raiz e oráculos intactos. Planejamento e diff --check PASS.
+
+Revisão documental obrigatória: verificados README, AGENTS, MEMORY, docs 00/01/02/
+04/05, BNF e handoff; atualizados somente BNF, este registro e evidências novas.
+Contrato C-T11 já orienta substr e não foi alterado. Sem novos nós/produções,
+diagramas/pseudocódigos não mudam. AGENTS/MEMORY não precisam mudar: regras,
+ownership, arquitetura e fluxo permanecem; README não detalha o helper. Diagnóstico
+genérico continua na fase G++, com `MiniParLine` na instanciação; integração dessa
+localização ao envelope Web fica para CORE-08. Próximos consumidores: revisor/Eixo
+B e CORE-04/05, que deve receber este commit por merge não destrutivo. Sem DONE.

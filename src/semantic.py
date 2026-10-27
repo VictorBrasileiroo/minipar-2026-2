@@ -36,6 +36,7 @@ class SemanticAnalyzer:
         self._current_function: Optional[str] = None
         self._current_class: Optional[str] = None
         self._classes: Dict[str, Symbol] = {}
+        self._superclasses: Dict[str, str] = {}
         self._functions: Dict[str, Symbol] = {}
         self._loop_depth = 0
         self.expression_types: Dict[int, ValueType] = {}
@@ -134,6 +135,20 @@ class SemanticAnalyzer:
         if declared == "number" and actual == "int": return True
         return declared == actual
 
+    def _index_object_type(self, node: ASTNode) -> str:
+        # Resolve inherited attributes for the index guard without changing
+        # the existing general member/type inference policy.
+        if isinstance(node, PropertyAccess):
+            owner = self._infer_type(node.object)
+            seen = set()
+            while owner in self._classes and owner not in seen:
+                seen.add(owner)
+                attrs = self._classes[owner].attributes
+                if node.property_name in attrs:
+                    return attrs[node.property_name]
+                owner = self._superclasses.get(owner)
+        return self._infer_type(node)
+
     def _collect_declarations(self, program: Program) -> None:
         for stmt in program.statements:
             if isinstance(stmt, FuncDecl):
@@ -145,6 +160,7 @@ class SemanticAnalyzer:
                 self._class_nodes[stmt.name] = stmt
                 self._class_initializers[stmt.name] = FuncDecl(
                     "<inicializacao>", [], SeqBlock(stmt.attributes), line=stmt.line)
+                self._superclasses[stmt.name] = stmt.superclass
                 attrs = {a.name: self._infer_type(a.init_value) if a.type == "var" else a.type
                          for a in stmt.attributes}
                 methods = {m.name: m.params for m in stmt.methods}
@@ -437,6 +453,8 @@ class SemanticAnalyzer:
             self.validate_node(node.object)
             self.validate_node(node.index)
             if self._fj_enabled: self.expression_types[id(node)] = self._value_type(node)
+            if self._index_object_type(node.object) == "string":
+                self._report(node.line, "Indexacao de string nao suportada; use substr(s, i, 1).")
         elif isinstance(node, IndexAssign):
             self.validate_node(node.target)
             self.validate_node(node.value)
