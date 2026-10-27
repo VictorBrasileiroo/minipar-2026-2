@@ -116,7 +116,7 @@ class CppCodeGenerator:
         if isinstance(node, IndexExpr):
             obj = self._translate_expression(node.object)
             idx = self._translate_expression(node.index)
-            return f"{obj}[{idx}]"
+            return f"__minipar_index<{node.line}>({obj}, {idx})"
 
         return "0"
 

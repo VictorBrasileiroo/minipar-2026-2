@@ -10,6 +10,7 @@ _CPP_HEADER = """\
 #include <cmath>
 #include <cstdlib>
 #include <type_traits>
+#include <utility>
 #include <cstddef>
 #include <iomanip>
 #include <limits>
@@ -49,6 +50,17 @@ decltype(auto) __minipar_assign(T& target, const V& value) {
                              && std::is_arithmetic_v<std::decay_t<V>>;
     static_assert(!invalid, "Tipo incompativel em atribuicao: string exige texto");
     if constexpr (!invalid) return target = value;
+}
+
+// Indexacao textual nao faz parte do recorte C-T11-v1. MiniParLine aparece
+// na instanciação do diagnostico C++, inclusive para parametros genericos.
+template<int MiniParLine, typename T, typename I>
+decltype(auto) __minipar_index(T&& value, I index) {
+    constexpr bool invalid = std::is_same_v<std::decay_t<T>, std::string>;
+    static_assert(!invalid, "Indexacao de string nao suportada; use substr(s, i, 1)");
+    // Nao materializar copia/local: a referencia pertence a colecao original.
+    // Temporarios do chamador vivem ate o fim da expressao completa.
+    if constexpr (!invalid) return std::forward<T>(value)[index];
 }
 
 // C-T11-v1: comprimento assinado; strings sao medidas em bytes.
