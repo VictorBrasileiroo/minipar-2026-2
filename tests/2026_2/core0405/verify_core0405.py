@@ -329,10 +329,16 @@ if __name__ == '__main__':
     review = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(review)
     suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(review))
+    spec = importlib.util.spec_from_file_location('core0405_final', Path(__file__).with_name('test_final_review.py'))
+    final = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(final)
+    suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(final))
     result = unittest.TextTestRunner(verbosity=2, resultclass=RecordingResult).run(suite)
     files = ['src/lexer.py', 'src/parser.py', 'src/ast_nodes.py', 'src/semantic.py',
              'src/tac.py', 'src/codegen.py', 'main.py', 'tests/2026_2/core0405/verify_core0405.py',
-             'tests/2026_2/core0405/test_review_regressions.py']
+             'tests/2026_2/core0405/test_review_regressions.py',
+             'tests/2026_2/core0405/test_final_review.py',
+             'tests/2026_2/core0405/measure_final_review.py']
     summary = dict(python=sys.version, tests=result.testsRun, results=result.records, evidence=EVIDENCE,
                    hash_normalization='UTF-8 text with LF',
                    hashes={p: hashlib.sha256((ROOT / p).read_text(encoding='utf-8').encode('utf-8')).hexdigest() for p in files})

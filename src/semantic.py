@@ -18,6 +18,13 @@ class ValueType:
     elements: tuple[ValueType, ...] = ()
     result: Optional[ValueType] = None
 
+    def __post_init__(self) -> None:
+        # elements describes possible types, never positions or cardinality.
+        # Keep every distinct alternative (including unknown/forbidden types),
+        # in first-seen order, without coarsening any contextual cache key.
+        if len(self.elements) > 1:
+            object.__setattr__(self, "elements", tuple(dict.fromkeys(self.elements)))
+
 @dataclass
 class Symbol:
     name: str
@@ -396,7 +403,7 @@ class SemanticAnalyzer:
         result = handle.result or ValueType()
         self.expression_types[id(node)] = result
         if value_required and result.kind == "void":
-            self._report(node.line, "FJ-SEM-06: join com resultado none so pode ser comando isolado.")
+            self._report(node.line, "FJ-SEM-08: join com resultado none so pode ser comando isolado.")
 
     def validate_node(self, node: ASTNode, value_required: bool = True) -> None:
         if node is None: return
@@ -404,7 +411,7 @@ class SemanticAnalyzer:
         if isinstance(node, ForkExpr):
             self._validate_fork(node)
             if not value_required:
-                self._report(node.line, "FJ-SEM-03: handle de fork descartado; guarde-o para join.")
+                self._report(node.line, "FJ-SEM-07: handle de fork descartado; guarde-o para join.")
         elif isinstance(node, JoinExpr):
             self._validate_join(node, value_required)
         elif isinstance(node, VarDecl):

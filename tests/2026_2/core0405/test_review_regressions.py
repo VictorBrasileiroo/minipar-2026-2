@@ -169,11 +169,11 @@ class ReviewTests(unittest.TestCase):
         self.valid(prefix + 'join(h);')
         for use in ('print(join(h)+1);', 'var r=join(h);print(r*2);', 'print(join(h));'):
             with self.subTest(use=use):
-                self.invalid(prefix + use, 'FJ-SEM-06')
+                self.invalid(prefix + use, 'FJ-SEM-08')
 
     def test_f4_discarded_handle(self):
-        self.invalid(IDENTITY + 'fork f(1);', 'FJ-SEM-03')
-        self.invalid(IDENTITY + 'if(true) fork f(1);', 'FJ-SEM-03')
+        self.invalid(IDENTITY + 'fork f(1);', 'FJ-SEM-07')
+        self.invalid(IDENTITY + 'if(true) fork f(1);', 'FJ-SEM-07')
 
     def test_f4_signatures(self):
         sem, _ = self.valid(IDENTITY + 'func launch(x){return fork f(x);}var h=launch(1);join(h);')

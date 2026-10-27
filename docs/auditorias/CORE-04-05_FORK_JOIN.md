@@ -3,7 +3,7 @@
 **Responsável:** Eixo A/coordenador + Codex. **Data inicial:** 23/10/2026; revisão corretiva: 26/10/2026 (PR #15).
 **Branch publicada:** `eixo-a/CORE-04-05-fork-join`.
 **Base original empilhada:** `a21f172412073d5dc351644b72764e520aafdd4c`.
-**CORE-03 corrigido integrado:** `df36500f818a892a238af526cc092f0a5d6b9fe0`
+**CORE-03 corrigido integrado:** `eabe1f4138c22d074da22abc00b739bbe9b70271`
 ([PR #14](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/14)).
 **Base configurada do PR #15:** `dev`; o histórico permanece empilhado sobre #14.
 Workspace inicialmente limpo. A branch original CORE-03 foi preservada.
@@ -313,3 +313,130 @@ Se a integração escolher squash, a coordenação deve planejar a sincronizaç�
 destrutiva e revisar o diff, sem rebase/force push nesta manutenção. Antes de
 CORE-06/07: ratificar contrato A/C e decisões acima, integrar #14/#16/#15 com revisão
 independente, conferir runtime atualizado e planejar provas TAC e nativas próprias.
+
+## Rodada final dirigida — 27/10/2026
+
+Autorização explícita do coordenador: corrigir/publicar/comentar #14 e #15,
+preservando as branches originais, sem rebase, force push, merge de PR, aprovação
+automática ou DONE. #16 somente consultado. Heads iniciais confirmados por fetch,
+ls-remote e GitHub: #14 `df36500f818a892a238af526cc092f0a5d6b9fe0`,
+#15 `ea77d8f980d639f96372241584cb6c7397de4dc5`,
+#16 `d27762d733eab55904f48289bd44c463cf55d0d5`. Árvore inicialmente limpa,
+sem commits locais à frente nas branches afetadas; worktree histórica preservada.
+
+### Integração e correções
+
+- CORE-03 `eabe1f4138c22d074da22abc00b739bbe9b70271` publicado e recebido por merge
+  separado `445423d24e590bda519a333b36ab71b5454640d8`. Os dois conflitos em semantic
+  foram resolvidos mantendo coleta de classes/inicializadores e guarda de strings,
+  junto ao rastreamento dos índices FJ. Suíte existente no merge: **116/116 PASS**,
+  `output/core0405/run-0dy8pyzr/summary.json`. Nenhuma correção própria foi embutida
+  no commit de integração desta rodada.
+- Códigos de descarte/none passam de 03/06 para **FJ-SEM-07/08**, extensão proposta
+  na CR, aguardando ratificação A/C e consulta ao consumidor Web. 03 permanece
+  join de tipo conhecido diferente de task; 06 permanece transporte/aritmética
+  proibidos segundo o contrato. docs/02 e APIs runtime/Web preservados. A seção
+  histórica de 26/10 acima registra os códigos usados naquela rodada; esta revisão
+  e a CR datada de 27/10 a substituem quanto a esses identificadores.
+- `ValueType.__post_init__` remove somente alternativas exatamente repetidas em
+  elements, preservando primeira ordem, tipos distintos e o kind unknown. O tipo
+  abstrato já não descrevia posições/cardinalidade. Literais, concatenação e união
+  de retornos passam pela mesma normalização. Não se generalizaram objetos, canais,
+  handles ou unknown para number; chaves de contexto continuam contendo assinatura,
+  isolamento, classe dona, tipos globais e fase provisória. Não se eliminou nenhuma
+  verificação de isolamento nem se compartilhou contexto isolado com não isolado.
+- Retorno none por caminho implícito **permanece limitação conhecida**, reproduzida
+  antes/depois, com risco e aceite futuro na CR/PEND-FJ-07 para CORE-07. O semântico
+  coleta returns explícitos e não prova retorno em todos os caminhos. Não se
+  introduziu um analisador parcial de fluxo para tratar laços/recursão como prova.
+  O caso aceito é KNOWN_LIMITATION, não PASS funcional; a guarda do backend ainda
+  impede TAC/C++ FJ e executável residual. CORE-07 deve resolver antes de removê-la.
+
+### Medição real e testes
+
+`measure_final_review.py` executa a cadeia de Erasmo em subprocesso limitado a 90 s;
+o cronômetro mede só análise semântica, parsing fora do intervalo. Mesma fonte e
+toolchain antes/depois; fontes reproduzíveis pela função chain e SHA-256 no JSON.
+
+| Profundidade | Antes (merge de integração) | Depois | Contextos antes/depois |
+|---|---:|---:|---:|
+| 10 | 0,405470 s | 0,005834 s | 4084 / 67 |
+| 16 | excedeu timeout de 90 s | 0,014898 s | não concluído / 154 |
+| 24 | não executado antes | 0,043487 s | não medido / 326 |
+
+Não atribuir os 43 s da revisão à nossa máquina: aqui a execução de profundidade
+16 foi interrompida pelo limite. O tempo de conclusão anterior é desconhecido,
+sem razão de speedup calculada a partir de timeout. Repetição final da profundidade
+16: 0,015754 s. Evidências: `output/core0405/final-before.json`, `final-after.json`
+e `final-measure-tool-check.json`. O script final retorna erro se uma medição não
+for aceita/concluída; o caso implicit_none é relatado separadamente como limitação.
+
+Comandos realmente executados (Python 3.12.4 / G++ UCRT64 16.2.0; CXX/PATH local):
+
+```powershell
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/verify_core0405.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/test_review_regressions.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/test_final_review.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/measure_final_review.py --depth 10 --depth 16 --depth 24 --output output/core0405/final-after.json
+.\.venv\Scripts\python.exe -B tests/2026_2/core03/verify_core03.py
+.\.venv\Scripts\python.exe -B output/audit-baseline-t01-t07.py --repeat 3
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+git diff --check
+```
+
+Resultado final: **126/126 PASS**, incluindo os 26 testes F1–F6 e 10 novos casos;
+`output/core0405/run-ddp49slx/summary.json`, 3,055 s. Execuções separadas:
+review 26/26 em 0,148 s e final 10/10 em 0,182 s. Novos testes cobrem separação de
+códigos, normalização sem apagar alternativas proibidas, mistura task/número,
+objetos/handles aninhados, assinaturas number/string, cache entre contextos normais
+e isolados, globais transitivos, recursão e cadeia patológica com timeout externo.
+Guardas diretas/CLI e smoke nativo não-FJ continuam PASS.
+
+CORE-03 integral após a mudança semântica: **78 PASS, 1 KNOWN_FAIL herdado, 0 FAIL**,
+`output/core03/run-n2u0afov/summary.json`. Proteção de strings, negativos sem binário,
+substr e listas/matrizes válidas foram reexecutados no código final do #15.
+
+Baseline `output/core01/run-20261027-094221/baseline.json`, saída 1:
+T01 3/3 PASS; T02 **1/3 PASS, 2 FAIL**, saída concorrente corrompida (`1200`),
+intermitência DEF-02 conhecida, sem mascarar como PASS; T03/T05/T06/ordenação T07
+PASS; T04 PARTIAL; T07-mutação/limites FAIL herdados do CORE-01, tratados no #16.
+T01 continua com DEF-01 intermitente conhecido, embora tenha passado nesta rodada.
+Como scripts/baseline_t01_t07.py não existe nesta branch, usado o executor extraído
+de origin/dev `84934b9` para output, alterando apenas REPO; oráculos preservados.
+Planejamento e diff --check PASS. Síntese em `CORE-04-05_RODADA_FINAL_RESULTADOS.json`.
+
+### Documentos, arquivos e integração humana
+
+Arquivos próprios desta manutenção: `src/semantic.py`, BNF, CR-CORE05, este handoff,
+JSON novo de resultados e quatro arquivos em tests/2026_2/core0405 (executor,
+review atualizado e dois novos arquivos). Os arquivos CORE-03 vieram por merge;
+nenhum arquivo de B/C, legacy, runtime ou oráculo foi editado. Resultados anteriores
+foram preservados como evidência datada.
+
+Revisados README, AGENTS, MEMORY, docs 00/01/02/04/05, contrato vigente no origin/dev,
+BNF e handoffs. Atualizados BNF, CR e evidências/handoff deste card. README e planos
+não detalham a normalização; APIs e nós AST não mudaram; diagramas/pseudocódigos não
+ganham nova fase. **AGENTS/MEMORY sem mudança necessária**: ownership, convenções,
+arquitetura e fluxo permanecem; a política documental continua válida. A extensão
+de catálogo é proposta explícita na CR, sem editar o contrato compartilhado.
+
+#15 permanece com base dev, contém #14 atualizado como ancestral. Após integração
+humana de #14, conferir novamente o diff próprio. Simulações merge-tree contra
+origin/dev são limpas para #14 e #15; isso não equivale a regressão de integração.
+O #16 permanece APPROVED/MERGEABLE/CLEAN no head original, sem novos commits.
+
+**Atenção à integração #16 + #15:** simulação entre os dois heads encontrou um
+conflito textual em `src/tac.py`, dentro de generate_text. A resolução humana deve
+preservar import/find_fork_join e a recusa explícita de FJ do #15, mas eliminar
+EXPECTED_QUICKSORT_TAC e a condição de retorno fixo conforme #16; em seguida,
+percorrer a AST normalmente. Não aceitar integralmente um dos lados, pois isso
+perderia a guarda FJ ou restauraria hardcode. Nenhuma branch #16 foi modificada
+ou integrada nesta rodada. Ordem sugerida: #14, #16, resolver esse conflito no
+#15 e revalidar os testes TAC/nativos do #16, CORE-04/05, CORE-03 e baseline antes
+do último merge. Mantidas as aprovações independentes e ratificação A/C da CR.
+
+Pendências para consumidores: CORE-06 implementar TAC FJ real e preservar TAC
+autêntico do #16; CORE-07 tratar none implícito, unknown/múltiplas assinaturas,
+wrappers/registry e execução real com runtime C. CORE-08 deve mapear os diagnósticos
+propostos e localização MiniParLine do G++. Nenhuma execução FJ local/remota ou
+ARM/CPUlator foi homologada por esta manutenção. Não marcar cards como DONE.

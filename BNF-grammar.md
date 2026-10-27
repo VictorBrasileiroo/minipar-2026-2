@@ -581,10 +581,12 @@ Até CORE-06/07, o pipeline recusa Fork/Join explicitamente antes de gerar TAC/C
 |---|---|
 | FJ-SEM-01 | Nome deve resolver função global, sem variável ou função local sombreando-o |
 | FJ-SEM-02 | Aridade igual à quantidade de parâmetros |
-| FJ-SEM-03 | Tipo conhecido diferente de `task` é rejeitado; `var`/`unknown` fica em `unresolved_fj`; `for-in` recebe os tipos dos elementos; `fork` como comando que descarta handle é rejeitado |
+| FJ-SEM-03 | Tipo conhecido diferente de `task` em join é rejeitado; `var`/`unknown` fica em `unresolved_fj`; `for-in` recebe os tipos dos elementos |
 | FJ-SEM-04 | Destino string e timeout numérico, quando os tipos são conhecidos |
 | FJ-SEM-05 | Proibir global mutável transitivo, inclusive em inicializadores ancestrais e métodos herdados; rejeitar input/c_channel/send/receive dentro de tarefa |
 | FJ-SEM-06 | Proibir objetos, canais e handles nos argumentos/retornos, inclusive dentro das coleções conhecidas |
+| FJ-SEM-07 (extensão proposta) | `fork` como comando que descarta handle é rejeitado; ratificação A/C pendente na CR-CORE05 |
+| FJ-SEM-08 (extensão proposta) | Resultado conhecido `none` de join consumido como valor é rejeitado; ratificação A/C pendente na CR-CORE05 |
 
 Parâmetros e locais relevantes a Fork/Join são analisados com os tipos dos argumentos;
 o cache distingue função, assinatura, isolamento, classe, tipos globais e fase provisória. A análise
@@ -595,12 +597,19 @@ não são expandidas indefinidamente: retornos não demonstrados ficam `unknown`
 São transportáveis números, booleanos, strings e listas desses valores; `matrix`
 é tratada como coleção aninhada na verificação parcial. Retorno vazio representa
 `none` do runtime: `join(h);` é permitido, mas usar o resultado `none` conhecido
-como valor (inclusive print ou atribuição) é erro FJ-SEM-06. As decisões de A e
+como valor (inclusive print ou atribuição) é erro FJ-SEM-08 (extensão proposta). As decisões de A e
 limites para CORE-07 estão em `docs/CR-CORE05-FJ-DECISOES.md`; não aprovam o contrato
 compartilhado por inferência. A restrição temporária de listas de strings do CORE-03 continua.
 O acompanhamento de listas é conservador: não representa posições individuais nem
 remove tipos após `pop`/sobrescrita; listas heterogêneas podem produzir `unknown`.
 Mutação através de chamadas/atributos e fluxos genéricos não têm inferência completa.
+`ValueType.elements` guarda alternativas de tipo, sem posições nem cardinalidade;
+tipos idênticos repetidos são removidos, mantendo a primeira ordem e todas as
+alternativas distintas, inclusive unknown, objetos, canais e handles. A chave do
+cache continua distinguindo assinatura, isolamento, globais, dono e fase provisória.
+Retorno por caminho implícito ainda não é modelado: `if (x > 0) { return 1; }`
+sem retorno final pode ser inferido como number. Antes de liberar o backend,
+CORE-07 deve tratar esse caminho potencialmente none (CR-CORE05/PEND-FJ-07).
 Ausência de diagnóstico nesses casos **não comprova** serialização nem execução.
 Detalhes da AST, metadados, evidências e limites em
 [`docs/auditorias/CORE-04-05_FORK_JOIN.md`](docs/auditorias/CORE-04-05_FORK_JOIN.md).
