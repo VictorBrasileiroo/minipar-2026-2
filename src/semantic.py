@@ -18,6 +18,8 @@ class Symbol:
     attributes: Dict[str, str] = field(default_factory=dict)
     methods: Dict[str, List[str]] = field(default_factory=dict)
 
+NATIVE_FUNCTIONS = frozenset(("exp", "random", "range", "len", "to_number", "parse_ints", "substr", "to_string"))
+
 class SemanticAnalyzer:
     def __init__(self) -> None:
         self._scopes: List[Dict[str, Symbol]] = []
@@ -25,6 +27,7 @@ class SemanticAnalyzer:
         self._current_function: Optional[str] = None
         self._current_class: Optional[str] = None
         self._classes: Dict[str, Symbol] = {}
+        self._superclasses: Dict[str, str] = {}
         self._functions: Dict[str, Symbol] = {}
         self._loop_depth = 0
         self._enter_scope()
@@ -82,24 +85,44 @@ class SemanticAnalyzer:
         if isinstance(node, MethodCall):
             return "unknown"
         if isinstance(node, FuncCallExpr):
-            if node.name in ("random", "exp"): return "number"
+            if node.name in ("random", "exp", "len", "to_number"): return "number"
+            if node.name in ("substr", "to_string"): return "string"
             if node.name in ("range", "parse_ints"): return "list"
             return "unknown"
-        if isinstance(node, IndexExpr): return "unknown"
+        if isinstance(node, IndexExpr):
+            return "number" if self._infer_type(node.object) == "list" else "unknown"
         return "unknown"
 
     def _types_compatible(self, declared: str, actual: str) -> bool:
-        if declared in ("var", "unknown") or actual == "unknown": return True
+        if declared in ("var", "unknown") or actual in ("var", "unknown"): return True
         if declared == "int" and actual == "number": return True
         if declared == "number" and actual == "int": return True
         return declared == actual
 
+    def _index_object_type(self, node: ASTNode) -> str:
+        # Resolve inherited attributes for the index guard without changing
+        # the existing general member/type inference policy.
+        if isinstance(node, PropertyAccess):
+            owner = self._infer_type(node.object)
+            seen = set()
+            while owner in self._classes and owner not in seen:
+                seen.add(owner)
+                attrs = self._classes[owner].attributes
+                if node.property_name in attrs:
+                    return attrs[node.property_name]
+                owner = self._superclasses.get(owner)
+        return self._infer_type(node)
+
     def _collect_declarations(self, program: Program) -> None:
         for stmt in program.statements:
             if isinstance(stmt, FuncDecl):
+                if stmt.name in NATIVE_FUNCTIONS:
+                    self._report(stmt.line, f"Nome nativo reservado: '{stmt.name}'.")
                 self._functions[stmt.name] = Symbol(stmt.name, "FUNC", params=stmt.params)
             elif isinstance(stmt, ClassDecl):
-                attrs = {a.name: a.type for a in stmt.attributes}
+                self._superclasses[stmt.name] = stmt.superclass
+                attrs = {a.name: self._infer_type(a.init_value) if a.type == "var" else a.type
+                         for a in stmt.attributes}
                 methods = {m.name: m.params for m in stmt.methods}
                 self._classes[stmt.name] = Symbol(stmt.name, "CLASS", attributes=attrs, methods=methods)
 
@@ -131,7 +154,10 @@ class SemanticAnalyzer:
         elif isinstance(node, ReceiveExpr):
             self.validate_node(node.channel)
         elif isinstance(node, ListLiteral):
-            for e in node.elements: self.validate_node(e)
+            for e in node.elements:
+                self.validate_node(e)
+                if self._infer_type(e) == "string":
+                    self._report(node.line, "Listas de strings ainda nao suportadas (C-T11-v1 3.4).")
         elif isinstance(node, MatrixCreateExpr):
             self.validate_node(node.rows)
             self.validate_node(node.cols)
@@ -139,6 +165,8 @@ class SemanticAnalyzer:
         elif isinstance(node, IndexExpr):
             self.validate_node(node.object)
             self.validate_node(node.index)
+            if self._index_object_type(node.object) == "string":
+                self._report(node.line, "Indexacao de string nao suportada; use substr(s, i, 1).")
         elif isinstance(node, IndexAssign):
             self.validate_node(node.target)
             self.validate_node(node.value)
@@ -148,8 +176,12 @@ class SemanticAnalyzer:
         elif isinstance(node, BinaryExpr):
             self.validate_node(node.left)
             self.validate_node(node.right)
+            lt, rt = self._infer_type(node.left), self._infer_type(node.right)
+            if node.op in ("+", "==", "!=", "<", "<=", ">", ">="):
+                if ((lt == "string" and rt not in ("string", "var", "unknown"))
+                        or (rt == "string" and lt not in ("string", "var", "unknown"))):
+                    self._report(node.line, f"Operador '{node.op}' entre string e outro tipo exige conversao explicita.")
             if node.op in ("+", "-", "*", "/", "%"):
-                lt, rt = self._infer_type(node.left), self._infer_type(node.right)
                 if node.op != "+" and (lt not in ("number", "int", "var", "unknown") or rt not in ("number", "int", "var", "unknown")):
                     self._report(node.line, f"Operador '{node.op}' exige operandos numericos.")
         elif isinstance(node, UnaryExpr):
@@ -195,7 +227,9 @@ class SemanticAnalyzer:
             self._enter_scope()
             old_class = self._current_class
             self._current_class = node.name
-            for attr in node.attributes: self.validate_node(attr)
+            for attr in node.attributes:
+                self.validate_node(attr)
+                self._classes[node.name].attributes[attr.name] = self._lookup(attr.name).type
             for method in node.methods: self.validate_node(method)
             self._current_class = old_class
             self._exit_scope()
@@ -219,12 +253,28 @@ class SemanticAnalyzer:
                 self._report(node.line, f"Metodo '{node.method_name}' espera {len(cls.methods[node.method_name])} argumento(s), recebeu {len(node.arguments)}.")
             self.validate_node(node.object)
             for arg in node.arguments: self.validate_node(arg)
+            if (obj_type == "list" and node.method_name in ("append", "push_back")
+                    and any(self._infer_type(arg) == "string" for arg in node.arguments)):
+                self._report(node.line, "Listas de strings ainda nao suportadas (C-T11-v1 3.4).")
         elif isinstance(node, FuncCallExpr):
-            if node.name not in self._functions and node.name not in ("exp", "random", "range", "len", "to_number", "parse_ints"):
+            if node.name not in self._functions and node.name not in ("exp", "random", "range", "len", "to_number", "parse_ints", "substr", "to_string"):
                 self._report(node.line, f"Funcao '{node.name}' nao declarada.")
             elif node.name in self._functions and len(self._functions[node.name].params) != len(node.arguments):
                 self._report(node.line, f"Funcao '{node.name}' espera {len(self._functions[node.name].params)} argumento(s), recebeu {len(node.arguments)}.")
             for arg in node.arguments: self.validate_node(arg)
+            native_types = {"substr": ("string", "number", "number"),
+                            "to_string": ("number",), "len": ("collection",)}
+            if node.name in native_types:
+                expected = native_types[node.name]
+                if len(node.arguments) != len(expected):
+                    self._report(node.line, f"Funcao '{node.name}' espera {len(expected)} argumento(s), recebeu {len(node.arguments)}.")
+                else:
+                    for arg, required in zip(node.arguments, expected):
+                        actual = self._infer_type(arg)
+                        allowed = (("string", "list", "matrix") if required == "collection"
+                                   else ("number", "int") if required == "number" else (required,))
+                        if actual not in (*allowed, "var", "unknown"):
+                            self._report(node.line, f"Funcao '{node.name}': esperado {required}, recebido {actual}.")
         elif isinstance(node, PropertyAccess):
             self.validate_node(node.object)
             obj_type = self._infer_type(node.object)
@@ -238,6 +288,8 @@ class SemanticAnalyzer:
             cls = self._classes.get(obj_type)
             if cls and node.property_name not in cls.attributes:
                 self._report(node.line, f"Atributo '{node.property_name}' nao declarado em '{obj_type}'.")
+            elif cls and not self._types_compatible(cls.attributes[node.property_name], self._infer_type(node.value)):
+                self._report(node.line, f"Tipo incompativel em atribuicao do atributo '{node.property_name}'.")
         elif isinstance(node, NewExpr):
             if node.class_name not in self._classes:
                 self._report(node.line, f"Classe '{node.class_name}' nao declarada.")

@@ -172,11 +172,13 @@
 
 **Dependências:** `CON-03`, `SET-02`.
 
-**Entrega objetiva:** `len`, `substr`, `to_string`, string `std::string`, listas textuais mínimas
+**Entrega objetiva:** `len`, `substr`, `to_string`, string `std::string`; listas numéricas para T11; rejeição temporária de listas textuais (C-T11-v1 §3.4)
 
 **Critério de aceite:** Programas de prova T11 compilam/produzem oráculos; regressão anterior sem piora.
 
-**Escopo de arquivos autorizado:** `src/codegen.py`, `src/semantic.py`, `src/cpp_template.py`.
+**Escopo de arquivos autorizado:** `src/codegen.py`, `src/semantic.py`, `src/cpp_template.py`, `BNF-grammar.md`, `tests/2026_2/core03/`, `docs/auditorias/CORE-03_*`.
+
+**Extensão autorizada (26/10/2026):** auditoria/correção e atualização do PR #14 pelo coordenador, com testes, BNF e evidências; alinhamento a C-T11-v1 §3.4. Listas textuais completas permanecem em PEND-T11-03. Não altera ready/status nem aprova contrato por inferência.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
