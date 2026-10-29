@@ -440,3 +440,15 @@ autêntico do #16; CORE-07 tratar none implícito, unknown/múltiplas assinatura
 wrappers/registry e execução real com runtime C. CORE-08 deve mapear os diagnósticos
 propostos e localização MiniParLine do G++. Nenhuma execução FJ local/remota ou
 ARM/CPUlator foi homologada por esta manutenção. Não marcar cards como DONE.
+
+## Integração final com dev — 29/10/2026
+
+Após os merges humanos dos PRs #14 e #16, `origin/dev` (`2218c465`) foi integrado
+à branch original do #15 por merge não destrutivo. O conflito único em `src/tac.py`
+foi resolvido removendo o TAC fixo e preservando a guarda Fork/Join.
+Validação conjunta: 5/5 TAC, 17/17 nativos e 17/17 com assertions, T06/T07,
+78 PASS + 1 KNOWN_FAIL CORE-03, 126/126 CORE-04/05 e planejamento aprovado.
+As instruções de integração das rodadas anteriores permanecem históricas;
+o estado desta rodada, comandos, documentação revisada e pendências humanas
+estão em [CORE-04-05_INTEGRACAO_DEV.md](CORE-04-05_INTEGRACAO_DEV.md) e no
+[JSON conjunto](CORE-04-05_INTEGRACAO_DEV_RESULTADOS.json).
