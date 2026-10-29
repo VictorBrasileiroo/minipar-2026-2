@@ -17,6 +17,8 @@
 > de C-T11-v1 §3.3 implementadas nas seções 14, 15 e nas notas de implementação.
 > `substr` e `to_string` usam a produção existente `<chamada_funcao>` (`FuncCallExpr`),
 > sem novos tokens ou produções. Os créditos e a gramática de origem foram preservados.
+> **CORE-04/05 (23/10/2026):** tokens e produções Fork/Join na seção 10 e BNF
+> consolidada; análise semântica implementada, geração/execução pendentes de CORE-06/07.
 
 ---
 
@@ -67,7 +69,7 @@ Comentários iniciados por `#` são descartados pelo lexer antes da geração de
 class  extends  new  func  var
 if  else  while  do  for  in
 break  continue  return
-seq  par  this
+seq  par  this  fork  join  on
 c_channel  send  receive  input  print  matrix
 true  false
 number  int  string  bool  void  list  dict
@@ -207,6 +209,8 @@ class Cachorro extends Animal {
             | <comando_continue>
             | <chamada_funcao> ";"
             | <chamada_metodo> ";"
+            | <expressao_fork> ";"
+            | <expressao_join> ";"
 ```
 
 ### 5.1 Atribuição
@@ -539,8 +543,76 @@ As expressões seguem a hierarquia de precedência implementada no parser (da me
                        | <expressao_input>
                        | <expressao_lista>
                        | <expressao_matrix>
+                       | <expressao_fork>
+                       | <expressao_join>
                        | "(" <expressao> ")"
 ```
+
+### Fork/Join — CORE-04/05 (2026.2)
+
+```bnf
+<expressao_fork> ::= "fork" <IDENTIFIER> "(" [ <lista_argumentos> ] ")" [ "on" <expressao> ]
+<expressao_join> ::= "join" "(" <expressao> [ "," <expressao> ] ")"
+```
+
+São expressões primárias, também aceitas como comandos terminados por `;`.
+O sufixo `on` consome uma expressão completa como destino; para aplicar um
+operador ao handle depois do destino, delimitar o fork com parênteses.
+Sem `on`, `destination=None` representa execução local. `"local"` e
+`"host:porta"` são valores string; a validade do endereço pertence ao runtime.
+Os argumentos e o destino permanecem expressões da AST, sem captura implícita.
+`fork` retorna `task`, um tipo **inferido**, sem nova palavra de tipo declarativo.
+`join` devolve o tipo do resultado da tarefa quando conhecido, ou `unknown`.
+Chamadas, propriedades, índices e precedência aritmética existentes são preservados.
+
+```minipar
+func dobro(n) { var r = n * 2; return r; }
+seq {
+    var h1 = fork dobro(3);
+    var h2 = fork dobro(4) on "local";
+    print(join(h1) + join(h2, 1000));
+}
+```
+
+Este exemplo passa pelo Lexer/Parser/AST/semântico; **não executa ainda**.
+Até CORE-06/07, o pipeline recusa Fork/Join explicitamente antes de gerar TAC/C++.
+
+| Regra | Validação implementada |
+|---|---|
+| FJ-SEM-01 | Nome deve resolver função global, sem variável ou função local sombreando-o |
+| FJ-SEM-02 | Aridade igual à quantidade de parâmetros |
+| FJ-SEM-03 | Tipo conhecido diferente de `task` em join é rejeitado; `var`/`unknown` fica em `unresolved_fj`; `for-in` recebe os tipos dos elementos |
+| FJ-SEM-04 | Destino string e timeout numérico, quando os tipos são conhecidos |
+| FJ-SEM-05 | Proibir global mutável transitivo, inclusive em inicializadores ancestrais e métodos herdados; rejeitar input/c_channel/send/receive dentro de tarefa |
+| FJ-SEM-06 | Proibir objetos, canais e handles nos argumentos/retornos, inclusive dentro das coleções conhecidas |
+| FJ-SEM-07 (extensão proposta) | `fork` como comando que descarta handle é rejeitado; ratificação A/C pendente na CR-CORE05 |
+| FJ-SEM-08 (extensão proposta) | Resultado conhecido `none` de join consumido como valor é rejeitado; ratificação A/C pendente na CR-CORE05 |
+
+Parâmetros e locais relevantes a Fork/Join são analisados com os tipos dos argumentos;
+o cache distingue função, assinatura, isolamento, classe, tipos globais e fase provisória. A análise
+normal produz os diagnósticos comuns uma vez; a especialização mantém os diagnósticos
+FJ e não fixa o tipo de variáveis genéricas do código independente. A análise de
+uma função global não herda os locais do chamador. Chamadas recursivas
+não são expandidas indefinidamente: retornos não demonstrados ficam `unknown`.
+São transportáveis números, booleanos, strings e listas desses valores; `matrix`
+é tratada como coleção aninhada na verificação parcial. Retorno vazio representa
+`none` do runtime: `join(h);` é permitido, mas usar o resultado `none` conhecido
+como valor (inclusive print ou atribuição) é erro FJ-SEM-08 (extensão proposta). As decisões de A e
+limites para CORE-07 estão em `docs/CR-CORE05-FJ-DECISOES.md`; não aprovam o contrato
+compartilhado por inferência. A restrição temporária de listas de strings do CORE-03 continua.
+O acompanhamento de listas é conservador: não representa posições individuais nem
+remove tipos após `pop`/sobrescrita; listas heterogêneas podem produzir `unknown`.
+Mutação através de chamadas/atributos e fluxos genéricos não têm inferência completa.
+`ValueType.elements` guarda alternativas de tipo, sem posições nem cardinalidade;
+tipos idênticos repetidos são removidos, mantendo a primeira ordem e todas as
+alternativas distintas, inclusive unknown, objetos, canais e handles. A chave do
+cache continua distinguindo assinatura, isolamento, globais, dono e fase provisória.
+Retorno por caminho implícito ainda não é modelado: `if (x > 0) { return 1; }`
+sem retorno final pode ser inferido como number. Antes de liberar o backend,
+CORE-07 deve tratar esse caminho potencialmente none (CR-CORE05/PEND-FJ-07).
+Ausência de diagnóstico nesses casos **não comprova** serialização nem execução.
+Detalhes da AST, metadados, evidências e limites em
+[`docs/auditorias/CORE-04-05_FORK_JOIN.md`](docs/auditorias/CORE-04-05_FORK_JOIN.md).
 
 ### Tabela de Precedência (maior nível = avaliado primeiro)
 
@@ -900,6 +972,8 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
             | <comando_continue>
             | <chamada_funcao> ";"
             | <chamada_metodo> ";"
+            | <expressao_fork> ";"
+            | <expressao_join> ";"
 
 <atribuicao>        ::= <alvo_atribuicao> "=" <expressao> ";"
 <alvo_atribuicao>   ::= <IDENTIFIER>
@@ -963,6 +1037,12 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
 (* send já listado em <comando_send> *)
 
 
+(* ─── FORK/JOIN — 2026.2; frontend implementado, backend pendente ─── *)
+
+<expressao_fork> ::= "fork" <IDENTIFIER> "(" [ <lista_argumentos> ] ")" [ "on" <expressao> ]
+<expressao_join> ::= "join" "(" <expressao> [ "," <expressao> ] ")"
+
+
 (* ─── COLEÇÕES ─── *)
 
 <expressao_lista>   ::= "[" [ <expressao> { "," <expressao> } ] "]"
@@ -1012,6 +1092,8 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
                        | <expressao_input>
                        | <expressao_lista>
                        | <expressao_matrix>
+                       | <expressao_fork>
+                       | <expressao_join>
                        | "(" <expressao> ")"
 
 <lista_argumentos>   ::= <expressao> { "," <expressao> }
@@ -1060,6 +1142,8 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 | `input(...)` | `string` |
 | `new Classe(...)` | `Classe` |
 | `this` | nome da classe atual |
+| `fork f(...)` | `task`, com resultado parcial associado ao handle |
+| `join(h[, timeout])` | tipo conhecido do resultado de `h`, ou `unknown` |
 | `op` relacional / lógico | `bool` |
 | `"a" + "b"` (concatenação) | `string` |
 | `substr(...)`, `to_string(...)` | `string` |

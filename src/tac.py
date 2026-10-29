@@ -6,7 +6,7 @@ from ast_nodes import (
     UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
     DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
     ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
-    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign
+    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign, find_fork_join
 )
 
 
@@ -173,6 +173,9 @@ class TACGenerator:
             self._emit(f"endfunc {node.name}")
 
     def generate_text(self, program: Program) -> str:
+        unsupported = find_fork_join(program)
+        if unsupported is not None:
+            raise NotImplementedError(f"Linha {unsupported.line}: Fork/Join requer CORE-06; TAC nao gerado.")
         for stmt in program.statements:
             self._stmt(stmt)
         return "\n".join(self.lines) + ("\n" if self.lines else "")

@@ -196,7 +196,9 @@
 
 **Critério de aceite:** Programas MiniPar positivos/negativos de Fork/Join têm AST correta; BNF coerente.
 
-**Escopo de arquivos autorizado:** `src/lexer.py`, `src/parser.py`, `src/ast_nodes.py`, `docs/`.
+**Escopo de arquivos autorizado:** `src/lexer.py`, `src/parser.py`, `src/ast_nodes.py`, `docs/`, `BNF-grammar.md`, `main.py`, `src/tac.py`, `src/codegen.py`, `tests/2026_2/core0405/`.
+
+**Extensão autorizada (26/10/2026):** manutenção do PR #15: BNF, guardas contra TAC/C++ prematuro, testes e evidências; integração não destrutiva do CORE-03. Não libera CORE-06/07, não altera ready/status nem aprova contratos.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
@@ -214,7 +216,9 @@
 
 **Critério de aceite:** Uso indevido rejeitado; funções e destinos válidos aceitos; semântico preserva regressão.
 
-**Escopo de arquivos autorizado:** `src/semantic.py`.
+**Escopo de arquivos autorizado:** `src/semantic.py`, `BNF-grammar.md`, `main.py`, `src/tac.py`, `src/codegen.py`, `tests/2026_2/core0405/`, `docs/`.
+
+**Extensão autorizada (26/10/2026):** manutenção do PR #15: BNF, guardas contra TAC/C++ prematuro, testes e evidências; integração não destrutiva do CORE-03. Não libera CORE-06/07, não altera ready/status nem aprova contratos.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
