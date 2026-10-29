@@ -89,6 +89,26 @@ O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo 
 
 Os validadores nativos usam `CXX`, o G++ UCRT64 local ou `--cxx CAMINHO_GPP`, sem alterar o PATH do sistema. Os artefatos e logs ficam em `output/`, ignorado pelo Git. O `.expected.tac` do T07 permanece como referência histórica; igualdade textual não é o critério de aceite.
 
+## Validação local do CORE-06
+
+O gerador TAC representa `fork` com captura por valor, `join`/timeout,
+regiões `par` com branches e barreira e laços `for-in` com controle de fluxo.
+Use as APIs `TACGenerator.generate_text(program)` ou `generate(program, nome)`
+após análise semântica. A CLI e o backend C++ continuam bloqueando Fork/Join
+até CORE-07; gerar TAC não comprova execução de tarefas.
+
+```powershell
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p "test_*.py" -v
+```
+
+Notação, exemplos, limites e evidências em
+[`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
+A implementação inicial foi publicada pelo coordenador em `2fada7c`, na branch
+`eixo-a/CORE-06-tac-fork-join-par`. A revisão corretiva de 29/10/2026 preserva
+argumentos de `new` no TAC e esclarece `return` em branches; suas alterações
+permanecem locais. Histórico, regressões e limites estão no handoff. Contratos
+e card não são declarados aprovados/concluídos.
+
 ## Proveniência e direitos
 
 Base anterior informada no README e na BNF históricos: <https://github.com/luizwhirl/minipar-improvement>. Créditos preservados: Emanuele Vitória de Jesus Lima ([Manu-Vii](https://github.com/Manu-Vii)), José Lucas de Oliveira Quintela ([lucasqtl](https://github.com/lucasqtl)) e Luiz Miguel de Melo Bomfim ([luizwhirl](https://github.com/luizwhirl)).

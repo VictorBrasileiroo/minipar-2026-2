@@ -1,0 +1,5 @@
+seq {
+    print(0);
+    par { print(1); print(2); }
+    print(3);
+}

@@ -1,0 +1,3 @@
+func f() { return 7; }
+var hs = [fork f(), fork f()];
+for (var h in hs) { join(h); }

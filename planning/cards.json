@@ -300,7 +300,17 @@
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/CORE-06_TAC_FORK_JOIN.md"
+      ],
+      "scope_authorization": "29/10/2026: coordenador autoriza desenvolvimento exclusivamente local de CORE-06, src/tac.py, testes próprios, ajuste do oráculo TAC de CORE-04/05 e documentação/metadados pertinentes, usando C-FJ-v1 revisão 2 com ratificações pendentes. Não autoriza git add, commits, push, PR, merge, CORE-07/08, alteração unilateral de contrato, DONE ou FROZEN; ready/status preservados. Branch eixo-a/CORE-06-tac-fork-join-par, base 29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1.",
+      "subsequent_publication": {
+        "observed_date": "2026-10-29",
+        "published_sha": "2fada7ce1fbc70249c42d501566a3aa07188bf90",
+        "base_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+        "note": "Publicação posterior pelo coordenador conforme relato; presença e SHA remotos confirmados por git ls-remote. Consulta GitHub head/estado all não encontrou PR; não é DONE ou aprovação contratual."
+      },
+      "review_authorization": "29/10/2026: revisão corretiva local na mesma branch publicada; investigar e registrar A-D antes de alterar produção. Corrigir somente regressão comprovada de CORE-06 e atualizar testes/documentação. Sem git add, commit, push, PR, merge/rebase, CORE-07/08/09, mudança de runtime/Web/Teste 11/legacy ou contratos compartilhados. Revisão não publicada; estados e aprovações preservados."
     },
     {
       "id": "CORE-07",
