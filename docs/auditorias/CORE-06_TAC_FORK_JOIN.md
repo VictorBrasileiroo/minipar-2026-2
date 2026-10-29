@@ -1,5 +1,9 @@
 # HANDOFF — CORE-06: TAC autêntico para Fork/Join e `par`
 
+> **Leitura temporal:** o registro abaixo até “Revisão corretiva” descreve a
+> execução inicial, anterior à publicação. O coordenador publicou posteriormente
+> `2fada7c`; o estado atual e as novas evidências constam na seção datada ao final.
+
 **Responsável:** Eixo A/coordenador, desenvolvimento assistido por Codex.  
 **Data:** 29/10/2026. **Branch local:** `eixo-a/CORE-06-tac-fork-join-par`.  
 **Base HEAD/origin/dev:** `29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1`.
@@ -382,3 +386,266 @@ Nenhuma segunda tarefa foi iniciada.
 
 **Declaração:** não alterei outro eixo nem `legacy/`; o trabalho permanece local,
 sem commit/stage/push/PR, na branch CORE-06, para revisão posterior do coordenador.
+
+## Revisão corretiva — 29/10/2026: investigação anterior às correções
+
+Autorização específica: revisar A–D, reproduzir antes de corrigir, permanecer na
+mesma branch, sem add/commit/push/PR/merge/rebase. Árvore inicialmente limpa,
+HEAD `2fada7ce1fbc70249c42d501566a3aa07188bf90`; base `origin/dev`
+`29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1`. Um commit próprio sobre dev.
+Não houve integração de dev nem mudança de branch nesta revisão.
+
+### Publicação posterior à execução inicial — achado C: DOCUMENTAL
+
+`git ls-remote origin refs/heads/dev refs/heads/eixo-a/CORE-06-tac-fork-join-par`
+confirmou os SHAs acima nas duas branches remotas. `git log -3`, `show --stat`
+e `rev-list --count origin/dev..HEAD` confirmaram o commit CORE-06 com 12 arquivos
+e nenhum commit posterior na branch consultada. A consulta GitHub por repositório,
+head e estado `all` retornou zero PRs. Nenhum PR foi aberto nesta revisão.
+
+O push posterior foi realizado pelo coordenador, conforme informado no pedido;
+a presença do commit remoto foi comprovada independentemente por Git. Refs Git
+não identificam sozinhas quem fez o push. O relato inicial “sem commit/push” era
+verdadeiro para aquela execução e permanece como histórico. Esta revisão ainda
+é local, não publicada. Contratos e card não foram promovidos a FROZEN/DONE.
+
+### Achado A: AMBIGUIDADE DOCUMENTAL; hipótese de bug refutada
+
+Evidência anterior à correção: sete programas reais em
+`output/core06_review/investigation-x0ztzjnv/investigation.json`, com fonte,
+TAC publicado e anterior, compilação direta pelo backend vigente e execução
+com timeout de 10 s, stdout exato, stderr vazio e exit 0:
+
+| Sonda | Saída esperada e observada |
+|---|---|
+| Return direto de branch, atribuição posterior não executada | `1` |
+| Returns condicionais verdadeiro/falso em branches distintas | `1 3` |
+| Return em par aninhado e continuação da branch externa | `1 2` |
+| Par sem return, controle | `1 2` |
+| Return em seq dentro de função | `7` |
+| Return de branch dentro de função e retorno posterior da função | `7` |
+| Return com valor dentro de branch; valor não retorna ao lançador | `1` |
+
+`codegen.py` emite uma lambda `[&]` por statement imediato, inicia threads e faz
+join em todas. Retornar da lambda termina normalmente a thread; join espera essa
+conclusão, sem depender de instrução MiniPar adicional. O contrato distingue
+par compartilhado de fork isolado, sem exigir sinalização explícita após return.
+
+**Esclarecimento da notação:** `par_end_branch R,i` é terminal no caminho normal
+que o alcança. `return [valor]` é um terminal alternativo do contexto invocado:
+no corpo da branch, conclui aquela branch, avalia eventual valor e o descarta no
+lançador; numa função chamada, retorna dessa função. A conclusão da branch é
+inerente à saída de seu contexto, seja por return ou par_end_branch. O lançador
+aguarda conclusões, não a passagem obrigatória pela linha par_end_branch.
+Uma linha par_end_branch após return incondicional é inalcançável naquele caminho;
+não deve ser descrita como executada. O mesmo vale para statements da fonte após
+return. Não se removem nem se disfarçam esses caminhos. Um seq não cria outro
+destino de return; uma branch de par aninhado cria. A implementação foi preservada.
+
+### Achado B: CONFIRMADO — regressão de aceitação, correção pontual proposta
+
+Parser e AST preservam a lista de argumentos; o semântico visita cada expressão,
+mas não valida aridade de construtor. O backend emite `std::make_shared<C>(args)`.
+Classes geradas com campos públicos admitem inicialização agregada com parênteses
+no C++20 empregado. Não se trata de implementar métodos construtores novos.
+
+| Fonte resumida | Frontend | Backend direto e execução | TAC publicado |
+|---|---|---|---|
+| `class C{var a=0;var b=0;} new C()` | Aceito | PASS, campos `0 0` | Aceito |
+| `class C{var a=0;} new C(1)` | Aceito | PASS, campo `1` | NotImplementedError |
+| Campos a/b, `new C(x,y)`, x=2/y=3 | Aceito | PASS, `2 3` | NotImplementedError |
+| Campos a/b, `new C(inc(2),inc(4))` | Aceito | PASS, `3 5` | NotImplementedError |
+| Campos a/b, `new C(xs.pop(),9)`, xs=[1,2] | Aceito | PASS, `2 9 1` (inclui tamanho restante) | NotImplementedError |
+| Classe vazia, `new C(1)` | Aceito | Rejeitado pelo G++, esperado | NotImplementedError |
+
+A versão de TAC em dev emitia somente `new C`, descartando argumentos, chamadas
+e efeitos. Portanto havia incompletude histórica **e** uma regressão nova de
+aceitação na CLI após a rejeição de CORE-06. A busca nos `.minipar` ativos de tests
+não encontrou argumentos de new; a BNF, porém, já contém `new RedeNeural(0.5)`.
+Todas as sondas, diagnósticos G++ e TACs estão no JSON da investigação acima.
+
+**Mudança mínima proposta, após concluir A–D:** reutilizar `_arguments` para
+avaliar/salvar valores uma vez, na ordem textual adotada pelo TAC, e emitir
+`t = new C(v0, v1)`. Preservar exatamente `t = new C` sem argumentos. Não misturar
+parâmetros de chamadas aninhadas; não implementar aridade, construtores, herança
+ou inicializadores. O backend continuará validando formas que não compila hoje.
+Arquivo de produção impactado: somente `src/tac.py`. Risco: alteração legítima da
+notação antes inexistente para argumentos; mitigação: oráculos de ordem/efeitos,
+mutação de argumentos e comparação nativa. Testes devem falhar antes da mudança.
+
+### Achado D: CONFIRMADO — cobertura ampliada, falhas herdadas preservadas
+
+Script de baseline consultado antes de executar: compilação 240 s, execução 30 s,
+repetições configuráveis, stdout/valores conferidos por oráculos, sem necessidade
+de interação humana. T02–T07 foram executados sequencialmente em uma única rodada
+com `--only T02,T03,T04,T05,T06,T07 --repeat 10`. Evidência:
+`output/core01/run-20261029-122423/baseline.json`, exit 1 legítimo.
+
+| Teste | Estado desta investigação | Observação |
+|---|---|---|
+| T01 original | BLOCKED | `receiveData` faz bind INADDR_ANY; não executar listener amplo nesta revisão |
+| T01 restrito, sonda parcial | 2 PASS / 1 FAIL (timeout 30 s) | Só cópia C++ gerada com bind `htonl(INADDR_LOOPBACK)`, sem editar backend/runtime; não homologa original ou rede entre máquinas |
+| T02 | FAIL intermitente: 5 PASS / 5 FAIL | `120` concatenado à série (`1200`); mesma falha DEF-02 histórica de print não atômico |
+| T03 | PASS | Iterações 1/50/51, pesos e convergência conferidos |
+| T04 | PARTIAL | Classificação correta; números divergem da referência, sem tolerância acordada |
+| T05 | PASS | 12 produtos e probabilidades, para stdin derivado documentado pelo baseline |
+| T06 | PASS | Vetor completo ordenado conforme oráculo |
+| T07 | PASS | Ordenação, mutação TAC e build com assertions; snapshot histórico INFO |
+
+T01 restrito foi compilado e executado três vezes, sequencialmente, conferindo
+portas 5101/5102 antes de cada tentativa e usando somente 127.0.0.1. O executável
+original foi compilado mas **nunca executado**. A instrumentação altera só uma
+linha na cópia em output, com assert de substituição única; o código de mensagem
+permanece igual. Evidência no JSON de investigação; não é correção do runtime.
+
+`git diff --exit-code origin/dev HEAD` para codegen, cpp_template, parser,
+semantic e fontes T01/T02 confirmou ausência de mudanças nesses caminhos.
+T01 reproduz o timeout já descrito em DEF-01, e T02 reproduz DEF-02. O C++ é
+gerado diretamente da AST, não do TAC. Não há evidência de regressão CORE-06
+nessas falhas; nenhuma correção de canal ou impressão será feita neste card.
+
+**Gate de investigação cumprido:** conclusões A–D registradas antes de alterar
+qualquer código de produção. Próxima etapa autorizada: testes vermelhos de B,
+correção mínima, novas suítes e fechamento documental, sem publicação.
+
+### Correção aplicada após a investigação
+
+Antes de modificar produção, `test_review_core06.py` executou 10 testes:
+**3 PASS, 7 ERROR**, exit 1, em `output/core06_review/before_fix.log`.
+Os sete erros foram a exceção do TAC publicado para argumentos de new, inclusive
+na prova nativa agregada, que exige passar pelo TAC antes de chamar o backend.
+Os controles de par/return e de new vazio passaram. Não se usaram resultados
+históricos como substituto dessa reprodução.
+
+Correção de produção limitada ao ramo `NewExpr` em `src/tac.py`: avaliar os
+argumentos com `_arguments`, salvar identificadores e emitir a lista de valores
+na própria instrução de alocação. Sem argumentos, manter o texto anterior.
+Não se abriu uma sequência de param para a alocação; chamadas internas concluem
+suas próprias sequências antes de emitir new. Exemplo real do teste:
+
+```minipar
+class Pair{var a=0;var b=0;}
+var x=2;var y=3;var p=new Pair(x,y);
+```
+
+```text
+# class Pair
+x = 2
+y = 3
+t0 = x
+t1 = y
+t2 = new Pair(t0, t1)
+p = t2
+```
+
+**Extensão da notação vigente:** `t = new C(v0, v1)` aloca C com os valores
+avaliados, na ordem textual usada pelo TAC para argumentos; `t = new C` continua
+sendo a forma sem argumentos. Esses valores não são capturas isoladas de fork.
+A instrução não inventa método construtor nem valida aridade ou tipos de campos.
+Não certifica ordem relativa de efeitos entre argumentos no C++: esse backend
+continua emitindo make_shared e segue suas regras C++ herdadas, sem alteração.
+
+A antiga rejeição `test_unrepresented_constructor_arguments_fail_explicitly`
+foi atualizada legitimamente, mantendo a mesma fonte de classe vazia: agora
+verifica que o TAC conserva `1` e o backend ainda recebe `make_shared<C>(1)`.
+O erro real de G++ para a classe vazia foi reproduzido na investigação. Não se
+converteu um programa nativo inválido em sucesso. Os outros 37 testes originais
+permanecem; a suíte ganhou 10 testes, totalizando **48**.
+
+`test_review_core06.py` cobre new vazio, literal, variáveis, chamadas aninhadas,
+efeito pop único, alocação dentro de chamada externa, mutações de classe/valor,
+campos agregados reais e os sete contextos de return. As execuções nativas
+conferem stdout integral, stderr e exit, com timeout e artefatos próprios em
+`output/core06_review/native-*/result.json`. Não interpretam TAC.
+
+A rejeição conservadora de inicializadores de atributos com efeitos em programas
+FJ permanece. A limitação histórica sobre **argumentos de new** na primeira parte
+deste documento foi superada por esta correção; os demais limites continuam.
+Nenhuma alteração em par/return, assinatura pública, contrato, backend ou runtime.
+
+### Validação final da revisão
+
+Comandos executados com CXX/UCRT64 e PATH somente do processo, Python 3.12.4 da
+venv e G++ 16.2.0; sem instalação de dependências:
+
+```powershell
+$env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
+$env:Path = 'C:\msys64\ucrt64\bin;' + $env:Path
+$env:PYTHONIOENCODING = 'utf-8'
+.\.venv\Scripts\python.exe -B output/core06_review/investigate.py
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p test_review_core06.py -v
+# O comando anterior é a reprodução vermelha, antes da correção.
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p "test_*.py" -v
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
+.\.venv\Scripts\python.exe -B tests/validate_core02_native.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core03/verify_core03.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/verify_core0405.py
+.\.venv\Scripts\python.exe -B scripts/baseline_t01_t07.py --only T02,T03,T04,T05,T06,T07 --repeat 10
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+git -c safe.directory=C:/Users/victo/Desktop/FACULDADE/Compiladores/minipar-2026-2 diff --check
+```
+
+O script de investigação é uma sonda local preservada em output; suas fontes e
+resultados selecionados estão no JSON versionado. A baseline foi rodada antes
+e depois da correção, sequencialmente, sem colisão de diretórios.
+
+| Verificação após correção | Resultado real |
+|---|---|
+| CORE-06 | **48 PASS, 0 FAIL**, inclui os 38 oráculos originais com a atualização justificada acima |
+| CORE-02 TAC | **5 PASS, 0 FAIL** |
+| CORE-02 nativo | **17/17 PASS por build**, normal e com assertions |
+| CORE-03 | **78 PASS, 1 KNOWN_FAIL, 0 FAIL**; HERDADO-RETORNO-NUMERICO continua com erro G++ de auto misto |
+| CORE-04/05 | **126 PASS, 0 FAIL**, inclui revisões e guardas CLI/C++ |
+| Planejamento | **PASS**, 43 cards |
+| `git diff --check` | **PASS**, sem erros de whitespace |
+
+Evidências: `output/core06_review/{core06,core02,native,core03,core0405,planning}.log`,
+`output/core02/run-20261029-123141-643944/validation.json`,
+`output/core03/run-sanu1eyg/summary.json`,
+`output/core0405/run-c5nrjgsq/summary.json` e registros discriminados no JSON.
+
+**T01–T07 após a correção:**
+
+| Teste | Estado | Oráculo/limite |
+|---|---|---|
+| T01 original | **BLOCKED** | Executável original não rodado: bind em todas as interfaces proibido nesta execução |
+| T01, sonda restrita anterior | **PARTIAL**, 2 PASS / 1 FAIL | Loopback instrumentado, timeout 30 s na tentativa 2; não é aprovação do teste original |
+| T02 | **FAIL**, 9 PASS / 1 FAIL | Uma saída `1200` por mistura do print; repetição confirma intermitência herdada |
+| T03 | **PASS** | Iterações 1/50/51, pesos com tolerância 5e-5 e convergência na 51 |
+| T04 | **PARTIAL** | `0.00684395, 0.986493, 0.98925, 0.0140296`; classificação XOR correta, valores fora da referência sem tolerância acordada |
+| T05 | **PASS** | 12 produtos esperados, probabilidades >0.55; stdin derivado do esperado, sem homologar outra entrada |
+| T06 | **PASS** | `[-100, -40, -3, 10, 70, 80]` |
+| T07 | **PASS** | `[5, 12, 33, 61, 98]`; mutação e assertions PASS; snapshot TAC histórico INFO |
+
+Baseline final: `output/core01/run-20261029-123255/baseline.json`, exit **1**,
+devido a FAIL herdado de T02 e PARTIAL de T04. A execução inicial desta revisão
+teve 5/10 PASS de T02, a final teve 9/10; nenhuma das duas homologa estabilidade.
+Não se alteraram oráculos, tolerâncias, canal ou impressão para obter PASS.
+
+### Documentos e limites revistos
+
+Atualizados nesta revisão: este handoff; JSON com `initial_execution`,
+`subsequent_publication` e `corrective_review`; README sobre publicação/estado
+local; BNF sobre representação já prevista de new; backlog e metadados do card
+sobre os dois momentos e a autorização corretiva. Números, hashes e exemplos
+históricos da execução inicial foram preservados no bloco inicial do JSON.
+
+AGENTS.md e MEMORY.md foram relidos e permanecem inalterados: a revisão não
+modifica regras permanentes, ownership, arquitetura de ramos ou política de
+documentação. Não há instrução operacional nova a incorporar neles. Contratos,
+CR-CORE05 e handoffs CORE-02/04/05 foram verificados e preservados: continuam
+válidos como normas/pendências ou evidências históricas das suas bases.
+
+Pendências: ratificações C-FJ-v1 e FJ-SEM-07/08, none implícito e tipos genéricos,
+vida/consumo de handles, inicializadores de atributos FJ e limitações do backend
+para agregados/construtores. A notação esclarecida resolve A sem nova decisão
+contratual; nenhuma aprovação humana foi inferida. CORE-07 continua responsável
+por wrappers, registro, conversões e execução real, sem ter sido iniciado aqui.
+
+**Parecer da revisão: COM RESSALVAS, estável no recorte CORE-06 e pronto para
+proposta de PR pelo coordenador.** A regressão B foi corrigida e A esclarecido;
+T01 está bloqueado no formato original, T02 continua intermitente e T04 parcial.
+Esses estados e as ratificações pendentes devem acompanhar a revisão independente.
+Nenhum PR, commit, stage ou push foi realizado nesta execução. HEAD preservado
+em `2fada7c`; alterações corretivas permanecem locais na mesma branch. Não houve
+alteração de dev/main, runtime, Web didática, Teste 11, legado ou contratos.

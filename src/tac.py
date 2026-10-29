@@ -164,10 +164,10 @@ class TACGenerator:
             self._emit(f"{tmp} = call {name}, {len(args)}")
             return tmp
         if isinstance(node, NewExpr):
-            if node.arguments:
-                raise NotImplementedError("TAC: argumentos de construtor ainda nao representados")
+            values = self._arguments(node.arguments)
             tmp = self._temp()
-            self._emit(f"{tmp} = new {node.class_name}")
+            arguments = f"({', '.join(values)})" if values else ""
+            self._emit(f"{tmp} = new {node.class_name}{arguments}")
             return tmp
         if isinstance(node, CChannelExpr):
             tmp = self._temp()

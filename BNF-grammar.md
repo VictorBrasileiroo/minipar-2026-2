@@ -415,6 +415,14 @@ var obj = new MinhaClasse();
 var rede = new RedeNeural(0.5);
 ```
 
+**TAC — revisão CORE-06 (29/10/2026):** argumentos são avaliados e preservados em
+`t = new Classe(v0, v1)`; a forma sem argumentos mantém `t = new Classe`.
+O frontend não valida aridade de construtor. O backend existente usa
+`std::make_shared<Classe>(args)`: campos públicos podem receber inicialização
+agregada nos casos aceitos pelo C++20, e formas incompatíveis são rejeitadas
+pelo G++. Não foi acrescentado um mecanismo de métodos construtores MiniPar.
+Reprodução e limites em [CORE-06](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
+
 ### 8.2 Acesso a Propriedades
 
 ```bnf

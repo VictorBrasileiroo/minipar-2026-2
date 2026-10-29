@@ -103,7 +103,11 @@ até CORE-07; gerar TAC não comprova execução de tarefas.
 
 Notação, exemplos, limites e evidências em
 [`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
-Entrega local para revisão; contratos e card não são declarados aprovados/concluídos.
+A implementação inicial foi publicada pelo coordenador em `2fada7c`, na branch
+`eixo-a/CORE-06-tac-fork-join-par`. A revisão corretiva de 29/10/2026 preserva
+argumentos de `new` no TAC e esclarece `return` em branches; suas alterações
+permanecem locais. Histórico, regressões e limites estão no handoff. Contratos
+e card não são declarados aprovados/concluídos.
 
 ## Proveniência e direitos
 

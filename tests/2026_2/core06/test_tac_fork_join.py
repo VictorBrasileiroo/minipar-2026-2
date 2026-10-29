@@ -304,9 +304,14 @@ class Core06TAC(unittest.TestCase):
             with self.subTest(program=program), self.assertRaises(NotImplementedError):
                 TACGenerator().generate_text(program)
 
-    def test_unrepresented_constructor_arguments_fail_explicitly(self):
-        with self.assertRaisesRegex(NotImplementedError, 'construtor'):
-            generate('class C{}var c=new C(1);')
+    def test_constructor_arguments_preserved_for_backend_validation(self):
+        # This source is accepted by the semantic phase, but the empty C++
+        # aggregate has no field for 1. TAC must retain it for backend validation.
+        program = frontend('class C{}var c=new C(1);')
+        self.assertEqual(TACGenerator().generate_text(program),
+                         '# class C\nt0 = new C(1)\nc = t0\n')
+        self.assertEqual(CppCodeGenerator()._translate_expression(program.statements[1].init_value),
+                         'std::make_shared<C>(1)')
 
     def test_string_escapes_keep_one_instruction_per_line(self):
         self.assertEqual(generate(r'print("a\nb\t\"c");'), 'print "a\\nb\\t\\\"c"\n')
