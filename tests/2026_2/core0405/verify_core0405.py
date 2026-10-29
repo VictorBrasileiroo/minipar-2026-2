@@ -241,10 +241,12 @@ for i, source in enumerate(MALFORMED):
 
 
 class BackendBoundaryTests(unittest.TestCase):
-    def test_direct_generators_refuse_nested_fork(self):
+    def test_tac_translates_nested_fork_cpp_stays_blocked(self):
         program = parse('func f(){return 1;}func unused(){var h=fork f();return 2;}')
-        with self.assertRaisesRegex(NotImplementedError, 'CORE-06'):
-            TACGenerator().generate_text(program)
+        tac = TACGenerator().generate_text(program)
+        self.assertRegex(tac, r'func unused:\nt\d+ = fork f\(\) on "local"\nh = t\d+\nreturn 2\nendfunc unused')
+        self.assertEqual(tac.count('fork f()'), 1)
+        self.assertNotIn('?', tac)
         destination = Path(tempfile.mkdtemp(dir=WORK))
         previous = Path.cwd()
         try:

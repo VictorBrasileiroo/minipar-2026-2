@@ -1,0 +1,5 @@
+func dobro(x) { return x * 2; }
+var x = 10;
+var h = fork dobro(x);
+x = 99;
+print(join(h, 30000));

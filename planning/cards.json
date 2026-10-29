@@ -300,7 +300,10 @@
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/CORE-06_TAC_FORK_JOIN.md"
+      ],
+      "scope_authorization": "29/10/2026: coordenador autoriza desenvolvimento exclusivamente local de CORE-06, src/tac.py, testes próprios, ajuste do oráculo TAC de CORE-04/05 e documentação/metadados pertinentes, usando C-FJ-v1 revisão 2 com ratificações pendentes. Não autoriza git add, commits, push, PR, merge, CORE-07/08, alteração unilateral de contrato, DONE ou FROZEN; ready/status preservados. Branch eixo-a/CORE-06-tac-fork-join-par, base 29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1."
     },
     {
       "id": "CORE-07",

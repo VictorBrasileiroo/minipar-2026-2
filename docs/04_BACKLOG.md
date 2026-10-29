@@ -238,6 +238,15 @@
 
 **Escopo de arquivos autorizado:** `src/tac.py`.
 
+**Autorização local registrada em `planning/cards.json` (29/10/2026):** coordenador
+autoriza desenvolvimento de CORE-06, testes próprios, ajuste do oráculo TAC de
+CORE-04/05 e documentação/metadados pertinentes. Base
+`29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1`, branch
+`eixo-a/CORE-06-tac-fork-join-par`; C-FJ-v1 revisão 2 com ratificações pendentes.
+Sem `git add`, commit, push, PR, merge ou implementação CORE-07/08; `ready=false`
+e `BACKLOG` preservados. Evidências locais para revisão:
+[`CORE-06_TAC_FORK_JOIN.md`](auditorias/CORE-06_TAC_FORK_JOIN.md).
+
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.

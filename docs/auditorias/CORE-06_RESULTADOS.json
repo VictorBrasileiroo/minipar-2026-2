@@ -1,0 +1,168 @@
+{
+  "card": "CORE-06",
+  "observed_date": "2026-10-29",
+  "branch": "eixo-a/CORE-06-tac-fork-join-par",
+  "base_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+  "head_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+  "origin_dev_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+  "staged_files": [],
+  "new_commits": 0,
+  "publication": "No git add, commit, push, PR or merge performed",
+  "contract": "C-FJ-v1 proposed revision 2, pending ratifications; not FROZEN",
+  "card_state": "BACKLOG; ready=false preserved; local prompt authorization recorded",
+  "environment": {
+    "python": "3.12.4",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+    "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+  },
+  "checks": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v",
+      "status": "PASS",
+      "tests": 5,
+      "pass_count": 5,
+      "fail_count": 0,
+      "returncode": 0,
+      "log": "output/core06/core02.log"
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests/2026_2/core06 -p \"test_*.py\" -v",
+      "status": "PASS",
+      "tests": 38,
+      "pass_count": 38,
+      "fail_count": 0,
+      "returncode": 0,
+      "log": "output/core06/core06.log"
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B tests/validate_core02_native.py",
+      "status": "PASS",
+      "returncode": 0,
+      "evidence": "output/core02/run-20261029-114637-022440/validation.json",
+      "builds": [
+        {
+          "build": "native",
+          "pass_count": 17,
+          "fail_count": 0,
+          "status": "PASS"
+        },
+        {
+          "build": "assertions",
+          "pass_count": 17,
+          "fail_count": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core03/verify_core03.py",
+      "status": "PASS_WITH_KNOWN_FAIL",
+      "counts": {
+        "PASS": 78,
+        "KNOWN_FAIL": 1
+      },
+      "fail_count": 0,
+      "returncode": 0,
+      "evidence": "output/core03/run-lnld_pil/summary.json",
+      "known_fail": [
+        "HERDADO-RETORNO-NUMERICO"
+      ]
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core0405/verify_core0405.py",
+      "status": "PASS",
+      "tests": 126,
+      "pass_count": 126,
+      "fail_count": 0,
+      "returncode": 0,
+      "evidence": "output/core0405/run-tu45obo4/summary.json",
+      "includes_review_tests": 26,
+      "includes_final_review_tests": 10,
+      "boundary_records": [
+        {
+          "test": "__main__.BackendBoundaryTests.test_cli_refuses_before_artifacts",
+          "status": "PASS"
+        },
+        {
+          "test": "__main__.BackendBoundaryTests.test_legacy_native_smoke",
+          "status": "PASS"
+        },
+        {
+          "test": "__main__.BackendBoundaryTests.test_tac_translates_nested_fork_cpp_stays_blocked",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B scripts/baseline_t01_t07.py --only T06",
+      "status": "PASS",
+      "returncode": 0,
+      "evidence": "output/core01/run-20261029-114636/baseline.json",
+      "observed": "T06: PASS — vetor 10 -3 -40 80 70 -100 ordenado como [-100, -40, -3, 10, 70, 80]\n\nEvidência: output\\core01\\run-20261029-114636\\baseline.json\nFerramentas: {'python': '3.12.4', 'platform': 'Windows-11-10.0.26200-SP0', 'cxx': 'C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', 'cxx_version': 'g++.exe (Rev6, Built by MSYS2 project) 16.2.0'}"
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B scripts/baseline_t01_t07.py --only T07",
+      "status": "PASS",
+      "returncode": 0,
+      "evidence": "output/core01/run-20261029-114657/baseline.json",
+      "observed": "T07: PASS — array [33, 12, 98, 5, 61] ordenado como [5, 12, 33, 61, 98] (somente a ordenação; TAC avaliado à parte)\nT07-TAC-igual-ao-esperado: INFO — TAC gerado diferente ao .expected.tac\nT07-TAC-mutacao: PASS — TAC do programa mutado difere do TAC fixo\nT07-limites: PASS — C++ gerado roda sem violação com -D_GLIBCXX_ASSERTIONS\n\nEvidência: output\\core01\\run-20261029-114657\\baseline.json\nFerramentas: {'python': '3.12.4', 'platform': 'Windows-11-10.0.26200-SP0', 'cxx': 'C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', 'cxx_version': 'g++.exe (Rev6, Built by MSYS2 project) 16.2.0'}"
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B scripts/validar_planejamento.py",
+      "status": "PASS",
+      "cards": 43,
+      "returncode": 0,
+      "log": "output/core06/planning.log"
+    },
+    {
+      "command": "git -c safe.directory=<repo> diff --check",
+      "status": "PASS",
+      "returncode": 0
+    }
+  ],
+  "hash_normalization": "UTF-8 text with LF",
+  "hashes": {
+    "src/tac.py": "ca0a4f70545207318e2424fc14fd858fbe090a4a8e007e835b7fe0cd542ebee3",
+    "tests/2026_2/core06/test_tac_fork_join.py": "371ab46e65e9db6e2afb69898f19b306e6168ba365b1a4a9a414729e1ac34d5f",
+    "tests/2026_2/core0405/verify_core0405.py": "f5de9dd77a1c125be68a8908bc6d8ac0e1f4becba6b57846d4ba5d3654e0c90b",
+    "tests/2026_2/core06/examples/capture.minipar": "1b65839140460467fe45ec2ca9cbbe0b303bbf4a3ec3d124d133e73344640ad5",
+    "tests/2026_2/core06/examples/handles.minipar": "5ad6dd0c5739f70f1a4f6733a588ea065596a12d405d7e358eda0fae03e39be2",
+    "tests/2026_2/core06/examples/par.minipar": "bd9bb369576b88ca01175f94e089d88c7338dd83e3b11c55476179a7affa5e5e"
+  },
+  "examples": [
+    {
+      "source_path": "tests/2026_2/core06/examples/capture.minipar",
+      "source": "func dobro(x) { return x * 2; }\nvar x = 10;\nvar h = fork dobro(x);\nx = 99;\nprint(join(h, 30000));\n",
+      "tac_path": "output/core06/capture.tac",
+      "tac": "func dobro:\nt0 = x * 2\nreturn t0\nendfunc dobro\nx = 10\nt1 = capture x\nt2 = fork dobro(t1) on \"local\"\nh = t2\nx = 99\nt3 = h\nt4 = join t3, timeout 30000\nprint t4\n",
+      "semantic_ok": true
+    },
+    {
+      "source_path": "tests/2026_2/core06/examples/handles.minipar",
+      "source": "func f() { return 7; }\nvar hs = [fork f(), fork f()];\nfor (var h in hs) { join(h); }\n",
+      "tac_path": "output/core06/handles.tac",
+      "tac": "func f:\nreturn 7\nendfunc f\nt1 = fork f() on \"local\"\nt2 = fork f() on \"local\"\nt0 = [t1, t2]\nhs = t0\nt3 = iter_begin hs\nFOR_IN_0:\nt4 = iter_has_next t3\nifFalse t4 goto ENDFOR_2\nt5 = iter_value t3\nh = t5\njoin h\nFOR_STEP_1:\niter_next t3\ngoto FOR_IN_0\nENDFOR_2:\n",
+      "semantic_ok": true
+    },
+    {
+      "source_path": "tests/2026_2/core06/examples/par.minipar",
+      "source": "seq {\n    print(0);\n    par { print(1); print(2); }\n    print(3);\n}\n",
+      "tac_path": "output/core06/par.tac",
+      "tac": "print 0\npar_begin PAR_0, 2\npar_spawn PAR_0, 0, PAR_BRANCH_2\npar_spawn PAR_0, 1, PAR_BRANCH_3\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\nprint 1\npar_end_branch PAR_0, 0\nPAR_BRANCH_3:\npar_branch PAR_0, 1\nprint 2\npar_end_branch PAR_0, 1\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint 3\n",
+      "semantic_ok": true
+    }
+  ],
+  "limitations": [
+    "Textual TAC only, no interpreter and no FJ execution",
+    "CLI and C++ guards preserved",
+    "Constructor arguments explicitly unsupported",
+    "Effectful class field initializers conservatively rejected in FJ programs, including calls that may hide FJ",
+    "Cross-branch break/continue explicitly rejected",
+    "Inherited semantic unknown types, implicit none and handle lifetime limits remain",
+    "T01/T02 intermittent known issues not rerun; T04 historical partial state not rerun",
+    "C-FJ ratifications and FJ-SEM-07/08 human decisions pending",
+    "Initial T06/T07 parallel reports collided by timestamp; final runs repeated separately"
+  ],
+  "ready_for_local_review": true
+}

@@ -18,7 +18,8 @@
 > `substr` e `to_string` usam a produção existente `<chamada_funcao>` (`FuncCallExpr`),
 > sem novos tokens ou produções. Os créditos e a gramática de origem foram preservados.
 > **CORE-04/05 (23/10/2026):** tokens e produções Fork/Join na seção 10 e BNF
-> consolidada; análise semântica implementada, geração/execução pendentes de CORE-06/07.
+> consolidada; análise semântica implementada. CORE-06 (29/10/2026): TAC Fork/Join,
+> `par` e `for-in` disponível pela API; C++/execução continuam pendentes de CORE-07.
 
 ---
 
@@ -574,8 +575,13 @@ seq {
 }
 ```
 
-Este exemplo passa pelo Lexer/Parser/AST/semântico; **não executa ainda**.
-Até CORE-06/07, o pipeline recusa Fork/Join explicitamente antes de gerar TAC/C++.
+Este exemplo passa pelo Lexer/Parser/AST/semântico e pelas APIs
+`TACGenerator.generate_text`/`generate`; **não executa ainda**.
+CORE-06 representa captura por valor, fork, join/timeout, branches/barreira de
+`par` e iteração real de `for-in`. Notação e limites em
+[`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
+A CLI completa ainda recusa Fork/Join antes dos artefatos; o backend C++ mantém
+a guarda CORE-07. Não há mudança nas produções nem nos diagnósticos abaixo.
 
 | Regra | Validação implementada |
 |---|---|
