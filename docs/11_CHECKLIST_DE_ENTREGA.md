@@ -1,5 +1,7 @@
 # Checklist acadêmico e técnico para 11/11/2026
 
+> Atualização de estado (26/10/2026): o PR #16 remove o TAC fixo e corrige a pilha do T07; ver [handoff CORE-02](auditorias/CORE-02_TAC_QUICKSORT.md). Menções ao hardcode na auditoria original são históricas. Integração e aceite global continuam pendentes.
+
 > Checklist não é comprovação. Só marcar `[x]` após verificar arquivo, teste e evidência. Requisitos não concluídos permanecem abertos.
 
 ## Produto e compilação
