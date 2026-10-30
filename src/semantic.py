@@ -2,14 +2,24 @@ from __future__ import annotations
 import sys
 from dataclasses import dataclass, field, replace
 from typing import Dict, List, Optional
-from ast_nodes import (
-    ASTNode, Program, VarDecl, Assignment, PrintStmt, IdentifierExpr, BinaryExpr,
-    UnaryExpr, NumberExpr, StringExpr, BoolExpr, SeqBlock, ParBlock, IfStmt, WhileStmt,
-    DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
-    ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
-    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
-    ForkExpr, JoinExpr, find_fork_join, iter_child_nodes
-)
+if __package__:
+    from .ast_nodes import (
+        ASTNode, Program, VarDecl, Assignment, PrintStmt, IdentifierExpr, BinaryExpr,
+        UnaryExpr, NumberExpr, StringExpr, BoolExpr, SeqBlock, ParBlock, IfStmt, WhileStmt,
+        DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
+        ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
+        CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
+        ForkExpr, JoinExpr, find_fork_join, iter_child_nodes
+    )
+else:
+    from ast_nodes import (
+        ASTNode, Program, VarDecl, Assignment, PrintStmt, IdentifierExpr, BinaryExpr,
+        UnaryExpr, NumberExpr, StringExpr, BoolExpr, SeqBlock, ParBlock, IfStmt, WhileStmt,
+        DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
+        ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
+        CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
+        ForkExpr, JoinExpr, find_fork_join, iter_child_nodes
+    )
 
 @dataclass(frozen=True)
 class ValueType:
@@ -37,7 +47,13 @@ class Symbol:
 NATIVE_FUNCTIONS = frozenset(("exp", "random", "range", "len", "to_number", "parse_ints", "substr", "to_string"))
 
 class SemanticAnalyzer:
-    def __init__(self) -> None:
+    def __init__(self, *, emit_diagnostics: bool = True) -> None:
+        self.emit_diagnostics = emit_diagnostics
+        self.diagnostics = []
+        self.scopes = []
+        self.symbols = []
+        self._scope_ids = []
+        self._node_stack = []
         self._scopes: List[Dict[str, Symbol]] = []
         self._has_errors = False
         self._current_function: Optional[str] = None
@@ -66,31 +82,64 @@ class SemanticAnalyzer:
         self._return_types: Optional[List[ValueType]] = None
         self._enter_scope()
 
-    def _enter_scope(self) -> None: self._scopes.append({})
+    def _enter_scope(self) -> None:
+        self._scopes.append({})
+        if self._specialized: return
+        node = self._node_stack[-1] if self._node_stack else None
+        kind, name = "global", None
+        if isinstance(node, ClassDecl): kind, name = "class", node.name
+        elif isinstance(node, FuncDecl):
+            kind = "method" if self._current_class else "function"
+            name = f"{self._current_class}.{node.name}" if self._current_class else node.name
+        elif isinstance(node, SeqBlock): kind = "seq"
+        elif isinstance(node, ParBlock): kind = "par"
+        elif isinstance(node, ForStmt): kind = "for"
+        scope_id = f"s{len(self.scopes)}"
+        self.scopes.append(dict(id=scope_id, kind=kind, name=name,
+            parent=self._scope_ids[-1] if self._scope_ids else None, line=node.line if node else 1))
+        self._scope_ids.append(scope_id)
     def _exit_scope(self) -> None:
-        if len(self._scopes) > 1: self._scopes.pop()
+        if len(self._scopes) > 1:
+            self._scopes.pop()
+            if not self._specialized: self._scope_ids.pop()
 
     def _get_context(self) -> str:
         return f" (Funcao: {self._current_function})" if self._current_function else ""
 
     def _define_symbol(self, name: str, type_: str, line: int, params: Optional[List[str]] = None) -> None:
         if name in self._scopes[-1]:
-            self._report(line, f"Variavel '{name}' ja declarada.")
-        else: self._scopes[-1][name] = Symbol(name=name, type=type_, params=params or [])
+            self._report(line, f"Variavel '{name}' ja declarada.", code="SEM_REDECLARED")
+        else:
+            self._scopes[-1][name] = Symbol(name=name, type=type_, params=params or [])
+            if not self._specialized:
+                node = self._node_stack[-1]
+                scope_kind = self.scopes[int(self._scope_ids[-1][1:])]["kind"]
+                if isinstance(node, VarDecl): kind = "attribute" if scope_kind == "class" else "variable"
+                elif isinstance(node, FuncDecl):
+                    # A declaration defines FUNC; its parameters define var,
+                    # even when a parameter has the same name as its callable.
+                    kind = ("method" if scope_kind == "class" else "function") if type_ == "FUNC" else "parameter"
+                elif isinstance(node, ClassDecl): kind = "class"
+                else: kind = "iterator"
+                published = None if kind in ("function", "method", "class") else "var" if type_ in ("unknown", "FUNC", "CLASS") else type_
+                self.symbols.append(dict(name=name, kind=kind, type=published, scope=self._scope_ids[-1],
+                    line=line, params=list(params or []) if kind in ("function", "method") else []))
 
     def _lookup(self, name: str) -> Optional[Symbol]:
         for scope in reversed(self._scopes):
             if name in scope: return scope[name]
         return None
 
-    def _report(self, line: int, message: str) -> None:
+    def _report(self, line: int, message: str, *, code=None) -> None:
         # A passada normal e a unica fonte de diagnosticos ordinarios.
         if self._specialized and not message.startswith("FJ-"): return
         if message.startswith("FJ-"):
             key = (line, self._current_class, self._current_function, message)
             if key in self._fj_diagnostics: return
             self._fj_diagnostics.add(key)
-        print(f"[ERRO SEMANTICO] Linha {line}{self._get_context()}: {message}", file=sys.stderr)
+        self.diagnostics.append(dict(phase="semantic", severity="error", code=code, message=message, line=line, column=None))
+        if self.emit_diagnostics:
+            print(f"[ERRO SEMANTICO] Linha {line}{self._get_context()}: {message}", file=sys.stderr)
         self._has_errors = True
 
     def _infer_type(self, node: Optional[ASTNode]) -> str:
@@ -368,7 +417,7 @@ class SemanticAnalyzer:
             self._report(node.line, f"FJ-SEM-01: '{node.function_name}' nao e funcao global.")
             return
         if len(node.arguments) != len(function.params):
-            self._report(node.line, f"FJ-SEM-02: '{node.function_name}' espera {len(function.params)} argumento(s), recebeu {len(node.arguments)}.")
+            self._report(node.line, f"FJ-SEM-02: '{node.function_name}' espera {len(function.params)} argumento(s), recebeu {len(node.arguments)}.", code="SEM_ARITY")
             return
         arguments = tuple(self._value_type(arg, True) for arg in node.arguments)
         for info in arguments: self._check_transport(info, node.line, "argumento")
@@ -406,6 +455,13 @@ class SemanticAnalyzer:
             self._report(node.line, "FJ-SEM-08: join com resultado none so pode ser comando isolado.")
 
     def validate_node(self, node: ASTNode, value_required: bool = True) -> None:
+        self._node_stack.append(node)
+        try:
+            return self._validate_node(node, value_required)
+        finally:
+            self._node_stack.pop()
+
+    def _validate_node(self, node: ASTNode, value_required: bool = True) -> None:
         if node is None: return
 
         if isinstance(node, ForkExpr):
@@ -419,7 +475,7 @@ class SemanticAnalyzer:
             actual_type = self._infer_type(node.init_value)
             declared_type = actual_type if node.type == "var" and actual_type != "unknown" else node.type
             if not self._types_compatible(declared_type, actual_type):
-                self._report(node.line, f"Tipo incompativel em '{node.name}': esperado {declared_type}, recebido {actual_type}.")
+                self._report(node.line, f"Tipo incompativel em '{node.name}': esperado {declared_type}, recebido {actual_type}.", code="SEM_TYPE_MISMATCH")
             value_type = self._value_type(node.init_value) if node.init_value else ValueType(declared_type)
             self._define_symbol(node.name, declared_type, node.line)
             symbol = self._lookup(node.name)
@@ -428,10 +484,10 @@ class SemanticAnalyzer:
             self._check_global_access(node.name, node.line)
             sym = self._lookup(node.name)
             if sym is None:
-                self._report(node.line, f"Variavel '{node.name}' nao declarada.")
+                self._report(node.line, f"Variavel '{node.name}' nao declarada.", code="SEM_UNDECLARED_VARIABLE")
             self.validate_node(node.value)
             if sym and not self._types_compatible(sym.type, self._infer_type(node.value)):
-                self._report(node.line, f"Tipo incompativel em atribuicao de '{node.name}'.")
+                self._report(node.line, f"Tipo incompativel em atribuicao de '{node.name}'.", code="SEM_TYPE_MISMATCH")
             if sym and self._fj_enabled:
                 sym.value_type = self._value_type(node.value)
         elif isinstance(node, PrintStmt):
@@ -470,7 +526,7 @@ class SemanticAnalyzer:
         elif isinstance(node, IdentifierExpr):
             self._check_global_access(node.name, node.line)
             if self._lookup(node.name) is None:
-                self._report(node.line, f"Variavel '{node.name}' nao declarada.")
+                self._report(node.line, f"Variavel '{node.name}' nao declarada.", code="SEM_UNDECLARED_VARIABLE")
         elif isinstance(node, BinaryExpr):
             self.validate_node(node.left)
             self.validate_node(node.right)
@@ -481,10 +537,10 @@ class SemanticAnalyzer:
             if node.op in ("+", "==", "!=", "<", "<=", ">", ">="):
                 if ((lt == "string" and rt not in ("string", "var", "unknown"))
                         or (rt == "string" and lt not in ("string", "var", "unknown"))):
-                    self._report(node.line, f"Operador '{node.op}' entre string e outro tipo exige conversao explicita.")
+                    self._report(node.line, f"Operador '{node.op}' entre string e outro tipo exige conversao explicita.", code="SEM_TYPE_MISMATCH")
             if node.op in ("+", "-", "*", "/", "%"):
                 if node.op != "+" and (lt not in ("number", "int", "var", "unknown") or rt not in ("number", "int", "var", "unknown")):
-                    self._report(node.line, f"Operador '{node.op}' exige operandos numericos.")
+                    self._report(node.line, f"Operador '{node.op}' exige operandos numericos.", code="SEM_NUMERIC_OPERANDS")
         elif isinstance(node, UnaryExpr):
             self.validate_node(node.operand)
             kind = self._infer_type(node.operand)
@@ -525,10 +581,10 @@ class SemanticAnalyzer:
             self._exit_scope()
         elif isinstance(node, (BreakStmt, ContinueStmt)):
             if self._loop_depth == 0:
-                self._report(node.line, f"'{node.__class__.__name__.replace('Stmt', '').lower()}' usado fora de laco.")
+                self._report(node.line, f"'{node.__class__.__name__.replace('Stmt', '').lower()}' usado fora de laco.", code="SEM_OUTSIDE_LOOP")
         elif isinstance(node, ClassDecl):
             if node.superclass and node.superclass not in self._classes:
-                self._report(node.line, f"Superclasse '{node.superclass}' nao declarada.")
+                self._report(node.line, f"Superclasse '{node.superclass}' nao declarada.", code="SEM_UNDECLARED_SUPERCLASS")
             self._define_symbol(node.name, "CLASS", node.line)
             self._enter_scope()
             old_class = self._current_class
@@ -560,9 +616,9 @@ class SemanticAnalyzer:
             cls = self._classes.get(obj_type)
             owner, method = self._method_for(obj_type, node.method_name)
             if cls and method is None:
-                self._report(node.line, f"Metodo '{node.method_name}' nao declarado em '{obj_type}'.")
+                self._report(node.line, f"Metodo '{node.method_name}' nao declarado em '{obj_type}'.", code="SEM_UNDECLARED_METHOD")
             elif method and len(method.params) != len(node.arguments):
-                self._report(node.line, f"Metodo '{node.method_name}' espera {len(method.params)} argumento(s), recebeu {len(node.arguments)}.")
+                self._report(node.line, f"Metodo '{node.method_name}' espera {len(method.params)} argumento(s), recebeu {len(node.arguments)}.", code="SEM_ARITY")
             if (obj_type == "list" and node.method_name in ("append", "push_back")
                     and any(self._infer_type(arg) == "string" for arg in node.arguments)):
                 self._report(node.line, "Listas de strings ainda nao suportadas (C-T11-v1 3.4).")
@@ -587,9 +643,9 @@ class SemanticAnalyzer:
                 if symbol is not None and (symbol.type != "FUNC" or symbol is not self._scopes[0].get(node.name)):
                     self._report(node.line, f"FJ-SEM-05: chamada '{node.name}' nao resolve funcao global isolada.")
             if node.name not in self._functions and node.name not in ("exp", "random", "range", "len", "to_number", "parse_ints", "substr", "to_string"):
-                self._report(node.line, f"Funcao '{node.name}' nao declarada.")
+                self._report(node.line, f"Funcao '{node.name}' nao declarada.", code="SEM_UNDECLARED_FUNCTION")
             elif node.name in self._functions and len(self._functions[node.name].params) != len(node.arguments):
-                self._report(node.line, f"Funcao '{node.name}' espera {len(self._functions[node.name].params)} argumento(s), recebeu {len(node.arguments)}.")
+                self._report(node.line, f"Funcao '{node.name}' espera {len(self._functions[node.name].params)} argumento(s), recebeu {len(node.arguments)}.", code="SEM_ARITY")
             for arg in node.arguments: self.validate_node(arg)
             if self._fj_enabled and node.name in self._function_nodes:
                 function = self._function_nodes[node.name]
@@ -603,32 +659,32 @@ class SemanticAnalyzer:
             if node.name in native_types:
                 expected = native_types[node.name]
                 if len(node.arguments) != len(expected):
-                    self._report(node.line, f"Funcao '{node.name}' espera {len(expected)} argumento(s), recebeu {len(node.arguments)}.")
+                    self._report(node.line, f"Funcao '{node.name}' espera {len(expected)} argumento(s), recebeu {len(node.arguments)}.", code="SEM_ARITY")
                 else:
                     for arg, required in zip(node.arguments, expected):
                         actual = self._infer_type(arg)
                         allowed = (("string", "list", "matrix") if required == "collection"
                                    else ("number", "int") if required == "number" else (required,))
                         if actual not in (*allowed, "var", "unknown"):
-                            self._report(node.line, f"Funcao '{node.name}': esperado {required}, recebido {actual}.")
+                            self._report(node.line, f"Funcao '{node.name}': esperado {required}, recebido {actual}.", code="SEM_TYPE_MISMATCH")
         elif isinstance(node, PropertyAccess):
             self.validate_node(node.object)
             obj_type = self._infer_type(node.object)
             cls = self._classes.get(obj_type)
             if cls and node.property_name not in self._attributes_for(obj_type):
-                self._report(node.line, f"Atributo '{node.property_name}' nao declarado em '{obj_type}'.")
+                self._report(node.line, f"Atributo '{node.property_name}' nao declarado em '{obj_type}'.", code="SEM_UNDECLARED_ATTRIBUTE")
         elif isinstance(node, PropertyAssign):
             self.validate_node(node.object)
             self.validate_node(node.value)
             obj_type = self._infer_type(node.object)
             cls = self._classes.get(obj_type)
             if cls and node.property_name not in self._attributes_for(obj_type):
-                self._report(node.line, f"Atributo '{node.property_name}' nao declarado em '{obj_type}'.")
+                self._report(node.line, f"Atributo '{node.property_name}' nao declarado em '{obj_type}'.", code="SEM_UNDECLARED_ATTRIBUTE")
             elif cls and not self._types_compatible(self._attributes_for(obj_type)[node.property_name], self._infer_type(node.value)):
-                self._report(node.line, f"Tipo incompativel em atribuicao do atributo '{node.property_name}'.")
+                self._report(node.line, f"Tipo incompativel em atribuicao do atributo '{node.property_name}'.", code="SEM_TYPE_MISMATCH")
         elif isinstance(node, NewExpr):
             if node.class_name not in self._classes:
-                self._report(node.line, f"Classe '{node.class_name}' nao declarada.")
+                self._report(node.line, f"Classe '{node.class_name}' nao declarada.", code="SEM_UNDECLARED_CLASS")
             for arg in node.arguments: self.validate_node(arg)
             if self._isolated:
                 for owner in reversed(self._class_chain(node.class_name)):

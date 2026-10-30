@@ -109,6 +109,7 @@ class Token:
 
 class Lexer:
     def __init__(self, source_code: str) -> None:
+        self.diagnostics = []
         self._source = source_code
         self._pos = 0
         self._line = 1
@@ -166,11 +167,15 @@ class Lexer:
                 while self._peek() not in ('"', "\0"):
                     if self._peek() == "\\":
                         self._advance()
+                        if self._pos >= len(self._source): break
                         escaped = self._advance()
                         escape_map = {"n": "\n", "t": "\t", '"': '"', "\\": "\\"}
                         text += escape_map.get(escaped, escaped)
                     else: text += self._advance()
                 if self._peek() == '"': self._advance()
+                else:
+                    self.diagnostics.append(dict(phase="lexer", severity="error", code="LEX_UNTERMINATED_STRING",
+                        message="String sem fechamento", line=start_line, column=start_col))
                 tokens.append(self._make_token(TokenType.STRING_LITERAL, text, start_line, start_col))
             else:
                 op = self._advance()
@@ -209,5 +214,9 @@ class Lexer:
                     tokens.append(self._make_token(single_map[op], op, start_line, start_col))
                 else: tokens.append(self._make_token(TokenType.UNKNOWN, op, start_line, start_col))
 
+        self.diagnostics.extend(dict(phase="lexer", severity="error", code="LEX_UNKNOWN_CHAR",
+            message=f"Caractere desconhecido '{t.lexeme}'", line=t.line, column=t.col)
+            for t in tokens if t.type is TokenType.UNKNOWN)
+        self.diagnostics.sort(key=lambda d: (d["line"], d["column"]))
         tokens.append(Token(TokenType.END_OF_FILE, "", self._line, self._col))
         return tokens
