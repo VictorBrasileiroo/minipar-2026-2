@@ -1,0 +1,525 @@
+{
+  "date": "2026-10-29",
+  "initial_head": "8bbe1d7840a9e95c81f7651a573a8bea315ec7fa",
+  "integrated_dev": "2218c465f60fcbe6fa8322e4a04f910414acca7a",
+  "branch": "eixo-a/CORE-04-05-fork-join",
+  "conflict_paths": [
+    "src/tac.py"
+  ],
+  "imported_and_combined_files": [
+    {
+      "path": "README.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "197172b8ca31abb1e1ba6032652050f8016f3aaf",
+      "initial_blob": "db4dd9e6963a7292127dfa6b3b868de9d66af5b8",
+      "dev_blob": "197172b8ca31abb1e1ba6032652050f8016f3aaf"
+    },
+    {
+      "path": "docs/00_DOCUMENTO_MESTRE_INICIAL.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "50d76fe3c5cbf09d02a4997a6a1a27c6d9e53e70",
+      "initial_blob": "909cb1d16bf3e76cefea9128d8812a760ce175f5",
+      "dev_blob": "50d76fe3c5cbf09d02a4997a6a1a27c6d9e53e70"
+    },
+    {
+      "path": "docs/02_CONTRATOS_TECNICOS.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "337668a6f2236113d560b7eeeccde8f48a1d3949",
+      "initial_blob": "91b0556738962dc34b5a9ac1c84fdaaed78d0a40",
+      "dev_blob": "337668a6f2236113d560b7eeeccde8f48a1d3949"
+    },
+    {
+      "path": "docs/04_BACKLOG.md",
+      "provenance": "combined/manual",
+      "staged_blob": "bf6220f9cb9cd9c6a1211906efeabcf10b2ffa6f",
+      "initial_blob": "657d6cb2ad5d7d2961616a5b6aee3fdcca1456c4",
+      "dev_blob": "69212b51d13d25d651b2abb0f37067a1e4907cf4"
+    },
+    {
+      "path": "docs/08_ESTADO_DA_BASE_2026_1.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "0ac64e1811874da8507ec6827a330622032f4914",
+      "initial_blob": "ccb7c3a1744cc577b76e15849d60558e24d37907",
+      "dev_blob": "0ac64e1811874da8507ec6827a330622032f4914"
+    },
+    {
+      "path": "docs/11_CHECKLIST_DE_ENTREGA.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "e7917402c18044bc13a86ad0854929c376e86b9a",
+      "initial_blob": "8e9d38617da8c4808fb2da115b7ce80dacc82c17",
+      "dev_blob": "e7917402c18044bc13a86ad0854929c376e86b9a"
+    },
+    {
+      "path": "docs/CR-CORE02-TAC-STATUS.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "4b96c4d71a78044c9e0bac2765d119795f8550c5",
+      "initial_blob": null,
+      "dev_blob": "4b96c4d71a78044c9e0bac2765d119795f8550c5"
+    },
+    {
+      "path": "docs/auditorias/CORE-01_BASELINE_T01_T07.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "3730f196c0fcc28ce4121d708bfd347edec3d034",
+      "initial_blob": null,
+      "dev_blob": "3730f196c0fcc28ce4121d708bfd347edec3d034"
+    },
+    {
+      "path": "docs/auditorias/CORE-02_TAC_QUICKSORT.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "e6ba71e9490aac81696cf96fdb199509ffd650f3",
+      "initial_blob": null,
+      "dev_blob": "e6ba71e9490aac81696cf96fdb199509ffd650f3"
+    },
+    {
+      "path": "planning/cards.json",
+      "provenance": "combined/manual",
+      "staged_blob": "6109f48a0db77047db28bdd150451c137df8a98c",
+      "initial_blob": "0d7c8c9c403b23865b863b4d55c0e44090acd5fa",
+      "dev_blob": "7f300f2a261c83761b351bd9d7c568e1b29ff1f8"
+    },
+    {
+      "path": "runtime/README.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "847676e23619a12635c7ad684e4b721a9f434321",
+      "initial_blob": "8bc471a624390c54aa2883efc8c3d961395204af",
+      "dev_blob": "847676e23619a12635c7ad684e4b721a9f434321"
+    },
+    {
+      "path": "runtime/include/minipar_rt/api.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "272af06e47290d25e32a5d0f6d9ec2024aa12ff1",
+      "initial_blob": null,
+      "dev_blob": "272af06e47290d25e32a5d0f6d9ec2024aa12ff1"
+    },
+    {
+      "path": "runtime/include/minipar_rt/core.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "878d402ac85998295714c411a43f6ba3faffd79d",
+      "initial_blob": null,
+      "dev_blob": "878d402ac85998295714c411a43f6ba3faffd79d"
+    },
+    {
+      "path": "runtime/include/minipar_rt/json.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "526014aef80bf5a023e85d6b97631a0967e2936d",
+      "initial_blob": null,
+      "dev_blob": "526014aef80bf5a023e85d6b97631a0967e2936d"
+    },
+    {
+      "path": "runtime/include/minipar_rt/minipar_rt.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "61a21240f0fe63a89210b2561c7983ec678ed047",
+      "initial_blob": null,
+      "dev_blob": "61a21240f0fe63a89210b2561c7983ec678ed047"
+    },
+    {
+      "path": "runtime/include/minipar_rt/net.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "c91e56eebf5aadb003bda1c1301a325334f12d96",
+      "initial_blob": null,
+      "dev_blob": "c91e56eebf5aadb003bda1c1301a325334f12d96"
+    },
+    {
+      "path": "runtime/include/minipar_rt/remote.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "4ab78326e82c6672495b4144c9ae6d5db9a4b1f1",
+      "initial_blob": null,
+      "dev_blob": "4ab78326e82c6672495b4144c9ae6d5db9a4b1f1"
+    },
+    {
+      "path": "runtime/include/minipar_rt/value.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "f78788f5a4fdf0708d15aab25c9ab7311cc5a2d7",
+      "initial_blob": null,
+      "dev_blob": "f78788f5a4fdf0708d15aab25c9ab7311cc5a2d7"
+    },
+    {
+      "path": "runtime/include/minipar_rt/worker.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "cd7cbe9bb3d007122659ca193924152ae8b9db01",
+      "initial_blob": null,
+      "dev_blob": "cd7cbe9bb3d007122659ca193924152ae8b9db01"
+    },
+    {
+      "path": "runtime/tests/join_or_exit_probe.cpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "bd73a37a8a5345fac5447cce8caa32e10d2ea361",
+      "initial_blob": null,
+      "dev_blob": "bd73a37a8a5345fac5447cce8caa32e10d2ea361"
+    },
+    {
+      "path": "runtime/tests/run_tests.py",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "ab67fd71d6a5f1ac162562a23d8db46ede747362",
+      "initial_blob": null,
+      "dev_blob": "ab67fd71d6a5f1ac162562a23d8db46ede747362"
+    },
+    {
+      "path": "runtime/tests/test_local.cpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "5f610ed0b67d5a179d55cfef6fed1bbaf295eacf",
+      "initial_blob": null,
+      "dev_blob": "5f610ed0b67d5a179d55cfef6fed1bbaf295eacf"
+    },
+    {
+      "path": "runtime/tests/test_protocol.cpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "32fa7e792c7d4b4a6c017ff43a3267c2254752a5",
+      "initial_blob": null,
+      "dev_blob": "32fa7e792c7d4b4a6c017ff43a3267c2254752a5"
+    },
+    {
+      "path": "runtime/tests/test_remote.cpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "bf5ab679d8aee1bbf72e5ebb7ceec2472fafb80e",
+      "initial_blob": null,
+      "dev_blob": "bf5ab679d8aee1bbf72e5ebb7ceec2472fafb80e"
+    },
+    {
+      "path": "runtime/tests/test_util.hpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "ef7230fc2621feea3aeb67cb3e1513fdd1ef4593",
+      "initial_blob": null,
+      "dev_blob": "ef7230fc2621feea3aeb67cb3e1513fdd1ef4593"
+    },
+    {
+      "path": "runtime/tests/test_worker.cpp",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "e0e04740e1e73d313d36af41f6100130c8ea47d3",
+      "initial_blob": null,
+      "dev_blob": "e0e04740e1e73d313d36af41f6100130c8ea47d3"
+    },
+    {
+      "path": "scripts/baseline_t01_t07.py",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "b2bd5cdf0ed2f1db55b38d11abc3a191d0224e48",
+      "initial_blob": null,
+      "dev_blob": "b2bd5cdf0ed2f1db55b38d11abc3a191d0224e48"
+    },
+    {
+      "path": "src/tac.py",
+      "provenance": "combined/manual",
+      "staged_blob": "0fb44d65c19e37ee1a7339cb5d92369182c18384",
+      "initial_blob": "a3d8d8a6836a61037f2b1195b7b8079884b58225",
+      "dev_blob": "a760ddc301f6caf739d75d42d3322e68a6ea1128"
+    },
+    {
+      "path": "tests/expected_results/README.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "94c0c9cadc823178c99f400c77880a830e45dee5",
+      "initial_blob": null,
+      "dev_blob": "94c0c9cadc823178c99f400c77880a830e45dee5"
+    },
+    {
+      "path": "tests/test_core02_tac.py",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "411cc45632f41b42dd432e528c7319104c4c1e98",
+      "initial_blob": null,
+      "dev_blob": "411cc45632f41b42dd432e528c7319104c4c1e98"
+    },
+    {
+      "path": "tests/teste7_quicksort_iterativo_tac.minipar",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "5b00e0dab239ebdc3301bfd02e611cf60d2b7278",
+      "initial_blob": "a3a17a6b9dfe05694075ad0a5c37a1f359cfa5bc",
+      "dev_blob": "5b00e0dab239ebdc3301bfd02e611cf60d2b7278"
+    },
+    {
+      "path": "tests/validate_core02_native.py",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "5d6a98f36fa77d770e37b4365082f4c281c8da78",
+      "initial_blob": null,
+      "dev_blob": "5d6a98f36fa77d770e37b4365082f4c281c8da78"
+    },
+    {
+      "path": "web_didatica/README.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "e807f7f5335e144f3f05cec5fce45ab53e6714df",
+      "initial_blob": "66f91727e412c1d8be507faaf1395a98052ae08c",
+      "dev_blob": "e807f7f5335e144f3f05cec5fce45ab53e6714df"
+    },
+    {
+      "path": "web_didatica/fixtures/README.md",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "931451a4b38c242f7d3f1eedb194ec5edcebbc39",
+      "initial_blob": null,
+      "dev_blob": "931451a4b38c242f7d3f1eedb194ec5edcebbc39"
+    },
+    {
+      "path": "web_didatica/fixtures/exec-01-fix01.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "2a68e185c01ea399a596628a04c32cd93e6ae3ef",
+      "initial_blob": null,
+      "dev_blob": "2a68e185c01ea399a596628a04c32cd93e6ae3ef"
+    },
+    {
+      "path": "web_didatica/fixtures/fix-01-sucesso.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "9e2c01218b361a70c7ee358f6b1fbf9be06c6be1",
+      "initial_blob": null,
+      "dev_blob": "9e2c01218b361a70c7ee358f6b1fbf9be06c6be1"
+    },
+    {
+      "path": "web_didatica/fixtures/fix-02-erro-lexico.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "7961f7dd9829df4cd7f67a0d788bc888b47eee8e",
+      "initial_blob": null,
+      "dev_blob": "7961f7dd9829df4cd7f67a0d788bc888b47eee8e"
+    },
+    {
+      "path": "web_didatica/fixtures/fix-03-erro-sintatico.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "71e065a3c55a8cc9a41046a4750929f8282fefc3",
+      "initial_blob": null,
+      "dev_blob": "71e065a3c55a8cc9a41046a4750929f8282fefc3"
+    },
+    {
+      "path": "web_didatica/fixtures/fix-04-erro-semantico.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "4f1bdf8470276661da5ac167560763545381996d",
+      "initial_blob": null,
+      "dev_blob": "4f1bdf8470276661da5ac167560763545381996d"
+    },
+    {
+      "path": "web_didatica/fixtures/index.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "72e86eb5e7eff831026a19f0b4c4bc3472242be1",
+      "initial_blob": null,
+      "dev_blob": "72e86eb5e7eff831026a19f0b4c4bc3472242be1"
+    },
+    {
+      "path": "web_didatica/fixtures/prog-01-quicksort-classes.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "ada0cf71b4a604f91b0871cf22829eea79db7792",
+      "initial_blob": null,
+      "dev_blob": "ada0cf71b4a604f91b0871cf22829eea79db7792"
+    },
+    {
+      "path": "web_didatica/fixtures/prog-02-grande-truncado.json",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "345bd6d204d1f0e9fb1dc4790227072bead278aa",
+      "initial_blob": null,
+      "dev_blob": "345bd6d204d1f0e9fb1dc4790227072bead278aa"
+    },
+    {
+      "path": "web_didatica/static/css/app.css",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "a57044bc4ae792c55695c1c93da665f8660d8a72",
+      "initial_blob": null,
+      "dev_blob": "a57044bc4ae792c55695c1c93da665f8660d8a72"
+    },
+    {
+      "path": "web_didatica/static/index.html",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "182511a0118232f6af21333175444448046839db",
+      "initial_blob": null,
+      "dev_blob": "182511a0118232f6af21333175444448046839db"
+    },
+    {
+      "path": "web_didatica/static/js/app.js",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "b71da01962895370d0e55e2a7e5ef0cb845389d4",
+      "initial_blob": null,
+      "dev_blob": "b71da01962895370d0e55e2a7e5ef0cb845389d4"
+    },
+    {
+      "path": "web_didatica/static/js/arvore_ast.js",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "d2304b344541caa1cb518e9582bfe1db2127cd52",
+      "initial_blob": null,
+      "dev_blob": "d2304b344541caa1cb518e9582bfe1db2127cd52"
+    },
+    {
+      "path": "web_didatica/static/js/erros.js",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "847be3fc72291de27f647417046a74d878a7bce7",
+      "initial_blob": null,
+      "dev_blob": "847be3fc72291de27f647417046a74d878a7bce7"
+    },
+    {
+      "path": "web_didatica/static/js/fonte_mock.js",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "dcc9b0aa6f94f911fe84a82548b1eb696c36180c",
+      "initial_blob": null,
+      "dev_blob": "dcc9b0aa6f94f911fe84a82548b1eb696c36180c"
+    },
+    {
+      "path": "web_didatica/tools/gerar_fixtures.py",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "86766c7f1015d10c40c1bafc5dfb3d0ff82eac12",
+      "initial_blob": null,
+      "dev_blob": "86766c7f1015d10c40c1bafc5dfb3d0ff82eac12"
+    },
+    {
+      "path": "web_didatica/tools/validar_fixtures.py",
+      "provenance": "origin/dev unchanged",
+      "staged_blob": "e5d1d168afbcc23ecf6e7688726f08e0d981b6f6",
+      "initial_blob": null,
+      "dev_blob": "e5d1d168afbcc23ecf6e7688726f08e0d981b6f6"
+    }
+  ],
+  "preserved_pr_files": [
+    "src/semantic.py",
+    "src/codegen.py",
+    "src/cpp_template.py",
+    "src/parser.py",
+    "src/ast_nodes.py",
+    "src/lexer.py",
+    "main.py",
+    "BNF-grammar.md"
+  ],
+  "tools": {
+    "python": "3.12.4",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+    "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+  },
+  "core02_tac": {
+    "tests": 5,
+    "status": "PASS"
+  },
+  "core02_native": [
+    {
+      "build": "native",
+      "cases": 17,
+      "status": "PASS"
+    },
+    {
+      "build": "assertions",
+      "cases": 17,
+      "status": "PASS"
+    }
+  ],
+  "core03": {
+    "PASS": 78,
+    "KNOWN_FAIL": 1
+  },
+  "core03_known_fail": [
+    {
+      "case": {
+        "id": "HERDADO-RETORNO-NUMERICO",
+        "source": "class Estado {\n    var v = [3, 2, 1];\n    func soma(i) {\n        if (i >= len(this.v)) { return 0; }\n        return this.v[i] + this.soma(i + 1);\n    }\n}\nvar obj = new Estado(); print(obj.soma(0));\n",
+        "compile_error": true,
+        "diagnostic": "inconsistent deduction",
+        "known_defect": true
+      },
+      "status": "KNOWN_FAIL",
+      "exit_code": 1,
+      "stderr": "output\\program.cpp: In instantiation of 'auto Estado::soma(auto:11) [with auto:11 = int]':\noutput\\program.cpp:240:27:   required from here\n  240 |     std::cout << obj->soma(0) << std::endl;\n      |                  ~~~~~~~~~^~~\noutput\\program.cpp:229:48: error: inconsistent deduction for auto return type: 'int' and then 'double'\n  229 |         return (__minipar_index<5>(this->v, i) + this->soma((i + 1)));\n      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~\n[ERRO] Falha na compilacao C++ (exit=1).\n"
+    }
+  ],
+  "core0405": {
+    "tests": 126,
+    "counts": {
+      "PASS": 126
+    }
+  },
+  "review_tests": {
+    "review": 26,
+    "final": 10,
+    "status": "PASS",
+    "included_in_126": true
+  },
+  "metrics": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "timings": [
+      {
+        "depth": 10,
+        "seconds": 0.010582499999600259,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 67,
+        "unresolved": [],
+        "source_sha256": "34fa4e074ad90a7bc1cadd3596dbed232911a95b1b01995367c9dc43e15c7b94"
+      },
+      {
+        "depth": 16,
+        "seconds": 0.028183699999772216,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 154,
+        "unresolved": [],
+        "source_sha256": "657c18717d3edd738b7dbf0ab78234c09aea0cc9746157645d26c7e61041425b"
+      },
+      {
+        "depth": 24,
+        "seconds": 0.08056070000020554,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 326,
+        "unresolved": [],
+        "source_sha256": "61f5b13e71fae3f6da45ba3c266c8a39378f4675935c6d84b605494685a0769d"
+      }
+    ],
+    "implicit_none": {
+      "source": "func f(x){if(x>0){return 1;}}print(join(fork f(0))+1);",
+      "seconds": 0.000299400000130845,
+      "accepted": true,
+      "diagnostics": "",
+      "contexts": 1,
+      "unresolved": [],
+      "source_sha256": "95a183dbbe1b16d911e1c75f441289c6d5ab09ed185c8f2110e7ff32beff1298",
+      "status": "KNOWN_LIMITATION"
+    },
+    "timing_scope": "semantic analysis only; parsing outside timer",
+    "semantic_sha256": "45f218a18bbced6b26e8e5cfdb7af5cf8d4eb1d058a616c44a6757953a37ec87"
+  },
+  "t07": {
+    "overall": {
+      "T07": "PASS"
+    },
+    "checks": [
+      {
+        "check": "T07-TAC-igual-ao-esperado",
+        "status": "INFO"
+      },
+      {
+        "check": "T07-TAC-mutacao",
+        "status": "PASS"
+      },
+      {
+        "check": "T07-limites",
+        "status": "PASS"
+      }
+    ]
+  },
+  "t06": {
+    "T06": "PASS"
+  },
+  "planning": {
+    "cards": 43,
+    "status": "PASS"
+  },
+  "diff_check_against_dev": "PASS",
+  "cached_diff_check_against_pr_head": "FAIL: inherited Markdown hard breaks in CORE-02 handoff lines 3 and 5; file equals origin/dev",
+  "evidence_paths": [
+    "output/pr15-integration-20261029/",
+    "output/core03/run-170a12im/summary.json",
+    "output/core0405/run-2mvisaq4/summary.json",
+    "output/core02/run-20261029-111426-106687/validation.json",
+    "output/core01/run-20261029-111451/baseline.json",
+    "output/core01/run-20261029-111530/baseline.json"
+  ],
+  "source_hashes": {
+    "src/lexer.py": "dc6b7ea113c0af92257bc99560abe55515768ff82d49732982b8c8913a15db5e",
+    "src/parser.py": "c505aee174d16ad845cc17160e198c24ff34da46044478c9481e5a442526a9f1",
+    "src/ast_nodes.py": "9405cb694307c8f4da5e7375f9dd8d12a05712f965d35064de5c70f00bcb59e7",
+    "src/semantic.py": "45f218a18bbced6b26e8e5cfdb7af5cf8d4eb1d058a616c44a6757953a37ec87",
+    "src/tac.py": "e9cd0d5bc5507982f04d2b49df00bc3c6f9be48e81f525f0f4574b47f3ebcb19",
+    "src/codegen.py": "2b7d0adbd0eb8d18801a2b6badf395b759fdc9ede4ce4d60257e35d6278561b2",
+    "main.py": "dd00c6039e290752d1aa7b93915346c8c173a15644ae9c7a1fa75d106ac9c70e",
+    "tests/2026_2/core0405/verify_core0405.py": "602752c2a12aa0b6c53f84b170dd573e4b98d679c7c545ba6787510342c14a24",
+    "tests/2026_2/core0405/test_review_regressions.py": "1b916d1c0b1e1efccb311cb9028ae379affa58a04c8c13e63b94931e86c3f52a",
+    "tests/2026_2/core0405/test_final_review.py": "4362c542da6e06f4834988a62b8e6c3e1441b4696b6c8339039a725164511085",
+    "tests/2026_2/core0405/measure_final_review.py": "45eb3c32975e2b59e31e5668a4760e74ddfc8fe83c7e2013576f7c86ac4eb5bb"
+  },
+  "human_pending": [
+    "A/C ratification of FJ-SEM-07/08; consult B/CORE-08",
+    "independent review of updated PR before human merge"
+  ],
+  "limitations": [
+    "implicit none return remains KNOWN_LIMITATION for CORE-07",
+    "T01/T02 intermittent and T04 PARTIAL historically; not rerun",
+    "CORE-06/07 not implemented; FJ execution and T08-T11/CPUlator UNTESTED"
+  ]
+}

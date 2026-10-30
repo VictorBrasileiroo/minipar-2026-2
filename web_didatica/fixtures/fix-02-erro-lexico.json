@@ -1,0 +1,102 @@
+{
+  "fixture": "FIX-02",
+  "title": "Erro léxico: caractere desconhecido",
+  "mock": true,
+  "source": "var x = 2 @ 3;\n",
+  "notes": [
+    "MOCK: gerado por web_didatica/tools/gerar_fixtures.py a partir das fases reais de src/; não é resposta do serviço CORE-08.",
+    "Comportamento contratado (PEND-WEB-01): o lexer atual ainda não acusa LEX_UNKNOWN_CHAR."
+  ],
+  "analyze": {
+    "contract": "minipar.compile.v1",
+    "operation": "analyze",
+    "request_id": "00000000000000000000000000000002",
+    "ok": false,
+    "source_hash": "sha256:8ebaae15eef31616d24eb05e9cd7aa97fec2adf777674b64aa39edb88f193bf1",
+    "duration_ms": 0,
+    "phases": {
+      "lexer": {
+        "status": "error",
+        "tokens": [
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 1,
+            "column": 1
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "x",
+            "line": 1,
+            "column": 5
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 1,
+            "column": 7
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "2",
+            "line": 1,
+            "column": 9
+          },
+          {
+            "type": "UNKNOWN",
+            "lexeme": "@",
+            "line": 1,
+            "column": 11
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "3",
+            "line": 1,
+            "column": 13
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 1,
+            "column": 14
+          }
+        ]
+      },
+      "parser": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "semantic": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "tac": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "cpp": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "gpp": {
+        "status": "skipped",
+        "reason": "not_requested"
+      }
+    },
+    "diagnostics": [
+      {
+        "phase": "lexer",
+        "severity": "error",
+        "code": "LEX_UNKNOWN_CHAR",
+        "message": "Caractere desconhecido '@'",
+        "line": 1,
+        "column": 11
+      }
+    ],
+    "artifacts": {
+      "cpp_id": null,
+      "tac_id": null,
+      "binary_id": null
+    }
+  }
+}

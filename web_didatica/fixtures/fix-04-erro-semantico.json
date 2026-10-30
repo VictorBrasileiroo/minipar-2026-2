@@ -1,0 +1,139 @@
+{
+  "fixture": "FIX-04",
+  "title": "Erro semântico: variável não declarada",
+  "mock": true,
+  "source": "print(y);\n",
+  "notes": [
+    "MOCK: gerado por web_didatica/tools/gerar_fixtures.py a partir das fases reais de src/; não é resposta do serviço CORE-08."
+  ],
+  "analyze": {
+    "contract": "minipar.compile.v1",
+    "operation": "analyze",
+    "request_id": "00000000000000000000000000000004",
+    "ok": false,
+    "source_hash": "sha256:02f8182f02049699050146c15b6f8ae98902571c6a71c079036921d83cfb95fb",
+    "duration_ms": 0,
+    "phases": {
+      "lexer": {
+        "status": "ok",
+        "tokens": [
+          {
+            "type": "PRINT",
+            "lexeme": "print",
+            "line": 1,
+            "column": 1
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 1,
+            "column": 6
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "y",
+            "line": 1,
+            "column": 7
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 1,
+            "column": 8
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 1,
+            "column": 9
+          }
+        ]
+      },
+      "parser": {
+        "status": "ok",
+        "ast": {
+          "id": "n0",
+          "kind": "Program",
+          "label": "Program",
+          "role": null,
+          "index": null,
+          "line": 1,
+          "attributes": {},
+          "children": [
+            {
+              "id": "n1",
+              "kind": "PrintStmt",
+              "label": "PrintStmt",
+              "role": "statements",
+              "index": 0,
+              "line": 1,
+              "attributes": {},
+              "children": [
+                {
+                  "id": "n2",
+                  "kind": "IdentifierExpr",
+                  "label": "IdentifierExpr(y)",
+                  "role": "arguments",
+                  "index": 0,
+                  "line": 1,
+                  "attributes": {
+                    "name": "y"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "ast_stats": {
+          "nodes": 3,
+          "emitted": 3,
+          "depth": 3,
+          "truncated": false,
+          "max_nodes": 5000,
+          "max_depth": 200
+        }
+      },
+      "semantic": {
+        "status": "error",
+        "scopes": [
+          {
+            "id": "s0",
+            "kind": "global",
+            "name": null,
+            "parent": null,
+            "line": 1
+          }
+        ],
+        "symbols": []
+      },
+      "tac": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "cpp": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "gpp": {
+        "status": "skipped",
+        "reason": "not_requested"
+      }
+    },
+    "diagnostics": [
+      {
+        "phase": "semantic",
+        "severity": "error",
+        "code": "SEM_UNDECLARED_VARIABLE",
+        "message": "Variavel 'y' nao declarada.",
+        "line": 1,
+        "column": null
+      }
+    ],
+    "artifacts": {
+      "cpp_id": null,
+      "tac_id": null,
+      "binary_id": null
+    }
+  }
+}
