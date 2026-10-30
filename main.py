@@ -9,7 +9,6 @@ from parser import Parser
 from semantic import SemanticAnalyzer
 from tac import TACGenerator
 from codegen import CppCodeGenerator
-from ast_nodes import find_fork_join
 
 def compile_file(source_path: str, output_name: str) -> bool:
     """Processa as 3 Fases do Compilador em um arquivo alvo."""
@@ -44,19 +43,18 @@ def compile_file(source_path: str, output_name: str) -> bool:
         print("[ERRO] Falha na Analise Semantica. Compilacao abortada.", file=sys.stderr)
         return False
 
-    unsupported = find_fork_join(program)
-    if unsupported is not None:
-        print(f"[ERRO BACKEND] Linha {unsupported.line}: Fork/Join validado apenas ate o semantico; TAC/C++ dependem de CORE-06/CORE-07.", file=sys.stderr)
-        return False
-
     print("[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...")
     tac = TACGenerator()
-    tac_path = tac.generate(program, output_name)
+    try:
+        tac_path = tac.generate(program, output_name)
+    except NotImplementedError as exc:
+        print(f"[ERRO TAC] {exc}; integracao CLI CORE-06/CORE-07 pendente. C++ nao executado.", file=sys.stderr)
+        return False
     print(f"[TAC] Arquivo gerado: {tac_path}")
 
     print("[Fase 4] Transpilacao e Chamada do GCC (-O3)...")
     codegen = CppCodeGenerator()
-    return codegen.generate(program, output_name)
+    return codegen.generate(program, output_name, semantic=semantic, source=source_code)
 
 
 def start_interactive():

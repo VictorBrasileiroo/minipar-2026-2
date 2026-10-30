@@ -324,7 +324,25 @@
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/CORE-07_RESULTADOS.json"
+      ],
+      "local_execution": {
+        "date": "2026-10-30",
+        "authorization": "Coordenador autorizou implementacao local CORE-07, ampliacao delimitada para contexto semantico, CLI, testes e documentacao. Sem stage/commit/push/PR/merge ou promocao de dependencias.",
+        "branch": "eixo-a/CORE-07-backend-runtime",
+        "base": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+        "scope": [
+          "src/codegen.py",
+          "src/cpp_template.py",
+          "src/semantic.py (CORE-07)",
+          "main.py",
+          "tests/2026_2/core07/",
+          "documentacao e metadados impactados"
+        ],
+        "state": "PARTIAL: backend local/loopback implementado; CLI aguarda CORE-06 PR #17; prova fisica e revisao independente pendentes",
+        "handoff": "docs/auditorias/CORE-07_BACKEND_RUNTIME.md"
+      }
     },
     {
       "id": "CORE-08",

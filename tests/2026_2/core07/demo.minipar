@@ -1,0 +1,5 @@
+func twice(x) { return x * 2; }
+var destination = input();
+var a = fork twice(21) on destination;
+var b = fork twice(7) on destination;
+print(twice(21), join(b), join(a));
