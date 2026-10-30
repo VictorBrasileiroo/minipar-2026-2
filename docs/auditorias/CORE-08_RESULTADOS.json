@@ -1,0 +1,607 @@
+{
+  "card": "CORE-08",
+  "date": "2026-10-30",
+  "state": "PARTIAL",
+  "authorization": "Explicit coordinator request in attached Pasted text.txt; local implementation only; no dependency promotion",
+  "branch": "eixo-a/CORE-08-servico-fases",
+  "initial_branch": "eixo-a/CORE-07-backend-runtime",
+  "initial_sha": "d7b52d5d3e2acc6814b06a29c18a10278ec1c067",
+  "base_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+  "remote_fetch": "PASS; origin/dev refreshed",
+  "preexisting_changes": [],
+  "integrated": [
+    "CORE-02 #16",
+    "CORE-03 #14",
+    "CORE-04/05 #15"
+  ],
+  "open_not_integrated": [
+    "CORE-06 #17",
+    "CORE-07 #18"
+  ],
+  "contract": "minipar.compile.v1 / minipar.execute.v1; catalog extension proposed only",
+  "environment": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "compiler": {
+      "python": "3.12.4",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+    }
+  },
+  "results": {
+    "core08": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "records": [
+        {
+          "test": "core08_tests.ContractTests.test_ace01_fixtures",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_ace09_arguments",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_ace11_ast",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_analyze_no_compiler_or_artifacts",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_expected_unmapped_is_not_internal",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_gpp_missing_failure_no_binary_timeout",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_internal_exception",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_lexer_incomplete_strings",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_parser_modes",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_scopes_symbols",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_semantic_accumulates_and_ace06",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_specialization_not_duplicated",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_uuid_hash_phase_order",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace02_and_stdin",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace04_08_sequential",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace05_concurrent_five_rounds",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace07_timeout",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace10_retention_21_real_builds",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_native_gpp_fail_and_nonzero",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_path_redirection_rejected",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_both_outputs_bounded_and_blocked_stdin",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_descendants_killed",
+          "status": "PASS"
+        }
+      ],
+      "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+      "compiler": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "timestamp": "2026-10-30T10:03:02"
+    },
+    "core02": {
+      "tests": 5,
+      "status": "PASS",
+      "log": "output/core08/regression02.log"
+    },
+    "core03": {
+      "PASS": 78,
+      "KNOWN_FAIL": 1,
+      "FAIL": 0,
+      "log": "output/core08/regression03.log"
+    },
+    "core0405": {
+      "tests": 126,
+      "status": "PASS",
+      "log": "output/core08/regression0405-final.log"
+    },
+    "legacy_smoke": {
+      "status": "PASS",
+      "report": "output/core08/legacy/smoke.json"
+    },
+    "baseline": {
+      "overall": {
+        "T02": "FAIL",
+        "T03": "PASS",
+        "T04": "PARTIAL",
+        "T05": "PASS",
+        "T06": "PASS",
+        "T07": "PASS"
+      },
+      "exit_code": 1,
+      "T02_pass": 7,
+      "T02_fail": 3,
+      "T01": "BLOCKED: not run; original binds INADDR_ANY",
+      "report": "output/core08/baseline/baseline.json"
+    },
+    "ace": {
+      "ACE-01": "PASS",
+      "ACE-02": "PASS",
+      "ACE-03": "PASS",
+      "ACE-04": "PASS",
+      "ACE-05": "PASS",
+      "ACE-06": "PASS",
+      "ACE-07": "PASS",
+      "ACE-08": "PASS",
+      "ACE-09": "PASS",
+      "ACE-10": "PASS",
+      "ACE-11": "PASS"
+    }
+  },
+  "notes": [
+    "GPP timeout and successful compiler without binary use controlled runner injection; missing compiler and GPP source failure are real.",
+    "POSIX process control is implemented but untested; Windows Job Object and descendant PID tested.",
+    "FJ frontend tested, complete FJ pipeline blocked by unintegrated #17/#18.",
+    "Unmapped expected diagnostics are not published until CR approval; phase error can have empty diagnostics.",
+    "First rounds had 3 then 1 invalid test-probe failures; final corrected behavior suite has 22 PASS. Existing oracles unchanged.",
+    "Registry is in-process only, retains all artifacts for process lifetime; no automatic disk cleanup or restart recovery.",
+    "Current regression reports copied under output/core08; existing validators preserve canonical raw output directories."
+  ],
+  "source_hash_format": "SHA-256 of final raw file bytes (including BOM when present)",
+  "source_sha256": {
+    "main.py": "5139e91da50feec19426f19d58a41c28df428fe66d3a6beb640e53e248075d2d",
+    "src/lexer.py": "161fe85cee64d3ed92a6dcf5c21ba7afeb3ff15d847ec1c25d30c863b015240b",
+    "src/parser.py": "e73ce96e488b06c46ee9be68c12cfb660b51b09a9a0bbe8a589dd4b69c3cb6e4",
+    "src/semantic.py": "1cc1bd62daeafcccf65c7024ace8f4aa7f5285aa8d6f65673a5d825ecb27b7c5",
+    "src/tac.py": "778f8e9e0f03dc0d391973e35befb237d2e8d8f44a4cfe75e4c0837c39c7fb99",
+    "src/codegen.py": "e1c20058bdb4e38003f9ee421a8214d2bb845a30bb79448494d9ee76a740b496",
+    "src/service.py": "42e42ee50e2f3375c0774c2ad0fa3eae49b6b5c59e79fbed17cbb065551b5059",
+    "src/service_ast.py": "133436f7a6a273b1312e7d20412383deb33e3c676524f0535e0d7edc1cade831",
+    "src/service_process.py": "bda7b22f93de9f2b3005342df40760805b71001bb82a5b5a3af0c6c982e18d0e",
+    "tests/2026_2/core08/smoke_legacy.py": "60576993d302fc017435b1c0bf27efa5ded7a79a1f3c801ae63b42dcfe336882",
+    "tests/2026_2/core08/test_service.py": "14157a85cf95beaba46e8a9a9897e38cd372e510bf9b927a3f47df0b8fc262bf",
+    "tests/2026_2/core08/verify_core08.py": "802a4c7d6ed094184e8441afa39f87451d3ac6e327cb4f1bc0391f403fd0f2fa"
+  },
+  "logs": [
+    "output/core08/tests-final.log",
+    "output/core08/tests-final.json",
+    "output/core08/regression02.log",
+    "output/core08/regression03.log",
+    "output/core08/regression0405-final.log",
+    "output/core08/baseline.log",
+    "output/core08/reproduction.json",
+    "output/core08/legacy/smoke.json"
+  ],
+  "documentation": {
+    "updated": [
+      "README.md",
+      "docs/04_BACKLOG.md",
+      "planning/cards.json (CORE-08 only)",
+      "docs/CR-CORE08-DIAGNOSTICOS.md",
+      "docs/auditorias/CORE-08_SERVICO_FASES.md",
+      "docs/auditorias/CORE-08_RESULTADOS.json"
+    ],
+    "AGENTS": "Reviewed, unchanged: no permanent policy, ownership or architecture change",
+    "MEMORY": "Reviewed, unchanged",
+    "BNF": "Reviewed, unchanged: no language change",
+    "contract": "Reviewed, unchanged: CR proposed, no unilateral catalog update"
+  },
+  "publication": {
+    "staged": false,
+    "commit": false,
+    "push": false,
+    "PR": false,
+    "merge": false,
+    "DONE": false,
+    "FROZEN": false,
+    "human_approval": false
+  },
+  "source_hash_history": [
+    {
+      "stage": "before_review_p2",
+      "source_sha256": {
+        "main.py": "5139e91da50feec19426f19d58a41c28df428fe66d3a6beb640e53e248075d2d",
+        "src/lexer.py": "161fe85cee64d3ed92a6dcf5c21ba7afeb3ff15d847ec1c25d30c863b015240b",
+        "src/parser.py": "e73ce96e488b06c46ee9be68c12cfb660b51b09a9a0bbe8a589dd4b69c3cb6e4",
+        "src/semantic.py": "411608c5bae78ec1874137624f6677c781e27d825b4716de99f4708eff4e5ed9",
+        "src/tac.py": "778f8e9e0f03dc0d391973e35befb237d2e8d8f44a4cfe75e4c0837c39c7fb99",
+        "src/codegen.py": "e1c20058bdb4e38003f9ee421a8214d2bb845a30bb79448494d9ee76a740b496",
+        "src/service.py": "42e42ee50e2f3375c0774c2ad0fa3eae49b6b5c59e79fbed17cbb065551b5059",
+        "src/service_ast.py": "133436f7a6a273b1312e7d20412383deb33e3c676524f0535e0d7edc1cade831",
+        "src/service_process.py": "53b7e7744fe7a18d170bf17d20adbea03fd50a77eade9d593776d035b2de328d",
+        "tests/2026_2/core08/smoke_legacy.py": "60576993d302fc017435b1c0bf27efa5ded7a79a1f3c801ae63b42dcfe336882",
+        "tests/2026_2/core08/test_service.py": "87ebc470ee557cdcb57e9cc3eebb70be21f9e9c0250e5633f11e35068f7cea08",
+        "tests/2026_2/core08/verify_core08.py": "802a4c7d6ed094184e8441afa39f87451d3ac6e327cb4f1bc0391f403fd0f2fa"
+      }
+    }
+  ],
+  "results_scope": "Initial implementation evidence, preserved as history; review_p2 contains current validation.",
+  "review_p2": {
+    "state": "PARTIAL",
+    "scope": "Only the two P2 review findings; existing changes preserved; no contract or CR change",
+    "changes": {
+      "symbols": "Classify FuncDecl definitions by FUNC type, not equality of callable and parameter names",
+      "utf8": "Set each truncation flag for original buffer overflow OR replacement UTF-8 encoding overflow, before slicing at a complete UTF-8 boundary"
+    },
+    "before": {
+      "tests": 5,
+      "failing_subtests": 4,
+      "log": "output\\core08\\review-p2\\before-tests.log",
+      "snapshot": "output\\core08\\review-p2\\before"
+    },
+    "core08": {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "records": [
+        {
+          "test": "core08_tests.ContractTests.test_ace01_fixtures",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_ace09_arguments",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_ace11_ast",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_analyze_no_compiler_or_artifacts",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_expected_unmapped_is_not_internal",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_gpp_missing_failure_no_binary_timeout",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_internal_exception",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_lexer_incomplete_strings",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_parser_modes",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_review_p2_function_parameters",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_review_p2_method_parameters",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_scopes_symbols",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_semantic_accumulates_and_ace06",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_specialization_not_duplicated",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ContractTests.test_uuid_hash_phase_order",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace02_and_stdin",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace04_08_sequential",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace05_concurrent_five_rounds",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace07_timeout",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_ace10_retention_21_real_builds",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_native_gpp_fail_and_nonzero",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.NativeTests.test_path_redirection_rejected",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_both_outputs_bounded_and_blocked_stdin",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_descendants_killed",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_review_p2_invalid_utf8_expansion_truncates_both_streams",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_review_p2_invalid_utf8_without_truncation",
+          "status": "PASS"
+        },
+        {
+          "test": "core08_tests.ProcessTests.test_review_p2_valid_utf8_without_truncation",
+          "status": "PASS"
+        }
+      ],
+      "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+      "compiler": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "timestamp": "2026-10-30T12:15:15"
+    },
+    "regressions": {
+      "semantic0405": {
+        "tests": 126,
+        "PASS": 126,
+        "FAIL": 0
+      },
+      "semantic03": {
+        "PASS": 78,
+        "KNOWN_FAIL": 1,
+        "FAIL": 0
+      }
+    },
+    "commands": [
+      {
+        "name": "semantic0405",
+        "command": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+          "-B",
+          "tests/2026_2/core0405/verify_core0405.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "semantic03",
+        "command": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+          "-B",
+          "tests/2026_2/core03/verify_core03.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+          "-B",
+          "tests/2026_2/core08/verify_core08.py"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "reproductions": {
+      "function": {
+        "source": "func f(f) { return f; }\nprint(f(1));",
+        "ok": true,
+        "semantic": {
+          "status": "ok",
+          "scopes": [
+            {
+              "id": "s0",
+              "kind": "global",
+              "name": null,
+              "parent": null,
+              "line": 1
+            },
+            {
+              "id": "s1",
+              "kind": "function",
+              "name": "f",
+              "parent": "s0",
+              "line": 1
+            },
+            {
+              "id": "s2",
+              "kind": "seq",
+              "name": null,
+              "parent": "s1",
+              "line": 1
+            }
+          ],
+          "symbols": [
+            {
+              "name": "f",
+              "kind": "function",
+              "type": null,
+              "scope": "s0",
+              "line": 1,
+              "params": [
+                "f"
+              ]
+            },
+            {
+              "name": "f",
+              "kind": "parameter",
+              "type": "var",
+              "scope": "s1",
+              "line": 1,
+              "params": []
+            }
+          ]
+        }
+      },
+      "method": {
+        "source": "class C { func m(m) { return m; } }\nvar c = new C();\nprint(c.m(1));",
+        "ok": true,
+        "semantic": {
+          "status": "ok",
+          "scopes": [
+            {
+              "id": "s0",
+              "kind": "global",
+              "name": null,
+              "parent": null,
+              "line": 1
+            },
+            {
+              "id": "s1",
+              "kind": "class",
+              "name": "C",
+              "parent": "s0",
+              "line": 1
+            },
+            {
+              "id": "s2",
+              "kind": "method",
+              "name": "C.m",
+              "parent": "s1",
+              "line": 1
+            },
+            {
+              "id": "s3",
+              "kind": "seq",
+              "name": null,
+              "parent": "s2",
+              "line": 1
+            }
+          ],
+          "symbols": [
+            {
+              "name": "C",
+              "kind": "class",
+              "type": null,
+              "scope": "s0",
+              "line": 1,
+              "params": []
+            },
+            {
+              "name": "m",
+              "kind": "method",
+              "type": null,
+              "scope": "s1",
+              "line": 1,
+              "params": [
+                "m"
+              ]
+            },
+            {
+              "name": "m",
+              "kind": "parameter",
+              "type": "var",
+              "scope": "s2",
+              "line": 1,
+              "params": []
+            },
+            {
+              "name": "c",
+              "kind": "variable",
+              "type": "C",
+              "scope": "s0",
+              "line": 2,
+              "params": []
+            }
+          ]
+        }
+      },
+      "invalid_utf8": {
+        "raw_bytes_per_stream": 400000,
+        "exit_code": 0,
+        "timed_out": false,
+        "streams": {
+          "stdout": {
+            "characters": 349525,
+            "utf8_bytes": 1048575,
+            "truncated": true,
+            "replacement_only": true
+          },
+          "stderr": {
+            "characters": 349525,
+            "utf8_bytes": 1048575,
+            "truncated": true,
+            "replacement_only": true
+          }
+        }
+      }
+    },
+    "source_sha256": {
+      "main.py": "5139e91da50feec19426f19d58a41c28df428fe66d3a6beb640e53e248075d2d",
+      "src/lexer.py": "161fe85cee64d3ed92a6dcf5c21ba7afeb3ff15d847ec1c25d30c863b015240b",
+      "src/parser.py": "e73ce96e488b06c46ee9be68c12cfb660b51b09a9a0bbe8a589dd4b69c3cb6e4",
+      "src/semantic.py": "1cc1bd62daeafcccf65c7024ace8f4aa7f5285aa8d6f65673a5d825ecb27b7c5",
+      "src/tac.py": "778f8e9e0f03dc0d391973e35befb237d2e8d8f44a4cfe75e4c0837c39c7fb99",
+      "src/codegen.py": "e1c20058bdb4e38003f9ee421a8214d2bb845a30bb79448494d9ee76a740b496",
+      "src/service.py": "42e42ee50e2f3375c0774c2ad0fa3eae49b6b5c59e79fbed17cbb065551b5059",
+      "src/service_ast.py": "133436f7a6a273b1312e7d20412383deb33e3c676524f0535e0d7edc1cade831",
+      "src/service_process.py": "bda7b22f93de9f2b3005342df40760805b71001bb82a5b5a3af0c6c982e18d0e",
+      "tests/2026_2/core08/smoke_legacy.py": "60576993d302fc017435b1c0bf27efa5ded7a79a1f3c801ae63b42dcfe336882",
+      "tests/2026_2/core08/test_service.py": "14157a85cf95beaba46e8a9a9897e38cd372e510bf9b927a3f47df0b8fc262bf",
+      "tests/2026_2/core08/verify_core08.py": "802a4c7d6ed094184e8441afa39f87451d3ac6e327cb4f1bc0391f403fd0f2fa"
+    },
+    "evidence_directory": "output/core08/review-p2",
+    "incremental_diff": "output/core08/review-p2/fix.diff",
+    "documentation": {
+      "updated": [
+        "docs/auditorias/CORE-08_SERVICO_FASES.md",
+        "docs/auditorias/CORE-08_RESULTADOS.json"
+      ],
+      "AGENTS": "Reviewed, unchanged: correction follows existing instructions, architecture and workflow",
+      "README": "Reviewed, unchanged: API and documented behavior remain valid",
+      "contract": "Unchanged",
+      "diagnostic_CR": "Unchanged and pending"
+    },
+    "publication": {
+      "stage": false,
+      "commit": false,
+      "push": false,
+      "PR": false,
+      "merge": false
+    }
+  }
+}

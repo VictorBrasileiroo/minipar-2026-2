@@ -98,3 +98,20 @@ O código herdado está incluído neste workspace. O **commit de origem não foi
 ## Documentos não incluídos
 
 O PDF oficial do projeto, a BNF anterior, o exemplo Python do Teste 10 e materiais anteriores de modelagem foram incluídos em `docs/fontes/`, para consulta interna. O **código Java integral do Teste 11 e os códigos completos dos testes 8 e 9 não estão incluídos** neste pacote; também não incluí o vídeo grande. Para publicação pública, confirme antes direitos de compartilhamento das referências.
+
+## Serviço de fases CORE-08 (entrega local para revisão)
+
+`src/service.py` fornece `analyze`, `compile_program`, `execute` e `get_artifact` no envelope C-WEB-v1. A análise gera texto sem invocar G++; cada compilação nativa usa diretório próprio em `output/web/<uuid>/`. `CXX` seleciona um executável C++20, sem flags embutidas. Execução usa stdin não interativo, timeout 1–30 s e saídas limitadas a 1 MiB por stream. O registro é local ao processo e retém todas as compilações durante sua vida; não existe limpeza automática nem recuperação do registro após reiniciar.
+
+Estado **PARTIAL**: CORE-06/07 não estão integrados nesta base, e o catálogo do contrato ainda não representa todas as recusas semânticas/TAC. Uma fase pode retornar `error` sem diagnóstico nesses casos esperados; não consumir isso como suporte FJ completo. Nenhum código novo foi ativado no contrato. Detalhes, reprodução e evidências: [handoff CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md), [proposta de CR](docs/CR-CORE08-DIAGNOSTICOS.md).
+
+```python
+from src.service import analyze, compile_program, execute, get_artifact
+analysis = analyze("print(5);\n")
+build = compile_program("print(5);\n")
+if build["ok"]:
+    execution = execute(build["artifacts"]["binary_id"])
+    download = get_artifact(build["request_id"], "cpp")
+```
+
+A Web didática deve chamar as funções no mesmo processo. Rotas e extração `.arm` permanecem responsabilidade do B. Para repetir a validação local: `.\.venv\Scripts\python.exe -B tests/2026_2/core08/verify_core08.py` com `CXX` configurado; logs em `output/core08/`.

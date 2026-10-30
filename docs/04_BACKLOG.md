@@ -278,6 +278,8 @@
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
+**Rodada local autorizada em 30/10/2026:** implementacao CORE-08 autorizada diretamente pelo coordenador, incluindo diagnosticos e separacao traducao/compilacao; sem promover CON-02, SET-02, CORE-06/07 ou `ready` por inferencia. Entrega local PARTIAL para revisao independente, sem commit/PR/DONE. [Handoff](auditorias/CORE-08_SERVICO_FASES.md) e [CR de diagnosticos pendente](CR-CORE08-DIAGNOSTICOS.md).
+
 #### `CORE-09` — Preservar terminal e Web antiga após mudanças
 
 **Prazo:** 30/10/2026 · **Prioridade:** P0 · **Estimativa:** 3 h · **Estado inicial:** BACKLOG

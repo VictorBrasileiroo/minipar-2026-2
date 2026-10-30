@@ -34,6 +34,10 @@ def compile_file(source_path: str, output_name: str) -> bool:
     print("[Fase 1] Analise Lexica e Sintatica...")
     lexer  = Lexer(source_code)
     tokens = lexer.tokenize()
+    if lexer.diagnostics:
+        for diagnostic in lexer.diagnostics:
+            print(f"[ERRO LEXICO] Linha {diagnostic['line']}: {diagnostic['message']}", file=sys.stderr)
+        return False
 
     parser  = Parser(tokens)
     program = parser.parse()

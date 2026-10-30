@@ -1,18 +1,39 @@
 from __future__ import annotations
 import sys
 from typing import List
-from lexer import Token, TokenType
-from ast_nodes import (
-    ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock, 
-    BinaryExpr, UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
-    DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
-    ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
-    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
-    ForkExpr, JoinExpr
-)
+if __package__:
+    from .lexer import Token, TokenType
+else:
+    from lexer import Token, TokenType
+if __package__:
+    from .ast_nodes import (
+        ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock,
+        BinaryExpr, UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
+        DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
+        ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
+        CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
+        ForkExpr, JoinExpr
+    )
+else:
+    from ast_nodes import (
+        ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock,
+        BinaryExpr, UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
+        DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
+        ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
+        CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
+        ForkExpr, JoinExpr
+    )
+
+class ParseError(Exception):
+    def __init__(self, diagnostic):
+        super().__init__(diagnostic["message"])
+        self.diagnostic = diagnostic
+
 
 class Parser:
-    def __init__(self, tokens: List[Token]) -> None:
+    def __init__(self, tokens: List[Token], *, exit_on_error: bool = True) -> None:
+        self.exit_on_error = exit_on_error
+        self.diagnostics = []
         self._tokens = tokens
         self._pos = 0
 
@@ -34,8 +55,15 @@ class Parser:
     def _consume(self, token_type: TokenType, err_msg: str) -> Token:
         if self._peek().type == token_type: return self._advance()
         tok = self._peek()
-        print(f"[ERRO SINTATICO] Linha {tok.line}: {err_msg} (Encontrado: {tok.lexeme!r})", file=sys.stderr)
-        sys.exit(1)
+        self._fail("SYN_EXPECTED_TOKEN", f"{err_msg} (Encontrado: {tok.lexeme!r})", tok.line, tok.col)
+
+    def _fail(self, code, message, line, column=None):
+        diagnostic = dict(phase="parser", severity="error", code=code, message=message, line=line, column=column)
+        self.diagnostics.append(diagnostic)
+        if self.exit_on_error:
+            print(f"[ERRO SINTATICO] Linha {line}: {message}", file=sys.stderr)
+            raise SystemExit(1)
+        raise ParseError(diagnostic)
 
     def _parse_var_decl(self, declared_type: str = "var", require_semicolon: bool = True) -> ASTNode:
         node = VarDecl(name="")
@@ -55,7 +83,7 @@ class Parser:
         if isinstance(target, IdentifierExpr): return Assignment(name=target.name, value=val, line=target.line)
         if isinstance(target, PropertyAccess): return PropertyAssign(object=target.object, property_name=target.property_name, value=val, line=target.line)
         if isinstance(target, IndexExpr): return IndexAssign(target=target, value=val, line=target.line)
-        sys.exit(print(f"[ERRO] Linha {target.line}: Atribuicao invalida", file=sys.stderr) or 1)
+        self._fail("SYN_INVALID_ASSIGNMENT", "Atribuicao invalida", target.line)
 
     def _parse_print_stmt(self) -> ASTNode:
         node = PrintStmt()
@@ -235,10 +263,10 @@ class Parser:
             elif isinstance(expr, (MethodCall, FuncCallExpr, ForkExpr, JoinExpr)):
                 self._consume(TokenType.SEMICOLON, "Esperado ';'")
                 return expr
-            sys.exit(print(f"[ERRO] Linha {expr.line}: Instrucao ou expressao isolada invalida", file=sys.stderr) or 1)
+            self._fail("SYN_INVALID_STATEMENT", "Instrucao ou expressao isolada invalida", expr.line)
 
         tok = self._peek()
-        sys.exit(print(f"[ERRO SINTATICO] Linha {tok.line}: Instrucao nao reconhecida: {tok.lexeme!r}", file=sys.stderr) or 1)
+        self._fail("SYN_UNRECOGNIZED_STATEMENT", f"Instrucao nao reconhecida: {tok.lexeme!r}", tok.line, tok.col)
 
     def _parse_expression(self) -> ASTNode:
         return self._parse_or()
@@ -383,7 +411,7 @@ class Parser:
             node = self._parse_expression()
             self._consume(TokenType.RPAREN, "Esperado ')'")
         else:
-            sys.exit(print(f"[ERRO SINTATICO] Linha {tok.line}: Expressao esperada", file=sys.stderr) or 1)
+            self._fail("SYN_EXPECTED_EXPRESSION", "Expressao esperada", tok.line, tok.col)
 
         while True:
             if self._match(TokenType.DOT):
