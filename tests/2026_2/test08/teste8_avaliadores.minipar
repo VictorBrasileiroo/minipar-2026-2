@@ -1,0 +1,136 @@
+# Teste 8 (MiniPar 2026.2) - Correcao de 160 atividades por 4 avaliadores.
+# 40 alunos x 4 atividades = 160 atividades (id 0..159; aluno = id/4, atividade = id%4).
+# Avaliador k (0..3) recebe a fatia [40k, 40k+40). Modo "par": 4 fork antes de qualquer join.
+# Entrada (stdin, uma linha cada): modo (seq|par), carga, destino_0..destino_3.
+
+# ---- Nucleo canonico compartilhado com T09/T10 (nao alterar nomes/formulas) ----
+func lcg(s) { return (s * 75 + 74) % 65537; }
+func nota_de(id, carga) {
+    var s = lcg(id + 1);
+    var passos = carga + s % carga;
+    var k = 0;
+    while (k < passos) { s = lcg(s); k = k + 1; }
+    return s % 101;
+}
+func avaliar_lote(avaliador, inicio, fim, carga) {
+    var r = [];
+    r.append(avaliador);
+    var i = inicio;
+    while (i < fim) { r.append(i); r.append(nota_de(i, carga)); i = i + 1; }
+    return r;
+}
+# ---- fim do nucleo canonico ----
+
+# Converte texto decimal (so digitos) em inteiro. to_number devolve decimal e o
+# backend CORE-07 nao mistura inteiro com decimal em '%'; por isso o parse manual.
+func digito(c) {
+    if (c == "0") { return 0; }
+    if (c == "1") { return 1; }
+    if (c == "2") { return 2; }
+    if (c == "3") { return 3; }
+    if (c == "4") { return 4; }
+    if (c == "5") { return 5; }
+    if (c == "6") { return 6; }
+    if (c == "7") { return 7; }
+    if (c == "8") { return 8; }
+    if (c == "9") { return 9; }
+    return -1;
+}
+func para_inteiro(t) {
+    var n = 0;
+    var i = 0;
+    while (i < len(t)) {
+        var d = digito(substr(t, i, 1));
+        if (d >= 0) { n = n * 10 + d; }
+        i = i + 1;
+    }
+    return n;
+}
+
+func nome_avaliador(k) {
+    if (k == 0) { return "Professor"; }
+    if (k == 1) { return "Monitor 1"; }
+    if (k == 2) { return "Monitor 2"; }
+    return "Monitor 3";
+}
+
+var modo = input();
+var carga = para_inteiro(input());
+var d0 = input();
+var d1 = input();
+var d2 = input();
+var d3 = input();
+
+var total_atividades = 160;
+var num_avaliadores = 4;
+var fatia = total_atividades / num_avaliadores;
+
+print("=== TESTE 8: 160 avaliacoes, 4 avaliadores ===");
+print("MODO " + modo);
+
+var resultados = [];
+if (modo == "par") {
+    # Dispara as 4 tarefas antes de qualquer join.
+    var hs = [];
+    hs.append(fork avaliar_lote(0, 0 * fatia, 0 * fatia + fatia, carga) on d0);
+    hs.append(fork avaliar_lote(1, 1 * fatia, 1 * fatia + fatia, carga) on d1);
+    hs.append(fork avaliar_lote(2, 2 * fatia, 2 * fatia + fatia, carga) on d2);
+    hs.append(fork avaliar_lote(3, 3 * fatia, 3 * fatia + fatia, carga) on d3);
+    for (var h in hs) { resultados.append(join(h)); }
+} else {
+    var k = 0;
+    while (k < num_avaliadores) {
+        resultados.append(avaliar_lote(k, k * fatia, k * fatia + fatia, carga));
+        k = k + 1;
+    }
+}
+
+# Agregacao: contagem por id (vistos[id]), detecta perda e duplicata.
+# AVALIADOR imprime o primeiro elemento devolvido pela tarefa (deve ser k).
+var vistos = [];
+var z = 0;
+while (z < total_atividades) { vistos.append(0); z = z + 1; }
+
+var total = 0;
+var soma_notas = 0;
+var k2 = 0;
+while (k2 < num_avaliadores) {
+    var r = resultados[k2];
+    var qtd = (len(r) - 1) / 2;
+    var j = 1;
+    while (j < len(r)) {
+        # Listas numericas sao vector<double> no backend; a atribuicao a uma
+        # variavel declarada como inteiro converte o valor (ids e notas sao exatos).
+        var id = 0;
+        id = r[j];
+        var nota = 0;
+        nota = r[j + 1];
+        # id fora de [0,160) nao entra em vistos: TOTAL passa a diferir de UNICOS.
+        if (id >= 0 && id < total_atividades) { vistos[id] = vistos[id] + 1; }
+        soma_notas = soma_notas + nota;
+        total = total + 1;
+        # Uma linha por atividade (como os 160 textos devolvidos na referencia Python);
+        # o harness confere id, aluno, atividade e nota de cada uma.
+        print("[" + nome_avaliador(k2) + "] Concluiu: Aluno " + to_string(id / 4 + 1) + " - Atividade " + to_string(id % 4 + 1) + " (id " + to_string(id) + ", nota " + to_string(nota) + ")");
+        j = j + 2;
+    }
+    print("AVALIADOR " + to_string(r[0]) + " " + nome_avaliador(k2) + " " + to_string(qtd));
+    k2 = k2 + 1;
+}
+
+var unicos = 0;
+var duplicados = 0;
+var perdidos = 0;
+var w = 0;
+while (w < total_atividades) {
+    if (vistos[w] == 0) { perdidos = perdidos + 1; }
+    if (vistos[w] >= 1) { unicos = unicos + 1; }
+    if (vistos[w] > 1) { duplicados = duplicados + vistos[w] - 1; }
+    w = w + 1;
+}
+
+print("TOTAL " + to_string(total));
+print("UNICOS " + to_string(unicos));
+print("DUPLICADOS " + to_string(duplicados));
+print("PERDIDOS " + to_string(perdidos));
+print("SOMA_NOTAS " + to_string(soma_notas));

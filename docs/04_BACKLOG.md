@@ -668,6 +668,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (30/10/2026):** IN_REVIEW (draft) · PR [#21](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/21), empilhado sobre o `RUN-04` (#20) e o `RUN-03` (#10). `ready=false`: consome o `CORE-07` (#18, ainda não em `dev`). `python tests/2026_2/test08/run_t08.py` na **integração local** RUN-03 + `dev` + #17 + #18: 32/32 PASS em duas execuções (seq, par local e par com 4 workers no loopback); 160 IDs únicos, `SOMA_NOTAS 7630` igual ao oráculo; 3 mutantes detectados. Sem o `CORE-07` na árvore: `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev` e o RUN-03 rodar em duas máquinas.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `T09-01` — MiniPar T09: avaliadores + Mandelbrot ASCII
