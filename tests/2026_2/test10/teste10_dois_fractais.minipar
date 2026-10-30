@@ -1,0 +1,213 @@
+# Teste 10 (MiniPar 2026.2): 160 avaliacoes + Mandelbrot + Sierpinski.
+# Seis trabalhos: 4 avaliadores (40 atividades cada), Mandelbrot ASCII e
+# Tapete de Sierpinski ASCII. No modo "par" os 6 fork sao emitidos antes do
+# primeiro join; no modo "seq" a MESMA carga completa roda em chamadas diretas.
+#
+# Entrada (uma por linha): modo (seq|par), carga, largura, altura, max_iter,
+# grau, e 6 destinos (4 avaliadores, mandelbrot, sierpinski; ignorados em seq).
+# Destino "local" = thread do proprio processo; "host:porta" = worker remoto.
+#
+# Restricoes do backend CORE-07 respeitadas: tarefas de fork nao usam globais
+# nem recursao (o Sierpinski e iterativo); IDs numericos (sem listas de strings).
+
+# ---------- Nucleo canonico das avaliacoes (identico ao T08/T09) ----------
+func lcg(s) { return (s * 75 + 74) % 65537; }
+
+func nota_de(id, carga) {
+    var s = lcg(id + 1);
+    var passos = carga + s % carga;
+    var k = 0;
+    while (k < passos) { s = lcg(s); k = k + 1; }
+    return s % 101;
+}
+
+func avaliar_lote(avaliador, inicio, fim, carga) {
+    var r = [];
+    r.append(avaliador);
+    var i = inicio;
+    while (i < fim) { r.append(i); r.append(nota_de(i, carga)); i = i + 1; }
+    return r;
+}
+
+func nome_avaliador(k) {
+    if (k == 0) { return "Professor"; }
+    if (k == 1) { return "Monitor 1"; }
+    if (k == 2) { return "Monitor 2"; }
+    return "Monitor 3";
+}
+
+# ---------- Quinto trabalho: Mandelbrot ASCII ----------
+func mandelbrot(largura, altura, max_iter) {
+    var paleta = " .:-=+#%@";
+    var texto = "";
+    var y = 0;
+    while (y < altura) {
+        var linha = "";
+        var cy = (y * 1.0 / altura) * 2.4 - 1.2;
+        var x = 0;
+        while (x < largura) {
+            var cx = (x * 1.0 / largura) * 3.0 - 2.0;
+            var zx = 0.0;
+            var zy = 0.0;
+            var it = 0;
+            while (zx * zx + zy * zy <= 4.0 && it < max_iter) {
+                var tmp = zx * zx - zy * zy + cx;
+                zy = 2.0 * zx * zy + cy;
+                zx = tmp;
+                it = it + 1;
+            }
+            var k = (it * 8 - (it * 8) % max_iter) / max_iter;
+            linha = linha + substr(paleta, k, 1);
+            x = x + 1;
+        }
+        if (y > 0) { texto = texto + "\n"; }
+        texto = texto + linha;
+        y = y + 1;
+    }
+    return texto;
+}
+
+# ---------- Sexto trabalho: Tapete de Sierpinski (iterativo) ----------
+# Celula (i, j) e vazia se, em algum nivel da base 3, os dois digitos valem 1.
+func sierpinski(grau) {
+    var n = 1;
+    var g = 0;
+    while (g < grau) { n = n * 3; g = g + 1; }
+    var texto = "";
+    var i = 0;
+    while (i < n) {
+        var linha = "";
+        var j = 0;
+        while (j < n) {
+            var a = i;
+            var b = j;
+            var vazio = 0;
+            while (a > 0 || b > 0) {
+                if (a % 3 == 1 && b % 3 == 1) { vazio = 1; }
+                a = (a - a % 3) / 3;
+                b = (b - b % 3) / 3;
+            }
+            if (vazio == 1) { linha = linha + " "; } else { linha = linha + "#"; }
+            j = j + 1;
+        }
+        if (i > 0) { texto = texto + "\n"; }
+        texto = texto + linha;
+        i = i + 1;
+    }
+    return texto;
+}
+
+# ---------- Leitura de inteiros ----------
+# to_number devolve decimal e o backend CORE-07 nao mistura int com decimal;
+# por isso os parametros inteiros sao lidos digito a digito (ignora o resto).
+func digito(c) {
+    if (c == "0") { return 0; }
+    if (c == "1") { return 1; }
+    if (c == "2") { return 2; }
+    if (c == "3") { return 3; }
+    if (c == "4") { return 4; }
+    if (c == "5") { return 5; }
+    if (c == "6") { return 6; }
+    if (c == "7") { return 7; }
+    if (c == "8") { return 8; }
+    if (c == "9") { return 9; }
+    return -1;
+}
+
+func para_inteiro(s) {
+    var n = 0;
+    var i = 0;
+    while (i < len(s)) {
+        var d = digito(substr(s, i, 1));
+        if (d >= 0) { n = n * 10 + d; }
+        i = i + 1;
+    }
+    return n;
+}
+
+# ---------- Fluxo principal ----------
+var modo = input();
+var carga = para_inteiro(input());
+var largura = para_inteiro(input());
+var altura = para_inteiro(input());
+var max_iter = para_inteiro(input());
+var grau = para_inteiro(input());
+var d0 = input();
+var d1 = input();
+var d2 = input();
+var d3 = input();
+var dm = input();
+var ds = input();
+
+var lotes = [];
+var texto_m = "";
+var texto_s = "";
+
+if (modo == "par") {
+    # Os 6 trabalhos sao disparados antes do primeiro join.
+    var hs = [];
+    hs.append(fork avaliar_lote(0, 0, 40, carga) on d0);
+    hs.append(fork avaliar_lote(1, 40, 80, carga) on d1);
+    hs.append(fork avaliar_lote(2, 80, 120, carga) on d2);
+    hs.append(fork avaliar_lote(3, 120, 160, carga) on d3);
+    var hm = fork mandelbrot(largura, altura, max_iter) on dm;
+    var hsp = fork sierpinski(grau) on ds;
+    for (var h in hs) { lotes.append(join(h)); }
+    texto_m = join(hm);
+    texto_s = join(hsp);
+} else {
+    # Mesma carga completa, sem fork: 4 lotes + Mandelbrot + Sierpinski.
+    lotes.append(avaliar_lote(0, 0, 40, carga));
+    lotes.append(avaliar_lote(1, 40, 80, carga));
+    lotes.append(avaliar_lote(2, 80, 120, carga));
+    lotes.append(avaliar_lote(3, 120, 160, carga));
+    texto_m = mandelbrot(largura, altura, max_iter);
+    texto_s = sierpinski(grau);
+}
+
+print("=== TESTE 10: 160 avaliacoes + Mandelbrot + Sierpinski ===");
+print("MODO", modo);
+
+var vistos = [];
+var v = 0;
+while (v < 160) { vistos.append(0); v = v + 1; }
+
+var total = 0;
+var soma = 0;
+var fora = 0;
+for (var r in lotes) {
+    var qtd = (len(r) - 1) / 2;
+    print("AVALIADOR", r[0], nome_avaliador(r[0]), qtd);
+    var p = 1;
+    while (p < len(r)) {
+        var id = r[p];
+        if (id >= 0 && id < 160) { vistos[id] = vistos[id] + 1; } else { fora = fora + 1; }
+        soma = soma + r[p + 1];
+        total = total + 1;
+        p = p + 2;
+    }
+}
+
+var unicos = 0;
+var duplicados = 0;
+var perdidos = 0;
+v = 0;
+while (v < 160) {
+    if (vistos[v] == 0) { perdidos = perdidos + 1; }
+    if (vistos[v] >= 1) { unicos = unicos + 1; }
+    if (vistos[v] > 1) { duplicados = duplicados + vistos[v] - 1; }
+    v = v + 1;
+}
+duplicados = duplicados + fora;
+
+print("TOTAL", total);
+print("UNICOS", unicos);
+print("DUPLICADOS", duplicados);
+print("PERDIDOS", perdidos);
+print("SOMA_NOTAS", soma);
+print("=== MANDELBROT " + to_string(largura) + "x" + to_string(altura) + " max_iter=" + to_string(max_iter) + " ===");
+print(texto_m);
+print("=== FIM MANDELBROT ===");
+print("=== SIERPINSKI grau=" + to_string(grau) + " ===");
+print(texto_s);
+print("=== FIM SIERPINSKI ===");
