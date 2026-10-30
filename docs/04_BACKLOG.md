@@ -688,6 +688,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (30/10/2026):** IN_REVIEW (draft) · PR [#22](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/22), empilhado sobre o `T08-01` (#21). `ready=false`: consome o `CORE-07` (#18, ainda não em `dev`). `python tests/2026_2/test09/run_t09.py` na **integração local** RUN-03 + `dev` + #17 + #18: 54/54 PASS em duas execuções; Mandelbrot igual ao Python caractere a caractere em dois conjuntos de parâmetros; as 5 tarefas em execução antes do primeiro `RESULT` (5 workers no loopback). Sem o `CORE-07`: `BLOCKED` (exit 2). PARTIAL até #17/#18 em `dev` e o RUN-03.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `T10-01` — MiniPar T10: avaliações + Mandelbrot + Sierpinski
