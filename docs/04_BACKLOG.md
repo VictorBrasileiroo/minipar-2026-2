@@ -758,6 +758,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (30/10/2026):** BLOCKED · PR [#24](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24) (draft), empilhado sobre o `RUN-04` (#20). `ready=false`. `python scripts/smoke_int01.py`: segmento A (CLI Fork/Join → runtime, local e worker no loopback) PASS na **integração local** RUN-03 + `dev` + #17 + #18 e `BLOCKED` sem eles; segmento B (serviço `CORE-08`, #19, em árvore separada) PARTIAL: B1–B7 PASS, B8 (Fork/Join pelo serviço) BLOCKED pelo conflito do #19 com #17/#18 em `src/`; segmento C BLOCKED: `WEB-03` não iniciado. Defeitos INT01-01..07 classificados em `docs/auditorias/INT-01_SMOKE_INTEGRACAO.md`. Repetir em `dev` depois de #17/#18/#19 e do WEB-03.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `DOC-03` — Product Backlog, Sprint Backlogs e decisões atualizados
