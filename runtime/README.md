@@ -7,6 +7,7 @@ Contrato: [`docs/02_CONTRATOS_TECNICOS.md` §2 (C-FJ-v1)](../docs/02_CONTRATOS_T
 |---|---|---|
 | `RUN-01` | Runtime local: registry, `start`/`join`, isolamento, erros, `Value` | implementado e testado |
 | `RUN-02` | Protocolo TCP enquadrado, worker pré-compilado, falhas | implementado e testado **no loopback** (prova de protocolo) |
+| `RUN-03` | Prova em dois computadores reais | programa e roteiro prontos, ensaio no loopback ok; **execução em duas máquinas BLOCKED** ([roteiro e registro](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)) |
 
 ## 1. Arquivos
 
@@ -21,6 +22,8 @@ runtime/
 │   ├── net.hpp          # sockets Winsock/POSIX, send_all/recv_exact, frames
 │   ├── remote.hpp       # lado coordenador: conexão por destino, HELLO, RESULT por task_id
 │   └── worker.hpp       # run_worker, worker_main_if_requested
+├── examples/
+│   └── demo_distribuida.cpp # RUN-03: coordenador/worker para a prova em dois computadores
 └── tests/
     ├── run_tests.py         # compila e executa todos os testes
     ├── test_util.hpp        # mini framework (TEST_CASE/CHECK)
@@ -110,11 +113,24 @@ python runtime/tests/run_tests.py --cxx g++       # outro compilador
 
 O runner sobe dois processos `test_worker` em portas livres de `127.0.0.1` e encerra os dois no final. O worker B **se encerra de propósito** no teste RT-09 (exit 3, conferido pelo runner). Binários e logs (`worker_A.log`, `worker_B.log`) ficam em `output/runtime-tests/` (ignorado pelo Git).
 
-Resultado em 22/10/2026 (Windows 11, G++ 16.2.0 UCRT64): 15 casos locais + probe, 7 de protocolo e 15 remotos, **todos PASS**. A suíte completa rodou 5 vezes seguidas sem falha; a suíte local, 30 vezes.
+Resultado em 22/10/2026 (Windows 11, G++ 16.2.0 UCRT64): 15 casos locais + probe, 7 de protocolo, 15 remotos e o ensaio do RUN-03, **todos PASS**. A suíte completa rodou 5 vezes seguidas sem falha; a suíte local, 30 vezes.
 
-Resultado em 23/10/2026, depois da correção da revisão do PR #9 (envio assíncrono com limite, `RESULT` acima de 8 MiB, `protocol_version` em toda mensagem): 15 locais + probe, 7 de protocolo e **19 remotos**, todos PASS no Windows 11 (G++ 16.2.0 UCRT64, 3 rodadas completas) e no Linux/WSL2 Ubuntu (G++ 15.2.0, 5 rodadas completas). Antes da correção, os 4 casos novos falhavam: o `start` ficava preso no envio, o resultado de 9 MiB só terminava no `TIMEOUT` e as mensagens com outra versão eram aceitas.
+Resultado em 23/10/2026, depois da correção da revisão do PR #9 (envio assíncrono com limite, `RESULT` acima de 8 MiB, `protocol_version` em toda mensagem): 15 locais + probe, 7 de protocolo, **19 remotos** e o ensaio do RUN-03, todos PASS no Windows 11 (G++ 16.2.0 UCRT64) e no Linux/WSL2 Ubuntu (G++ 15.2.0). Antes da correção, os 4 casos novos falhavam: o `start` ficava preso no envio, o resultado de 9 MiB só terminava no `TIMEOUT` e as mensagens com outra versão eram aceitas.
 
 **O que estes testes NÃO provam:** execução entre dois computadores. Os testes remotos usam processos diferentes no mesmo host (loopback), ou seja, provam o protocolo. A prova em duas máquinas é o card `RUN-03`.
+
+### Prova em dois computadores (`RUN-03`)
+
+`examples/demo_distribuida.cpp` faz os dois papéis com o mesmo binário:
+
+```text
+máquina B:  demo_distribuida --minipar-worker 7000 --bind <IP-de-B>
+máquina A:  demo_distribuida --coordenador <IP-de-B>:7000
+```
+
+O coordenador imprime cinco verificações: outro host, cálculo remoto conferido, executor = worker, comparação local e queda do worker → erro no `join`. Termina com exit 0 só se todas passarem. O roteiro completo, com compilação, a regra de firewall temporária e o registro da evidência, está em [`docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md).
+
+O `run_tests.py` ensaia esse roteiro no loopback. Lá, a verificação "outro computador" **tem de** dar `FAIL` (mesmo host) e as outras quatro, `PASS`. Esse ensaio não substitui a execução em duas máquinas.
 
 ## 6. Limitações conhecidas
 

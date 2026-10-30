@@ -132,11 +132,43 @@ def step_remote(exe: Path, ctx: dict) -> tuple[bool, str]:
     return ok, report
 
 
+def step_demo_loopback(exe: Path, ctx: dict) -> tuple[bool, str]:
+    """Roteiro do RUN-03 no loopback: confere o programa, NÃO prova duas máquinas.
+
+    Esperado: todas as verificações PASS, exceto 'worker em outro computador', que tem de dar FAIL
+    (mesmo host) — se desse PASS aqui, a verificação estaria errada.
+    """
+    (port,) = free_ports(1)
+    log = OUT / "demo_worker.log"
+    worker = start_worker(exe, port, log, ctx["env"])
+    lines: list[str] = []
+    try:
+        coord = subprocess.Popen([str(exe), "--coordenador", f"127.0.0.1:{port}"], stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", env=ctx["env"])
+        assert coord.stdout is not None
+        for line in coord.stdout:
+            lines.append(line.rstrip())
+            if line.startswith("AGUARDANDO_QUEDA"):
+                time.sleep(0.5)
+                worker.kill()  # simula o Ctrl+C no host do worker
+        rc = coord.wait(timeout=120)
+    finally:
+        if worker.poll() is None:
+            worker.kill()
+    out = "\n".join(lines)
+    summary = [ln for ln in lines if ln.startswith("[PASS]") or ln.startswith("[FAIL]")]
+    host_fail = any(ln.startswith("[FAIL] worker em outro computador") and "MESMO HOST" in ln for ln in summary)
+    others_pass = all(ln.startswith("[PASS]") for ln in summary if "worker em outro computador" not in ln)
+    ok = rc == 1 and host_fail and others_pass and len(summary) == 5
+    return ok, out + f"\n(exit={rc}; no loopback o FAIL de 'outro computador' e o resultado correto)"
+
+
 STEPS = [
     ("RUN-01 testes locais", "tests/test_local.cpp", step_unit),
     ("RUN-01 join_or_exit encerra com codigo 1", "tests/join_or_exit_probe.cpp", step_join_or_exit_probe),
     ("RUN-02 codec JSON e frames", "tests/test_protocol.cpp", step_unit),
     ("RUN-02 coordenador <-> 2 workers (processos no loopback)", "tests/test_remote.cpp", step_remote),
+    ("RUN-03 roteiro da demo em loopback (nao prova duas maquinas)", "examples/demo_distribuida.cpp", step_demo_loopback),
 ]
 
 
