@@ -254,7 +254,15 @@
 
 **Critério de aceite:** MiniPar→C++→binário cria tarefa local e remota de teste; join retorna dado correto.
 
-**Escopo de arquivos autorizado:** `src/codegen.py`, `src/cpp_template.py`.
+**Escopo original:** `src/codegen.py`, `src/cpp_template.py`.
+
+**Autorizacao especifica do coordenador (30/10/2026):** implementacao local e
+ampliacao delimitada a `src/semantic.py` (contexto CORE-07), `main.py`,
+`tests/2026_2/core07/`, documentacao e metadados impactados. Sem stage, commit,
+push, PR ou merge. BACKLOG/ready=false e dependencias nao promovidos.
+Backend local/worker loopback implementado para revisao; CLI completa BLOCKED
+por CORE-06/PR #17 ainda aberto em 30/10. Prova entre computadores pendente.
+Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 

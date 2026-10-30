@@ -241,7 +241,7 @@ for i, source in enumerate(MALFORMED):
 
 
 class BackendBoundaryTests(unittest.TestCase):
-    def test_direct_generators_refuse_nested_fork(self):
+    def test_tac_guard_and_backend_build_id_requirement(self):
         program = parse('func f(){return 1;}func unused(){var h=fork f();return 2;}')
         with self.assertRaisesRegex(NotImplementedError, 'CORE-06'):
             TACGenerator().generate_text(program)
@@ -258,6 +258,7 @@ class BackendBoundaryTests(unittest.TestCase):
                 self.assertFalse(CppCodeGenerator().generate(program, 'probe'))
                 compiler.assert_not_called()
             self.assertIn('CORE-07', stderr.getvalue())
+            self.assertIn('exige source', stderr.getvalue())
             self.assertFalse(binary.exists())
             self.assertFalse((output / 'probe.cpp').exists())
         finally:
@@ -275,6 +276,7 @@ class BackendBoundaryTests(unittest.TestCase):
         EVIDENCE.append(dict(command=result.args, exit=result.returncode, stdout=result.stdout, stderr=result.stderr))
         self.assertEqual(result.returncode, 1)
         self.assertIn('CORE-06/CORE-07', result.stderr)
+        self.assertIn('[ERRO TAC]', result.stderr)
         self.assertNotIn('ERRO SEMANTICO', result.stderr)
         self.assertFalse(binary.exists())
         self.assertFalse((folder / 'output/program.cpp').exists())

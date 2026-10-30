@@ -18,7 +18,7 @@
 > `substr` e `to_string` usam a produção existente `<chamada_funcao>` (`FuncCallExpr`),
 > sem novos tokens ou produções. Os créditos e a gramática de origem foram preservados.
 > **CORE-04/05 (23/10/2026):** tokens e produções Fork/Join na seção 10 e BNF
-> consolidada; análise semântica implementada, geração/execução pendentes de CORE-06/07.
+> consolidada; análise semântica implementada. Estado atual do backend/CLI no adendo CORE-07.
 
 ---
 
@@ -575,7 +575,9 @@ seq {
 ```
 
 Este exemplo passa pelo Lexer/Parser/AST/semântico; **não executa ainda**.
-Até CORE-06/07, o pipeline recusa Fork/Join explicitamente antes de gerar TAC/C++.
+Na `dev` base do CORE-07, TAC ainda recusa Fork/Join (CORE-06/PR #17 fora de dev).
+O backend direto gera C++/binário real; a CLI preserva TAC e para nessa recusa
+até a integração do CORE-06. Ver adendo abaixo.
 
 | Regra | Validação implementada |
 |---|---|
@@ -609,7 +611,8 @@ alternativas distintas, inclusive unknown, objetos, canais e handles. A chave do
 cache continua distinguindo assinatura, isolamento, globais, dono e fase provisória.
 Retorno por caminho implícito ainda não é modelado: `if (x > 0) { return 1; }`
 sem retorno final pode ser inferido como number. Antes de liberar o backend,
-CORE-07 deve tratar esse caminho potencialmente none (CR-CORE05/PEND-FJ-07).
+O backend CORE-07 agora recusa esse retorno parcial; a CLI da base continua
+bloqueada no TAC. Ver adendo e handoff CORE-07 (CR-CORE05/PEND-FJ-07).
 Ausência de diagnóstico nesses casos **não comprova** serialização nem execução.
 Detalhes da AST, metadados, evidências e limites em
 [`docs/auditorias/CORE-04-05_FORK_JOIN.md`](docs/auditorias/CORE-04-05_FORK_JOIN.md).
@@ -1200,3 +1203,36 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 ---
 
 *Gramática gerada em 15 de junho de 2026 — MiniPar-Improvement v2026.1*
+
+### Adendo de implementação CORE-07 — 30/10/2026
+
+Sem novas producoes gramaticais. `fork` e `join` mantem AST e precedencia acima.
+AST ? TAC e AST ? C++ continuam ramos independentes. Backend C++ usa a mesma
+AST validada e contexto concreto por funcao/assinatura, sem consumir TAC.
+
+- `number` nao e convertido globalmente para double: literais inteiros e suas
+  operacoes preservam int, decimais double; listas numericas preservam o
+  vector<double> legado. Retorno preserva a escolha legada de double quando
+  ha divisao/decimal nos returns, sem promover os operandos da divisao.
+- Todos os forks concretos de uma funcao devem comprovar a mesma assinatura.
+  Genericos sem contexto, recursao e tipos incertos/incompativeis sao recusados.
+- Valor exige retorno total: return incondicional ou ambos os ramos retornando;
+  lacos nao provam totalidade. Return em par sai da lambda da branch e nao da
+  funcao externa. Funcoes sem retorno de valor geram none, so coletavel como comando.
+- Handles sao TaskHandle copiaveis, inclusive em listas homogeneas com append,
+  indices e for-in. Copiar preserva identidade; segundo join falha no runtime.
+- Indexação de matriz preserva referência somente quando toda a cadeia está
+  apoiada em uma variável; resultados temporários de função/join são
+  materializados antes da destruição de seu proprietário. O primeiro índice
+  seleciona uma linha; o segundo, uma célula. Células string continuam sem
+  indexação textual, e leituras de bool não deixam escapar proxies.
+- Argumentos sao avaliados sequencialmente e convertidos para Value antes do
+  destino e de efeitos posteriores; join avalia handle antes do timeout.
+  &&/|| preservam curto-circuito. Registro antecede worker e tarefas.
+- Erros controlaveis em tarefas (substr, indice e joins aninhados) lancam
+  excecoes para TASK_FAILED. Fora de tarefa substr preserva exit legado.
+  Nao ha cancelamento ou espera global: tarefas sem join nao tem conclusao garantida.
+
+Recorte e evidencias: `docs/auditorias/CORE-07_BACKEND_RUNTIME.md`.
+O contrato C-FJ-v1 revisao 2 e a CR-CORE05 mantem seu estado de ratificacao;
+esta implementacao local nao equivale a FROZEN, DONE ou aprovacao humana.

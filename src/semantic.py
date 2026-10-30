@@ -47,6 +47,10 @@ class SemanticAnalyzer:
         self._functions: Dict[str, Symbol] = {}
         self._loop_depth = 0
         self.expression_types: Dict[int, ValueType] = {}
+        # Contextos especializados permanecem separados: um no pode ter tipos
+        # distintos em chamadas diferentes. Nao mesclar no mapa do chamador.
+        self.function_contexts = {}
+        self.analyzed_program = None
         self.fork_signatures: Dict[int, list[tuple[tuple[ValueType, ...], ValueType]]] = {}
         self.unresolved_fj: List[str] = []
         self._function_nodes: Dict[str, FuncDecl] = {}
@@ -252,6 +256,9 @@ class SemanticAnalyzer:
             return ValueType("matrix", (self._value_type(node.init_value),))
         if isinstance(node, IndexExpr):
             collection = self._value_type(node.object, resolve_calls)
+            if collection.kind == "matrix":
+                # matrix(r,c,v)[i] e uma linha; so o proximo indice e celula.
+                return ValueType("list", collection.elements)
             if collection.kind in ("list", "matrix") and collection.elements:
                 return self._merge_value_types(collection.elements)
         if isinstance(node, PropertyAccess):
@@ -346,6 +353,7 @@ class SemanticAnalyzer:
             self.validate_node(function.body, value_required=False)
             result = self._merge_value_types(tuple(self._return_types)) if self._return_types else ValueType("void")
             self._function_cache[key] = result
+            self.function_contexts[key] = dict(self.expression_types)
             return result
         finally:
             (self._scopes, self._current_function, self._current_class,
@@ -641,6 +649,7 @@ class SemanticAnalyzer:
             if node.prompt: self.validate_node(node.prompt)
 
     def analyze(self, program: Program) -> bool:
+        self.analyzed_program = program
         self._collect_declarations(program)
         self._class_chains.clear()
         for name in self._class_nodes: self._class_chain(name)
@@ -655,3 +664,265 @@ class SemanticAnalyzer:
         for node, signatures in self._provisional_signatures.items():
             if node not in self.fork_signatures: self.fork_signatures[node] = signatures
         return not self._has_errors
+
+
+@dataclass(frozen=True)
+class CppType:
+    """Representacao concreta do backend, separada do number da linguagem."""
+    kind: str
+    item: Optional[CppType] = None
+
+    def cpp(self):
+        if self.kind == "list": return f"std::vector<{self.item.cpp()}>"
+        return {"string": "std::string", "task": "minipar_rt::TaskHandle",
+                "size": "std::size_t", "length": "std::ptrdiff_t"}.get(self.kind, self.kind)
+
+    def transportable(self):
+        return self.kind in ("int", "double", "size", "length", "bool", "string", "void") or (
+            self.kind == "list" and self.item is not None and self.item.kind != "void" and self.item.transportable())
+
+
+class CppProofError(ValueError):
+    pass
+
+
+class CppTaskContext:
+    """Prova conservadora sobre a mesma AST ja validada, por assinatura C++.
+
+    Nao altera ValueType nem a semantica de programas sem FJ. Cada contexto
+    guarda seus mapas de nos/declaracoes, inclusive especializacoes de helpers.
+    Uma representacao incerta e erro, nunca Value dinamico ou double por padrao.
+    """
+    def __init__(self, program, semantic, float_return):
+        if semantic.analyzed_program is not program or semantic._has_errors:
+            raise CppProofError("CORE-07 exige analise semantica valida da mesma AST")
+        self.functions = {n.name: n for n in program.statements if isinstance(n, FuncDecl)}
+        self.contexts = {}
+        self.forks = {}
+        self.active = set()
+        self.float_return = float_return
+        self.main = self.new_context()
+        scopes = [{}]
+        for node in program.statements:
+            if not isinstance(node, FuncDecl): self.stmt(node, scopes, self.main, [])
+        self.finish(self.main)
+        seen = set(self.main["types"])
+        for context in self.contexts.values(): seen.update(context["types"])
+        pending = [program]
+        while pending:
+            node = pending.pop()
+            if isinstance(node, ForkExpr) and id(node) not in seen:
+                self.fail(node, "fork sem contexto concreto de chamada comprovado")
+            pending.extend(iter_child_nodes(node))
+
+    @staticmethod
+    def new_context():
+        return {"types": {}, "decls": {}, "bindings": [], "calls": {}, "result": CppType("void")}
+
+    @staticmethod
+    def fail(node, message):
+        raise CppProofError(f"CORE-07 linha {node.line}: {message}")
+
+    def lookup(self, node, scopes, name):
+        for scope in reversed(scopes):
+            if name in scope: return scope[name]
+        self.fail(node, f"tipo nao comprovado de '{name}' (global/captura nao suportada)")
+
+    def bind(self, scopes, ctx, name, typ, node):
+        binding = [typ, node]
+        scopes[-1][name] = binding
+        ctx["bindings"].append(binding)
+        return binding
+
+    def unify(self, old, new, node):
+        if old == new: return old
+        if old.kind == new.kind == "list":
+            if old.item is None: return new
+            if new.item is None: return old
+            return CppType("list", self.unify(old.item, new.item, node))
+        self.fail(node, f"representacoes incompativeis: {old} e {new}")
+
+    def finish(self, ctx):
+        for typ, node in ctx["bindings"]:
+            if typ.kind == "list" and typ.item is None:
+                self.fail(node, "conteudo da lista vazia nao comprovado")
+            ctx["decls"][id(node)] = typ
+            if isinstance(node, VarDecl) and isinstance(node.init_value, ListLiteral):
+                ctx["types"][id(node.init_value)] = typ
+
+    def function(self, node, name, args):
+        key = (name, args)
+        if any(active[0] == name for active in self.active):
+            self.fail(node, f"retorno recursivo de {name} nao comprovado")
+        if key in self.contexts: return self.contexts[key]
+        fn = self.functions.get(name)
+        if fn is None or len(args) != len(fn.params): self.fail(node, f"assinatura desconhecida de {name}")
+        if any(t.kind == "void" or (t.kind == "list" and t.item is None) for t in args):
+            self.fail(node, f"argumentos nao comprovados de {name}")
+        ctx, returns, scopes = self.new_context(), [], [{}]
+        self.active.add(key)
+        try:
+            for param, typ in zip(fn.params, args): scopes[0][param] = [typ, fn]
+            complete = self.stmt(fn.body, scopes, ctx, returns)
+            values = [t for t in returns if t.kind != "void"]
+            if values:
+                if not complete or len(values) != len(returns):
+                    self.fail(fn, f"retorno de {name} nao comprovado em todos os caminhos")
+                result = values[0]
+                # Preserva o retorno double ja escolhido pelo backend legado
+                # quando ha divisao/literal decimal no corpo (operandos intactos).
+                if all(t.kind in ("int", "double", "size", "length") for t in values) and self.float_return(fn.body):
+                    result = CppType("double")
+                else:
+                    for typ in values[1:]: result = self.unify(result, typ, fn)
+                ctx["result"] = result
+            self.finish(ctx)
+            self.contexts[key] = ctx
+            return ctx
+        finally:
+            self.active.remove(key)
+
+    def expr(self, node, scopes, ctx, required=True):
+        if node is None: return CppType("void")
+        typ = None
+        if isinstance(node, NumberExpr):
+            typ = CppType("double" if any(c in node.value.lower() for c in ".e") else "int")
+            if typ.kind == "int" and not (-2147483648 <= int(node.value) <= 2147483647):
+                self.fail(node, "literal inteiro fora da representacao int comprovada")
+        elif isinstance(node, StringExpr): typ = CppType("string")
+        elif isinstance(node, BoolExpr): typ = CppType("bool")
+        elif isinstance(node, IdentifierExpr): typ = self.lookup(node, scopes, node.name)[0]
+        elif isinstance(node, UnaryExpr):
+            value = self.expr(node.operand, scopes, ctx)
+            typ = CppType("bool") if node.op == "!" else value
+        elif isinstance(node, BinaryExpr):
+            left, right = self.expr(node.left, scopes, ctx), self.expr(node.right, scopes, ctx)
+            if node.op in ("==", "!=", "<", ">", "<=", ">=", "&&", "||"): typ = CppType("bool")
+            elif left.kind == right.kind == "string" and node.op == "+": typ = left
+            elif left.kind in ("int", "double", "size", "length") and right.kind in ("int", "double", "size", "length"):
+                if node.op in ("%", "^", "&", "|") and "double" in (left.kind, right.kind):
+                    self.fail(node, "operacao inteira com decimal")
+                typ = CppType(next((k for k in ("double", "size", "length") if k in (left.kind, right.kind)), "int"))
+            else: self.fail(node, "operacao sem representacao concreta comprovada")
+        elif isinstance(node, ListLiteral):
+            items = [self.expr(n, scopes, ctx) for n in node.elements]
+            # Listas numericas legadas sao vector<double>, inclusive inteiros.
+            if items and all(t.kind in ("int", "double", "size", "length") for t in items): item = CppType("double")
+            else:
+                item = items[0] if items else None
+                for t in items[1:]: item = self.unify(item, t, node)
+            typ = CppType("list", item)
+        elif isinstance(node, MatrixCreateExpr):
+            self.expr(node.rows, scopes, ctx); self.expr(node.cols, scopes, ctx)
+            typ = CppType("list", CppType("list", self.expr(node.init_value, scopes, ctx)))
+        elif isinstance(node, IndexExpr):
+            collection = self.expr(node.object, scopes, ctx)
+            self.expr(node.index, scopes, ctx)
+            if collection.kind != "list" or collection.item is None: self.fail(node, "indexacao sem elemento comprovado")
+            typ = collection.item
+        elif isinstance(node, ForkExpr):
+            args = tuple(self.expr(a, scopes, ctx) for a in node.arguments)
+            if any(not t.transportable() or t.kind == "void" for t in args): self.fail(node, "tipo proibido/nao comprovado no transporte")
+            if node.destination and self.expr(node.destination, scopes, ctx).kind != "string": self.fail(node, "destino nao comprovado como string")
+            result = self.function(node, node.function_name, args)["result"]
+            if not result.transportable(): self.fail(node, "retorno proibido/nao comprovado no transporte")
+            signature = (args, result)
+            if node.function_name in self.forks and self.forks[node.function_name] != signature:
+                self.fail(node, f"assinaturas de fork incompativeis para {node.function_name}")
+            self.forks[node.function_name] = signature
+            typ = CppType("task", result)
+        elif isinstance(node, JoinExpr):
+            handle = self.expr(node.handle, scopes, ctx)
+            if handle.kind != "task" or handle.item is None: self.fail(node, "join sem handle/retorno comprovado")
+            if node.timeout:
+                if self.expr(node.timeout, scopes, ctx).kind not in ("int", "double", "size", "length"):
+                    self.fail(node, "timeout nao comprovado como numero")
+            typ = handle.item
+        elif isinstance(node, FuncCallExpr):
+            args = tuple(self.expr(a, scopes, ctx) for a in node.arguments)
+            if node.name in self.functions:
+                callee = self.function(node, node.name, args)
+                ctx["calls"][id(node)] = (node.name, args)
+                typ = callee["result"]
+            else:
+                typ = {"exp": CppType("double"), "random": CppType("double"), "to_number": CppType("double"),
+                       "len": CppType("length"), "substr": CppType("string"), "to_string": CppType("string"),
+                       "range": CppType("list", CppType("int")), "parse_ints": CppType("list", CppType("double"))}.get(node.name)
+        elif isinstance(node, MethodCall):
+            obj = self.expr(node.object, scopes, ctx)
+            args = [self.expr(a, scopes, ctx) for a in node.arguments]
+            if node.method_name in ("append", "push_back") and obj.kind == "list" and len(args) == 1:
+                if obj.item is None:
+                    if not isinstance(node.object, IdentifierExpr): self.fail(node, "append sem armazenamento comprovado")
+                    binding = self.lookup(node, scopes, node.object.name)
+                    binding[0] = CppType("list", CppType("double") if args[0].kind in ("int", "double") else args[0])
+                elif obj.item.kind in ("int", "double") and args[0].kind in ("int", "double"): pass
+                else: self.unify(obj.item, args[0], node)
+                typ = CppType("void")
+            elif node.method_name == "pop" and obj.kind == "list" and obj.item: typ = obj.item
+            elif node.method_name == "size" and obj.kind in ("list", "string"): typ = CppType("size")
+        elif isinstance(node, PropertyAccess) and node.property_name == "size":
+            self.expr(node.object, scopes, ctx); typ = CppType("size")
+        elif isinstance(node, InputExpr):
+            if node.prompt: self.expr(node.prompt, scopes, ctx)
+            typ = CppType("string")
+        if typ is None: self.fail(node, f"tipo/construcao nao comprovado: {type(node).__name__}")
+        if required and typ.kind == "void": self.fail(node, "none so pode ser comando isolado")
+        ctx["types"][id(node)] = typ
+        return typ
+
+    def stmt(self, node, scopes, ctx, returns):
+        if node is None: return False
+        if isinstance(node, VarDecl):
+            if node.init_value is None and node.type == "var": self.fail(node, "variavel sem tipo/inicializador comprovado")
+            typ = self.expr(node.init_value, scopes, ctx) if node.init_value else CppType("string" if node.type == "string" else "int")
+            self.bind(scopes, ctx, node.name, typ, node)
+        elif isinstance(node, Assignment):
+            binding = self.lookup(node, scopes, node.name)
+            value = self.expr(node.value, scopes, ctx)
+            if binding[0].kind in ("int", "double", "size", "length") and value.kind in ("int", "double", "size", "length"): pass
+            else: binding[0] = self.unify(binding[0], value, node)
+        elif isinstance(node, IndexAssign):
+            root = node.target.object
+            while isinstance(root, IndexExpr): root = root.object
+            if not isinstance(root, IdentifierExpr): self.fail(node, "atribuicao por indice exige armazenamento comprovado")
+            target = self.expr(node.target, scopes, ctx); value = self.expr(node.value, scopes, ctx)
+            if not (target.kind in ("int", "double") and value.kind in ("int", "double")): self.unify(target, value, node)
+        elif isinstance(node, PrintStmt):
+            for arg in node.arguments: self.expr(arg, scopes, ctx)
+        elif isinstance(node, ReturnStmt):
+            returns.append(self.expr(node.value, scopes, ctx) if node.value else CppType("void"))
+            return True
+        elif isinstance(node, (SeqBlock, ParBlock)):
+            scopes.append({})
+            complete = False
+            # par returns pertencem a lambda da branch, nao a funcao externa.
+            branch_returns = [] if isinstance(node, ParBlock) else returns
+            for stmt in node.statements:
+                done = self.stmt(stmt, scopes, ctx, branch_returns)
+                complete = complete or done
+            scopes.pop()
+            return complete if isinstance(node, SeqBlock) else False
+        elif isinstance(node, IfStmt):
+            self.expr(node.condition, scopes, ctx)
+            left = self.stmt(node.then_branch, scopes, ctx, returns)
+            right = self.stmt(node.else_branch, scopes, ctx, returns)
+            return left and right
+        elif isinstance(node, (ForStmt, WhileStmt, DoWhileStmt)):
+            scopes.append({})
+            if isinstance(node, ForStmt):
+                if node.iterator_name:
+                    collection = self.expr(node.iterable, scopes, ctx)
+                    if collection.kind != "list" or collection.item is None: self.fail(node, "for-in sem elemento comprovado")
+                    self.bind(scopes, ctx, node.iterator_name, collection.item, node)
+                else:
+                    self.stmt(node.initializer, scopes, ctx, returns)
+                    self.expr(node.condition, scopes, ctx)
+                    self.stmt(node.increment, scopes, ctx, returns)
+            else: self.expr(node.condition, scopes, ctx)
+            self.stmt(node.body, scopes, ctx, returns)
+            scopes.pop()
+            return False  # laços nunca provam retorno total
+        elif isinstance(node, (BreakStmt, ContinueStmt)): pass
+        else: self.expr(node, scopes, ctx, required=False)
+        return False

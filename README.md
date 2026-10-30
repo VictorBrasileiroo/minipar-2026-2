@@ -89,6 +89,34 @@ O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo 
 
 Os validadores nativos usam `CXX`, o G++ UCRT64 local ou `--cxx CAMINHO_GPP`, sem alterar o PATH do sistema. Os artefatos e logs ficam em `output/`, ignorado pelo Git. O `.expected.tac` do T07 permanece como referência histórica; igualdade textual não é o critério de aceite.
 
+## Backend Fork/Join — CORE-07 (30/10/2026)
+
+Implementação local para revisão em `eixo-a/CORE-07-backend-runtime`: C++ com
+wrappers tipados, runtime real, mesmo binário coordenador/worker, handles/listas
+e falhas recuperáveis. Execução nativa local e entre processos no loopback
+verificada; prova entre computadores continua pendente.
+
+**CLI completa BLOCKED:** CORE-06/PR #17 continua fora de `dev`. `main.py`
+executa a etapa TAC e interrompe em sua recusa explícita, sem contorná-la.
+Para exercitar apenas o backend use o driver de prova abaixo. `generate_text`
+e `generate` aceitam `semantic` da mesma AST e `source` (obrigatório em FJ,
+para SHA-256); chamadas antigas sem FJ continuam compatíveis.
+
+```powershell
+$env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
+$env:PATH = 'C:\msys64\ucrt64\bin;' + $env:PATH # somente este processo
+.\.venv\Scripts\python.exe -B tests/2026_2/core07/compile_backend.py tests/2026_2/core07/demo.minipar
+'local' | .\output\core07\repro\output\demo.exe
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core07 -v
+```
+
+Demo observada: `42 14 42`, exit 0. A suíte inicia workers somente em
+`127.0.0.1` e encerra seus próprios processos. Tipos desconhecidos, assinaturas
+incompatíveis e retornos não comprovados são recusados, sem despacho dinâmico.
+Detalhes, limites e regressões no
+[handoff CORE-07](docs/auditorias/CORE-07_BACKEND_RUNTIME.md).
+Estado administrativo e aprovações humanas não foram promovidos.
+
 ## Proveniência e direitos
 
 Base anterior informada no README e na BNF históricos: <https://github.com/luizwhirl/minipar-improvement>. Créditos preservados: Emanuele Vitória de Jesus Lima ([Manu-Vii](https://github.com/Manu-Vii)), José Lucas de Oliveira Quintela ([lucasqtl](https://github.com/lucasqtl)) e Luiz Miguel de Melo Bomfim ([luizwhirl](https://github.com/luizwhirl)).
