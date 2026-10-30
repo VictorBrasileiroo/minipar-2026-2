@@ -708,6 +708,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (30/10/2026):** IN_REVIEW (draft) · PR [#23](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/23), empilhado sobre o `T09-01` (#22). `ready=false`: consome o `CORE-07` (#18, ainda não em `dev`). `python tests/2026_2/test10/run_t10.py` na **integração local** RUN-03 + `dev` + #17 + #18: 126/126 PASS em três execuções; Sierpinski como sexto `fork` (6 workers no loopback, os 6 `TASK` antes do primeiro `RESULT` de avaliação); 4 mutantes detectados. Formato ASCII + SVG proposto para a ADR-014, que segue EM ABERTO. Sem o `CORE-07`: `BLOCKED` (exit 2). PARTIAL até #17/#18 em `dev` e o RUN-03.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `RUN-05` — Benchmarks e falhas distribuídas repetíveis
