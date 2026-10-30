@@ -7,7 +7,8 @@ from ast_nodes import (
     BinaryExpr, UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
     DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
     ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
-    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign
+    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign,
+    ForkExpr, JoinExpr
 )
 
 class Parser:
@@ -227,11 +228,11 @@ class Parser:
         if self._match(TokenType.DO): return self._parse_do_while_stmt()
         if self._match(TokenType.FOR): return self._parse_for_stmt()
 
-        if self._peek().type in (TokenType.IDENTIFIER, TokenType.THIS, TokenType.NEW, TokenType.RECEIVE, TokenType.INPUT, TokenType.C_CHANNEL, TokenType.MATRIX, TokenType.LBRACKET):
+        if self._peek().type in (TokenType.IDENTIFIER, TokenType.THIS, TokenType.NEW, TokenType.RECEIVE, TokenType.INPUT, TokenType.C_CHANNEL, TokenType.MATRIX, TokenType.LBRACKET, TokenType.FORK, TokenType.JOIN):
             expr = self._parse_expression()
             if self._match(TokenType.ASSIGN):
                 return self._parse_assignment_tail(expr)
-            elif isinstance(expr, (MethodCall, FuncCallExpr)):
+            elif isinstance(expr, (MethodCall, FuncCallExpr, ForkExpr, JoinExpr)):
                 self._consume(TokenType.SEMICOLON, "Esperado ';'")
                 return expr
             sys.exit(print(f"[ERRO] Linha {expr.line}: Instrucao ou expressao isolada invalida", file=sys.stderr) or 1)
@@ -295,7 +296,23 @@ class Parser:
         tok = self._peek()
         node = None
 
-        if self._match(TokenType.MATRIX):
+        if self._match(TokenType.FORK):
+            name = self._consume(TokenType.IDENTIFIER, "Esperado nome de funcao global apos fork").lexeme
+            self._consume(TokenType.LPAREN, "Esperado '(' apos funcao de fork")
+            args = []
+            if self._peek().type != TokenType.RPAREN:
+                args.append(self._parse_expression())
+                while self._match(TokenType.COMMA): args.append(self._parse_expression())
+            self._consume(TokenType.RPAREN, "Esperado ')' apos argumentos de fork")
+            destination = self._parse_expression() if self._match(TokenType.ON) else None
+            node = ForkExpr(name, args, destination, line=tok.line, column=tok.col)
+        elif self._match(TokenType.JOIN):
+            self._consume(TokenType.LPAREN, "Esperado '(' apos join")
+            handle = self._parse_expression()
+            timeout = self._parse_expression() if self._match(TokenType.COMMA) else None
+            self._consume(TokenType.RPAREN, "Esperado ')' apos handle/timeout de join")
+            node = JoinExpr(handle, timeout, line=tok.line, column=tok.col)
+        elif self._match(TokenType.MATRIX):
             line = tok.line
             self._consume(TokenType.LPAREN, "Esperado '(' apos matrix")
             rows = self._parse_expression()

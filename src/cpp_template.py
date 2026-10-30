@@ -10,6 +10,11 @@ _CPP_HEADER = """\
 #include <cmath>
 #include <cstdlib>
 #include <type_traits>
+#include <utility>
+#include <cstddef>
+#include <iomanip>
+#include <limits>
+#include <locale>
 
 #ifdef _WIN32
   #include <winsock2.h>
@@ -36,6 +41,71 @@ std::string input() {
 std::string input(const std::string& prompt) {
     std::cout << prompt;
     return input();
+}
+
+// Bloqueia a conversao silenciosa std::string = numero/char em caminhos genericos.
+template<typename T, typename V>
+decltype(auto) __minipar_assign(T& target, const V& value) {
+    constexpr bool invalid = std::is_same_v<std::decay_t<T>, std::string>
+                             && std::is_arithmetic_v<std::decay_t<V>>;
+    static_assert(!invalid, "Tipo incompativel em atribuicao: string exige texto");
+    if constexpr (!invalid) return target = value;
+}
+
+// Indexacao textual nao faz parte do recorte C-T11-v1. MiniParLine aparece
+// na instanciação do diagnostico C++, inclusive para parametros genericos.
+template<int MiniParLine, typename T, typename I>
+decltype(auto) __minipar_index(T&& value, I index) {
+    constexpr bool invalid = std::is_same_v<std::decay_t<T>, std::string>;
+    static_assert(!invalid, "Indexacao de string nao suportada; use substr(s, i, 1)");
+    // Nao materializar copia/local: a referencia pertence a colecao original.
+    // Temporarios do chamador vivem ate o fim da expressao completa.
+    if constexpr (!invalid) return std::forward<T>(value)[index];
+}
+
+// C-T11-v1: comprimento assinado; strings sao medidas em bytes.
+template<typename T>
+std::ptrdiff_t __minipar_len(const T& value) {
+    return static_cast<std::ptrdiff_t>(value.size());
+}
+
+template<typename I, typename N>
+std::string __minipar_substr(const std::string& s, I start, N count) {
+    static_assert(std::is_arithmetic_v<I> && !std::is_same_v<I, bool>
+                  && std::is_arithmetic_v<N> && !std::is_same_v<N, bool>,
+                  "substr exige inicio e tamanho numericos");
+    const double inicio = static_cast<double>(start);
+    const double tamanho = static_cast<double>(count);
+    // Validar antes de converter para size_t: nada de truncar, overflow ou recorte automatico.
+    const double length = static_cast<double>(s.size());
+    if (!std::isfinite(inicio) || !std::isfinite(tamanho)
+            || std::trunc(inicio) != inicio || std::trunc(tamanho) != tamanho
+            || inicio < 0 || tamanho < 0 || inicio > length || tamanho > length - inicio) {
+        std::cout.flush();
+        std::cerr << "Erro de execucao: substr indices invalidos (inicio=" << inicio
+                  << ", tamanho=" << tamanho << ", len=" << s.size() << ")" << std::endl;
+        std::exit(1);
+    }
+    return s.substr(static_cast<std::size_t>(inicio), static_cast<std::size_t>(tamanho));
+}
+
+template<typename T>
+std::string __minipar_to_string(T value) {
+    static_assert(std::is_arithmetic_v<T> && !std::is_same_v<T, bool>,
+                  "to_string exige numero");
+    std::ostringstream out;
+    out.imbue(std::locale::classic());
+    if constexpr (std::is_floating_point_v<T>) {
+        if (std::isfinite(value) && std::trunc(value) == value) {
+            // Nao converter para int: valores inteiros double podem exceder seu dominio.
+            out << std::fixed << std::setprecision(0) << (value == 0 ? T{0} : value);
+        } else {
+            out << std::setprecision(std::numeric_limits<T>::max_digits10) << value;
+        }
+    } else {
+        out << value;
+    }
+    return out.str();
 }
 
 // Converte linha com inteiros separados por espaco em vetor (ex.: "10 -3 80")

@@ -1,5 +1,7 @@
 ## Documento Mestre Inicial de Contexto, Requisitos e Diretrizes
 
+> Atualização de estado (26/10/2026): o PR #16 remove o TAC fixo e corrige a pilha do T07; ver [handoff CORE-02](auditorias/CORE-02_TAC_QUICKSORT.md). Menções ao hardcode na auditoria original são históricas. Integração e aceite global continuam pendentes.
+
 **Versão:** 0.1 — Contexto inicial consolidado  
 **Data de elaboração:** 15/10/2026  
 **Disciplina:** Compiladores — Ciência da Computação — UFAL  

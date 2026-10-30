@@ -1,5 +1,7 @@
 # Estado observado da base 2026.1 — síntese das auditorias Codex 15/10/2026
 
+> Atualização de estado (26/10/2026): o PR #16 remove o TAC fixo e corrige a pilha do T07; ver [handoff CORE-02](auditorias/CORE-02_TAC_QUICKSORT.md). Menções ao hardcode na auditoria original são históricas. Integração e aceite global continuam pendentes.
+
 **Natureza:** evidência trazida pelo usuário do Codex. Os logs/scripts originais **não foram embutidos** neste repositório inicial. NÃO declarar essas provas como executadas aqui. Rodadas ocorreram em diretórios externos `_triagem_2026-10-15/` e `_rodada2_2026-10-15/` no computador local.
 
 ## 1. Pipeline real identificado

@@ -1,0 +1,4079 @@
+{
+  "fixture": "PROG-01",
+  "title": "Programa maior: Quicksort com classes (Teste 6)",
+  "mock": true,
+  "source": "class Quicksort {\n    var array = [0];\n\n    func carregar(arr) {\n        this.array = arr;\n    }\n\n    func trocar(i, j) {\n        var temp = this.array[i];\n        this.array[i] = this.array[j];\n        this.array[j] = temp;\n    }\n\n    func particionar(inicio, fim) {\n        var pivot = this.array[fim];\n        var i = inicio - 1;\n        var j = inicio;\n        while (j < fim) {\n            if (this.array[j] <= pivot) {\n                i = i + 1;\n                this.trocar(i, j);\n            }\n            j = j + 1;\n        }\n        i = i + 1;\n        this.trocar(i, fim);\n        return i;\n    }\n\n    func quicksort(inicio, fim) {\n        if (inicio < fim) {\n            var p = this.particionar(inicio, fim);\n            this.quicksort(inicio, p - 1);\n            this.quicksort(p + 1, fim);\n        }\n    }\n\n    func ordenar() {\n        var n = len(this.array) - 1;\n        if (n >= 0) {\n            this.quicksort(0, n);\n        }\n        return this.array;\n    }\n}\n\nseq {\n    print(\"==== Ordenacao com Quicksort ====\");\n    print(\"Insira os elementos do vetor separados por espaco:\");\n    var entrada = input(\"\");\n    var vetor = parse_ints(entrada);\n    print(\"Vetor original:\", vetor);\n    var algoritmo = new Quicksort();\n    algoritmo.carregar(vetor);\n    var vetor_ordenado = algoritmo.ordenar();\n    print(\"Vetor ordenado:\", vetor_ordenado);\n}\n",
+  "notes": [
+    "MOCK: gerado por web_didatica/tools/gerar_fixtures.py a partir das fases reais de src/; não é resposta do serviço CORE-08.",
+    "Código de tests/teste6_quicksort_classes.minipar com fim de linha normalizado para \\n, como o editor do navegador envia."
+  ],
+  "analyze": {
+    "contract": "minipar.compile.v1",
+    "operation": "analyze",
+    "request_id": "00000000000000000000000000000005",
+    "ok": true,
+    "source_hash": "sha256:76ae29ffa7445af7d50b2093fd3d212c75929f7432cd2127b7c7153e84287f66",
+    "duration_ms": 0,
+    "phases": {
+      "lexer": {
+        "status": "ok",
+        "tokens": [
+          {
+            "type": "CLASS",
+            "lexeme": "class",
+            "line": 1,
+            "column": 1
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "Quicksort",
+            "line": 1,
+            "column": 7
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 1,
+            "column": 17
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 2,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 2,
+            "column": 9
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 2,
+            "column": 15
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 2,
+            "column": 17
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "0",
+            "line": 2,
+            "column": 18
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 2,
+            "column": 19
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 2,
+            "column": 20
+          },
+          {
+            "type": "FUNC",
+            "lexeme": "func",
+            "line": 4,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "carregar",
+            "line": 4,
+            "column": 10
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 4,
+            "column": 18
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "arr",
+            "line": 4,
+            "column": 19
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 4,
+            "column": 22
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 4,
+            "column": 24
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 5,
+            "column": 9
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 5,
+            "column": 13
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 5,
+            "column": 14
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 5,
+            "column": 20
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "arr",
+            "line": 5,
+            "column": 22
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 5,
+            "column": 25
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 6,
+            "column": 5
+          },
+          {
+            "type": "FUNC",
+            "lexeme": "func",
+            "line": 8,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "trocar",
+            "line": 8,
+            "column": 10
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 8,
+            "column": 16
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 8,
+            "column": 17
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 8,
+            "column": 18
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 8,
+            "column": 20
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 8,
+            "column": 21
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 8,
+            "column": 23
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 9,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "temp",
+            "line": 9,
+            "column": 13
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 9,
+            "column": 18
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 9,
+            "column": 20
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 9,
+            "column": 25
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 9,
+            "column": 30
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 9,
+            "column": 31
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 9,
+            "column": 32
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 9,
+            "column": 33
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 10,
+            "column": 9
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 10,
+            "column": 13
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 10,
+            "column": 14
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 10,
+            "column": 19
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 10,
+            "column": 20
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 10,
+            "column": 21
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 10,
+            "column": 23
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 10,
+            "column": 25
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 10,
+            "column": 29
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 10,
+            "column": 30
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 10,
+            "column": 35
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 10,
+            "column": 36
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 10,
+            "column": 37
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 10,
+            "column": 38
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 11,
+            "column": 9
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 11,
+            "column": 13
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 11,
+            "column": 14
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 11,
+            "column": 19
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 11,
+            "column": 20
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 11,
+            "column": 21
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 11,
+            "column": 23
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "temp",
+            "line": 11,
+            "column": 25
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 11,
+            "column": 29
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 12,
+            "column": 5
+          },
+          {
+            "type": "FUNC",
+            "lexeme": "func",
+            "line": 14,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "particionar",
+            "line": 14,
+            "column": 10
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 14,
+            "column": 21
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 14,
+            "column": 22
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 14,
+            "column": 28
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 14,
+            "column": 30
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 14,
+            "column": 33
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 14,
+            "column": 35
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 15,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "pivot",
+            "line": 15,
+            "column": 13
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 15,
+            "column": 19
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 15,
+            "column": 21
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 15,
+            "column": 25
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 15,
+            "column": 26
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 15,
+            "column": 31
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 15,
+            "column": 32
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 15,
+            "column": 35
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 15,
+            "column": 36
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 16,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 16,
+            "column": 13
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 16,
+            "column": 15
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 16,
+            "column": 17
+          },
+          {
+            "type": "MINUS",
+            "lexeme": "-",
+            "line": 16,
+            "column": 24
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 16,
+            "column": 26
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 16,
+            "column": 27
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 17,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 17,
+            "column": 13
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 17,
+            "column": 15
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 17,
+            "column": 17
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 17,
+            "column": 23
+          },
+          {
+            "type": "WHILE",
+            "lexeme": "while",
+            "line": 18,
+            "column": 9
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 18,
+            "column": 15
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 18,
+            "column": 16
+          },
+          {
+            "type": "LT",
+            "lexeme": "<",
+            "line": 18,
+            "column": 18
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 18,
+            "column": 20
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 18,
+            "column": 23
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 18,
+            "column": 25
+          },
+          {
+            "type": "IF",
+            "lexeme": "if",
+            "line": 19,
+            "column": 13
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 19,
+            "column": 16
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 19,
+            "column": 17
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 19,
+            "column": 21
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 19,
+            "column": 22
+          },
+          {
+            "type": "LBRACKET",
+            "lexeme": "[",
+            "line": 19,
+            "column": 27
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 19,
+            "column": 28
+          },
+          {
+            "type": "RBRACKET",
+            "lexeme": "]",
+            "line": 19,
+            "column": 29
+          },
+          {
+            "type": "LTE",
+            "lexeme": "<=",
+            "line": 19,
+            "column": 31
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "pivot",
+            "line": 19,
+            "column": 34
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 19,
+            "column": 39
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 19,
+            "column": 41
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 20,
+            "column": 17
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 20,
+            "column": 19
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 20,
+            "column": 21
+          },
+          {
+            "type": "PLUS",
+            "lexeme": "+",
+            "line": 20,
+            "column": 23
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 20,
+            "column": 25
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 20,
+            "column": 26
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 21,
+            "column": 17
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 21,
+            "column": 21
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "trocar",
+            "line": 21,
+            "column": 22
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 21,
+            "column": 28
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 21,
+            "column": 29
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 21,
+            "column": 30
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 21,
+            "column": 32
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 21,
+            "column": 33
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 21,
+            "column": 34
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 22,
+            "column": 13
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 23,
+            "column": 13
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 23,
+            "column": 15
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "j",
+            "line": 23,
+            "column": 17
+          },
+          {
+            "type": "PLUS",
+            "lexeme": "+",
+            "line": 23,
+            "column": 19
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 23,
+            "column": 21
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 23,
+            "column": 22
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 24,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 25,
+            "column": 9
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 25,
+            "column": 11
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 25,
+            "column": 13
+          },
+          {
+            "type": "PLUS",
+            "lexeme": "+",
+            "line": 25,
+            "column": 15
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 25,
+            "column": 17
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 25,
+            "column": 18
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 26,
+            "column": 9
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 26,
+            "column": 13
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "trocar",
+            "line": 26,
+            "column": 14
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 26,
+            "column": 20
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 26,
+            "column": 21
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 26,
+            "column": 22
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 26,
+            "column": 24
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 26,
+            "column": 27
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 26,
+            "column": 28
+          },
+          {
+            "type": "RETURN",
+            "lexeme": "return",
+            "line": 27,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "i",
+            "line": 27,
+            "column": 16
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 27,
+            "column": 17
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 28,
+            "column": 5
+          },
+          {
+            "type": "FUNC",
+            "lexeme": "func",
+            "line": 30,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "quicksort",
+            "line": 30,
+            "column": 10
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 30,
+            "column": 19
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 30,
+            "column": 20
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 30,
+            "column": 26
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 30,
+            "column": 28
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 30,
+            "column": 31
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 30,
+            "column": 33
+          },
+          {
+            "type": "IF",
+            "lexeme": "if",
+            "line": 31,
+            "column": 9
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 31,
+            "column": 12
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 31,
+            "column": 13
+          },
+          {
+            "type": "LT",
+            "lexeme": "<",
+            "line": 31,
+            "column": 20
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 31,
+            "column": 22
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 31,
+            "column": 25
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 31,
+            "column": 27
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 32,
+            "column": 13
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "p",
+            "line": 32,
+            "column": 17
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 32,
+            "column": 19
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 32,
+            "column": 21
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 32,
+            "column": 25
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "particionar",
+            "line": 32,
+            "column": 26
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 32,
+            "column": 37
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 32,
+            "column": 38
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 32,
+            "column": 44
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 32,
+            "column": 46
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 32,
+            "column": 49
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 32,
+            "column": 50
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 33,
+            "column": 13
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 33,
+            "column": 17
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "quicksort",
+            "line": 33,
+            "column": 18
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 33,
+            "column": 27
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "inicio",
+            "line": 33,
+            "column": 28
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 33,
+            "column": 34
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "p",
+            "line": 33,
+            "column": 36
+          },
+          {
+            "type": "MINUS",
+            "lexeme": "-",
+            "line": 33,
+            "column": 38
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 33,
+            "column": 40
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 33,
+            "column": 41
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 33,
+            "column": 42
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 34,
+            "column": 13
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 34,
+            "column": 17
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "quicksort",
+            "line": 34,
+            "column": 18
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 34,
+            "column": 27
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "p",
+            "line": 34,
+            "column": 28
+          },
+          {
+            "type": "PLUS",
+            "lexeme": "+",
+            "line": 34,
+            "column": 30
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 34,
+            "column": 32
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 34,
+            "column": 33
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "fim",
+            "line": 34,
+            "column": 35
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 34,
+            "column": 38
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 34,
+            "column": 39
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 35,
+            "column": 9
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 36,
+            "column": 5
+          },
+          {
+            "type": "FUNC",
+            "lexeme": "func",
+            "line": 38,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "ordenar",
+            "line": 38,
+            "column": 10
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 38,
+            "column": 17
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 38,
+            "column": 18
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 38,
+            "column": 20
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 39,
+            "column": 9
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "n",
+            "line": 39,
+            "column": 13
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 39,
+            "column": 15
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "len",
+            "line": 39,
+            "column": 17
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 39,
+            "column": 20
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 39,
+            "column": 21
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 39,
+            "column": 25
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 39,
+            "column": 26
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 39,
+            "column": 31
+          },
+          {
+            "type": "MINUS",
+            "lexeme": "-",
+            "line": 39,
+            "column": 33
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "1",
+            "line": 39,
+            "column": 35
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 39,
+            "column": 36
+          },
+          {
+            "type": "IF",
+            "lexeme": "if",
+            "line": 40,
+            "column": 9
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 40,
+            "column": 12
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "n",
+            "line": 40,
+            "column": 13
+          },
+          {
+            "type": "GTE",
+            "lexeme": ">=",
+            "line": 40,
+            "column": 15
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "0",
+            "line": 40,
+            "column": 18
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 40,
+            "column": 19
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 40,
+            "column": 21
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 41,
+            "column": 13
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 41,
+            "column": 17
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "quicksort",
+            "line": 41,
+            "column": 18
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 41,
+            "column": 27
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "0",
+            "line": 41,
+            "column": 28
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 41,
+            "column": 29
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "n",
+            "line": 41,
+            "column": 31
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 41,
+            "column": 32
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 41,
+            "column": 33
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 42,
+            "column": 9
+          },
+          {
+            "type": "RETURN",
+            "lexeme": "return",
+            "line": 43,
+            "column": 9
+          },
+          {
+            "type": "THIS",
+            "lexeme": "this",
+            "line": 43,
+            "column": 16
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 43,
+            "column": 20
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "array",
+            "line": 43,
+            "column": 21
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 43,
+            "column": 26
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 44,
+            "column": 5
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 45,
+            "column": 1
+          },
+          {
+            "type": "SEQ",
+            "lexeme": "seq",
+            "line": 47,
+            "column": 1
+          },
+          {
+            "type": "LBRACE",
+            "lexeme": "{",
+            "line": 47,
+            "column": 5
+          },
+          {
+            "type": "PRINT",
+            "lexeme": "print",
+            "line": 48,
+            "column": 5
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 48,
+            "column": 10
+          },
+          {
+            "type": "STRING_LITERAL",
+            "lexeme": "==== Ordenacao com Quicksort ====",
+            "line": 48,
+            "column": 11
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 48,
+            "column": 46
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 48,
+            "column": 47
+          },
+          {
+            "type": "PRINT",
+            "lexeme": "print",
+            "line": 49,
+            "column": 5
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 49,
+            "column": 10
+          },
+          {
+            "type": "STRING_LITERAL",
+            "lexeme": "Insira os elementos do vetor separados por espaco:",
+            "line": 49,
+            "column": 11
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 49,
+            "column": 63
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 49,
+            "column": 64
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 50,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "entrada",
+            "line": 50,
+            "column": 9
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 50,
+            "column": 17
+          },
+          {
+            "type": "INPUT",
+            "lexeme": "input",
+            "line": 50,
+            "column": 19
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 50,
+            "column": 24
+          },
+          {
+            "type": "STRING_LITERAL",
+            "lexeme": "",
+            "line": 50,
+            "column": 25
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 50,
+            "column": 27
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 50,
+            "column": 28
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 51,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "vetor",
+            "line": 51,
+            "column": 9
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 51,
+            "column": 15
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "parse_ints",
+            "line": 51,
+            "column": 17
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 51,
+            "column": 27
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "entrada",
+            "line": 51,
+            "column": 28
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 51,
+            "column": 35
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 51,
+            "column": 36
+          },
+          {
+            "type": "PRINT",
+            "lexeme": "print",
+            "line": 52,
+            "column": 5
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 52,
+            "column": 10
+          },
+          {
+            "type": "STRING_LITERAL",
+            "lexeme": "Vetor original:",
+            "line": 52,
+            "column": 11
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 52,
+            "column": 28
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "vetor",
+            "line": 52,
+            "column": 30
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 52,
+            "column": 35
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 52,
+            "column": 36
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 53,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "algoritmo",
+            "line": 53,
+            "column": 9
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 53,
+            "column": 19
+          },
+          {
+            "type": "NEW",
+            "lexeme": "new",
+            "line": 53,
+            "column": 21
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "Quicksort",
+            "line": 53,
+            "column": 25
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 53,
+            "column": 34
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 53,
+            "column": 35
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 53,
+            "column": 36
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "algoritmo",
+            "line": 54,
+            "column": 5
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 54,
+            "column": 14
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "carregar",
+            "line": 54,
+            "column": 15
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 54,
+            "column": 23
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "vetor",
+            "line": 54,
+            "column": 24
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 54,
+            "column": 29
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 54,
+            "column": 30
+          },
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 55,
+            "column": 5
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "vetor_ordenado",
+            "line": 55,
+            "column": 9
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 55,
+            "column": 24
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "algoritmo",
+            "line": 55,
+            "column": 26
+          },
+          {
+            "type": "DOT",
+            "lexeme": ".",
+            "line": 55,
+            "column": 35
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "ordenar",
+            "line": 55,
+            "column": 36
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 55,
+            "column": 43
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 55,
+            "column": 44
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 55,
+            "column": 45
+          },
+          {
+            "type": "PRINT",
+            "lexeme": "print",
+            "line": 56,
+            "column": 5
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 56,
+            "column": 10
+          },
+          {
+            "type": "STRING_LITERAL",
+            "lexeme": "Vetor ordenado:",
+            "line": 56,
+            "column": 11
+          },
+          {
+            "type": "COMMA",
+            "lexeme": ",",
+            "line": 56,
+            "column": 28
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "vetor_ordenado",
+            "line": 56,
+            "column": 30
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 56,
+            "column": 44
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 56,
+            "column": 45
+          },
+          {
+            "type": "RBRACE",
+            "lexeme": "}",
+            "line": 57,
+            "column": 1
+          }
+        ]
+      },
+      "parser": {
+        "status": "ok",
+        "ast": {
+          "id": "n0",
+          "kind": "Program",
+          "label": "Program",
+          "role": null,
+          "index": null,
+          "line": 1,
+          "attributes": {},
+          "children": [
+            {
+              "id": "n1",
+              "kind": "ClassDecl",
+              "label": "ClassDecl(Quicksort)",
+              "role": "statements",
+              "index": 0,
+              "line": 1,
+              "attributes": {
+                "name": "Quicksort",
+                "superclass": null
+              },
+              "children": [
+                {
+                  "id": "n2",
+                  "kind": "VarDecl",
+                  "label": "VarDecl(array)",
+                  "role": "attributes",
+                  "index": 0,
+                  "line": 2,
+                  "attributes": {
+                    "name": "array",
+                    "type": "var"
+                  },
+                  "children": [
+                    {
+                      "id": "n3",
+                      "kind": "ListLiteral",
+                      "label": "ListLiteral",
+                      "role": "init_value",
+                      "index": null,
+                      "line": 2,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n4",
+                          "kind": "NumberExpr",
+                          "label": "NumberExpr(0)",
+                          "role": "elements",
+                          "index": 0,
+                          "line": 2,
+                          "attributes": {
+                            "value": "0"
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n5",
+                  "kind": "FuncDecl",
+                  "label": "FuncDecl(carregar)",
+                  "role": "methods",
+                  "index": 0,
+                  "line": 4,
+                  "attributes": {
+                    "name": "carregar",
+                    "params": [
+                      "arr"
+                    ]
+                  },
+                  "children": [
+                    {
+                      "id": "n6",
+                      "kind": "SeqBlock",
+                      "label": "SeqBlock",
+                      "role": "body",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n7",
+                          "kind": "PropertyAssign",
+                          "label": "PropertyAssign(array)",
+                          "role": "statements",
+                          "index": 0,
+                          "line": 5,
+                          "attributes": {
+                            "property_name": "array"
+                          },
+                          "children": [
+                            {
+                              "id": "n8",
+                              "kind": "ThisExpr",
+                              "label": "ThisExpr",
+                              "role": "object",
+                              "index": null,
+                              "line": 5,
+                              "attributes": {},
+                              "children": []
+                            },
+                            {
+                              "id": "n9",
+                              "kind": "IdentifierExpr",
+                              "label": "IdentifierExpr(arr)",
+                              "role": "value",
+                              "index": null,
+                              "line": 5,
+                              "attributes": {
+                                "name": "arr"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n10",
+                  "kind": "FuncDecl",
+                  "label": "FuncDecl(trocar)",
+                  "role": "methods",
+                  "index": 1,
+                  "line": 8,
+                  "attributes": {
+                    "name": "trocar",
+                    "params": [
+                      "i",
+                      "j"
+                    ]
+                  },
+                  "children": [
+                    {
+                      "id": "n11",
+                      "kind": "SeqBlock",
+                      "label": "SeqBlock",
+                      "role": "body",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n12",
+                          "kind": "VarDecl",
+                          "label": "VarDecl(temp)",
+                          "role": "statements",
+                          "index": 0,
+                          "line": 9,
+                          "attributes": {
+                            "name": "temp",
+                            "type": "var"
+                          },
+                          "children": [
+                            {
+                              "id": "n13",
+                              "kind": "IndexExpr",
+                              "label": "IndexExpr",
+                              "role": "init_value",
+                              "index": null,
+                              "line": 9,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n14",
+                                  "kind": "PropertyAccess",
+                                  "label": "PropertyAccess(array)",
+                                  "role": "object",
+                                  "index": null,
+                                  "line": 9,
+                                  "attributes": {
+                                    "property_name": "array"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n15",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 9,
+                                      "attributes": {},
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n16",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(i)",
+                                  "role": "index",
+                                  "index": null,
+                                  "line": 9,
+                                  "attributes": {
+                                    "name": "i"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n17",
+                          "kind": "IndexAssign",
+                          "label": "IndexAssign",
+                          "role": "statements",
+                          "index": 1,
+                          "line": 10,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n18",
+                              "kind": "IndexExpr",
+                              "label": "IndexExpr",
+                              "role": "target",
+                              "index": null,
+                              "line": 10,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n19",
+                                  "kind": "PropertyAccess",
+                                  "label": "PropertyAccess(array)",
+                                  "role": "object",
+                                  "index": null,
+                                  "line": 10,
+                                  "attributes": {
+                                    "property_name": "array"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n20",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 10,
+                                      "attributes": {},
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n21",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(i)",
+                                  "role": "index",
+                                  "index": null,
+                                  "line": 10,
+                                  "attributes": {
+                                    "name": "i"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "id": "n22",
+                              "kind": "IndexExpr",
+                              "label": "IndexExpr",
+                              "role": "value",
+                              "index": null,
+                              "line": 10,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n23",
+                                  "kind": "PropertyAccess",
+                                  "label": "PropertyAccess(array)",
+                                  "role": "object",
+                                  "index": null,
+                                  "line": 10,
+                                  "attributes": {
+                                    "property_name": "array"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n24",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 10,
+                                      "attributes": {},
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n25",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(j)",
+                                  "role": "index",
+                                  "index": null,
+                                  "line": 10,
+                                  "attributes": {
+                                    "name": "j"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n26",
+                          "kind": "IndexAssign",
+                          "label": "IndexAssign",
+                          "role": "statements",
+                          "index": 2,
+                          "line": 11,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n27",
+                              "kind": "IndexExpr",
+                              "label": "IndexExpr",
+                              "role": "target",
+                              "index": null,
+                              "line": 11,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n28",
+                                  "kind": "PropertyAccess",
+                                  "label": "PropertyAccess(array)",
+                                  "role": "object",
+                                  "index": null,
+                                  "line": 11,
+                                  "attributes": {
+                                    "property_name": "array"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n29",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 11,
+                                      "attributes": {},
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n30",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(j)",
+                                  "role": "index",
+                                  "index": null,
+                                  "line": 11,
+                                  "attributes": {
+                                    "name": "j"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "id": "n31",
+                              "kind": "IdentifierExpr",
+                              "label": "IdentifierExpr(temp)",
+                              "role": "value",
+                              "index": null,
+                              "line": 11,
+                              "attributes": {
+                                "name": "temp"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n32",
+                  "kind": "FuncDecl",
+                  "label": "FuncDecl(particionar)",
+                  "role": "methods",
+                  "index": 2,
+                  "line": 14,
+                  "attributes": {
+                    "name": "particionar",
+                    "params": [
+                      "inicio",
+                      "fim"
+                    ]
+                  },
+                  "children": [
+                    {
+                      "id": "n33",
+                      "kind": "SeqBlock",
+                      "label": "SeqBlock",
+                      "role": "body",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n34",
+                          "kind": "VarDecl",
+                          "label": "VarDecl(pivot)",
+                          "role": "statements",
+                          "index": 0,
+                          "line": 15,
+                          "attributes": {
+                            "name": "pivot",
+                            "type": "var"
+                          },
+                          "children": [
+                            {
+                              "id": "n35",
+                              "kind": "IndexExpr",
+                              "label": "IndexExpr",
+                              "role": "init_value",
+                              "index": null,
+                              "line": 15,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n36",
+                                  "kind": "PropertyAccess",
+                                  "label": "PropertyAccess(array)",
+                                  "role": "object",
+                                  "index": null,
+                                  "line": 15,
+                                  "attributes": {
+                                    "property_name": "array"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n37",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 15,
+                                      "attributes": {},
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n38",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(fim)",
+                                  "role": "index",
+                                  "index": null,
+                                  "line": 15,
+                                  "attributes": {
+                                    "name": "fim"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n39",
+                          "kind": "VarDecl",
+                          "label": "VarDecl(i)",
+                          "role": "statements",
+                          "index": 1,
+                          "line": 16,
+                          "attributes": {
+                            "name": "i",
+                            "type": "var"
+                          },
+                          "children": [
+                            {
+                              "id": "n40",
+                              "kind": "BinaryExpr",
+                              "label": "BinaryExpr(-)",
+                              "role": "init_value",
+                              "index": null,
+                              "line": 16,
+                              "attributes": {
+                                "op": "-"
+                              },
+                              "children": [
+                                {
+                                  "id": "n41",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(inicio)",
+                                  "role": "left",
+                                  "index": null,
+                                  "line": 16,
+                                  "attributes": {
+                                    "name": "inicio"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "id": "n42",
+                                  "kind": "NumberExpr",
+                                  "label": "NumberExpr(1)",
+                                  "role": "right",
+                                  "index": null,
+                                  "line": 16,
+                                  "attributes": {
+                                    "value": "1"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n43",
+                          "kind": "VarDecl",
+                          "label": "VarDecl(j)",
+                          "role": "statements",
+                          "index": 2,
+                          "line": 17,
+                          "attributes": {
+                            "name": "j",
+                            "type": "var"
+                          },
+                          "children": [
+                            {
+                              "id": "n44",
+                              "kind": "IdentifierExpr",
+                              "label": "IdentifierExpr(inicio)",
+                              "role": "init_value",
+                              "index": null,
+                              "line": 17,
+                              "attributes": {
+                                "name": "inicio"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n45",
+                          "kind": "WhileStmt",
+                          "label": "WhileStmt",
+                          "role": "statements",
+                          "index": 3,
+                          "line": 18,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n46",
+                              "kind": "BinaryExpr",
+                              "label": "BinaryExpr(<)",
+                              "role": "condition",
+                              "index": null,
+                              "line": 18,
+                              "attributes": {
+                                "op": "<"
+                              },
+                              "children": [
+                                {
+                                  "id": "n47",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(j)",
+                                  "role": "left",
+                                  "index": null,
+                                  "line": 18,
+                                  "attributes": {
+                                    "name": "j"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "id": "n48",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(fim)",
+                                  "role": "right",
+                                  "index": null,
+                                  "line": 18,
+                                  "attributes": {
+                                    "name": "fim"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "id": "n49",
+                              "kind": "SeqBlock",
+                              "label": "SeqBlock",
+                              "role": "body",
+                              "index": null,
+                              "line": 1,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n50",
+                                  "kind": "IfStmt",
+                                  "label": "IfStmt",
+                                  "role": "statements",
+                                  "index": 0,
+                                  "line": 19,
+                                  "attributes": {},
+                                  "children": [
+                                    {
+                                      "id": "n51",
+                                      "kind": "BinaryExpr",
+                                      "label": "BinaryExpr(<=)",
+                                      "role": "condition",
+                                      "index": null,
+                                      "line": 19,
+                                      "attributes": {
+                                        "op": "<="
+                                      },
+                                      "children": [
+                                        {
+                                          "id": "n52",
+                                          "kind": "IndexExpr",
+                                          "label": "IndexExpr",
+                                          "role": "left",
+                                          "index": null,
+                                          "line": 19,
+                                          "attributes": {},
+                                          "children": [
+                                            {
+                                              "id": "n53",
+                                              "kind": "PropertyAccess",
+                                              "label": "PropertyAccess(array)",
+                                              "role": "object",
+                                              "index": null,
+                                              "line": 19,
+                                              "attributes": {
+                                                "property_name": "array"
+                                              },
+                                              "children": [
+                                                {
+                                                  "id": "n54",
+                                                  "kind": "ThisExpr",
+                                                  "label": "ThisExpr",
+                                                  "role": "object",
+                                                  "index": null,
+                                                  "line": 19,
+                                                  "attributes": {},
+                                                  "children": []
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "id": "n55",
+                                              "kind": "IdentifierExpr",
+                                              "label": "IdentifierExpr(j)",
+                                              "role": "index",
+                                              "index": null,
+                                              "line": 19,
+                                              "attributes": {
+                                                "name": "j"
+                                              },
+                                              "children": []
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "id": "n56",
+                                          "kind": "IdentifierExpr",
+                                          "label": "IdentifierExpr(pivot)",
+                                          "role": "right",
+                                          "index": null,
+                                          "line": 19,
+                                          "attributes": {
+                                            "name": "pivot"
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "id": "n57",
+                                      "kind": "SeqBlock",
+                                      "label": "SeqBlock",
+                                      "role": "then_branch",
+                                      "index": null,
+                                      "line": 1,
+                                      "attributes": {},
+                                      "children": [
+                                        {
+                                          "id": "n58",
+                                          "kind": "Assignment",
+                                          "label": "Assignment(i)",
+                                          "role": "statements",
+                                          "index": 0,
+                                          "line": 20,
+                                          "attributes": {
+                                            "name": "i"
+                                          },
+                                          "children": [
+                                            {
+                                              "id": "n59",
+                                              "kind": "BinaryExpr",
+                                              "label": "BinaryExpr(+)",
+                                              "role": "value",
+                                              "index": null,
+                                              "line": 20,
+                                              "attributes": {
+                                                "op": "+"
+                                              },
+                                              "children": [
+                                                {
+                                                  "id": "n60",
+                                                  "kind": "IdentifierExpr",
+                                                  "label": "IdentifierExpr(i)",
+                                                  "role": "left",
+                                                  "index": null,
+                                                  "line": 20,
+                                                  "attributes": {
+                                                    "name": "i"
+                                                  },
+                                                  "children": []
+                                                },
+                                                {
+                                                  "id": "n61",
+                                                  "kind": "NumberExpr",
+                                                  "label": "NumberExpr(1)",
+                                                  "role": "right",
+                                                  "index": null,
+                                                  "line": 20,
+                                                  "attributes": {
+                                                    "value": "1"
+                                                  },
+                                                  "children": []
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "id": "n62",
+                                          "kind": "MethodCall",
+                                          "label": "MethodCall(trocar)",
+                                          "role": "statements",
+                                          "index": 1,
+                                          "line": 21,
+                                          "attributes": {
+                                            "method_name": "trocar"
+                                          },
+                                          "children": [
+                                            {
+                                              "id": "n63",
+                                              "kind": "ThisExpr",
+                                              "label": "ThisExpr",
+                                              "role": "object",
+                                              "index": null,
+                                              "line": 21,
+                                              "attributes": {},
+                                              "children": []
+                                            },
+                                            {
+                                              "id": "n64",
+                                              "kind": "IdentifierExpr",
+                                              "label": "IdentifierExpr(i)",
+                                              "role": "arguments",
+                                              "index": 0,
+                                              "line": 21,
+                                              "attributes": {
+                                                "name": "i"
+                                              },
+                                              "children": []
+                                            },
+                                            {
+                                              "id": "n65",
+                                              "kind": "IdentifierExpr",
+                                              "label": "IdentifierExpr(j)",
+                                              "role": "arguments",
+                                              "index": 1,
+                                              "line": 21,
+                                              "attributes": {
+                                                "name": "j"
+                                              },
+                                              "children": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n66",
+                                  "kind": "Assignment",
+                                  "label": "Assignment(j)",
+                                  "role": "statements",
+                                  "index": 1,
+                                  "line": 23,
+                                  "attributes": {
+                                    "name": "j"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n67",
+                                      "kind": "BinaryExpr",
+                                      "label": "BinaryExpr(+)",
+                                      "role": "value",
+                                      "index": null,
+                                      "line": 23,
+                                      "attributes": {
+                                        "op": "+"
+                                      },
+                                      "children": [
+                                        {
+                                          "id": "n68",
+                                          "kind": "IdentifierExpr",
+                                          "label": "IdentifierExpr(j)",
+                                          "role": "left",
+                                          "index": null,
+                                          "line": 23,
+                                          "attributes": {
+                                            "name": "j"
+                                          },
+                                          "children": []
+                                        },
+                                        {
+                                          "id": "n69",
+                                          "kind": "NumberExpr",
+                                          "label": "NumberExpr(1)",
+                                          "role": "right",
+                                          "index": null,
+                                          "line": 23,
+                                          "attributes": {
+                                            "value": "1"
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n70",
+                          "kind": "Assignment",
+                          "label": "Assignment(i)",
+                          "role": "statements",
+                          "index": 4,
+                          "line": 25,
+                          "attributes": {
+                            "name": "i"
+                          },
+                          "children": [
+                            {
+                              "id": "n71",
+                              "kind": "BinaryExpr",
+                              "label": "BinaryExpr(+)",
+                              "role": "value",
+                              "index": null,
+                              "line": 25,
+                              "attributes": {
+                                "op": "+"
+                              },
+                              "children": [
+                                {
+                                  "id": "n72",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(i)",
+                                  "role": "left",
+                                  "index": null,
+                                  "line": 25,
+                                  "attributes": {
+                                    "name": "i"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "id": "n73",
+                                  "kind": "NumberExpr",
+                                  "label": "NumberExpr(1)",
+                                  "role": "right",
+                                  "index": null,
+                                  "line": 25,
+                                  "attributes": {
+                                    "value": "1"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n74",
+                          "kind": "MethodCall",
+                          "label": "MethodCall(trocar)",
+                          "role": "statements",
+                          "index": 5,
+                          "line": 26,
+                          "attributes": {
+                            "method_name": "trocar"
+                          },
+                          "children": [
+                            {
+                              "id": "n75",
+                              "kind": "ThisExpr",
+                              "label": "ThisExpr",
+                              "role": "object",
+                              "index": null,
+                              "line": 26,
+                              "attributes": {},
+                              "children": []
+                            },
+                            {
+                              "id": "n76",
+                              "kind": "IdentifierExpr",
+                              "label": "IdentifierExpr(i)",
+                              "role": "arguments",
+                              "index": 0,
+                              "line": 26,
+                              "attributes": {
+                                "name": "i"
+                              },
+                              "children": []
+                            },
+                            {
+                              "id": "n77",
+                              "kind": "IdentifierExpr",
+                              "label": "IdentifierExpr(fim)",
+                              "role": "arguments",
+                              "index": 1,
+                              "line": 26,
+                              "attributes": {
+                                "name": "fim"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n78",
+                          "kind": "ReturnStmt",
+                          "label": "ReturnStmt",
+                          "role": "statements",
+                          "index": 6,
+                          "line": 27,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n79",
+                              "kind": "IdentifierExpr",
+                              "label": "IdentifierExpr(i)",
+                              "role": "value",
+                              "index": null,
+                              "line": 27,
+                              "attributes": {
+                                "name": "i"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n80",
+                  "kind": "FuncDecl",
+                  "label": "FuncDecl(quicksort)",
+                  "role": "methods",
+                  "index": 3,
+                  "line": 30,
+                  "attributes": {
+                    "name": "quicksort",
+                    "params": [
+                      "inicio",
+                      "fim"
+                    ]
+                  },
+                  "children": [
+                    {
+                      "id": "n81",
+                      "kind": "SeqBlock",
+                      "label": "SeqBlock",
+                      "role": "body",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n82",
+                          "kind": "IfStmt",
+                          "label": "IfStmt",
+                          "role": "statements",
+                          "index": 0,
+                          "line": 31,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n83",
+                              "kind": "BinaryExpr",
+                              "label": "BinaryExpr(<)",
+                              "role": "condition",
+                              "index": null,
+                              "line": 31,
+                              "attributes": {
+                                "op": "<"
+                              },
+                              "children": [
+                                {
+                                  "id": "n84",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(inicio)",
+                                  "role": "left",
+                                  "index": null,
+                                  "line": 31,
+                                  "attributes": {
+                                    "name": "inicio"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "id": "n85",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(fim)",
+                                  "role": "right",
+                                  "index": null,
+                                  "line": 31,
+                                  "attributes": {
+                                    "name": "fim"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "id": "n86",
+                              "kind": "SeqBlock",
+                              "label": "SeqBlock",
+                              "role": "then_branch",
+                              "index": null,
+                              "line": 1,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n87",
+                                  "kind": "VarDecl",
+                                  "label": "VarDecl(p)",
+                                  "role": "statements",
+                                  "index": 0,
+                                  "line": 32,
+                                  "attributes": {
+                                    "name": "p",
+                                    "type": "var"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n88",
+                                      "kind": "MethodCall",
+                                      "label": "MethodCall(particionar)",
+                                      "role": "init_value",
+                                      "index": null,
+                                      "line": 32,
+                                      "attributes": {
+                                        "method_name": "particionar"
+                                      },
+                                      "children": [
+                                        {
+                                          "id": "n89",
+                                          "kind": "ThisExpr",
+                                          "label": "ThisExpr",
+                                          "role": "object",
+                                          "index": null,
+                                          "line": 32,
+                                          "attributes": {},
+                                          "children": []
+                                        },
+                                        {
+                                          "id": "n90",
+                                          "kind": "IdentifierExpr",
+                                          "label": "IdentifierExpr(inicio)",
+                                          "role": "arguments",
+                                          "index": 0,
+                                          "line": 32,
+                                          "attributes": {
+                                            "name": "inicio"
+                                          },
+                                          "children": []
+                                        },
+                                        {
+                                          "id": "n91",
+                                          "kind": "IdentifierExpr",
+                                          "label": "IdentifierExpr(fim)",
+                                          "role": "arguments",
+                                          "index": 1,
+                                          "line": 32,
+                                          "attributes": {
+                                            "name": "fim"
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n92",
+                                  "kind": "MethodCall",
+                                  "label": "MethodCall(quicksort)",
+                                  "role": "statements",
+                                  "index": 1,
+                                  "line": 33,
+                                  "attributes": {
+                                    "method_name": "quicksort"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n93",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 33,
+                                      "attributes": {},
+                                      "children": []
+                                    },
+                                    {
+                                      "id": "n94",
+                                      "kind": "IdentifierExpr",
+                                      "label": "IdentifierExpr(inicio)",
+                                      "role": "arguments",
+                                      "index": 0,
+                                      "line": 33,
+                                      "attributes": {
+                                        "name": "inicio"
+                                      },
+                                      "children": []
+                                    },
+                                    {
+                                      "id": "n95",
+                                      "kind": "BinaryExpr",
+                                      "label": "BinaryExpr(-)",
+                                      "role": "arguments",
+                                      "index": 1,
+                                      "line": 33,
+                                      "attributes": {
+                                        "op": "-"
+                                      },
+                                      "children": [
+                                        {
+                                          "id": "n96",
+                                          "kind": "IdentifierExpr",
+                                          "label": "IdentifierExpr(p)",
+                                          "role": "left",
+                                          "index": null,
+                                          "line": 33,
+                                          "attributes": {
+                                            "name": "p"
+                                          },
+                                          "children": []
+                                        },
+                                        {
+                                          "id": "n97",
+                                          "kind": "NumberExpr",
+                                          "label": "NumberExpr(1)",
+                                          "role": "right",
+                                          "index": null,
+                                          "line": 33,
+                                          "attributes": {
+                                            "value": "1"
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n98",
+                                  "kind": "MethodCall",
+                                  "label": "MethodCall(quicksort)",
+                                  "role": "statements",
+                                  "index": 2,
+                                  "line": 34,
+                                  "attributes": {
+                                    "method_name": "quicksort"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n99",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 34,
+                                      "attributes": {},
+                                      "children": []
+                                    },
+                                    {
+                                      "id": "n100",
+                                      "kind": "BinaryExpr",
+                                      "label": "BinaryExpr(+)",
+                                      "role": "arguments",
+                                      "index": 0,
+                                      "line": 34,
+                                      "attributes": {
+                                        "op": "+"
+                                      },
+                                      "children": [
+                                        {
+                                          "id": "n101",
+                                          "kind": "IdentifierExpr",
+                                          "label": "IdentifierExpr(p)",
+                                          "role": "left",
+                                          "index": null,
+                                          "line": 34,
+                                          "attributes": {
+                                            "name": "p"
+                                          },
+                                          "children": []
+                                        },
+                                        {
+                                          "id": "n102",
+                                          "kind": "NumberExpr",
+                                          "label": "NumberExpr(1)",
+                                          "role": "right",
+                                          "index": null,
+                                          "line": 34,
+                                          "attributes": {
+                                            "value": "1"
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "id": "n103",
+                                      "kind": "IdentifierExpr",
+                                      "label": "IdentifierExpr(fim)",
+                                      "role": "arguments",
+                                      "index": 1,
+                                      "line": 34,
+                                      "attributes": {
+                                        "name": "fim"
+                                      },
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n104",
+                  "kind": "FuncDecl",
+                  "label": "FuncDecl(ordenar)",
+                  "role": "methods",
+                  "index": 4,
+                  "line": 38,
+                  "attributes": {
+                    "name": "ordenar",
+                    "params": []
+                  },
+                  "children": [
+                    {
+                      "id": "n105",
+                      "kind": "SeqBlock",
+                      "label": "SeqBlock",
+                      "role": "body",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n106",
+                          "kind": "VarDecl",
+                          "label": "VarDecl(n)",
+                          "role": "statements",
+                          "index": 0,
+                          "line": 39,
+                          "attributes": {
+                            "name": "n",
+                            "type": "var"
+                          },
+                          "children": [
+                            {
+                              "id": "n107",
+                              "kind": "BinaryExpr",
+                              "label": "BinaryExpr(-)",
+                              "role": "init_value",
+                              "index": null,
+                              "line": 39,
+                              "attributes": {
+                                "op": "-"
+                              },
+                              "children": [
+                                {
+                                  "id": "n108",
+                                  "kind": "FuncCallExpr",
+                                  "label": "FuncCallExpr(len)",
+                                  "role": "left",
+                                  "index": null,
+                                  "line": 39,
+                                  "attributes": {
+                                    "name": "len"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n109",
+                                      "kind": "PropertyAccess",
+                                      "label": "PropertyAccess(array)",
+                                      "role": "arguments",
+                                      "index": 0,
+                                      "line": 39,
+                                      "attributes": {
+                                        "property_name": "array"
+                                      },
+                                      "children": [
+                                        {
+                                          "id": "n110",
+                                          "kind": "ThisExpr",
+                                          "label": "ThisExpr",
+                                          "role": "object",
+                                          "index": null,
+                                          "line": 39,
+                                          "attributes": {},
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": "n111",
+                                  "kind": "NumberExpr",
+                                  "label": "NumberExpr(1)",
+                                  "role": "right",
+                                  "index": null,
+                                  "line": 39,
+                                  "attributes": {
+                                    "value": "1"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n112",
+                          "kind": "IfStmt",
+                          "label": "IfStmt",
+                          "role": "statements",
+                          "index": 1,
+                          "line": 40,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n113",
+                              "kind": "BinaryExpr",
+                              "label": "BinaryExpr(>=)",
+                              "role": "condition",
+                              "index": null,
+                              "line": 40,
+                              "attributes": {
+                                "op": ">="
+                              },
+                              "children": [
+                                {
+                                  "id": "n114",
+                                  "kind": "IdentifierExpr",
+                                  "label": "IdentifierExpr(n)",
+                                  "role": "left",
+                                  "index": null,
+                                  "line": 40,
+                                  "attributes": {
+                                    "name": "n"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "id": "n115",
+                                  "kind": "NumberExpr",
+                                  "label": "NumberExpr(0)",
+                                  "role": "right",
+                                  "index": null,
+                                  "line": 40,
+                                  "attributes": {
+                                    "value": "0"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "id": "n116",
+                              "kind": "SeqBlock",
+                              "label": "SeqBlock",
+                              "role": "then_branch",
+                              "index": null,
+                              "line": 1,
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "id": "n117",
+                                  "kind": "MethodCall",
+                                  "label": "MethodCall(quicksort)",
+                                  "role": "statements",
+                                  "index": 0,
+                                  "line": 41,
+                                  "attributes": {
+                                    "method_name": "quicksort"
+                                  },
+                                  "children": [
+                                    {
+                                      "id": "n118",
+                                      "kind": "ThisExpr",
+                                      "label": "ThisExpr",
+                                      "role": "object",
+                                      "index": null,
+                                      "line": 41,
+                                      "attributes": {},
+                                      "children": []
+                                    },
+                                    {
+                                      "id": "n119",
+                                      "kind": "NumberExpr",
+                                      "label": "NumberExpr(0)",
+                                      "role": "arguments",
+                                      "index": 0,
+                                      "line": 41,
+                                      "attributes": {
+                                        "value": "0"
+                                      },
+                                      "children": []
+                                    },
+                                    {
+                                      "id": "n120",
+                                      "kind": "IdentifierExpr",
+                                      "label": "IdentifierExpr(n)",
+                                      "role": "arguments",
+                                      "index": 1,
+                                      "line": 41,
+                                      "attributes": {
+                                        "name": "n"
+                                      },
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "n121",
+                          "kind": "ReturnStmt",
+                          "label": "ReturnStmt",
+                          "role": "statements",
+                          "index": 2,
+                          "line": 43,
+                          "attributes": {},
+                          "children": [
+                            {
+                              "id": "n122",
+                              "kind": "PropertyAccess",
+                              "label": "PropertyAccess(array)",
+                              "role": "value",
+                              "index": null,
+                              "line": 43,
+                              "attributes": {
+                                "property_name": "array"
+                              },
+                              "children": [
+                                {
+                                  "id": "n123",
+                                  "kind": "ThisExpr",
+                                  "label": "ThisExpr",
+                                  "role": "object",
+                                  "index": null,
+                                  "line": 43,
+                                  "attributes": {},
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "n124",
+              "kind": "SeqBlock",
+              "label": "SeqBlock",
+              "role": "statements",
+              "index": 1,
+              "line": 1,
+              "attributes": {},
+              "children": [
+                {
+                  "id": "n125",
+                  "kind": "PrintStmt",
+                  "label": "PrintStmt",
+                  "role": "statements",
+                  "index": 0,
+                  "line": 48,
+                  "attributes": {},
+                  "children": [
+                    {
+                      "id": "n126",
+                      "kind": "StringExpr",
+                      "label": "StringExpr(\"==== Ordenacao com Quicksort ====\")",
+                      "role": "arguments",
+                      "index": 0,
+                      "line": 48,
+                      "attributes": {
+                        "value": "==== Ordenacao com Quicksort ===="
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n127",
+                  "kind": "PrintStmt",
+                  "label": "PrintStmt",
+                  "role": "statements",
+                  "index": 1,
+                  "line": 49,
+                  "attributes": {},
+                  "children": [
+                    {
+                      "id": "n128",
+                      "kind": "StringExpr",
+                      "label": "StringExpr(\"Insira os elementos do vetor separados…)",
+                      "role": "arguments",
+                      "index": 0,
+                      "line": 49,
+                      "attributes": {
+                        "value": "Insira os elementos do vetor separados por espaco:"
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n129",
+                  "kind": "VarDecl",
+                  "label": "VarDecl(entrada)",
+                  "role": "statements",
+                  "index": 2,
+                  "line": 50,
+                  "attributes": {
+                    "name": "entrada",
+                    "type": "var"
+                  },
+                  "children": [
+                    {
+                      "id": "n130",
+                      "kind": "InputExpr",
+                      "label": "InputExpr",
+                      "role": "init_value",
+                      "index": null,
+                      "line": 50,
+                      "attributes": {},
+                      "children": [
+                        {
+                          "id": "n131",
+                          "kind": "StringExpr",
+                          "label": "StringExpr(\"\")",
+                          "role": "prompt",
+                          "index": null,
+                          "line": 50,
+                          "attributes": {
+                            "value": ""
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n132",
+                  "kind": "VarDecl",
+                  "label": "VarDecl(vetor)",
+                  "role": "statements",
+                  "index": 3,
+                  "line": 51,
+                  "attributes": {
+                    "name": "vetor",
+                    "type": "var"
+                  },
+                  "children": [
+                    {
+                      "id": "n133",
+                      "kind": "FuncCallExpr",
+                      "label": "FuncCallExpr(parse_ints)",
+                      "role": "init_value",
+                      "index": null,
+                      "line": 51,
+                      "attributes": {
+                        "name": "parse_ints"
+                      },
+                      "children": [
+                        {
+                          "id": "n134",
+                          "kind": "IdentifierExpr",
+                          "label": "IdentifierExpr(entrada)",
+                          "role": "arguments",
+                          "index": 0,
+                          "line": 51,
+                          "attributes": {
+                            "name": "entrada"
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n135",
+                  "kind": "PrintStmt",
+                  "label": "PrintStmt",
+                  "role": "statements",
+                  "index": 4,
+                  "line": 52,
+                  "attributes": {},
+                  "children": [
+                    {
+                      "id": "n136",
+                      "kind": "StringExpr",
+                      "label": "StringExpr(\"Vetor original:\")",
+                      "role": "arguments",
+                      "index": 0,
+                      "line": 52,
+                      "attributes": {
+                        "value": "Vetor original:"
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "n137",
+                      "kind": "IdentifierExpr",
+                      "label": "IdentifierExpr(vetor)",
+                      "role": "arguments",
+                      "index": 1,
+                      "line": 52,
+                      "attributes": {
+                        "name": "vetor"
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n138",
+                  "kind": "VarDecl",
+                  "label": "VarDecl(algoritmo)",
+                  "role": "statements",
+                  "index": 5,
+                  "line": 53,
+                  "attributes": {
+                    "name": "algoritmo",
+                    "type": "var"
+                  },
+                  "children": [
+                    {
+                      "id": "n139",
+                      "kind": "NewExpr",
+                      "label": "NewExpr(Quicksort)",
+                      "role": "init_value",
+                      "index": null,
+                      "line": 53,
+                      "attributes": {
+                        "class_name": "Quicksort"
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n140",
+                  "kind": "MethodCall",
+                  "label": "MethodCall(carregar)",
+                  "role": "statements",
+                  "index": 6,
+                  "line": 54,
+                  "attributes": {
+                    "method_name": "carregar"
+                  },
+                  "children": [
+                    {
+                      "id": "n141",
+                      "kind": "IdentifierExpr",
+                      "label": "IdentifierExpr(algoritmo)",
+                      "role": "object",
+                      "index": null,
+                      "line": 54,
+                      "attributes": {
+                        "name": "algoritmo"
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "n142",
+                      "kind": "IdentifierExpr",
+                      "label": "IdentifierExpr(vetor)",
+                      "role": "arguments",
+                      "index": 0,
+                      "line": 54,
+                      "attributes": {
+                        "name": "vetor"
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n143",
+                  "kind": "VarDecl",
+                  "label": "VarDecl(vetor_ordenado)",
+                  "role": "statements",
+                  "index": 7,
+                  "line": 55,
+                  "attributes": {
+                    "name": "vetor_ordenado",
+                    "type": "var"
+                  },
+                  "children": [
+                    {
+                      "id": "n144",
+                      "kind": "MethodCall",
+                      "label": "MethodCall(ordenar)",
+                      "role": "init_value",
+                      "index": null,
+                      "line": 55,
+                      "attributes": {
+                        "method_name": "ordenar"
+                      },
+                      "children": [
+                        {
+                          "id": "n145",
+                          "kind": "IdentifierExpr",
+                          "label": "IdentifierExpr(algoritmo)",
+                          "role": "object",
+                          "index": null,
+                          "line": 55,
+                          "attributes": {
+                            "name": "algoritmo"
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n146",
+                  "kind": "PrintStmt",
+                  "label": "PrintStmt",
+                  "role": "statements",
+                  "index": 8,
+                  "line": 56,
+                  "attributes": {},
+                  "children": [
+                    {
+                      "id": "n147",
+                      "kind": "StringExpr",
+                      "label": "StringExpr(\"Vetor ordenado:\")",
+                      "role": "arguments",
+                      "index": 0,
+                      "line": 56,
+                      "attributes": {
+                        "value": "Vetor ordenado:"
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "n148",
+                      "kind": "IdentifierExpr",
+                      "label": "IdentifierExpr(vetor_ordenado)",
+                      "role": "arguments",
+                      "index": 1,
+                      "line": 56,
+                      "attributes": {
+                        "name": "vetor_ordenado"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "ast_stats": {
+          "nodes": 149,
+          "emitted": 149,
+          "depth": 11,
+          "truncated": false,
+          "max_nodes": 5000,
+          "max_depth": 200
+        }
+      },
+      "semantic": {
+        "status": "ok",
+        "scopes": [
+          {
+            "id": "s0",
+            "kind": "global",
+            "name": null,
+            "parent": null,
+            "line": 1
+          },
+          {
+            "id": "s1",
+            "kind": "class",
+            "name": "Quicksort",
+            "parent": "s0",
+            "line": 1
+          },
+          {
+            "id": "s2",
+            "kind": "method",
+            "name": "Quicksort.carregar",
+            "parent": "s1",
+            "line": 4
+          },
+          {
+            "id": "s3",
+            "kind": "seq",
+            "name": null,
+            "parent": "s2",
+            "line": 1
+          },
+          {
+            "id": "s4",
+            "kind": "method",
+            "name": "Quicksort.trocar",
+            "parent": "s1",
+            "line": 8
+          },
+          {
+            "id": "s5",
+            "kind": "seq",
+            "name": null,
+            "parent": "s4",
+            "line": 1
+          },
+          {
+            "id": "s6",
+            "kind": "method",
+            "name": "Quicksort.particionar",
+            "parent": "s1",
+            "line": 14
+          },
+          {
+            "id": "s7",
+            "kind": "seq",
+            "name": null,
+            "parent": "s6",
+            "line": 1
+          },
+          {
+            "id": "s8",
+            "kind": "seq",
+            "name": null,
+            "parent": "s7",
+            "line": 1
+          },
+          {
+            "id": "s9",
+            "kind": "seq",
+            "name": null,
+            "parent": "s8",
+            "line": 1
+          },
+          {
+            "id": "s10",
+            "kind": "method",
+            "name": "Quicksort.quicksort",
+            "parent": "s1",
+            "line": 30
+          },
+          {
+            "id": "s11",
+            "kind": "seq",
+            "name": null,
+            "parent": "s10",
+            "line": 1
+          },
+          {
+            "id": "s12",
+            "kind": "seq",
+            "name": null,
+            "parent": "s11",
+            "line": 1
+          },
+          {
+            "id": "s13",
+            "kind": "method",
+            "name": "Quicksort.ordenar",
+            "parent": "s1",
+            "line": 38
+          },
+          {
+            "id": "s14",
+            "kind": "seq",
+            "name": null,
+            "parent": "s13",
+            "line": 1
+          },
+          {
+            "id": "s15",
+            "kind": "seq",
+            "name": null,
+            "parent": "s14",
+            "line": 1
+          },
+          {
+            "id": "s16",
+            "kind": "seq",
+            "name": null,
+            "parent": "s0",
+            "line": 1
+          }
+        ],
+        "symbols": [
+          {
+            "name": "Quicksort",
+            "kind": "class",
+            "type": null,
+            "scope": "s0",
+            "line": 1,
+            "params": []
+          },
+          {
+            "name": "array",
+            "kind": "attribute",
+            "type": "list",
+            "scope": "s1",
+            "line": 2,
+            "params": []
+          },
+          {
+            "name": "carregar",
+            "kind": "method",
+            "type": null,
+            "scope": "s1",
+            "line": 4,
+            "params": [
+              "arr"
+            ]
+          },
+          {
+            "name": "arr",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s2",
+            "line": 4,
+            "params": []
+          },
+          {
+            "name": "trocar",
+            "kind": "method",
+            "type": null,
+            "scope": "s1",
+            "line": 8,
+            "params": [
+              "i",
+              "j"
+            ]
+          },
+          {
+            "name": "i",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s4",
+            "line": 8,
+            "params": []
+          },
+          {
+            "name": "j",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s4",
+            "line": 8,
+            "params": []
+          },
+          {
+            "name": "temp",
+            "kind": "variable",
+            "type": "var",
+            "scope": "s5",
+            "line": 9,
+            "params": []
+          },
+          {
+            "name": "particionar",
+            "kind": "method",
+            "type": null,
+            "scope": "s1",
+            "line": 14,
+            "params": [
+              "inicio",
+              "fim"
+            ]
+          },
+          {
+            "name": "inicio",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s6",
+            "line": 14,
+            "params": []
+          },
+          {
+            "name": "fim",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s6",
+            "line": 14,
+            "params": []
+          },
+          {
+            "name": "pivot",
+            "kind": "variable",
+            "type": "var",
+            "scope": "s7",
+            "line": 15,
+            "params": []
+          },
+          {
+            "name": "i",
+            "kind": "variable",
+            "type": "number",
+            "scope": "s7",
+            "line": 16,
+            "params": []
+          },
+          {
+            "name": "j",
+            "kind": "variable",
+            "type": "var",
+            "scope": "s7",
+            "line": 17,
+            "params": []
+          },
+          {
+            "name": "quicksort",
+            "kind": "method",
+            "type": null,
+            "scope": "s1",
+            "line": 30,
+            "params": [
+              "inicio",
+              "fim"
+            ]
+          },
+          {
+            "name": "inicio",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s10",
+            "line": 30,
+            "params": []
+          },
+          {
+            "name": "fim",
+            "kind": "parameter",
+            "type": "var",
+            "scope": "s10",
+            "line": 30,
+            "params": []
+          },
+          {
+            "name": "p",
+            "kind": "variable",
+            "type": "var",
+            "scope": "s12",
+            "line": 32,
+            "params": []
+          },
+          {
+            "name": "ordenar",
+            "kind": "method",
+            "type": null,
+            "scope": "s1",
+            "line": 38,
+            "params": []
+          },
+          {
+            "name": "n",
+            "kind": "variable",
+            "type": "number",
+            "scope": "s14",
+            "line": 39,
+            "params": []
+          },
+          {
+            "name": "entrada",
+            "kind": "variable",
+            "type": "string",
+            "scope": "s16",
+            "line": 50,
+            "params": []
+          },
+          {
+            "name": "vetor",
+            "kind": "variable",
+            "type": "list",
+            "scope": "s16",
+            "line": 51,
+            "params": []
+          },
+          {
+            "name": "algoritmo",
+            "kind": "variable",
+            "type": "Quicksort",
+            "scope": "s16",
+            "line": 53,
+            "params": []
+          },
+          {
+            "name": "vetor_ordenado",
+            "kind": "variable",
+            "type": "var",
+            "scope": "s16",
+            "line": 55,
+            "params": []
+          }
+        ]
+      },
+      "tac": {
+        "status": "ok",
+        "text": "# class Quicksort\nfunc carregar:\nthis.array = arr\nendfunc carregar\nfunc trocar:\nt1 = this.array\nt0 = t1[i]\ntemp = t0\nt2 = this.array\nt4 = this.array\nt3 = t4[j]\nt2[i] = t3\nt5 = this.array\nt5[j] = temp\nendfunc trocar\nfunc particionar:\nt7 = this.array\nt6 = t7[fim]\npivot = t6\nt8 = inicio - 1\ni = t8\nj = inicio\nWHILE_0:\nt9 = j < fim\nifFalse t9 goto ENDWHILE_1\nt11 = this.array\nt10 = t11[j]\nt12 = t10 <= pivot\nifFalse t12 goto ENDIF_2\nt13 = i + 1\ni = t13\nparam i\nparam j\nt14 = call this.trocar, 2\nENDIF_2:\nt15 = j + 1\nj = t15\ngoto WHILE_0\nENDWHILE_1:\nt16 = i + 1\ni = t16\nparam i\nparam fim\nt17 = call this.trocar, 2\nreturn i\nendfunc particionar\nfunc quicksort:\nt18 = inicio < fim\nifFalse t18 goto ENDIF_3\nparam inicio\nparam fim\nt19 = call this.particionar, 2\np = t19\nparam inicio\nt20 = p - 1\nparam t20\nt21 = call this.quicksort, 2\nt22 = p + 1\nparam t22\nparam fim\nt23 = call this.quicksort, 2\nENDIF_3:\nendfunc quicksort\nfunc ordenar:\nt24 = this.array\nparam t24\nt25 = call len, 1\nt26 = t25 - 1\nn = t26\nt27 = n >= 0\nifFalse t27 goto ENDIF_4\nparam 0\nparam n\nt28 = call this.quicksort, 2\nENDIF_4:\nt29 = this.array\nreturn t29\nendfunc ordenar\nprint \"==== Ordenacao com Quicksort ====\"\nprint \"Insira os elementos do vetor separados por espaco:\"\nt30 = input(\"\")\nentrada = t30\nparam entrada\nt31 = call parse_ints, 1\nvetor = t31\nprint \"Vetor original:\"\nprint vetor\nt32 = new Quicksort\nalgoritmo = t32\nparam vetor\nt33 = call algoritmo.carregar, 1\nt34 = call algoritmo.ordenar, 0\nvetor_ordenado = t34\nprint \"Vetor ordenado:\"\nprint vetor_ordenado\n",
+        "lines": 95
+      },
+      "cpp": {
+        "status": "ok",
+        "text": "#include <iostream>\n#include <string>\n#include <sstream>\n#include <vector>\n#include <thread>\n#include <memory>\n#include <cstring>\n#include <chrono>\n#include <cmath>\n#include <cstdlib>\n#include <type_traits>\n\n#ifdef _WIN32\n  #include <winsock2.h>\n  #include <ws2tcpip.h>\n  #pragma comment(lib, \"ws2_32.lib\")\n  #define CLOSE_SOCK closesocket\n#else\n  #include <sys/socket.h>\n  #include <arpa/inet.h>\n  #include <unistd.h>\n  #define CLOSE_SOCK close\n#endif\n\n// Helper para Random nativo\ndouble random_val() { return (double)rand() / RAND_MAX; }\n\n// Helper para Input\nstd::string input() {\n    std::string s;\n    std::getline(std::cin, s);\n    return s;\n}\n\nstd::string input(const std::string& prompt) {\n    std::cout << prompt;\n    return input();\n}\n\n// Converte linha com inteiros separados por espaco em vetor (ex.: \"10 -3 80\")\nstd::vector<double> __parse_ints(const std::string& s) {\n    std::vector<double> result;\n    std::istringstream iss(s);\n    double n;\n    while (iss >> n) {\n        result.push_back(n);\n    }\n    return result;\n}\n\nstd::vector<int> __minipar_range(int end) {\n    std::vector<int> values;\n    for (int i = 0; i < end; ++i) values.push_back(i);\n    return values;\n}\n\nstd::vector<int> __minipar_range(int start, int end) {\n    std::vector<int> values;\n    for (int i = start; i < end; ++i) values.push_back(i);\n    return values;\n}\n\n// Helper para Arrays (.pop) do Python\ntemplate<typename T>\nauto __array_pop(std::vector<T>& v) {\n    if (v.empty()) return T{};\n    auto val = v.back();\n    v.pop_back();\n    return val;\n}\n\n// Helper para formatar e printar std::vector (arrays e matrizes) nativamente\ntemplate <typename T>\nstd::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {\n    os << \"[\";\n    for (size_t i = 0; i < v.size(); ++i) {\n        os << v[i];\n        if (i != v.size() - 1) os << \", \";\n    }\n    os << \"]\";\n    return os;\n}\n\ntemplate<typename T>\nstd::string __to_string(const T& val) {\n    if constexpr (std::is_constructible_v<std::string, T>) {\n        return std::string(val);\n    } else {\n        return std::to_string(val);\n    }\n}\n\ntemplate<typename T>\nauto __make_matrix(int rows, int cols, T init_val) {\n    using ActualT = std::conditional_t<std::is_same_v<std::decay_t<T>, const char*>, std::string, T>;\n    return std::vector<std::vector<ActualT>>(rows, std::vector<ActualT>(cols, init_val));\n}\n\nclass MiniParChannel {\npublic:\n    std::string ip;\n    int port;\n\n    MiniParChannel(std::string ip, int port) : ip(ip), port(port) {}\n\n    void sendData(std::string msg) {\n        int sock = socket(AF_INET, SOCK_STREAM, 0);\n        if (sock < 0) return;\n        struct sockaddr_in serv_addr;\n        serv_addr.sin_family = AF_INET;\n        serv_addr.sin_port = htons(port);\n        inet_pton(AF_INET, ip.c_str(), &serv_addr.sin_addr);\n        \n        for(int i=0; i<50; i++) {\n            if (connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) >= 0) {\n                send(sock, msg.c_str(), msg.length(), 0);\n                break;\n            }\n            std::this_thread::sleep_for(std::chrono::milliseconds(100));\n        }\n        CLOSE_SOCK(sock);\n    }\n\n    std::string receiveData() {\n        int server_fd = socket(AF_INET, SOCK_STREAM, 0);\n        if (server_fd < 0) return \"\";\n        int opt = 1;\n        setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));\n        \n        struct sockaddr_in address;\n        address.sin_family = AF_INET;\n        address.sin_addr.s_addr = INADDR_ANY;\n        address.sin_port = htons(port);\n        \n        if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) { CLOSE_SOCK(server_fd); return \"\"; }\n        if (listen(server_fd, 3) < 0) { CLOSE_SOCK(server_fd); return \"\"; }\n        \n        int new_socket = accept(server_fd, nullptr, nullptr);\n        if (new_socket < 0) { CLOSE_SOCK(server_fd); return \"\"; }\n        \n        char buffer[4096] = {0};\n        recv(new_socket, buffer, 4096, 0);\n        std::string result(buffer);\n        \n        CLOSE_SOCK(new_socket);\n        CLOSE_SOCK(server_fd);\n        return result;\n    }\n};\n\nclass Quicksort {\npublic:\n    decltype(std::vector<double>{0}) array = std::vector<double>{0};\n    void carregar(auto arr) {\n        this->array = arr;\n    }\n    void trocar(auto i, auto j) {\n        auto temp = this->array[i];\n        this->array[i] = this->array[j];\n        this->array[j] = temp;\n    }\n    auto particionar(auto inicio, auto fim) {\n        auto pivot = this->array[fim];\n        auto i = (inicio - 1);\n        auto j = inicio;\n        while ((j < fim))\n        {\n            if ((this->array[j] <= pivot))\n            {\n                i = (i + 1);\n                this->trocar(i, j);\n            }\n            j = (j + 1);\n        }\n        i = (i + 1);\n        this->trocar(i, fim);\n        return i;\n    }\n    void quicksort(auto inicio, auto fim) {\n        if ((inicio < fim))\n        {\n            auto p = this->particionar(inicio, fim);\n            this->quicksort(inicio, (p - 1));\n            this->quicksort((p + 1), fim);\n        }\n    }\n    auto ordenar() {\n        auto n = (this->array.size() - 1);\n        if ((n >= 0))\n        {\n            this->quicksort(0, n);\n        }\n        return this->array;\n    }\n};\n\nint main() {\n    #ifdef _WIN32\n        WSADATA wsa;\n        WSAStartup(MAKEWORD(2,2), &wsa);\n    #endif\n\n    std::cout << \"==== Ordenacao com Quicksort ====\" << std::endl;\n    std::cout << \"Insira os elementos do vetor separados por espaco:\" << std::endl;\n    auto entrada = input(\"\");\n    auto vetor = __parse_ints(entrada);\n    std::cout << \"Vetor original:\" << \" \" << vetor << std::endl;\n    auto algoritmo = std::make_shared<Quicksort>();\n    algoritmo->carregar(vetor);\n    auto vetor_ordenado = algoritmo->ordenar();\n    std::cout << \"Vetor ordenado:\" << \" \" << vetor_ordenado << std::endl;\n\n    return 0;\n}\n"
+      },
+      "gpp": {
+        "status": "skipped",
+        "reason": "not_requested"
+      }
+    },
+    "diagnostics": [],
+    "artifacts": {
+      "cpp_id": null,
+      "tac_id": null,
+      "binary_id": null
+    }
+  }
+}

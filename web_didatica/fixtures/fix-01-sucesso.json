@@ -1,0 +1,233 @@
+{
+  "fixture": "FIX-01",
+  "title": "Sucesso: soma e impressão",
+  "mock": true,
+  "source": "var x = 2 + 3;\nprint(x);\n",
+  "notes": [
+    "MOCK: gerado por web_didatica/tools/gerar_fixtures.py a partir das fases reais de src/; não é resposta do serviço CORE-08."
+  ],
+  "analyze": {
+    "contract": "minipar.compile.v1",
+    "operation": "analyze",
+    "request_id": "00000000000000000000000000000001",
+    "ok": true,
+    "source_hash": "sha256:c04f30bbe5ce38a21f9f87c8fc6949ab1bdafb922161c6cf275d9f954b73bcc6",
+    "duration_ms": 0,
+    "phases": {
+      "lexer": {
+        "status": "ok",
+        "tokens": [
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 1,
+            "column": 1
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "x",
+            "line": 1,
+            "column": 5
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 1,
+            "column": 7
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "2",
+            "line": 1,
+            "column": 9
+          },
+          {
+            "type": "PLUS",
+            "lexeme": "+",
+            "line": 1,
+            "column": 11
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "3",
+            "line": 1,
+            "column": 13
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 1,
+            "column": 14
+          },
+          {
+            "type": "PRINT",
+            "lexeme": "print",
+            "line": 2,
+            "column": 1
+          },
+          {
+            "type": "LPAREN",
+            "lexeme": "(",
+            "line": 2,
+            "column": 6
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "x",
+            "line": 2,
+            "column": 7
+          },
+          {
+            "type": "RPAREN",
+            "lexeme": ")",
+            "line": 2,
+            "column": 8
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 2,
+            "column": 9
+          }
+        ]
+      },
+      "parser": {
+        "status": "ok",
+        "ast": {
+          "id": "n0",
+          "kind": "Program",
+          "label": "Program",
+          "role": null,
+          "index": null,
+          "line": 1,
+          "attributes": {},
+          "children": [
+            {
+              "id": "n1",
+              "kind": "VarDecl",
+              "label": "VarDecl(x)",
+              "role": "statements",
+              "index": 0,
+              "line": 1,
+              "attributes": {
+                "name": "x",
+                "type": "var"
+              },
+              "children": [
+                {
+                  "id": "n2",
+                  "kind": "BinaryExpr",
+                  "label": "BinaryExpr(+)",
+                  "role": "init_value",
+                  "index": null,
+                  "line": 1,
+                  "attributes": {
+                    "op": "+"
+                  },
+                  "children": [
+                    {
+                      "id": "n3",
+                      "kind": "NumberExpr",
+                      "label": "NumberExpr(2)",
+                      "role": "left",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {
+                        "value": "2"
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "n4",
+                      "kind": "NumberExpr",
+                      "label": "NumberExpr(3)",
+                      "role": "right",
+                      "index": null,
+                      "line": 1,
+                      "attributes": {
+                        "value": "3"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "n5",
+              "kind": "PrintStmt",
+              "label": "PrintStmt",
+              "role": "statements",
+              "index": 1,
+              "line": 2,
+              "attributes": {},
+              "children": [
+                {
+                  "id": "n6",
+                  "kind": "IdentifierExpr",
+                  "label": "IdentifierExpr(x)",
+                  "role": "arguments",
+                  "index": 0,
+                  "line": 2,
+                  "attributes": {
+                    "name": "x"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "ast_stats": {
+          "nodes": 7,
+          "emitted": 7,
+          "depth": 4,
+          "truncated": false,
+          "max_nodes": 5000,
+          "max_depth": 200
+        }
+      },
+      "semantic": {
+        "status": "ok",
+        "scopes": [
+          {
+            "id": "s0",
+            "kind": "global",
+            "name": null,
+            "parent": null,
+            "line": 1
+          }
+        ],
+        "symbols": [
+          {
+            "name": "x",
+            "kind": "variable",
+            "type": "number",
+            "scope": "s0",
+            "line": 1,
+            "params": []
+          }
+        ]
+      },
+      "tac": {
+        "status": "ok",
+        "text": "t0 = 2 + 3\nx = t0\nprint x\n",
+        "lines": 3
+      },
+      "cpp": {
+        "status": "ok",
+        "text": "#include <iostream>\n#include <string>\n#include <sstream>\n#include <vector>\n#include <thread>\n#include <memory>\n#include <cstring>\n#include <chrono>\n#include <cmath>\n#include <cstdlib>\n#include <type_traits>\n\n#ifdef _WIN32\n  #include <winsock2.h>\n  #include <ws2tcpip.h>\n  #pragma comment(lib, \"ws2_32.lib\")\n  #define CLOSE_SOCK closesocket\n#else\n  #include <sys/socket.h>\n  #include <arpa/inet.h>\n  #include <unistd.h>\n  #define CLOSE_SOCK close\n#endif\n\n// Helper para Random nativo\ndouble random_val() { return (double)rand() / RAND_MAX; }\n\n// Helper para Input\nstd::string input() {\n    std::string s;\n    std::getline(std::cin, s);\n    return s;\n}\n\nstd::string input(const std::string& prompt) {\n    std::cout << prompt;\n    return input();\n}\n\n// Converte linha com inteiros separados por espaco em vetor (ex.: \"10 -3 80\")\nstd::vector<double> __parse_ints(const std::string& s) {\n    std::vector<double> result;\n    std::istringstream iss(s);\n    double n;\n    while (iss >> n) {\n        result.push_back(n);\n    }\n    return result;\n}\n\nstd::vector<int> __minipar_range(int end) {\n    std::vector<int> values;\n    for (int i = 0; i < end; ++i) values.push_back(i);\n    return values;\n}\n\nstd::vector<int> __minipar_range(int start, int end) {\n    std::vector<int> values;\n    for (int i = start; i < end; ++i) values.push_back(i);\n    return values;\n}\n\n// Helper para Arrays (.pop) do Python\ntemplate<typename T>\nauto __array_pop(std::vector<T>& v) {\n    if (v.empty()) return T{};\n    auto val = v.back();\n    v.pop_back();\n    return val;\n}\n\n// Helper para formatar e printar std::vector (arrays e matrizes) nativamente\ntemplate <typename T>\nstd::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {\n    os << \"[\";\n    for (size_t i = 0; i < v.size(); ++i) {\n        os << v[i];\n        if (i != v.size() - 1) os << \", \";\n    }\n    os << \"]\";\n    return os;\n}\n\ntemplate<typename T>\nstd::string __to_string(const T& val) {\n    if constexpr (std::is_constructible_v<std::string, T>) {\n        return std::string(val);\n    } else {\n        return std::to_string(val);\n    }\n}\n\ntemplate<typename T>\nauto __make_matrix(int rows, int cols, T init_val) {\n    using ActualT = std::conditional_t<std::is_same_v<std::decay_t<T>, const char*>, std::string, T>;\n    return std::vector<std::vector<ActualT>>(rows, std::vector<ActualT>(cols, init_val));\n}\n\nclass MiniParChannel {\npublic:\n    std::string ip;\n    int port;\n\n    MiniParChannel(std::string ip, int port) : ip(ip), port(port) {}\n\n    void sendData(std::string msg) {\n        int sock = socket(AF_INET, SOCK_STREAM, 0);\n        if (sock < 0) return;\n        struct sockaddr_in serv_addr;\n        serv_addr.sin_family = AF_INET;\n        serv_addr.sin_port = htons(port);\n        inet_pton(AF_INET, ip.c_str(), &serv_addr.sin_addr);\n        \n        for(int i=0; i<50; i++) {\n            if (connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) >= 0) {\n                send(sock, msg.c_str(), msg.length(), 0);\n                break;\n            }\n            std::this_thread::sleep_for(std::chrono::milliseconds(100));\n        }\n        CLOSE_SOCK(sock);\n    }\n\n    std::string receiveData() {\n        int server_fd = socket(AF_INET, SOCK_STREAM, 0);\n        if (server_fd < 0) return \"\";\n        int opt = 1;\n        setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));\n        \n        struct sockaddr_in address;\n        address.sin_family = AF_INET;\n        address.sin_addr.s_addr = INADDR_ANY;\n        address.sin_port = htons(port);\n        \n        if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) { CLOSE_SOCK(server_fd); return \"\"; }\n        if (listen(server_fd, 3) < 0) { CLOSE_SOCK(server_fd); return \"\"; }\n        \n        int new_socket = accept(server_fd, nullptr, nullptr);\n        if (new_socket < 0) { CLOSE_SOCK(server_fd); return \"\"; }\n        \n        char buffer[4096] = {0};\n        recv(new_socket, buffer, 4096, 0);\n        std::string result(buffer);\n        \n        CLOSE_SOCK(new_socket);\n        CLOSE_SOCK(server_fd);\n        return result;\n    }\n};\n\nint main() {\n    #ifdef _WIN32\n        WSADATA wsa;\n        WSAStartup(MAKEWORD(2,2), &wsa);\n    #endif\n\n    auto x = (2 + 3);\n    std::cout << x << std::endl;\n\n    return 0;\n}\n"
+      },
+      "gpp": {
+        "status": "skipped",
+        "reason": "not_requested"
+      }
+    },
+    "diagnostics": [],
+    "artifacts": {
+      "cpp_id": null,
+      "tac_id": null,
+      "binary_id": null
+    }
+  }
+}

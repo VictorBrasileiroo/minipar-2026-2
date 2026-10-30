@@ -1,0 +1,895 @@
+{
+  "card": "CORE-03",
+  "date": "2026-10-23",
+  "base": "77d1eb308d7ecc44d9f7d87da9af07a4e09ffc50",
+  "branch": "eixo-a/CORE-03-strings-t11",
+  "toolchain": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpp": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0",
+    "flags": [
+      "-std=c++20",
+      "-O3",
+      "-pthread",
+      "-lws2_32"
+    ]
+  },
+  "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core03/verify_core03.py",
+  "raw_evidence": "output/core03/run-zllwq0wb/summary.json",
+  "hashes": {
+    "main.py": "0dd36e7e3876f84415755c2df9f86a7c4f79aa3015e996abd544ed31e5c71b5a",
+    "src/semantic.py": "0d3905820f1ffd19a1c037b585f845e4e1a997d361fac5b8fa70c13c454077aa",
+    "src/codegen.py": "aa5a2e5311f43a934187087adb850a1fdc246bad23aea69dbb0093dde44b8878",
+    "src/cpp_template.py": "09c17cfbba51eee49aa5ab424fb3fef06de8ee3bd565df3866972a02c506e95b",
+    "docs/02_CONTRATOS_TECNICOS.md": "a325c69e9d2da2d01bee8f2d8cd5b66fe243a7f776290d22213c508bc65b08ff",
+    "tests/2026_2/core03/verify_core03.py": "d9e215913766fc4514d14c7262e060f4e712bfdc53c567d942dc760d6406885c"
+  },
+  "counts": {
+    "PASS": 43,
+    "KNOWN_FAIL": 1,
+    "FAIL": 0
+  },
+  "baseline_probe": {
+    "id": "HERDADO-RETORNO-NUMERICO",
+    "source_sha256": "fd102e42043bfe7e977a18cac65a7cd7a750f94d52f1227e9d47c745e389c58e",
+    "compile_exit": 1,
+    "stderr": "output\\program.cpp: In instantiation of 'auto Estado::soma(auto:11) [with auto:11 = int]':\noutput\\program.cpp:170:27:   required from here\n  170 |     std::cout << obj->soma(0) << std::endl;\n      |                  ~~~~~~~~~^~~\noutput\\program.cpp:159:28: error: inconsistent deduction for auto return type: 'int' and then 'double'\n  159 |         return (this->v[i] + this->soma((i + 1)));\n      |                ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~\n[ERRO] Falha na compilacao C++ (exit=1).\n"
+  },
+  "results": [
+    {
+      "id": "PROVA-01",
+      "status": "PASS",
+      "source_sha256": "ca216ae3933494373ff9beda41fc7421fc0c6c0888740ef864e4c0cf16308c89",
+      "stdin": "\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "3 3\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "3 3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-02",
+      "status": "PASS",
+      "source_sha256": "0df27eb7b03b8c11dae943d67f9ac7615ea7e0e964bf7f9c7601092c878c93b3",
+      "stdin": "((2+4)*7)-(5*4)\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "(\n2\n2+4\n2\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "(\n2\n2+4\n2\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-03",
+      "status": "PASS",
+      "source_sha256": "228b7e5f8dbd5ef3376f93e56e73af6f70cc34eed54960520953baa8e8dba1e4",
+      "stdin": "\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "42\n-84\n22\n-46\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "42\n-84\n22\n-46\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-04",
+      "status": "PASS",
+      "source_sha256": "0e181608f6d88593a4fabf8d4696b58b5be1b851f04926d1d704a7c16cdd225f",
+      "stdin": "10 -8*7\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "10-8*7\nMOV R0, #22\nt1 = 10-8*7\nR3, R3\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "10-8*7\nMOV R0, #22\nt1 = 10-8*7\nR3, R3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-05",
+      "status": "PASS",
+      "source_sha256": "e386960030ca6c97a2a49892139d97d947078f0779195e7eea588f1e17efbfd4",
+      "stdin": "((2+4)*7)-(5*4)\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "5 4 6\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "5 4 6\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-06",
+      "status": "PASS",
+      "source_sha256": "bde30f29812ff68fee2eaaada4946732b5aae7d305f9d08b0ee3e20c386fb671",
+      "stdin": "((2+4)*7)-(5*4)\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "[]\n[]\n[]\n0\ninteira\n[)]\n+4\n2\n-1\ncurto-circuito\n((2+4)*7)-(5*4)\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "[]\n[]\n[]\n0\ninteira\n[)]\n+4\n2\n-1\ncurto-circuito\n((2+4)*7)-(5*4)\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-07",
+      "status": "PASS",
+      "source_sha256": "319980e9d6efd9fdd36417d8cb30f6b69302b4f70a5915c85c9e96571ec54377",
+      "stdin": "((2+4)*7)-(5*4)\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "VVVVVVVVVVVVVFFF\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "VVVVVVVVVVVVVFFF\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-08",
+      "status": "PASS",
+      "source_sha256": "8b1e9596e6a97934c006afcc4faddfc67679a5acbf5072c707c7e5769d382382",
+      "stdin": "((2+4)*7)-(5*4)\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "ab\n[]\nR3, #-84\n7*2\n((2+4)*7)-(5*4)\nfim\nt1 = t2\nMOV R0, #22\n0;1;2;\n4\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "ab\n[]\nR3, #-84\n7*2\n((2+4)*7)-(5*4)\nfim\nt1 = t2\nMOV R0, #22\n0;1;2;\n4\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-09",
+      "status": "PASS",
+      "source_sha256": "03d9a28d6fd4835b06fc85aa9c399a47a4571b6a818a770580db0a268bd70103",
+      "stdin": "((2+4)*7)-(5*4)\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "    SUB    r2\nMUL!\n[?|((]\n⚙️ Assembly ARMv7 (CPUlator):\n🔹 2 → CONST\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "    SUB    r2\nMUL!\n[?|((]\n⚙️ Assembly ARMv7 (CPUlator):\n🔹 2 → CONST\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "PROVA-INT",
+      "status": "PASS",
+      "source_sha256": "315d0a9ec3ef77526560471cd48449d7c6ca292b1253f627036f0bbf6c88f338",
+      "stdin": "((10 -8*7)+4)*2\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "SIM(() SIM(() NUM(10) SIM(-) NUM(8) SIM(*) NUM(7) SIM()) SIM(+) NUM(4) SIM()) SIM(*) NUM(2)\ntotal=13\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "SIM(() SIM(() NUM(10) SIM(-) NUM(8) SIM(*) NUM(7) SIM()) SIM(+) NUM(4) SIM()) SIM(*) NUM(2)\ntotal=13\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "ERR-01",
+      "status": "PASS",
+      "source_sha256": "e70b4e072e8fc904255a0e0c18bf16be251cf379cd04670dfaf8079509a148cc",
+      "stdin": "abc\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=-1, tamanho=1, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "ERR-02",
+      "status": "PASS",
+      "source_sha256": "88e4758f273a17cee11e95584213b190a4f1b7e4699e3f9e852b929c38093754",
+      "stdin": "abc\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=0, tamanho=-1, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "ERR-03",
+      "status": "PASS",
+      "source_sha256": "e8f5bd2ac56d26f87f8b0373199bd4e16dcce89580b05e9553f8100092377f26",
+      "stdin": "abc\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=4, tamanho=0, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "ERR-04",
+      "status": "PASS",
+      "source_sha256": "199d51ff9e2e1bf14fcda5e9b3f4a72abdc49bcedbab2c926362ff1ff7d75f47",
+      "stdin": "abc\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=2, tamanho=2, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "ERR-05",
+      "status": "PASS",
+      "source_sha256": "d174e5ac18676b2d7c2a22d9ea5ec4d43ac95e27e97f39da779908a20fead5ed",
+      "stdin": "abc\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=3, tamanho=1, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "ERR-06",
+      "status": "PASS",
+      "source_sha256": "cc1c7ba13fe01f5b4c9401e5c11188457380f7a8df8540918c454d840c593bda",
+      "stdin": "abc\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=1.5, tamanho=1, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "ERR-07",
+      "status": "PASS",
+      "source_sha256": "2a63f776705c976ff9b59758a1d997c503ac3d5e5241379b6bf40d07bf2d192e",
+      "stdin": "\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=0, tamanho=1, len=0)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "NEG-01",
+      "status": "PASS",
+      "source_sha256": "b2c3668a866b9b1460e6d02048da6ab39451a42cc4b51097b803a8aa9113478b",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": "conversao explicita"
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Operador '+' entre string e outro tipo exige conversao explicita.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "NEG-02",
+      "status": "PASS",
+      "source_sha256": "869a7cc51e90f4ef54586849e9a41e45635c72628be7368024ca1100c723562c",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": "conversao explicita"
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Operador '==' entre string e outro tipo exige conversao explicita.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "NEG-03",
+      "status": "PASS",
+      "source_sha256": "a368d8f5c63ff3323277da98cdc14cdb134440db93dd0fd5cda7aa794314643e",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": "espera 3 argumento(s)"
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'substr' espera 3 argumento(s), recebeu 2.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "REG-LISTA",
+      "status": "PASS",
+      "source_sha256": "86b4a09d5bd7f94cae921da0519c7da35607d8e1a2464c28d1adbdd29b041bc9",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "2 7 2\n-1\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "2 7 2\n-1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "REG-RECURSAO",
+      "status": "PASS",
+      "source_sha256": "0e5d589f4ca6d949641a212526f62f5bca89a4e38246a2ef741a04b3fdebf9cb",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "720\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "720\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "REG-CLASSE",
+      "status": "PASS",
+      "source_sha256": "64d7953d8017597c741e0c56422e61b253c0f1f1b6b6afe60e1d8477e1790036",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "6 6 3:2:1:fim\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "6 6 3:2:1:fim\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "HERDADO-RETORNO-NUMERICO",
+      "status": "KNOWN_FAIL",
+      "source_sha256": "fd102e42043bfe7e977a18cac65a7cd7a750f94d52f1227e9d47c745e389c58e",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": "inconsistent deduction"
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "output\\program.cpp: In instantiation of 'auto Estado::soma(auto:11) [with auto:11 = int]':\noutput\\program.cpp:219:27:   required from here\n  219 |     std::cout << obj->soma(0) << std::endl;\n      |                  ~~~~~~~~~^~~\noutput\\program.cpp:208:28: error: inconsistent deduction for auto return type: 'int' and then 'double'\n  208 |         return (this->v[i] + this->soma((i + 1)));\n      |                ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~\n[ERRO] Falha na compilacao C++ (exit=1)."
+    },
+    {
+      "id": "EXTRA-STRINGS",
+      "status": "PASS",
+      "source_sha256": "c3ab6d16546a636af90569f235702724291f8e0e121f18e30ef197cf8830f8f3",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "ação é🙂 é🙂! [vazio] ok\na\t\"\\b\n2 4\nordem\nor\n[]\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "ação é🙂 é🙂! [vazio] ok\na\t\"\\b\n2 4\nordem\nor\n[]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "EXTRA-NUMEROS",
+      "status": "PASS",
+      "source_sha256": "1f12c04a4135777d449ec2a13408132e0a1c482b14a145fe8d88d25738c74d5f",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "42 -84 0\n100000000000000000000\n0\n1.25\nbc\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "42 -84 0\n100000000000000000000\n0\n1.25\nbc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "EXTRA-ENTRADA",
+      "status": "PASS",
+      "source_sha256": "7364f906121d09f673b10260925e514fc6e4a23a049ce8c377c9c1f4742d5f19",
+      "stdin": "(7+8)*3\n",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "3*)8+7(\n7\n",
+        "exit_code": 0,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "3*)8+7(\n7\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "EXTRA-ERR-FRAC-TAMANHO",
+      "status": "PASS",
+      "source_sha256": "a6eb3c672d2374e97b9e537769fbb54f3caa06dba8a1ca6c0804e310eabce6cc",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=0, tamanho=0.5, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "EXTRA-ERR-NAN",
+      "status": "PASS",
+      "source_sha256": "74ce1bed71ad0634b6b0f47a425923758185f8aa84c77a0c9f2f5ea68f3acd6b",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=nan, tamanho=0, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "EXTRA-ERR-INF",
+      "status": "PASS",
+      "source_sha256": "8d81462c25e6f32204ec6a957fb7a47d642472c8e7b786087adf7b07b93bd29f",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=0, tamanho=inf, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "EXTRA-ERR-ENORME",
+      "status": "PASS",
+      "source_sha256": "fa2da2a9ea0463a3282c2d0e8a8020fbe22e5b1f8c7835d3c5f100fe3c871712",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 0,
+        "stdout": "antes\n",
+        "exit_code": 1,
+        "stderr_contains": [
+          "substr",
+          "inicio",
+          "tamanho",
+          "len"
+        ],
+        "diagnostic": null
+      },
+      "compile_exit": 0,
+      "compile_stderr_excerpt": "",
+      "observed": {
+        "stdout": "antes\n",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=1e+300, tamanho=0, len=3)\n",
+        "exit_code": 1
+      }
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-TIPO",
+      "status": "PASS",
+      "source_sha256": "68f0326c79e7a29e62b73cfcddf240524ff8473899c36c9706615d38d1155146",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'substr': esperado string, recebido number.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-INDICE-TIPO",
+      "status": "PASS",
+      "source_sha256": "e7a5fef4048b788e73bdf3270611aacd48445c2e2e1bebc49d359aeaa9721291",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'substr': esperado number, recebido string.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-ARIDADE",
+      "status": "PASS",
+      "source_sha256": "cc12cb24ebd566eddee59427225f015efde002802dbfaabf11727ba37d6af640",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'substr' espera 3 argumento(s), recebeu 4.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-TOSTRING-TIPO",
+      "status": "PASS",
+      "source_sha256": "87f614552151f860df6316507d83f51d1a9220c0b3de2b17a580fe83aef491fa",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'to_string': esperado number, recebido string.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-TOSTRING-ARIDADE",
+      "status": "PASS",
+      "source_sha256": "724b3bdadfed27c610913eb23454b49da5f726a69e5adb0bff6a9be3c1c602d5",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'to_string' espera 1 argumento(s), recebeu 0.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-LEN-TIPO",
+      "status": "PASS",
+      "source_sha256": "eda3a1ffe82f6353e9a4cc8e1704a1fc0810466f8e25e22c81f582f007c28ff6",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'len': esperado collection, recebido number.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-LEN-ARIDADE",
+      "status": "PASS",
+      "source_sha256": "e22bfc8545dd61d2d5c3fdb528bc96b80abc5fcd736ef6954bef8debc863d18a",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Funcao 'len' espera 1 argumento(s), recebeu 0.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-LISTA-STRING",
+      "status": "PASS",
+      "source_sha256": "4b052652fa33654b29464d03836ec120aeb8d07c0b672fcf15346f1060a81423",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-APPEND-STRING",
+      "status": "PASS",
+      "source_sha256": "3707708171fe7673a75652c187e74ab4dfdb93e0a9fa641edff9d46bb6d24b9a",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-ATRIBUTO-NUMERO",
+      "status": "PASS",
+      "source_sha256": "6e15fd3e00ba8749e9cac8eb3b9f81550e4af0aa67a3785772f9dea57bfd22cb",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "[ERRO SEMANTICO] Linha 1: Operador '+' entre string e outro tipo exige conversao explicita.\n[ERRO] Falha na Analise Semantica. Compilacao abortada."
+    },
+    {
+      "id": "EXTRA-NEG-FUNCAO-NUMERO",
+      "status": "PASS",
+      "source_sha256": "25c561886061b57b2fdb8f46513ce11bcab4ea88e0b2e4b060dbeb7417960c02",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "output\\program.cpp: In function 'int main()':\noutput\\program.cpp:210:23: error: no match for 'operator+' (operand types are 'std::__cxx11::basic_string<char>' and 'int')\n  210 |     std::cout << (f() + 3) << std::endl;\n      |                   ~~~ ^ ~\n      |                    |    |\n      |                    |    int\n      |                    std::__cxx11::basic_string<char>\n  • there are 14 candidates"
+    },
+    {
+      "id": "EXTRA-NEG-PARAMETRO-NUMERO",
+      "status": "PASS",
+      "source_sha256": "24fdd06ccb47e342064c980681c8f079b18f955c626a7c2f0933fd1e12e58d28",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "output\\program.cpp: In instantiation of 'auto f(auto:11) [with auto:11 = std::__cxx11::basic_string<char>]':\noutput\\program.cpp:210:19:   required from here\n  210 |     std::cout << f(std::string(\"x\")) << std::endl;\n      |                  ~^~~~~~~~~~~~~~~~~~\noutput\\program.cpp:201:15: error: no match for 'operator==' (operand types are 'std::__cxx11::basic_string<char>' and 'int')\n  201 |     return (s == 3);\n      |            ~~~^~~~~\n  • there are 32 candidates"
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-PARAMETRO-BOOL",
+      "status": "PASS",
+      "source_sha256": "3b9d4fffe4cbd340cd73f3ee45a9c64d818b8055177f33de809aa697103a94c1",
+      "stdin": "",
+      "expected": {
+        "compile_exit": 1,
+        "stdout": null,
+        "exit_code": null,
+        "stderr_contains": [],
+        "diagnostic": null
+      },
+      "compile_exit": 1,
+      "compile_stderr_excerpt": "output\\program.cpp: In instantiation of 'std::string __minipar_substr(const std::string&, I, N) [with I = bool; N = int; std::string = std::__cxx11::basic_string<char>]':\noutput\\program.cpp:201:28:   required from 'auto f(auto:11) [with auto:11 = bool]'\n  201 |     return __minipar_substr(std::string(\"abc\"), i, 1);\n      |            ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~\noutput\\program.cpp:210:19:   required from here\n  210 |     std::cout << f(true) << std::endl;\n      |                  ~^~~~~~\noutput\\program.cpp:52:52: error: static assertion failed: substr exige inicio e tamanho numericos"
+    }
+  ],
+  "untested": [
+    "T01-T07 regressao integral",
+    "MiniCompilador T11 completo",
+    "ARM no CPUlator"
+  ]
+}

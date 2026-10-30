@@ -1,0 +1,1337 @@
+{
+  "date": "2026-10-27",
+  "branch": "eixo-a/CORE-04-05-fork-join",
+  "initial_head": "ea77d8f980d639f96372241584cb6c7397de4dc5",
+  "core03_head": "eabe1f4138c22d074da22abc00b739bbe9b70271",
+  "integration_commit": "445423d24e590bda519a333b36ab71b5454640d8",
+  "base_unchanged": "dev",
+  "hash_normalization": "UTF-8 text with LF",
+  "hashes": {
+    "src/semantic.py": "45f218a18bbced6b26e8e5cfdb7af5cf8d4eb1d058a616c44a6757953a37ec87",
+    "BNF-grammar.md": "5bf805ef42f9664bed5391802dceb5d36559e3b75728dbb892137ded5f4c5686",
+    "docs/CR-CORE05-FJ-DECISOES.md": "233bcad4e442646982e4a05d150fb870c83e6eab862e9fd1f0cc18fd162600cc",
+    "tests/2026_2/core0405/verify_core0405.py": "602752c2a12aa0b6c53f84b170dd573e4b98d679c7c545ba6787510342c14a24",
+    "tests/2026_2/core0405/test_review_regressions.py": "1b916d1c0b1e1efccb311cb9028ae379affa58a04c8c13e63b94931e86c3f52a",
+    "tests/2026_2/core0405/test_final_review.py": "4362c542da6e06f4834988a62b8e6c3e1441b4696b6c8339039a725164511085",
+    "tests/2026_2/core0405/measure_final_review.py": "45eb3c32975e2b59e31e5668a4760e74ddfc8fe83c7e2013576f7c86ac4eb5bb"
+  },
+  "evidence": {
+    "integration_suite": "output/core0405/run-0dy8pyzr/summary.json",
+    "final_suite": "output/core0405/run-ddp49slx/summary.json",
+    "core03": "output/core03/run-n2u0afov/summary.json",
+    "baseline": "output/core01/run-20261027-094221/baseline.json",
+    "measure_before": "output/core0405/final-before.json",
+    "measure_after": "output/core0405/final-after.json"
+  },
+  "core0405": {
+    "tests": 126,
+    "results": [
+      {
+        "test": "__main__.BackendBoundaryTests.test_cli_refuses_before_artifacts",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.BackendBoundaryTests.test_direct_generators_refuse_nested_fork",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.BackendBoundaryTests.test_legacy_native_smoke",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_ast_fields_and_location",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_ast_optional_fields",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_destination_consumes_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_keywords",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_00",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_01",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_02",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_03",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_04",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_05",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_06",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_07",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_08",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_09",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_10",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_11",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_builtin",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_class",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_method",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_missing",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_nested",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_variable",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_02_extra_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_02_missing_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_generic_bad_call",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_number",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_object",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_string",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_boolean_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_destination",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_destination_function",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_after_block",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_before_local",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_caller_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_index_write",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_initializer_global",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_method_transitive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_mutual_recursive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_property_read",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_read",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_recursive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_this_capture",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_transitive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_write",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_arg_from_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_channel_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_channel_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_helper_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_append",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_index_assign",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_object",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_task",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_mixed_returns",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_object_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_object_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_shadow_list_initializer",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_arithmetic",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_core03_string_list",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_core03_string_mix",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_caller_local_not_capture",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_copied_list_value",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_destination_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_destination_invalid_value_runtime",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_for_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_forward_function",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_generic_collect_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_handle_alias_assignment",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_legacy_in_fj_program",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_list_append_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_list_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_call_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_method",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_remote",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_variables",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_mutual_recursion_isolation",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_nested_lists",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_parameter_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_transitive_parameter_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_precedence_calls_properties_and_blocks",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_recursive_unknown_is_recorded",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_task_and_join_result_metadata",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_unknown_join_is_unresolved",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_assignment_concat_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_for_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_generic_list_unknown",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_known_non_task",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_list_assigned_then_appended",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_mixed_known_invalid",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_plain_helper_preserves_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_unknown",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_constructor_helper_and_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_cycles",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_inherited_initializer",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_inherited_method",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_multilevel_and_shadowed_property",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_cache_different_types",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_contextual_cache",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_linear_closure",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_methods_recursive_global",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_recursive_global",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_time_bound_unrelated_chain",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_unrelated_diagnostics",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_unrelated_typing",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_discarded_handle",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_none",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_signatures",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_transitive_provisional_signatures",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_worker_io",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_diagnostic_extension_preserves_03_and_06",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_distinct_task_results_preserved",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_mixed_join_not_hidden",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_nested_chain_finishes_in_bounded_subprocess",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_nested_handles_not_hidden",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_nested_objects_not_hidden",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_none_as_statement_still_allowed",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_recursive_global_with_nested_arguments",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_repeated_types_keep_every_distinct_alternative",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_final.FinalReviewTests.test_transitive_global_after_normal_call",
+        "status": "PASS"
+      }
+    ],
+    "measured_seconds": 3.055
+  },
+  "separate_runs": {
+    "review_regressions": {
+      "tests": 26,
+      "status": "PASS",
+      "seconds": 0.148
+    },
+    "final_review": {
+      "tests": 10,
+      "status": "PASS",
+      "seconds": 0.182
+    }
+  },
+  "core03_counts": {
+    "PASS": 78,
+    "KNOWN_FAIL": 1,
+    "FAIL": 0
+  },
+  "core03_results": [
+    {
+      "id": "INDEX-READ-PLUS",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-READ-ASSIGN",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-PROPERTY-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-READ-BOUNDS",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-WRITE-BOUNDS",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-PROPERTY",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-INHERITED-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-INHERITED-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-INHERITED",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-CHAIN-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-CHAIN-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-MATRIX-STRING-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-MATRIX-STRING-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-FOR-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-SUBSTR-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-COLLECTIONS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "b 7 9 9 5 3 ok\n",
+      "error": null
+    },
+    {
+      "id": "INDEX-SINGLE-EVALUATION",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "2 3\n8 5\n",
+      "error": null
+    },
+    {
+      "id": "REVIEW-ATRIBUTO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-METODO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-RETORNO-FUNCAO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-RETORNO-METODO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-PARAMETRO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-FOR",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-to_string",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-substr",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-len",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-range",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-exp",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-random",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-to_number",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-parse_ints",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-STRINGS-VALIDAS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "b c ok\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-01",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "3 3\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-02",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "(\n2\n2+4\n2\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-03",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "42\n-84\n22\n-46\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-04",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "10-8*7\nMOV R0, #22\nt1 = 10-8*7\nR3, R3\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-05",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "5 4 6\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-06",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "[]\n[]\n[]\n0\ninteira\n[)]\n+4\n2\n-1\ncurto-circuito\n((2+4)*7)-(5*4)\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-07",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "VVVVVVVVVVVVVFFF\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-08",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "ab\n[]\nR3, #-84\n7*2\n((2+4)*7)-(5*4)\nfim\nt1 = t2\nMOV R0, #22\n0;1;2;\n4\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-09",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "    SUB    r2\nMUL!\n[?|((]\n⚙️ Assembly ARMv7 (CPUlator):\n🔹 2 → CONST\n",
+      "error": null
+    },
+    {
+      "id": "PROVA-INT",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "SIM(() SIM(() NUM(10) SIM(-) NUM(8) SIM(*) NUM(7) SIM()) SIM(+) NUM(4) SIM()) SIM(*) NUM(2)\ntotal=13\n",
+      "error": null
+    },
+    {
+      "id": "ERR-01",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "ERR-02",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "ERR-03",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "ERR-04",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "ERR-05",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "ERR-06",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "ERR-07",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "NEG-01",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "NEG-02",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "NEG-03",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "REG-LISTA",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "2 7 2\n-1\n",
+      "error": null
+    },
+    {
+      "id": "REG-RECURSAO",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "720\n",
+      "error": null
+    },
+    {
+      "id": "REG-CLASSE",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "6 6 3:2:1:fim\n",
+      "error": null
+    },
+    {
+      "id": "HERDADO-RETORNO-NUMERICO",
+      "status": "KNOWN_FAIL",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-STRINGS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "ação é🙂 é🙂! [vazio] ok\na\t\"\\b\n2 4\nordem\nor\n[]\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-NUMEROS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "42 -84 0\n100000000000000000000\n0\n1.25\nbc\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-ENTRADA",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "3*)8+7(\n7\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-FRAC-TAMANHO",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-NAN",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-INF",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-ENORME",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-INDICE-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-ARIDADE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-TOSTRING-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-TOSTRING-ARIDADE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-LEN-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-LEN-ARIDADE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-LISTA-STRING",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-APPEND-STRING",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-ATRIBUTO-NUMERO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-FUNCAO-NUMERO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-PARAMETRO-NUMERO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-PARAMETRO-BOOL",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "error": null
+    }
+  ],
+  "baseline": [
+    {
+      "id": "T01",
+      "attempt": 1,
+      "status": "PASS",
+      "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)"
+    },
+    {
+      "id": "T01",
+      "attempt": 2,
+      "status": "PASS",
+      "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)"
+    },
+    {
+      "id": "T01",
+      "attempt": 3,
+      "status": "PASS",
+      "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)"
+    },
+    {
+      "id": "T02",
+      "attempt": 1,
+      "status": "FAIL",
+      "reason": "saída corrompida: o 120 do fatorial foi impresso colado a um número do Fibonacci (print não atômico entre threads do par); números lidos: [1200, 1, 1, 2, 3, 5, 8, 13]"
+    },
+    {
+      "id": "T02",
+      "attempt": 2,
+      "status": "FAIL",
+      "reason": "saída corrompida: o 120 do fatorial foi impresso colado a um número do Fibonacci (print não atômico entre threads do par); números lidos: [1200, 1, 1, 2, 3, 5, 8, 13]"
+    },
+    {
+      "id": "T02",
+      "attempt": 3,
+      "status": "PASS",
+      "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13"
+    },
+    {
+      "id": "T03",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "iterações 1, 50 e 51 com saída/erro/pesos iguais ao esperado (4 casas), convergência na 51 e valor desejado 0; formato textual difere do .expected.txt da referência Python"
+    },
+    {
+      "id": "T04",
+      "attempt": 0,
+      "status": "PARTIAL",
+      "reason": "classificação XOR correta nas 4 entradas; valores numéricos divergem da referência e não há tolerância acordada (doc 05 §2, T04): 00: 0.0068 (ref 0.0089, |d|=0.0021); 01: 0.9865 (ref 0.9769, |d|=0.0096); 10: 0.9892 (ref 0.9758, |d|=0.0134); 11: 0.0140 (ref 0.0291, |d|=0.0151)"
+    },
+    {
+      "id": "T05",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "12 produtos recomendados iguais ao esperado (comparação sem acento), probabilidades em (0.55, 1]; entrada derivada (ver relatório)"
+    },
+    {
+      "id": "T06",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "vetor 10 -3 -40 80 70 -100 ordenado como [-100, -40, -3, 10, 70, 80]"
+    },
+    {
+      "id": "T07",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "array [33, 12, 98, 5, 61] ordenado como [5, 12, 33, 61, 98] (somente a ordenação; TAC avaliado à parte)"
+    }
+  ],
+  "baseline_extra": [
+    {
+      "check": "T07-TAC-igual-ao-esperado",
+      "status": "INFO",
+      "reason": "TAC gerado idêntico ao .expected.tac"
+    },
+    {
+      "check": "T07-TAC-mutacao",
+      "status": "FAIL",
+      "compile_exit": 0,
+      "reason": "programa mutado (mesmo nome, corpo trivial) recebeu o TAC fixo do Quicksort: TAC não é derivado da AST (EXPECTED_QUICKSORT_TAC em src/tac.py)"
+    },
+    {
+      "check": "T07-limites",
+      "status": "FAIL",
+      "run": {
+        "cmd": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core01\\run-20261027-094221\\t07\\output\\t07_assert.exe"
+        ],
+        "stdin": "",
+        "returncode": 3221226505,
+        "stdout": "",
+        "stderr": "C:/msys64/ucrt64/include/c++/16.2.0/bits/stl_vector.h:1253: constexpr std::vector<_Tp, _Alloc>::reference std::vector<_Tp, _Alloc>::operator[](size_type) [with _Tp = double; _Alloc = std::allocator<double>; reference = double&; size_type = long long unsigned int]: Assertion '__n < this->size()' failed.\n",
+        "timed_out": false,
+        "duration_s": 0.142
+      },
+      "reason": "C++ gerado aborta com -D_GLIBCXX_ASSERTIONS (exit=3221226505): acesso fora dos limites; stderr: C:/msys64/ucrt64/include/c++/16.2.0/bits/stl_vector.h:1253: constexpr std::vector<_Tp, _Alloc>::reference std::vector<_Tp, _Alloc>::operator[](size_type) [with _Tp = double; _Alloc = std::allocator<do"
+    }
+  ],
+  "performance_before": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "timings": [
+      {
+        "depth": 10,
+        "seconds": 0.40546960000028776,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 4084,
+        "unresolved": [],
+        "source_sha256": "34fa4e074ad90a7bc1cadd3596dbed232911a95b1b01995367c9dc43e15c7b94"
+      },
+      {
+        "depth": 16,
+        "status": "BLOCKED",
+        "reason": "timeout 90s"
+      }
+    ],
+    "implicit_none": {
+      "source": "func f(x){if(x>0){return 1;}}print(join(fork f(0))+1);",
+      "seconds": 0.0001993000005313661,
+      "accepted": true,
+      "diagnostics": "",
+      "contexts": 1,
+      "unresolved": [],
+      "source_sha256": "95a183dbbe1b16d911e1c75f441289c6d5ab09ed185c8f2110e7ff32beff1298",
+      "status": "KNOWN_LIMITATION"
+    },
+    "timing_scope": "semantic analysis only; parsing outside timer",
+    "semantic_sha256": "b09310b7c71477389a2604494dfb05102618a84e5e184bebe1821cdba458ba72"
+  },
+  "performance_after": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "timings": [
+      {
+        "depth": 10,
+        "seconds": 0.005833700000039244,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 67,
+        "unresolved": [],
+        "source_sha256": "34fa4e074ad90a7bc1cadd3596dbed232911a95b1b01995367c9dc43e15c7b94"
+      },
+      {
+        "depth": 16,
+        "seconds": 0.014898299999913434,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 154,
+        "unresolved": [],
+        "source_sha256": "657c18717d3edd738b7dbf0ab78234c09aea0cc9746157645d26c7e61041425b"
+      },
+      {
+        "depth": 24,
+        "seconds": 0.04348710000067513,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 326,
+        "unresolved": [],
+        "source_sha256": "61f5b13e71fae3f6da45ba3c266c8a39378f4675935c6d84b605494685a0769d"
+      }
+    ],
+    "implicit_none": {
+      "source": "func f(x){if(x>0){return 1;}}print(join(fork f(0))+1);",
+      "seconds": 0.00021329999981389847,
+      "accepted": true,
+      "diagnostics": "",
+      "contexts": 1,
+      "unresolved": [],
+      "source_sha256": "95a183dbbe1b16d911e1c75f441289c6d5ab09ed185c8f2110e7ff32beff1298",
+      "status": "KNOWN_LIMITATION"
+    },
+    "timing_scope": "semantic analysis only; parsing outside timer",
+    "semantic_sha256": "45f218a18bbced6b26e8e5cfdb7af5cf8d4eb1d058a616c44a6757953a37ec87"
+  },
+  "measurement_repeat": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "timings": [
+      {
+        "depth": 16,
+        "seconds": 0.015754300000480725,
+        "accepted": true,
+        "diagnostics": "",
+        "contexts": 154,
+        "unresolved": [],
+        "source_sha256": "657c18717d3edd738b7dbf0ab78234c09aea0cc9746157645d26c7e61041425b"
+      }
+    ],
+    "implicit_none": {
+      "source": "func f(x){if(x>0){return 1;}}print(join(fork f(0))+1);",
+      "seconds": 0.00019440000050963135,
+      "accepted": true,
+      "diagnostics": "",
+      "contexts": 1,
+      "unresolved": [],
+      "source_sha256": "95a183dbbe1b16d911e1c75f441289c6d5ab09ed185c8f2110e7ff32beff1298",
+      "status": "KNOWN_LIMITATION"
+    },
+    "timing_scope": "semantic analysis only; parsing outside timer",
+    "semantic_sha256": "45f218a18bbced6b26e8e5cfdb7af5cf8d4eb1d058a616c44a6757953a37ec87"
+  },
+  "diagnostic_extension": {
+    "FJ-SEM-07": "discarded fork handle; proposed A/C ratification",
+    "FJ-SEM-08": "known none consumed as value; proposed A/C ratification",
+    "unchanged": "C-FJ-v1 catalogue and original 03/06 meanings"
+  },
+  "implicit_none_status": "KNOWN_LIMITATION, reproduced before/after; backend FJ remains blocked pending CORE-07",
+  "integration_risk": {
+    "PR16": "APPROVED/MERGEABLE/CLEAN at d27762d733eab55904f48289bd44c463cf55d0d5; branch unchanged",
+    "PR16_PR15_simulation": "text conflict src/tac.py generate_text; preserve FJ guard, remove hardcoded return per CORE-02",
+    "suggested_order": [
+      14,
+      16,
+      15
+    ],
+    "requirement": "resolve conflict and rerun relevant suites before final human merge"
+  },
+  "protected_branches_initial": {
+    "local_dev": "408afb1fe89d8a192a324a3cc36d41efa2dc2515",
+    "remote_dev": "84934b96299337ed140a29678cec083a566a780a",
+    "local_and_remote_main": "77d1eb308d7ecc44d9f7d87da9af07a4e09ffc50"
+  },
+  "document_review": {
+    "updated": [
+      "BNF-grammar.md",
+      "docs/CR-CORE05-FJ-DECISOES.md",
+      "docs/auditorias/CORE-04-05_FORK_JOIN.md",
+      "docs/auditorias/CORE-04-05_RODADA_FINAL_RESULTADOS.json"
+    ],
+    "AGENTS_MEMORY": "reviewed, no change: no ownership, architecture, conventions or workflow change",
+    "README_normative_docs": "reviewed; no corresponding low-level detail or authorized catalogue edit required"
+  }
+}

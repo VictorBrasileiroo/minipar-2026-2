@@ -1,0 +1,842 @@
+{
+  "date": "2026-10-27",
+  "branch": "eixo-a/CORE-03-strings-t11",
+  "previous_head": "df36500f818a892a238af526cc092f0a5d6b9fe0",
+  "commands": [
+    "python -B tests/2026_2/core03/verify_core03.py",
+    "python -B output/audit-baseline-t01-t07.py --repeat 3",
+    "python -B scripts/validar_planejamento.py",
+    "git diff --check"
+  ],
+  "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+  "compiler": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "hash_normalization": "UTF-8 text with LF",
+  "hashes": {
+    "src/semantic.py": "e7f21df33e6c43f97450ea6dd8bfc48d62896d8d46f0aa5322e0edf97fb68a26",
+    "src/codegen.py": "6905a40aa04869d1a1bec81334cc606ceb31d35b0dd1ede2dedac2fd2514ccb2",
+    "src/cpp_template.py": "de97ee81060895c38dd23200f11e82227c7c9b390d04c5c0e1eee4f38a042282",
+    "tests/2026_2/core03/verify_core03.py": "44147e7845016c03380597b34c34009a1512c8fad9c9d857363dabf2c8e4bb88",
+    "BNF-grammar.md": "71fc60a9879fe018b662a1867827fea41876ba2311ce35355f6531ecd2f30cdd"
+  },
+  "evidence": {
+    "before": "output/core03/run-98cyj1bo/before-executions.json",
+    "after": "output/core03/run-le1k7hs2/summary.json",
+    "baseline": "output/core01/run-20261027-093358/baseline.json",
+    "cpp_helper": "output/core03/index-helper/result.json"
+  },
+  "before": [
+    {
+      "id": "INDEX-READ-PLUS",
+      "source": "var s = \"abc\"; print(s[0] + 1);",
+      "compile_exit": 0,
+      "execution": {
+        "exit": 0,
+        "stdout": "98\r\n",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "INDEX-READ-ASSIGN",
+      "source": "var s = \"abc\"; var n = 0; n = s[0]; print(n);",
+      "compile_exit": 0,
+      "execution": {
+        "exit": 0,
+        "stdout": "97\r\n",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "INDEX-WRITE",
+      "source": "var s = \"abc\"; s[0] = 65; print(s);",
+      "compile_exit": 0,
+      "execution": {
+        "exit": 0,
+        "stdout": "Abc\r\n",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "INDEX-PROPERTY-WRITE",
+      "source": "class C { var t = \"abc\"; } var c = new C(); c.t[1] = 66; print(c.t);",
+      "compile_exit": 0,
+      "execution": {
+        "exit": 0,
+        "stdout": "aBc\r\n",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "INDEX-READ-BOUNDS",
+      "source": "var s = \"abc\"; print(\"[\" + s[10] + \"]\");",
+      "compile_exit": 0,
+      "execution": {
+        "exit": 0,
+        "stdout": "[\u0000]\r\n",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "INDEX-WRITE-BOUNDS",
+      "source": "var s = \"abc\"; s[100] = 65; print(s);",
+      "compile_exit": 0,
+      "execution": {
+        "exit": 0,
+        "stdout": "abc\r\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "counts": {
+    "PASS": 78,
+    "KNOWN_FAIL": 1,
+    "FAIL": 0
+  },
+  "results": [
+    {
+      "id": "INDEX-READ-PLUS",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-READ-ASSIGN",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-PROPERTY-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-READ-BOUNDS",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-WRITE-BOUNDS",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-PROPERTY",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-INHERITED-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-INHERITED-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-GENERIC-INHERITED",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-CHAIN-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-CHAIN-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-MATRIX-STRING-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-MATRIX-STRING-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-FOR-WRITE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-SUBSTR-READ",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "substr(s, i, 1)",
+      "error": null
+    },
+    {
+      "id": "INDEX-COLLECTIONS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "b 7 9 9 5 3 ok\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "INDEX-SINGLE-EVALUATION",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "2 3\n8 5\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "REVIEW-ATRIBUTO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "Tipo incompativel",
+      "error": null
+    },
+    {
+      "id": "REVIEW-METODO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "atribuicao",
+      "error": null
+    },
+    {
+      "id": "REVIEW-RETORNO-FUNCAO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "atribuicao",
+      "error": null
+    },
+    {
+      "id": "REVIEW-RETORNO-METODO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "atribuicao",
+      "error": null
+    },
+    {
+      "id": "REVIEW-PARAMETRO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "atribuicao",
+      "error": null
+    },
+    {
+      "id": "REVIEW-FOR",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "atribuicao",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-to_string",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-substr",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-len",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-range",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-exp",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-random",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-to_number",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-NOME-parse_ints",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "reservado",
+      "error": null
+    },
+    {
+      "id": "REVIEW-STRINGS-VALIDAS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "b c ok\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-01",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "3 3\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-02",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "(\n2\n2+4\n2\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-03",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "42\n-84\n22\n-46\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-04",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "10-8*7\nMOV R0, #22\nt1 = 10-8*7\nR3, R3\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-05",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "5 4 6\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-06",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "[]\n[]\n[]\n0\ninteira\n[)]\n+4\n2\n-1\ncurto-circuito\n((2+4)*7)-(5*4)\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-07",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "VVVVVVVVVVVVVFFF\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-08",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "ab\n[]\nR3, #-84\n7*2\n((2+4)*7)-(5*4)\nfim\nt1 = t2\nMOV R0, #22\n0;1;2;\n4\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-09",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "    SUB    r2\nMUL!\n[?|((]\n⚙️ Assembly ARMv7 (CPUlator):\n🔹 2 → CONST\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "PROVA-INT",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "SIM(() SIM(() NUM(10) SIM(-) NUM(8) SIM(*) NUM(7) SIM()) SIM(+) NUM(4) SIM()) SIM(*) NUM(2)\ntotal=13\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-01",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-02",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-03",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-04",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-05",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-06",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "ERR-07",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "NEG-01",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "conversao explicita",
+      "error": null
+    },
+    {
+      "id": "NEG-02",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "conversao explicita",
+      "error": null
+    },
+    {
+      "id": "NEG-03",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "espera 3 argumento(s)",
+      "error": null
+    },
+    {
+      "id": "REG-LISTA",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "2 7 2\n-1\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "REG-RECURSAO",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "720\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "REG-CLASSE",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "6 6 3:2:1:fim\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "HERDADO-RETORNO-NUMERICO",
+      "status": "KNOWN_FAIL",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": "inconsistent deduction",
+      "error": null
+    },
+    {
+      "id": "EXTRA-STRINGS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "ação é🙂 é🙂! [vazio] ok\na\t\"\\b\n2 4\nordem\nor\n[]\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NUMEROS",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "42 -84 0\n100000000000000000000\n0\n1.25\nbc\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-ENTRADA",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "3*)8+7(\n7\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-FRAC-TAMANHO",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-NAN",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-INF",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-ERR-ENORME",
+      "status": "PASS",
+      "compile_exit": 0,
+      "stdout": "antes\n",
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-INDICE-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-ARIDADE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-TOSTRING-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-TOSTRING-ARIDADE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-LEN-TIPO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-LEN-ARIDADE",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-LISTA-STRING",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-APPEND-STRING",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-ATRIBUTO-NUMERO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-FUNCAO-NUMERO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-PARAMETRO-NUMERO",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    },
+    {
+      "id": "EXTRA-NEG-SUBSTR-PARAMETRO-BOOL",
+      "status": "PASS",
+      "compile_exit": 1,
+      "stdout": null,
+      "diagnostic_expected": null,
+      "error": null
+    }
+  ],
+  "baseline": [
+    {
+      "id": "T01",
+      "attempt": 1,
+      "status": "PASS",
+      "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)"
+    },
+    {
+      "id": "T01",
+      "attempt": 2,
+      "status": "PASS",
+      "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)"
+    },
+    {
+      "id": "T01",
+      "attempt": 3,
+      "status": "PASS",
+      "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)"
+    },
+    {
+      "id": "T02",
+      "attempt": 1,
+      "status": "PASS",
+      "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13 (saídas das duas tarefas intercaladas: print não atômico entre threads)"
+    },
+    {
+      "id": "T02",
+      "attempt": 2,
+      "status": "PASS",
+      "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13"
+    },
+    {
+      "id": "T02",
+      "attempt": 3,
+      "status": "PASS",
+      "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13"
+    },
+    {
+      "id": "T03",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "iterações 1, 50 e 51 com saída/erro/pesos iguais ao esperado (4 casas), convergência na 51 e valor desejado 0; formato textual difere do .expected.txt da referência Python"
+    },
+    {
+      "id": "T04",
+      "attempt": 0,
+      "status": "PARTIAL",
+      "reason": "classificação XOR correta nas 4 entradas; valores numéricos divergem da referência e não há tolerância acordada (doc 05 §2, T04): 00: 0.0068 (ref 0.0089, |d|=0.0021); 01: 0.9865 (ref 0.9769, |d|=0.0096); 10: 0.9892 (ref 0.9758, |d|=0.0134); 11: 0.0140 (ref 0.0291, |d|=0.0151)"
+    },
+    {
+      "id": "T05",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "12 produtos recomendados iguais ao esperado (comparação sem acento), probabilidades em (0.55, 1]; entrada derivada (ver relatório)"
+    },
+    {
+      "id": "T06",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "vetor 10 -3 -40 80 70 -100 ordenado como [-100, -40, -3, 10, 70, 80]"
+    },
+    {
+      "id": "T07",
+      "attempt": 0,
+      "status": "PASS",
+      "reason": "array [33, 12, 98, 5, 61] ordenado como [5, 12, 33, 61, 98] (somente a ordenação; TAC avaliado à parte)"
+    }
+  ],
+  "baseline_extra": [
+    {
+      "check": "T07-TAC-igual-ao-esperado",
+      "status": "INFO",
+      "reason": "TAC gerado idêntico ao .expected.tac"
+    },
+    {
+      "check": "T07-TAC-mutacao",
+      "status": "FAIL",
+      "compile_exit": 0,
+      "reason": "programa mutado (mesmo nome, corpo trivial) recebeu o TAC fixo do Quicksort: TAC não é derivado da AST (EXPECTED_QUICKSORT_TAC em src/tac.py)"
+    },
+    {
+      "check": "T07-limites",
+      "status": "FAIL",
+      "run": {
+        "cmd": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core01\\run-20261027-093358\\t07\\output\\t07_assert.exe"
+        ],
+        "stdin": "",
+        "returncode": 3221226505,
+        "stdout": "",
+        "stderr": "C:/msys64/ucrt64/include/c++/16.2.0/bits/stl_vector.h:1253: constexpr std::vector<_Tp, _Alloc>::reference std::vector<_Tp, _Alloc>::operator[](size_type) [with _Tp = double; _Alloc = std::allocator<double>; reference = double&; size_type = long long unsigned int]: Assertion '__n < this->size()' failed.\n",
+        "timed_out": false,
+        "duration_s": 0.207
+      },
+      "reason": "C++ gerado aborta com -D_GLIBCXX_ASSERTIONS (exit=3221226505): acesso fora dos limites; stderr: C:/msys64/ucrt64/include/c++/16.2.0/bits/stl_vector.h:1253: constexpr std::vector<_Tp, _Alloc>::reference std::vector<_Tp, _Alloc>::operator[](size_type) [with _Tp = double; _Alloc = std::allocator<do"
+    }
+  ],
+  "cpp_helper": {
+    "compile_exit": 0,
+    "run_exit": 0,
+    "stdout": "7 4 9 5\n",
+    "stderr": "",
+    "flags": [
+      "-std=c++20",
+      "-O1",
+      "-D_GLIBCXX_ASSERTIONS"
+    ]
+  },
+  "limits": [
+    "Known mixed int/double return deduction failure remains",
+    "T04 PARTIAL; T07 mutation/bounds failures addressed only by PR16",
+    "Generic index error is G++ phase; MiniParLine template carries MiniPar line",
+    "No general bounds checking; no string indexing feature"
+  ]
+}

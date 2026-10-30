@@ -172,11 +172,13 @@
 
 **Dependências:** `CON-03`, `SET-02`.
 
-**Entrega objetiva:** `len`, `substr`, `to_string`, string `std::string`, listas textuais mínimas
+**Entrega objetiva:** `len`, `substr`, `to_string`, string `std::string`; listas numéricas para T11; rejeição temporária de listas textuais (C-T11-v1 §3.4)
 
 **Critério de aceite:** Programas de prova T11 compilam/produzem oráculos; regressão anterior sem piora.
 
-**Escopo de arquivos autorizado:** `src/codegen.py`, `src/semantic.py`, `src/cpp_template.py`.
+**Escopo de arquivos autorizado:** `src/codegen.py`, `src/semantic.py`, `src/cpp_template.py`, `BNF-grammar.md`, `tests/2026_2/core03/`, `docs/auditorias/CORE-03_*`.
+
+**Extensão autorizada (26/10/2026):** auditoria/correção e atualização do PR #14 pelo coordenador, com testes, BNF e evidências; alinhamento a C-T11-v1 §3.4. Listas textuais completas permanecem em PEND-T11-03. Não altera ready/status nem aprova contrato por inferência.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
@@ -194,7 +196,9 @@
 
 **Critério de aceite:** Programas MiniPar positivos/negativos de Fork/Join têm AST correta; BNF coerente.
 
-**Escopo de arquivos autorizado:** `src/lexer.py`, `src/parser.py`, `src/ast_nodes.py`, `docs/`.
+**Escopo de arquivos autorizado:** `src/lexer.py`, `src/parser.py`, `src/ast_nodes.py`, `docs/`, `BNF-grammar.md`, `main.py`, `src/tac.py`, `src/codegen.py`, `tests/2026_2/core0405/`.
+
+**Extensão autorizada (26/10/2026):** manutenção do PR #15: BNF, guardas contra TAC/C++ prematuro, testes e evidências; integração não destrutiva do CORE-03. Não libera CORE-06/07, não altera ready/status nem aprova contratos.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
@@ -212,7 +216,9 @@
 
 **Critério de aceite:** Uso indevido rejeitado; funções e destinos válidos aceitos; semântico preserva regressão.
 
-**Escopo de arquivos autorizado:** `src/semantic.py`.
+**Escopo de arquivos autorizado:** `src/semantic.py`, `BNF-grammar.md`, `main.py`, `src/tac.py`, `src/codegen.py`, `tests/2026_2/core0405/`, `docs/`.
+
+**Extensão autorizada (26/10/2026):** manutenção do PR #15: BNF, guardas contra TAC/C++ prematuro, testes e evidências; integração não destrutiva do CORE-03. Não libera CORE-06/07, não altera ready/status nem aprova contratos.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
@@ -544,6 +550,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (22/10/2026):** IN_REVIEW · PR [#6](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/6). Baseline executada em `56c3a1c` com `scripts/baseline_t01_t07.py`: T03, T05, T06 e T07 (ordenação) PASS; T04 PARTIAL (tolerância não acordada); T01 FAIL intermitente (4/10) e T02 FAIL intermitente (9/10); TAC fixo e acesso fora dos limites do T07 confirmados. Defeitos DEF-01..04 encaminhados ao A em `docs/auditorias/CORE-01_BASELINE_T01_T07.md`. Sem DONE até revisão.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `CORE-10` — Regressão final T01–T07 com oráculos reais
@@ -580,6 +588,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (22/10/2026):** IN_REVIEW (draft) · PR [#8](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/8), empilhado sobre o `CON-01`; merge só depois do contrato aprovado. `ready=false` enquanto o `CON-01` não congelar. `python runtime/tests/run_tests.py`: 15 casos locais + probe do `join_or_exit` PASS; suíte local repetida 30× sem falha.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `RUN-02` — Protocolo TCP robusto e worker pré-compilado
@@ -598,6 +608,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (22/10/2026):** IN_REVIEW (draft) · PR [#9](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/9), empilhado sobre `CON-01`/`RUN-01`. Fragmentação, frame inválido, worker indisponível, tarefas fora de ordem e worker morto testados contra dois processos worker **no loopback** (7 + 15 casos PASS). Prova de protocolo, não de duas máquinas.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `RUN-03` — Prova de execução em dois computadores reais
@@ -615,6 +627,8 @@
 **Escopo de arquivos autorizado:** `runtime/`, `docs/evidencias/`.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
+
+**Estado atual (22/10/2026):** BLOCKED · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10) com o programa `runtime/examples/demo_distribuida.cpp` e o roteiro `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`; ensaio no loopback ok (não conta como prova). Bloqueio: execução em duas máquinas físicas ainda não feita (uma máquina disponível; regra de firewall temporária cabe à pessoa operadora). Responsável: C + equipe.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
@@ -817,6 +831,8 @@
 **Escopo de arquivos autorizado:** `docs/02_CONTRATOS_TECNICOS.md`.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
+
+**Estado atual (22/10/2026):** IN_REVIEW · PR [#7](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7). Proposta de congelamento C-FJ-v1 revisão 1 do C em `docs/02_CONTRATOS_TECNICOS.md` §2 (API, protocolo e erros implementados no `RUN-01`/`RUN-02`; sintaxe MiniPar proposta para decisão do A). Aguarda aprovação do A para `v1 FROZEN`.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 

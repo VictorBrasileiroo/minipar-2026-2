@@ -1,0 +1,1319 @@
+{
+  "date": "2026-10-26",
+  "branch": "eixo-a/CORE-04-05-fork-join",
+  "previous_head": "e973ebd7df26239a5e721d9157dd147d584e5cbf",
+  "integrated_core03": "df36500f818a892a238af526cc092f0a5d6b9fe0",
+  "pr_base": "dev",
+  "contract_consulted": "C-FJ-v1 proposta revisao 2, origin/dev 84934b9",
+  "scope": "Lexer -> Parser -> AST -> semantic; Fork/Join backend explicitly refused",
+  "previous_run": {
+    "date": "2026-10-23",
+    "classification": {
+      "frontend_tests": "90 PASS",
+      "core03_selection": "9 PASS",
+      "unexpected_failures": 0,
+      "static_generic_transport": "PARTIAL",
+      "fork_join_execution": "UNTESTED",
+      "T01_T11_full_regression_network_CPUlator": "UNTESTED"
+    }
+  },
+  "before": {
+    "command": "python -B tests/2026_2/core0405/test_review_regressions.py",
+    "tests": 20,
+    "assertion_or_subtest_failures": 22,
+    "timeout_errors": 1,
+    "seconds": 6.649,
+    "depth10_visits": 1180931,
+    "log": "output/core0405-review-before.log"
+  },
+  "final_runs": {
+    "frontend": "output/core0405/run-oanl55sv/summary.json",
+    "core03_full": "output/core03/run-frvtxb35/summary.json",
+    "baseline": "output/core01/run-20261026-181014/baseline.json",
+    "metrics": "output/core0405/review-metrics.json"
+  },
+  "classification": {
+    "frontend_tests": "116 PASS",
+    "core03_full": "58 PASS, 1 KNOWN_FAIL, 0 FAIL",
+    "static_generic_transport": "PARTIAL",
+    "fork_join_execution": "UNTESTED",
+    "T08_T11_network_CPUlator": "UNTESTED",
+    "baseline_exit": 1
+  },
+  "metrics": [
+    {
+      "depth": 4,
+      "visits": 95,
+      "seconds": 0.001005,
+      "ok": true,
+      "stderr": "",
+      "cache_contexts": 5
+    },
+    {
+      "depth": 8,
+      "visits": 179,
+      "seconds": 0.002253,
+      "ok": true,
+      "stderr": "",
+      "cache_contexts": 9
+    },
+    {
+      "depth": 10,
+      "visits": 221,
+      "seconds": 0.002197,
+      "ok": true,
+      "stderr": "",
+      "cache_contexts": 11
+    },
+    {
+      "depth": 16,
+      "visits": 347,
+      "seconds": 0.003507,
+      "ok": true,
+      "stderr": "",
+      "cache_contexts": 17
+    }
+  ],
+  "baseline": {
+    "T01": "PASS",
+    "T02": "PASS",
+    "T03": "PASS",
+    "T04": "PARTIAL",
+    "T05": "PASS",
+    "T06": "PASS",
+    "T07": "PASS"
+  },
+  "baseline_notes": [
+    "T01/T02 3/3 nesta rodada; historicamente intermitentes",
+    "T04 PARTIAL, tolerancia nao acordada",
+    "T07-mutacao e limites FAIL herdados; corrigidos separadamente em #16"
+  ],
+  "frontend": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "tests": 116,
+    "results": [
+      {
+        "test": "__main__.BackendBoundaryTests.test_cli_refuses_before_artifacts",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.BackendBoundaryTests.test_direct_generators_refuse_nested_fork",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.BackendBoundaryTests.test_legacy_native_smoke",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_ast_fields_and_location",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_ast_optional_fields",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_destination_consumes_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_keywords",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_00",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_01",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_02",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_03",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_04",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_05",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_06",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_07",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_08",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_09",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_10",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_malformed_11",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_builtin",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_class",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_method",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_missing",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_nested",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_01_variable",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_02_extra_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_02_missing_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_generic_bad_call",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_number",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_object",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_03_string",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_boolean_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_destination",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_destination_function",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_04_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_after_block",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_before_local",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_caller_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_index_write",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_initializer_global",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_method_transitive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_mutual_recursive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_property_read",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_read",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_recursive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_this_capture",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_transitive",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_05_write",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_arg_from_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_channel_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_channel_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_helper_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_append",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_index_assign",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_object",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_list_task",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_mixed_returns",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_object_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_object_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_shadow_list_initializer",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_arg",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_arithmetic",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_06_task_return",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_core03_string_list",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_negative_core03_string_mix",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_caller_local_not_capture",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_copied_list_value",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_destination_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_destination_invalid_value_runtime",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_for_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_forward_function",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_generic_collect_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_handle_alias_assignment",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_legacy_in_fj_program",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_list_append_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_list_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_call_expression",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_object_method",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_remote",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_local_variables",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_mutual_recursion_isolation",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_nested_lists",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_parameter_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_positive_transitive_parameter_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_precedence_calls_properties_and_blocks",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_recursive_unknown_is_recorded",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_task_and_join_result_metadata",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.FrontendTests.test_unknown_join_is_unresolved",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_assignment_concat_helper",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_for_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_generic_list_unknown",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_known_non_task",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_list_assigned_then_appended",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_mixed_known_invalid",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_plain_helper_preserves_handles",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f1_unknown",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_constructor_helper_and_shadow",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_cycles",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_inherited_initializer",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_inherited_method",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f2_multilevel_and_shadowed_property",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_cache_different_types",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_contextual_cache",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_linear_closure",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_methods_recursive_global",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_recursive_global",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_time_bound_unrelated_chain",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_unrelated_diagnostics",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f3_unrelated_typing",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_discarded_handle",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_none",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_signatures",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_transitive_provisional_signatures",
+        "status": "PASS"
+      },
+      {
+        "test": "core0405_review.ReviewTests.test_f4_worker_io",
+        "status": "PASS"
+      }
+    ],
+    "evidence": [
+      {
+        "command": [
+          ".\\.venv\\Scripts\\python.exe",
+          "-B",
+          ".\\main.py",
+          ".\\output\\core0405\\run-oanl55sv\\tmp3sg9mqwa\\program.minipar",
+          "program"
+        ],
+        "exit": 1,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: .\\output\\core0405\\run-oanl55sv\\tmp3sg9mqwa\\program.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n",
+        "stderr": "[ERRO BACKEND] Linha 1: Fork/Join validado apenas ate o semantico; TAC/C++ dependem de CORE-06/CORE-07.\n"
+      },
+      {
+        "command": [
+          ".\\.venv\\Scripts\\python.exe",
+          "-B",
+          ".\\main.py",
+          ".\\output\\core0405\\run-oanl55sv\\tmp7ds8qagh\\legacy_smoke.minipar",
+          "smoke"
+        ],
+        "exit": 0,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: .\\output\\core0405\\run-oanl55sv\\tmp7ds8qagh\\legacy_smoke.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\smoke.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\smoke.cpp', '-o', 'output\\\\smoke.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\smoke.exe\n=== Processo Finalizado ===\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          ".\\output\\core0405\\run-oanl55sv\\tmp7ds8qagh\\output\\smoke.exe"
+        ],
+        "exit": 0,
+        "stdout": "120 ok! b\npar\n",
+        "stderr": ""
+      },
+      {
+        "ast": {
+          "statements": [
+            {
+              "name": "h",
+              "init_value": {
+                "function_name": "f",
+                "arguments": [
+                  {
+                    "value": "2",
+                    "line": 2
+                  },
+                  {
+                    "value": "x",
+                    "line": 2
+                  }
+                ],
+                "destination": {
+                  "value": "host:9000",
+                  "line": 2
+                },
+                "line": 2,
+                "column": 11
+              },
+              "type": "var",
+              "line": 2
+            },
+            {
+              "handle": {
+                "name": "h",
+                "line": 3
+              },
+              "timeout": {
+                "value": "20",
+                "line": 3
+              },
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "line": 1
+        }
+      },
+      {
+        "source": "fork ;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado nome de funcao global apos fork (Encontrado: ';')\n"
+      },
+      {
+        "source": "fork ();",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado nome de funcao global apos fork (Encontrado: '(')\n"
+      },
+      {
+        "source": "fork f;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado '(' apos funcao de fork (Encontrado: ';')\n"
+      },
+      {
+        "source": "fork f(;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "fork f(1;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado ')' apos argumentos de fork (Encontrado: ';')\n"
+      },
+      {
+        "source": "fork f() on ;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "fork f(,1);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "fork f(1,);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "join();",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "join(h;",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado ')' apos handle/timeout de join (Encontrado: ';')\n"
+      },
+      {
+        "source": "join(h,);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Expressao esperada\n"
+      },
+      {
+        "source": "join(h,1,2);",
+        "syntax_error": "[ERRO SINTATICO] Linha 1: Esperado ')' apos handle/timeout de join (Encontrado: ',')\n"
+      },
+      {
+        "source": "var h=fork len([1]);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'len'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} var h=fork A();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'A'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{func method(){return 1;}} var h=fork method();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'method'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var h=fork missing();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'missing'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "seq{func f(){return 1;} var h=fork f();}",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'f'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } seq{var f=3;var h=fork f(1);}",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'f'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var f=3; var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-01: fork exige funcao global 'f'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1,2);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-02: 'f' espera 1 argumento(s), recebeu 2.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-02: 'f' espera 1 argumento(s), recebeu 0.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func collect(h){return join(h);} print(collect(2));",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: collect): FJ-SEM-03: join exige handle task reconhecido, recebeu number.\n",
+        "unresolved": [
+          "Linha 1: join generico depende do tipo do argumento na chamada."
+        ]
+      },
+      {
+        "source": "join(1);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu number.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} join(new A());",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu A.\n",
+        "unresolved": []
+      },
+      {
+        "source": "join(\"task-1\");",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-03: join exige handle task reconhecido, recebeu string.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);join(h,true);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: timeout de join deve ser numerico.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1) on 3;",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: destino de fork deve ser string.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func dest(){return 3;} func f(){return 1;} var h=fork f() on dest();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: destino de fork deve ser string.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);join(h,\"3\");",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-04: timeout de join deve ser numerico.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){seq{var g=2;}return g;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){var x=g;var g=2;return x;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func helper(){return g;}func f(){var g=2;return helper();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: helper): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=[1];func f(){g[0]=2;return 1;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;class A{var n=g;}func f(){var a=new A();return a.n;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: <inicializacao>): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;class A{func get(){return g;}}func f(){var a=new A();return a.get();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: get): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func a(n){return b(n);}func b(n){if(n==0){return g;}return a(n-1);}var h=fork a(2);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: b): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": [
+          "Linha 1: retorno recursivo de a nao comprovado.",
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "class A{var n=1;}var g=new A();func f(){return g.n;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){return g;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(n){if(n==0){return g;}return f(n-1);}var h=fork f(3);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": [
+          "Linha 1: retorno recursivo de f nao comprovado.",
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "func f(){return this.n;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa global nao pode capturar this.\n",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "var g=1;func helper(){return g;}func f(){return helper();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: helper): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=1;func f(){g=2;return 1;}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: tarefa acessa global mutavel 'g'.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func helper(){return new A();}func f(x) { return x; } var h=fork f(helper());",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var c=c_channel(\"local\",9000);var h=fork f(c);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo c_channel nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo c_channel nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(){return c_channel(\"local\",9000);}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1 (Funcao: f): FJ-SEM-05: c_channel nao permitido em tarefa v1.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo c_channel nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func helper(){return new A();}func f(){return helper();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var v=[];v.append(new A());var h=fork f(v);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var v=[1];v[0]=new A();var h=fork f(v);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var h=fork f([[new A()]]);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var k=fork f([h]);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(n){if(n==0){return 1;}return new A();}var h=fork f(2);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": [
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "class A{} func f(x) { return x; } var h=fork f(new A());",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo A nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "class A{} func f(){return new A();}var h=fork f();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo A nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var v=[fork f(1)];seq{var v=v;var h=fork f(v);}",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var k=fork f(h);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var k=fork f(h+1);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: objeto, canal ou handle nao admite operacao aritmetica.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(){return 1;}func bad(){return fork f();}var h=fork bad();",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);var v=[\"x\"];",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: Listas de strings ainda nao suportadas (C-T11-v1 3.4).\n",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1);print(\"x\"+3);",
+        "semantic_ok": false,
+        "stderr": "[ERRO SEMANTICO] Linha 1: Operador '+' entre string e outro tipo exige conversao explicita.\n",
+        "unresolved": []
+      },
+      {
+        "source": "var g=3; func helper(g){return g;} func f(x){var g=x; return helper(g);} var h=fork f(2);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var v=[1];var a=v;a.append(fork f(2));var h=fork f(v);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var d=\"local\"; var h=fork f(1) on d + \"\"; join(h, len(d));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f(1) on \"host:abc\"; join(h,-1);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var i=10; func f(n) {var s=0; for(var i in range(n)){s=s+i;} return s;} var h=fork f(4);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var h=fork f(3); func f(x){return x;} join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } func collect(h){return join(h);} var h=fork f(2); print(collect(h));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: join generico depende do tipo do argumento na chamada."
+        ]
+      },
+      {
+        "source": "func f(x) { return x; } var h; h=fork f(1); var a=h; print(join(a));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var s=\"x\";func get(){return this.s+\"!\";}} func f(s){var v=[1,2];v.append(3);return s+to_string(len(v));} seq{par{var h=fork f(\"a\");print(join(h));}}",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var hs=[]; hs.append(fork f(1)); hs.append(fork f(2)); join(hs[0]);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var hs=[fork f(1),fork f(2)]; print(join(hs[0])+join(hs[1]));",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var n=1;func get(){return this.n;}}func make(){return new A();}func f(){return make().get();}var h=fork f();",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var n=1;} func make(){return new A();} func f(){var a=make();return a.n;} var h=fork f();",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "class A{var n=1; func get(){return this.n;}} func f(){var a=new A();return a.get();} var h=fork f();",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) { return x; } var a=fork f(2); var b=fork f(3) on \"host:9000\"; print(join(a)+join(b,3000)*2);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(x) {var sum=0; for(var i=0;i<x;i=i+1) {sum=sum+i;} return sum;} var h=fork f(5); join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(n){if(n==0){return 0;} return g(n-1);} func g(n){if(n==0){return 0;} return f(n-1);} var h=fork f(4);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: retorno recursivo de f nao comprovado.",
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "func f(x) { return x; } var h=fork f([[1,2],[3,4]]); var r=join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var g=10; func f(g) {var x=g; seq {var g=4; x=x+g;} return x;} var h=fork f(2); join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var g=10; func helper(g){return g;} func f(x){return helper(x);} var h=fork f(2);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "func f(n) { if (n == 0) {return n;} return f(n-1); } var h=fork f(3);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: retorno recursivo de f nao comprovado.",
+          "Linha 1: retorno com tipo nao comprovado estaticamente."
+        ]
+      },
+      {
+        "source": "func f(x) { return x; } var h = fork f(\"ok\"); var r = join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": []
+      },
+      {
+        "source": "var h; join(h);",
+        "semantic_ok": true,
+        "stderr": "",
+        "unresolved": [
+          "Linha 1: join generico depende do tipo do argumento na chamada."
+        ]
+      }
+    ],
+    "hash_normalization": "UTF-8 text with LF",
+    "hashes": {
+      "src/lexer.py": "dc6b7ea113c0af92257bc99560abe55515768ff82d49732982b8c8913a15db5e",
+      "src/parser.py": "c505aee174d16ad845cc17160e198c24ff34da46044478c9481e5a442526a9f1",
+      "src/ast_nodes.py": "9405cb694307c8f4da5e7375f9dd8d12a05712f965d35064de5c70f00bcb59e7",
+      "src/semantic.py": "14d25a0bc20196237e291b37daa36b8a951e2b7cc8bed05cbaf0cd4b826d177d",
+      "src/tac.py": "76658e51ec260ba68ff2469f630e7e574fa92520ab3112d51aebd39b6ae41b19",
+      "src/codegen.py": "928de460efbed913e28619ccd618f2791fd420570151f7853ae821ab042c71fd",
+      "main.py": "dd00c6039e290752d1aa7b93915346c8c173a15644ae9c7a1fa75d106ac9c70e",
+      "tests/2026_2/core0405/verify_core0405.py": "9039d06031ab7c7c233ecb29fa816a90f53b28b43f39e3f0d7d0ed395fa3507a",
+      "tests/2026_2/core0405/test_review_regressions.py": "08d4e718a3bb3e3619a07eaff7c3808203d9ac5c2f11ba87262acd463fa352b1"
+    }
+  },
+  "core03_results": [
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "KNOWN_FAIL"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    },
+    {
+      "status": "PASS"
+    }
+  ]
+}

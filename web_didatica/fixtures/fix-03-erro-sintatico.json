@@ -1,0 +1,94 @@
+{
+  "fixture": "FIX-03",
+  "title": "Erro sintático: expressão faltando",
+  "mock": true,
+  "source": "var x = 2 + ;\n",
+  "notes": [
+    "MOCK: gerado por web_didatica/tools/gerar_fixtures.py a partir das fases reais de src/; não é resposta do serviço CORE-08."
+  ],
+  "analyze": {
+    "contract": "minipar.compile.v1",
+    "operation": "analyze",
+    "request_id": "00000000000000000000000000000003",
+    "ok": false,
+    "source_hash": "sha256:d055e271d45107ad4bd080e7523db2077ee31328aa3d446fa9eb6ce0e804512a",
+    "duration_ms": 0,
+    "phases": {
+      "lexer": {
+        "status": "ok",
+        "tokens": [
+          {
+            "type": "VAR",
+            "lexeme": "var",
+            "line": 1,
+            "column": 1
+          },
+          {
+            "type": "IDENTIFIER",
+            "lexeme": "x",
+            "line": 1,
+            "column": 5
+          },
+          {
+            "type": "ASSIGN",
+            "lexeme": "=",
+            "line": 1,
+            "column": 7
+          },
+          {
+            "type": "NUMBER",
+            "lexeme": "2",
+            "line": 1,
+            "column": 9
+          },
+          {
+            "type": "PLUS",
+            "lexeme": "+",
+            "line": 1,
+            "column": 11
+          },
+          {
+            "type": "SEMICOLON",
+            "lexeme": ";",
+            "line": 1,
+            "column": 13
+          }
+        ]
+      },
+      "parser": {
+        "status": "error"
+      },
+      "semantic": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "tac": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "cpp": {
+        "status": "skipped",
+        "reason": "previous_phase_failed"
+      },
+      "gpp": {
+        "status": "skipped",
+        "reason": "not_requested"
+      }
+    },
+    "diagnostics": [
+      {
+        "phase": "parser",
+        "severity": "error",
+        "code": "SYN_EXPECTED_EXPRESSION",
+        "message": "Expressao esperada",
+        "line": 1,
+        "column": 13
+      }
+    ],
+    "artifacts": {
+      "cpp_id": null,
+      "tac_id": null,
+      "binary_id": null
+    }
+  }
+}
