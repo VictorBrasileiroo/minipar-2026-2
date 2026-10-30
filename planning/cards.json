@@ -740,11 +740,14 @@
         "tests/2026_2/test10/"
       ],
       "estimate_hours": 7,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/23",
+      "evidence": [
+        "tests/2026_2/test10/README.md",
+        "tests/2026_2/test10/run_t10.py"
+      ]
     },
     {
       "id": "RUN-05",
