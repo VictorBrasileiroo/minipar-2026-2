@@ -1,0 +1,183 @@
+# Teste 9 (MiniPar 2026.2, card T09-01): 160 avaliacoes + Mandelbrot ASCII.
+# Amplia o Teste 8 com um quinto trabalhador logico que calcula o fractal.
+#
+# Entrada (uma linha por valor): modo (seq|par), carga, largura, altura, max_iter
+# e 5 destinos (4 avaliadores + mandelbrot; lidos e ignorados no modo seq).
+# Destino "local" executa no proprio processo; "host:porta" envia a um worker.
+#
+# Restricoes do backend CORE-07 respeitadas: literais inteiros cabem em int,
+# sem listas de strings, funcoes de tarefa sem globais nem recursao.
+
+# ---------------- Nucleo canonico do Teste 8 (copia exata) ----------------
+func lcg(s) { return (s * 75 + 74) % 65537; }
+func nota_de(id, carga) {
+    var s = lcg(id + 1);
+    var passos = carga + s % carga;
+    var k = 0;
+    while (k < passos) { s = lcg(s); k = k + 1; }
+    return s % 101;
+}
+func avaliar_lote(avaliador, inicio, fim, carga) {
+    var r = [];
+    r.append(avaliador);
+    var i = inicio;
+    while (i < fim) { r.append(i); r.append(nota_de(i, carga)); i = i + 1; }
+    return r;
+}
+
+# ---------------- Quinto trabalhador: Mandelbrot ASCII ----------------
+# Mesma formula da referencia Python (trabalhador_mandelbrot). O "* 1.0" forca
+# divisao em ponto flutuante: entre dois int, "/" gera divisao inteira no C++.
+# Indice do caractere sem floor: (it*8 - (it*8) % max_iter) / max_iter, em
+# aritmetica inteira, igual a floor(it*8/max_iter).
+func mandelbrot(largura, altura, max_iter) {
+    var caracteres = " .:-=+#%@";
+    var texto = "";
+    var y = 0;
+    while (y < altura) {
+        var cy = (y * 1.0 / altura) * 2.4 - 1.2;
+        var linha = "";
+        var x = 0;
+        while (x < largura) {
+            var cx = (x * 1.0 / largura) * 3.0 - 2.0;
+            var zx = 0.0;
+            var zy = 0.0;
+            var it = 0;
+            while (zx * zx + zy * zy <= 4.0 && it < max_iter) {
+                var tmp = zx * zx - zy * zy + cx;
+                zy = 2.0 * zx * zy + cy;
+                zx = tmp;
+                it = it + 1;
+            }
+            var k = (it * 8 - (it * 8) % max_iter) / max_iter;
+            linha = linha + substr(caracteres, k, 1);
+            x = x + 1;
+        }
+        if (y > 0) { texto = texto + "\n"; }
+        texto = texto + linha;
+        y = y + 1;
+    }
+    return texto;
+}
+
+# ---------------- Auxiliares do coordenador ----------------
+func nome_avaliador(k) {
+    if (k == 0) { return "Professor"; }
+    if (k == 1) { return "Monitor 1"; }
+    if (k == 2) { return "Monitor 2"; }
+    return "Monitor 3";
+}
+
+# Converte uma linha com digitos decimais em int (to_number devolve double,
+# e "%" exige int no backend). Caractere invalido aborta com mensagem.
+func para_inteiro(s) {
+    var digitos = "0123456789";
+    var n = 0;
+    var i = 0;
+    var tam = len(s);
+    if (tam == 0) {
+        print("ERRO entrada numerica vazia");
+        n = 0 - 1;
+    }
+    while (i < tam && n >= 0) {
+        var c = substr(s, i, 1);
+        var d = 0;
+        var achou = 0;
+        while (d < 10 && achou == 0) {
+            if (substr(digitos, d, 1) == c) { achou = 1; } else { d = d + 1; }
+        }
+        if (achou == 0) {
+            print("ERRO entrada numerica invalida: " + s);
+            n = 0 - 1;
+        } else {
+            n = n * 10 + d;
+            i = i + 1;
+        }
+    }
+    return n;
+}
+
+# ---------------- Programa principal ----------------
+var modo = input();
+var carga = para_inteiro(input());
+var largura = para_inteiro(input());
+var altura = para_inteiro(input());
+var max_iter = para_inteiro(input());
+var d0 = input();
+var d1 = input();
+var d2 = input();
+var d3 = input();
+var d4 = input();
+
+var lote0 = [];
+var lote1 = [];
+var lote2 = [];
+var lote3 = [];
+var fractal = "";
+
+if (modo == "par") {
+    # Os 5 forks saem antes do primeiro join: as 5 tarefas ficam simultaneas.
+    var h0 = fork avaliar_lote(0, 0, 40, carga) on d0;
+    var h1 = fork avaliar_lote(1, 40, 80, carga) on d1;
+    var h2 = fork avaliar_lote(2, 80, 120, carga) on d2;
+    var h3 = fork avaliar_lote(3, 120, 160, carga) on d3;
+    var hm = fork mandelbrot(largura, altura, max_iter) on d4;
+    lote0 = join(h0);
+    lote1 = join(h1);
+    lote2 = join(h2);
+    lote3 = join(h3);
+    fractal = join(hm);
+} else {
+    lote0 = avaliar_lote(0, 0, 40, carga);
+    lote1 = avaliar_lote(1, 40, 80, carga);
+    lote2 = avaliar_lote(2, 80, 120, carga);
+    lote3 = avaliar_lote(3, 120, 160, carga);
+    fractal = mandelbrot(largura, altura, max_iter);
+}
+
+print("=== TESTE 9: 160 avaliacoes + Mandelbrot ===");
+print("MODO " + modo);
+
+# Agregacao: vistos[id] conta quantas vezes cada atividade voltou.
+var vistos = [];
+var v = 0;
+while (v < 160) { vistos.append(0); v = v + 1; }
+var total = 0;
+var soma = 0;
+var lotes = [lote0, lote1, lote2, lote3];
+var k = 0;
+while (k < 4) {
+    var lote = lotes[k];
+    var qtd = 0;
+    if (lote[0] != k) { print("ERRO lote " + to_string(k) + " com avaliador trocado"); }
+    var p = 1;
+    while (p + 1 < len(lote)) {
+        var id = lote[p];
+        if (id >= 0 && id < 160) { vistos[id] = vistos[id] + 1; }
+        soma = soma + lote[p + 1];
+        qtd = qtd + 1;
+        p = p + 2;
+    }
+    total = total + qtd;
+    print("AVALIADOR " + to_string(k) + " " + nome_avaliador(k) + " " + to_string(qtd));
+    k = k + 1;
+}
+
+var unicos = 0;
+var duplicados = 0;
+var perdidos = 0;
+var a = 0;
+while (a < 160) {
+    if (vistos[a] == 0) { perdidos = perdidos + 1; }
+    if (vistos[a] >= 1) { unicos = unicos + 1; }
+    if (vistos[a] > 1) { duplicados = duplicados + vistos[a] - 1; }
+    a = a + 1;
+}
+print("TOTAL " + to_string(total));
+print("UNICOS " + to_string(unicos));
+print("DUPLICADOS " + to_string(duplicados));
+print("PERDIDOS " + to_string(perdidos));
+print("SOMA_NOTAS " + to_string(soma));
+print("=== MANDELBROT " + to_string(largura) + "x" + to_string(altura) + " max_iter=" + to_string(max_iter) + " ===");
+print(fractal);
+print("=== FIM MANDELBROT ===");
