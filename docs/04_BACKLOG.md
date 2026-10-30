@@ -648,6 +648,8 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (30/10/2026):** IN_REVIEW (draft) · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), empilhado sobre o `RUN-03` (#10); merge só depois do #10. `ready=false`: depende do `RUN-03` (BLOCKED, falta a execução em duas máquinas). `python runtime/tests/run_tests.py`: 6 etapas PASS, incluindo `test_interop.cpp` (17/17), que fixa os 13 símbolos da API usados pelo C++ do `CORE-07`. `python runtime/tests/interop_codegen.py`: (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS na **integração local** com #17/#18 (ainda fora de `dev`); sem o `CORE-07` na árvore dá `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev` e o RUN-03 rodar em duas máquinas. `src/` não foi alterado.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `T08-01` — MiniPar T08: 160 avaliações em quatro trabalhadores

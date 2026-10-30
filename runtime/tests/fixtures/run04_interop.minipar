@@ -1,0 +1,49 @@
+func soma_quadrados(n) {
+    var s = 0;
+    var i = 0;
+    while (i < n) { s = s + i * i; i = i + 1; }
+    return s;
+}
+func escala(xs, k) {
+    var i = 0;
+    while (i < len(xs)) { xs[i] = xs[i] * k; i = i + 1; }
+    return xs;
+}
+func eco(t) { return t + "|" + substr(t, 0, 1); }
+func eh_par(n) { return n % 2 == 0; }
+func traco(m) {
+    var s = 0;
+    var i = 0;
+    while (i < len(m)) { s = s + m[i][i]; i = i + 1; }
+    return s;
+}
+func marca(m, v) { m[0][1] = v; return m; }
+func lento(n) {
+    var x = 0.0;
+    for (var i = 0; i < n; i = i + 1) { x = x + exp(x * 0.000000001); }
+    return x;
+}
+var destino = input();
+var modo = input();
+if (modo == "lento") {
+    var hl = fork lento(2000000000) on destino;
+    var gate = input();
+    print(join(hl));
+} else {
+    var nums = parse_ints(input());
+    var texto = input();
+    var h1 = fork soma_quadrados(nums[0]) on destino;
+    var h2 = fork escala(nums, 3) on destino;
+    var h3 = fork eco(texto) on destino;
+    var h4 = fork eh_par(len(texto)) on destino;
+    var k = len(texto) % 5 + 2;
+    var m = matrix(k, k, 2);
+    var h5 = fork traco(m) on destino;
+    var h6 = fork marca(m, 7) on destino;
+    print("SQ", join(h1));
+    print("ESCALA", join(h2));
+    print("ECO", join(h3));
+    if (join(h4)) { print("PAR", "sim"); } else { print("PAR", "nao"); }
+    print("TRACO", join(h5));
+    print("MARCA", join(h6), m);
+}

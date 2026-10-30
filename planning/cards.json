@@ -666,11 +666,15 @@
         "docs/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20",
+      "evidence": [
+        "runtime/README.md",
+        "runtime/tests/test_interop.cpp",
+        "runtime/tests/interop_codegen.py"
+      ]
     },
     {
       "id": "T08-01",
