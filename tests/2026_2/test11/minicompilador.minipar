@@ -25,7 +25,12 @@ class MiniCompilador {
     var pos = 0;
     var ultimo = 0;
 
+    # Tabela de símbolos: valor numérico e token da primeira ocorrência de cada constante.
+    var svals = [];
+    var stoks = [];
+
     var temp = 1;
+    var reg = 0;
 
     # --- utilitários -----------------------------------------------------
 
@@ -99,7 +104,12 @@ class MiniCompilador {
                             if (len(num) > 1 && substr(num, 0, 1) == "0") {
                                 this.falhar("léxico", "zero à esquerda não suportado em '" + num + "' na " + this.coluna(ini));
                             } else {
-                                this.adicionarToken(0, ini, i - ini);
+                                # Maior constante que LDR rN, =k carrega como inteiro positivo de 32 bits.
+                                if (len(num) > 10 || to_number(num) > 2147483647) {
+                                    this.falhar("léxico", "constante '" + num + "' fora do intervalo 0..2147483647 na " + this.coluna(ini));
+                                } else {
+                                    this.adicionarToken(0, ini, i - ini);
+                                }
                             }
                         }
                     } else {
@@ -264,6 +274,89 @@ class MiniCompilador {
         return t;
     }
 
+    # Expressão totalmente parentizada, usada nos comentários do Assembly.
+    func formatExpr(no) {
+        if (this.nesq[no] < 0) {
+            return this.lexema(this.ntok[no]);
+        }
+        return "(" + this.formatExpr(this.nesq[no]) + " " + this.lexema(this.ntok[no]) + " " + this.formatExpr(this.ndir[no]) + ")";
+    }
+
+    # Mnemônico já alinhado no campo de 6 colunas da referência (%-6s).
+    func mnemonico(op) {
+        if (op == "+") {
+            return "ADD   ";
+        }
+        if (op == "-") {
+            return "SUB   ";
+        }
+        return "MUL   ";
+    }
+
+    # Pós-ordem; registradores por contador global, sem reaproveitamento.
+    func gerarARM(no) {
+        if (this.nesq[no] < 0) {
+            var rf = "r" + to_string(this.reg);
+            this.reg = this.reg + 1;
+            var k = this.lexema(this.ntok[no]);
+            if (to_number(k) > 255) {
+                print("    LDR    " + rf + ", =" + k);
+            } else {
+                print("    MOV    " + rf + ", #" + k);
+            }
+            return rf;
+        }
+        var a1 = this.gerarARM(this.nesq[no]);
+        var a2 = this.gerarARM(this.ndir[no]);
+        var r = "r" + to_string(this.reg);
+        this.reg = this.reg + 1;
+        print("    " + this.mnemonico(this.lexema(this.ntok[no])) + " " + r + ", " + a1 + ", " + a2 + "    @ resultado de '" + this.formatExpr(no) + "'");
+        return r;
+    }
+
+    # Constantes sem repetição, em ordem crescente de valor.
+    func registrarSimbolos() {
+        var no = 0;
+        while (no < len(this.ntok)) {
+            if (this.nesq[no] < 0) {
+                var v = to_number(this.lexema(this.ntok[no]));
+                var novo = true;
+                var j = 0;
+                while (j < len(this.svals)) {
+                    if (this.svals[j] == v) {
+                        novo = false;
+                    }
+                    j = j + 1;
+                }
+                if (novo) {
+                    this.svals.append(v);
+                    this.stoks.append(this.ntok[no]);
+                    j = len(this.svals) - 1;
+                    while (j > 0 && this.svals[j - 1] > this.svals[j]) {
+                        var tv = this.svals[j];
+                        this.svals[j] = this.svals[j - 1];
+                        this.svals[j - 1] = tv;
+                        var tt = this.stoks[j];
+                        this.stoks[j] = this.stoks[j - 1];
+                        this.stoks[j - 1] = tt;
+                        j = j - 1;
+                    }
+                }
+            }
+            no = no + 1;
+        }
+    }
+
+    func imprimirSimbolos() {
+        var j = 0;
+        while (j < len(this.stoks)) {
+            print("🔹 " + this.lexema(this.stoks[j]) + " → CONST");
+            j = j + 1;
+        }
+    }
+
+    # Valor de cada nó; o ARM calcula em registradores de 32 bits, então todo
+    # resultado intermediário precisa caber em inteiro com sinal de 32 bits.
     func avaliar(no) {
         if (this.nesq[no] < 0) {
             return to_number(this.lexema(this.ntok[no]));
@@ -271,13 +364,24 @@ class MiniCompilador {
         var a = this.avaliar(this.nesq[no]);
         var b = this.avaliar(this.ndir[no]);
         var op = this.lexema(this.ntok[no]);
+        var v = a * b;
         if (op == "+") {
-            return a + b;
+            v = a + b;
         }
         if (op == "-") {
-            return a - b;
+            v = a - b;
         }
-        return a * b;
+        if (v > 2147483647 || v < 0 - 2147483648) {
+            this.falhar("semântico", "o resultado de '" + this.formatExpr(no) + "' não cabe em 32 bits com sinal");
+        }
+        return v;
+    }
+
+    func analisarSemantico() {
+        # Um registrador por nó, de r0 a r12; r13–r15 são SP, LR e PC.
+        if (len(this.ntok) > 13) {
+            this.falhar("semântico", "a AST tem " + to_string(len(this.ntok)) + " nós e o Assembly comporta no máximo 13 (registradores r0 a r12)");
+        }
     }
 
     func compilar(entrada) {
@@ -288,15 +392,34 @@ class MiniCompilador {
             this.analisarSintatico();
         }
         if (this.erro == "") {
-            var resultado = this.avaliar(this.raiz);
+            this.analisarSemantico();
+        }
+        if (this.erro == "") {
+            this.gerarSaidas(this.avaliar(this.raiz));
+        }
+        if (this.erro != "") {
+            print("\n❌ " + this.erro);
+        }
+    }
+
+    # Só é chamada depois de todas as fases de análise aceitarem a entrada.
+    func gerarSaidas(resultado) {
+        if (this.erro == "") {
+            this.registrarSimbolos();
             print("\n🌳 Árvore Sintática Abstrata (AST):");
             this.imprimirAST(this.raiz, 0);
             print("\n📦 Código de Três Endereços (TAC):");
             this.gerarTAC(this.raiz);
+            print("\n⚙️ Assembly ARMv7 (CPUlator):");
+            print(".global _start");
+            print(".text");
+            print("_start:");
+            this.gerarARM(this.raiz);
+            print("    b .    @ loop infinito para parar o programa");
+            print("\n📚 Tabela de Símbolos:");
+            this.imprimirSimbolos();
             print("\n🧮 Resultado final da expressão:");
             print("➡️  " + to_string(resultado) + ".0");
-        } else {
-            print("\n❌ " + this.erro);
         }
     }
 }
