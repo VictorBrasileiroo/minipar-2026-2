@@ -343,11 +343,16 @@
         "app.py"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "IN_PROGRESS",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/CORE-08_SERVICO_FASES.md",
+        "docs/auditorias/CORE-08_RESULTADOS.json",
+        "docs/CR-CORE08-DIAGNOSTICOS.md"
+      ],
+      "authorization": "30/10/2026: coordenador autoriza implementacao local CORE-08; sem stage/commit/push/PR/merge, sem promover dependencias ou ready. PARTIAL: catalogo C-WEB incompleto e CORE-06/07 nao integrados."
     },
     {
       "id": "CORE-09",
