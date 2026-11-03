@@ -118,11 +118,13 @@
         "docs/02_CONTRATOS_TECNICOS.md"
       ],
       "estimate_hours": 2,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "DONE",
+      "ready": true,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/3",
+      "evidence": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ]
     },
     {
       "id": "CON-03",
@@ -139,11 +141,13 @@
         "docs/02_CONTRATOS_TECNICOS.md"
       ],
       "estimate_hours": 2,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "DONE",
+      "ready": true,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/2",
+      "evidence": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ]
     },
     {
       "id": "CORE-01",
