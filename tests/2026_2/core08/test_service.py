@@ -134,7 +134,8 @@ class ContractTests(unittest.TestCase):
         r = service.analyze(source)
         self.assertEqual(r['phases']['tac']['status'], 'error')
         self.assertEqual(r['phases']['cpp']['reason'], 'previous_phase_failed')
-        self.assertEqual(r['diagnostics'], [])  # CR pending, no invented code.
+        # LOCAL proposal only: this extension is still pending A+B ratification.
+        self.assertEqual([d['code'] for d in r['diagnostics']], ['TAC_UNSUPPORTED_FEATURE'])
 
     def test_expected_unmapped_is_not_internal(self):
         r = service.analyze('var h=fork missing();')
@@ -312,5 +313,90 @@ class ProcessTests(unittest.TestCase):
         else:
             with self.assertRaises(ProcessLookupError): os.kill(pid,0)
 
+
+
+class ProposedDiagnosticsTests(unittest.TestCase):
+    """Local CR-CORE08 proposal: PASS is technical, pending A+B ratification."""
+    def assert_failure(self, source, phase, code, line, message, column=None):
+        before = dict(service._registry)
+        with patch('subprocess.Popen', side_effect=AssertionError('unexpected process')):
+            r = service.analyze(source)
+        self.assertFalse(r['ok'])
+        self.assertEqual(r['phases'][phase]['status'], 'error')
+        self.assertEqual(len(r['diagnostics']), 1)
+        d = r['diagnostics'][0]
+        self.assertEqual((d['phase'], d['severity'], d['code'], d['line'], d['column']),
+                         (phase, 'error', code, line, column))
+        self.assertIn(message, d['message'])
+        self.assertNotIn('INTERNAL_ERROR', [item['code'] for item in r['diagnostics']])
+        for later in service.PHASES[service.PHASES.index(phase)+1:]:
+            self.assertEqual(r['phases'][later], dict(status='skipped',
+                reason='not_requested' if later=='gpp' else 'previous_phase_failed'))
+        self.assertTrue(all(value is None for value in r['artifacts'].values()))
+        self.assertEqual(before, service._registry)
+        self.assertEqual(json.loads(json.dumps(r)), r)
+        return r
+
+    def test_review_reserved_name(self):
+        self.assert_failure('func len(a) { return 1; }\nprint(1);\n',
+            'semantic', 'SEM_RESERVED_NAME', 1, "Nome nativo reservado: 'len'.")
+
+    def test_review_string_index(self):
+        self.assert_failure('var s = "abc";\nprint(s[0]);\n',
+            'semantic', 'SEM_UNSUPPORTED_FEATURE', 2, 'Indexacao de string nao suportada; use substr(s, i, 1).')
+
+    def test_review_discarded_fork(self):
+        self.assert_failure('func f(x){return x;}\nfork f(1);\n',
+            'semantic', 'SEM_FJ_07', 2, 'FJ-SEM-07: handle de fork descartado; guarde-o para join.')
+
+    def test_review_real_tac_refusal(self):
+        source = 'func f(x){return x;}\nvar h = fork f(1);\nprint(join(h));\n'
+        self.assert_failure(source, 'tac', 'TAC_UNSUPPORTED_FEATURE', 3,
+            'Fork/Join requer CORE-06; TAC nao gerado.')
+        with patch('subprocess.Popen', side_effect=AssertionError('unexpected compiler')):
+            compiled = service.compile_program(source)
+        self.assertEqual(compiled['phases']['gpp'], dict(status='skipped', reason='previous_phase_failed'))
+        self.assertTrue(all(v is None for v in compiled['artifacts'].values()))
+
+    def test_real_cpp_refusal_when_tac_isolated(self):
+        # Only bypass TAC in this isolation test to reach the REAL existing CPP guard.
+        source = 'func f(x){return x;}\nvar h = fork f(1);\nprint(join(h));\n'
+        with patch.object(service.TACGenerator, 'generate_text', return_value=''):
+            self.assert_failure(source, 'cpp', 'CPP_UNSUPPORTED_FEATURE', 3,
+                'Fork/Join requer CORE-07; C++ nao gerado.')
+
+    def test_other_unsupported_and_unknown_location(self):
+        for phase, cls in [('tac', service.TACGenerator), ('cpp', service.CppCodeGenerator)]:
+            for message, line in [('Recurso de teste indisponivel', None),
+                                  ('Linha 2: Outra construcao indisponivel', 2)]:
+                with self.subTest(phase=phase, message=message):
+                    with patch.object(cls, 'generate_text', side_effect=NotImplementedError(message)):
+                        self.assert_failure(GOOD, phase, phase.upper()+'_UNSUPPORTED_FEATURE', line,
+                            message.split(': ', 1)[-1])
+
+    def test_semantic_order_no_loss_and_next_call(self):
+        source = 'func len(a) { return 1; }\nvar s="abc";\nprint(s[0]);\nprint(missing);\n'
+        r = service.analyze(source)
+        self.assertEqual([(d['code'], d['line']) for d in r['diagnostics']],
+            [('SEM_RESERVED_NAME', 1), ('SEM_UNSUPPORTED_FEATURE', 3), ('SEM_UNDECLARED_VARIABLE', 4)])
+        self.assertEqual(len({(d['code'], d['line'], d['message']) for d in r['diagnostics']}), 3)
+        self.assertEqual(r['diagnostics'], service.analyze(source)['diagnostics'])
+        good = service.analyze(GOOD)
+        self.assertTrue(good['ok']); self.assertEqual(good['diagnostics'], [])
+
+    def test_error_invariant_approved_and_internal_safety(self):
+        for source, phase, code, column in [('@', 'lexer', 'LEX_UNKNOWN_CHAR', 1),
+                ('var x=;', 'parser', 'SYN_EXPECTED_EXPRESSION', 7),
+                ('print(missing);', 'semantic', 'SEM_UNDECLARED_VARIABLE', None)]:
+            self.assert_failure(source, phase, code, 1, '', column)
+        for cls, phase in [(service.TACGenerator, 'tac'), (service.CppCodeGenerator, 'cpp')]:
+            with patch.object(cls, 'generate_text', side_effect=RuntimeError('private-probe')):
+                with self.assertLogs(service.__name__, level='ERROR') as logs:
+                    r = service.analyze(GOOD)
+            self.assertEqual(r['phases'][phase]['status'], 'error')
+            self.assertEqual(r['diagnostics'][0]['code'], 'INTERNAL_ERROR')
+            self.assertNotIn('private-probe', json.dumps(r))
+            self.assertNotIn('Traceback', json.dumps(r))
+            self.assertIn('private-probe', '\n'.join(logs.output))
 
 if __name__=='__main__': unittest.main(verbosity=2)

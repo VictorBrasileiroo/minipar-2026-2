@@ -1,5 +1,7 @@
 # HANDOFF — CORE-08: serviço de fases para a Web didática
 
+> Atualização local de 03/11/2026: consultar as seções corretivas ao final. As descrições de diagnostics=[] abaixo são histórico da entrega anterior. A extensão agora implementada depende de ratificação A+B; nenhuma aprovação ou publicação foi realizada.
+
 **Estado: PARTIAL, implementação local para revisão independente.** Responsável A/coordenador. Data: 30/10/2026. Contrato: C-WEB-v1 §1, sem mudança de envelope ou aprovação inferida. Sem stage, commit, push, PR ou merge.
 
 ## Autorização, base e dependências
@@ -171,3 +173,125 @@ CORE-08: **27 PASS**, 0 FAIL/ERROR, 102,176 s. CORE-04/05: **126 PASS**, 0 FAIL/
 Evidências atuais: `output/core08/review-p2/` contém logs/relatórios CORE-08 e semânticos, comandos com exit codes, reproduções, `fix.diff` relativo ao início desta revisão, `results.json` e `final-source-hashes.json`. O JSON versionável `docs/auditorias/CORE-08_RESULTADOS.json` preserva `results` histórico e os hashes anteriores em `source_hash_history`; os resultados atuais ficam em `review_p2`, com `source_sha256` atualizado. Os artefatos nativos da suíte permanecem em `output/core08/web/`.
 
 Documentos verificados nesta correção: C-WEB, planejamento, backlog, validação, README, handoff, resultados, AGENTS e MEMORY. Atualizados somente o handoff e JSON/evidências impactados. README e contrato já descrevem o comportamento corrigido e não precisam mudar. **AGENTS.md e MEMORY.md revisados e mantidos**, pois não houve mudança de arquitetura, convenções ou fluxo de desenvolvimento. CR de diagnósticos permanece proposta pendente e CORE-08 permanece PARTIAL. Nenhuma publicação ou aprovação humana foi realizada nesta revisão.
+
+
+## Investigação corretiva de diagnósticos — 03/11/2026 (antes da edição)
+
+Revisão: https://github.com/VictorBrasileiroo/minipar-2026-2/pull/19#pullrequestreview-5758787987,
+José Riquelme, CHANGES_REQUESTED. Consulta ao PR em 03/11: sem resposta posterior nessa discussão.
+Branch e HEAD confirmados: eixo-a/CORE-08-servico-fases, 28e7329f09d217779e5f5480740f59282b40702b;
+base remota dev 29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1. Checkout inicialmente limpo.
+PRs #17/#18 abertos, não integrados. Nenhuma ratificação A+B da extensão encontrada; CR permanece PROPOSTA.
+
+Reprodução real em output/core08/review-diagnostics/before.json:
+A: semântico rejeita len, mensagem original e linha 1 presentes, code=None.
+B: IndexExpr rejeitado por indexação de string, linha 2, code=None; não é incompatibilidade de tipos.
+C: ForkExpr descartado, FJ-SEM-07, linha 2, code=None.
+D: semântico aceita; TAC lança NotImplementedError: Linha 3: Fork/Join requer CORE-06; TAC nao gerado.
+A guarda existente encontra JoinExpr na linha 3 (percurso de pilha, não ordem textual).
+Backend direto lança recusa equivalente CORE-07 na mesma linha. Ambos mantêm o bloqueio legítimo.
+Nos quatro envelopes, diagnostics=[]; A/B/C perdem informação no filtro code is not None;
+D perde a mensagem no except NotImplementedError. C++ tem a mesma perda latente.
+_report já conserva mensagem, linha, coluna nula e deduplicação FJ; não precisa de nova arquitetura.
+
+Decisão local autorizada: preparar a proposta v1.1, DEPENDENTE DE RATIFICAÇÃO A+B.
+Não há código vigente adequado para esses quatro motivos. code=null não é solução contratual:
+o catálogo é fechado, não existe autorização de um código nulo. Não usar INTERNAL_ERROR nem SEM_TYPE_MISMATCH.
+Atribuir códigos propostos diretamente nas detecções e preservar mensagens sem filtragem.
+Extrair localização da exceção pelo prefixo explícito Linha N:, sem inferir Fork/Join, linha 1 ou examinar palavras-chave.
+Manter recusa de TAC/C++, status e fases ignoradas. Exceções inesperadas continuam INTERNAL_ERROR,
+com traceback apenas em logging do servidor, fora do envelope da Web.
+Este registro antecede a edição dos fontes de produção. Não representa aceite contratual.
+
+
+## Correção local concluída — diagnósticos, 03/11/2026
+
+**Técnica: SIM. Publicação: DEPENDE DE APROVAÇÃO A+B. Estado administrativo mantido PARTIAL.**
+
+Arquivos de produção: somente src/service.py e src/semantic.py.
+O semântico recebe códigos diretamente em todas as detecções existentes que estavam
+sem código; o serviço publica a lista completa em ordenação estável por linha.
+_report, assinaturas, mensagens, emissão da CLI e deduplicação FJ permanecem iguais.
+FJ-SEM-02 preserva SEM_ARITY, já do catálogo v1; SEM_FJ_02 não foi ativado.
+Os códigos restantes pertencem à proposta listada na CR, não ao catálogo vigente.
+Não foi introduzida comparação de palavras-chave de mensagens para atribuir códigos.
+
+O serviço conserva as recusas NotImplementedError do TAC/C++, usando o código
+proposto da fase e separando somente o prefixo explícito Linha N: da mensagem
+original. A linha vem da exceção real originada no nó AST. Outros recursos não
+são confundidos com FJ; sem prefixo conhecido, line=null. Coluna permanece null.
+As guardas e implementações TAC/C++ não foram editadas. O teste C++ usa somente
+um stub de TAC para alcançar a guarda REAL CORE-07; o pipeline de produção não pula TAC.
+Nenhuma fase seguinte executa, G++ não inicia e não há registro de artefato nesses erros.
+Exceções inesperadas mantêm INTERNAL_ERROR, com mensagem segura e traceback em
+logging do servidor; o envelope não expõe traceback ou a mensagem privada da exceção.
+
+### Evidências e testes atuais
+
+- Quatro reproduções reais antes: diagnostics=[] em todos os envelopes.
+- Depois: A/SEM_RESERVED_NAME/linha 1; B/SEM_UNSUPPORTED_FEATURE/linha 2;
+  C/SEM_FJ_07/linha 2; D/TAC_UNSUPPORTED_FEATURE/linha 3, com mensagem real preservada.
+- Oito testes novos da proposta: primeira rodada com 11 falhas de subcasos. Um
+  controle também tinha expectativa incorreta de coluna nula no lexer; corrigido
+  para as colunas reais 1 (lexer) e 7 (parser). As reproduções independentes dos
+  quatro programas acima já demonstravam a perda antes de qualquer alteração.
+- CORE-08 completo: **35 PASS, 0 FAIL/ERROR**, 103,098 s; 27 existentes + 8 novos.
+  Fixtures FIX-01–04 mantidas, comparação com os mesmos oráculos.
+- CORE-04/05: **126 PASS**, exit 0.
+- CORE-03: **78 PASS, 1 KNOWN_FAIL, 0 FAIL**, exit 0. Falha herdada
+  HERDADO-RETORNO-NUMERICO: dedução C++ inconsistente int/double; não mascarada.
+- CORE-02 TAC: **5 PASS**, exit 0.
+- Smoke CLI + Web antiga: **PASS**, compilação/execução reais com stdout `5\n`.
+- Planejamento: **PASS**, 43 cards, exit 0; nenhum estado de card alterado.
+
+Comandos desta rodada (CXX/PATH definidos só nos processos de teste):
+
+```powershell
+$env:CXX='C:\msys64\ucrt64\bin\g++.exe'
+$env:PATH='C:\msys64\ucrt64\bin;'+$env:PATH
+.\.venv\Scripts\python.exe -B tests/2026_2/core08/verify_core08.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core08/smoke_legacy.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/verify_core0405.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core03/verify_core03.py
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+```
+
+Evidências: output/core08/review-diagnostics/{before,after,results}.json,
+before-tests.log; output/core08/tests-final.{json,log};
+output/core0405/run-736qtv97/summary.json;
+output/core03/run-cdijttyv/summary.json e output/core08/legacy/smoke.json.
+O JSON versionável preserva resultados históricos e acrescenta review_diagnostics.
+
+### Regra 11 e condições de aceite
+
+Documentos verificados: AGENTS.md, MEMORY.md, README, planejamento geral,
+contrato técnico §1, backlog, validação/aceite, cards.json, CR e auditorias CORE-08.
+Atualizados README, CR, este handoff e CORE-08_RESULTADOS.json.
+AGENTS.md/MEMORY.md mantidos: não mudam arquitetura, ownership, convenções ou fluxo.
+BNF/UML/pseudocódigos não precisam mudar: linguagem, AST e fluxo de fases são iguais;
+o comportamento de apresentação de diagnósticos foi atualizado aqui e no README.
+Contrato compartilhado, backlog e cards preservados, sem declaração de DONE/FROZEN.
+
+Para retirar CHANGES_REQUESTED: A+B precisam ratificar códigos/significados e a
+publicação do tipo task; conferir a implementação contra a versão aprovada;
+Riquelme precisa revalidar os quatro programas e registrar sua decisão humana.
+FJ completo continua dependente de integrar CORE-06/07 em etapa autorizada e de
+regressão posterior. Nenhum requisito de CORE-09/WEB-03 foi iniciado aqui.
+POSIX permanece UNTESTED; a localização de recusas depende do prefixo explícito
+já usado pelos geradores. Nenhum número de linha é inventado.
+
+As mudanças ficam locais, não staged e não commitadas, na branch CORE-08 existente.
+HEAD e origin/dev permanecem os SHAs registrados na investigação. Sem commit,
+push, merge, edição remota de PR ou envio de mensagens a terceiros.
+
+
+### Autorização posterior de commit local — 03/11/2026
+
+Após a entrega local acima, o coordenador autorizou expressamente: "ta pode commitar".
+Esta autorização permite stage e commit dos sete arquivos desta correção na branch
+CORE-08 existente. As referências anteriores a ausência de stage/commit registram
+o estado da entrega antes desta autorização. Não autoriza push, alteração remota
+do PR, merge ou aprovação da CR. A ratificação A+B permanece pendente e o estado
+administrativo continua PARTIAL. Os testes registrados acima continuam válidos:
+desde sua execução, somente documentação e evidências foram atualizadas.

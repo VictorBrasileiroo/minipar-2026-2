@@ -2,17 +2,18 @@
 
 The registry is process-local and retains all successful registrations for the
 process lifetime. No cleanup is performed; thus active operations cannot expire.
-See docs/CR-CORE08-DIAGNOSTICOS.md for expected failures absent from v1's catalog.
+LOCAL PROPOSAL: diagnostic extensions require A+B ratification before publication.
+See docs/CR-CORE08-DIAGNOSTICOS.md; this is not catalog-v1 compatibility.
 """
 from __future__ import annotations
 import hashlib
+import logging
 import os
 from pathlib import Path
 import re
 import shutil
 import threading
 import time
-import traceback
 import uuid
 
 # Both `import service` (legacy src on sys.path) and `from src import service`.
@@ -36,6 +37,7 @@ else:
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_ROOT = ROOT / "output" / "web"
 PHASES = ("lexer", "parser", "semantic", "tac", "cpp", "gpp")
+_logger = logging.getLogger(__name__)
 _registry = {}
 _execution_env = {}
 _registry_lock = threading.RLock()
@@ -43,6 +45,20 @@ _registry_lock = threading.RLock()
 
 def _diag(phase, code, message, line=None, column=None):
     return dict(phase=phase, severity="error", code=code, message=message, line=line, column=column)
+
+
+def _unsupported(phase, exc):
+    """LOCAL CR proposal. Decode the generators' explicit location prefix only.
+
+    No feature is inferred from a message; other refusals without location
+    retain line=None. Existing guards and their CLI messages are unchanged.
+    """
+    message = str(exc)
+    location = re.match(r"^Linha ([1-9][0-9]*):\s*", message)
+    line = int(location[1]) if location else None
+    if location: message = message[location.end():]
+    return _diag(phase, phase.upper()+"_UNSUPPORTED_FEATURE",
+        message or "Recurso nao suportado nesta fase", line=line)
 
 
 def _error(code, message):
@@ -100,21 +116,22 @@ def _pipeline(source, operation):
         semantic = SemanticAnalyzer(emit_diagnostics=False)
         valid = semantic.analyze(program)
         result["phases"][phase] = dict(status="ok" if valid else "error", scopes=semantic.scopes, symbols=semantic.symbols)
-        # None means an expected diagnostic has no approved C-WEB code. Do not
-        # relabel it INTERNAL_ERROR or publish an invented code (pending CR).
-        result["diagnostics"].extend(sorted((d for d in semantic.diagnostics if d["code"] is not None), key=lambda d: d["line"]))
+        # LOCAL CR proposal, pending A+B; preserve original messages and stable line order.
+        result["diagnostics"].extend(sorted(semantic.diagnostics, key=lambda d: d["line"]))
         if not valid: return result
         phase = "tac"
         try: tac = TACGenerator().generate_text(program)
-        except NotImplementedError:
+        except NotImplementedError as exc:
             result["phases"][phase] = dict(status="error")
-            return result  # Missing CORE-06 and diagnostic catalog: pending CR.
+            result["diagnostics"].append(_unsupported(phase, exc))
+            return result
         result["phases"][phase] = dict(status="ok", text=tac, lines=len(tac.splitlines()))
         phase = "cpp"
         generator = CppCodeGenerator()
         try: cpp = generator.generate_text(program)
-        except NotImplementedError:
+        except NotImplementedError as exc:
             result["phases"][phase] = dict(status="error")
+            result["diagnostics"].append(_unsupported(phase, exc))
             return result
         result["phases"][phase] = dict(status="ok", text=cpp)
         if operation == "analyze":
@@ -145,7 +162,7 @@ def _pipeline(source, operation):
     except Exception:
         result["phases"][phase] = dict(status="error")
         diagnostic = _diag("internal", "INTERNAL_ERROR", "Falha interna do compilador")
-        diagnostic["detail"] = traceback.format_exc()
+        _logger.exception("Unexpected compiler failure in phase %s", phase)
         result["diagnostics"].append(diagnostic)
     finally:
         result["duration_ms"] = round((time.monotonic()-started)*1000)

@@ -103,7 +103,7 @@ O PDF oficial do projeto, a BNF anterior, o exemplo Python do Teste 10 e materia
 
 `src/service.py` fornece `analyze`, `compile_program`, `execute` e `get_artifact` no envelope C-WEB-v1. A análise gera texto sem invocar G++; cada compilação nativa usa diretório próprio em `output/web/<uuid>/`. `CXX` seleciona um executável C++20, sem flags embutidas. Execução usa stdin não interativo, timeout 1–30 s e saídas limitadas a 1 MiB por stream. O registro é local ao processo e retém todas as compilações durante sua vida; não existe limpeza automática nem recuperação do registro após reiniciar.
 
-Estado **PARTIAL**: CORE-06/07 não estão integrados nesta base, e o catálogo do contrato ainda não representa todas as recusas semânticas/TAC. Uma fase pode retornar `error` sem diagnóstico nesses casos esperados; não consumir isso como suporte FJ completo. Nenhum código novo foi ativado no contrato. Detalhes, reprodução e evidências: [handoff CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md), [proposta de CR](docs/CR-CORE08-DIAGNOSTICOS.md).
+Estado **PARTIAL**: CORE-06/07 não estão integrados nesta base. A correção local de 03/11 preserva diagnósticos semânticos e recusas TAC/C++ usando a proposta da CR, **dependente de ratificação A+B antes de publicação**. Esses códigos ainda não pertencem ao catálogo v1; o envelope mantém seu formato, mas a extensão local não deve ser declarada compatível com o catálogo aprovado. Fork/Join continua bloqueado no TAC nesta base. Detalhes, reprodução e evidências: [handoff CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md), [proposta de CR](docs/CR-CORE08-DIAGNOSTICOS.md).
 
 ```python
 from src.service import analyze, compile_program, execute, get_artifact

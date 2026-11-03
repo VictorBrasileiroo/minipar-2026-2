@@ -12,14 +12,43 @@ Manter envelopes, funções e regras de fases. Acrescentar ao catálogo: `SEM_FJ
 
 SEM_TYPE_MISMATCH continua cobrindo incompatibilidade real de tipos, inclusive argumento nativo incompatível e comparação/concatenação entre string e outro tipo. SEM_ARITY cobre aridade nativa. Nenhuma recusa por recurso ausente é reclassificada como incompatibilidade de tipos.
 
-## Comportamento local enquanto pendente
+## Comportamento local enquanto pendente — revisão 03/11/2026
 
-Erros cobertos publicam diagnóstico estruturado diretamente do ponto de detecção. Os demais continuam acumulados em `SemanticAnalyzer.diagnostics` com `code=None`, disponíveis à inspeção local. O serviço interrompe a fase com `status=error`, preserva escopos/símbolos e **não publica** esses itens sem código aprovado. Assim, pode haver fase com erro e `diagnostics=[]`; é uma limitação explícita da entrega PARTIAL, inadequada para considerar concluída a apresentação de todos os erros da Web. Não se acrescentou campo ao envelope nem código ao catálogo. A guarda TAC encerra antes de C++/G++, sem contornar a dependência.
+**PROPOSTA; DEPENDENTE DE RATIFICAÇÃO A+B.** A revisão de Riquelme no PR #19
+em 03/11 solicitou corrigir fases com error e diagnostics=[] e anunciou que revisaria
+esta CR. Isso não é aprovação. Não foi encontrada decisão A+B posterior na discussão
+consultada; a busca de PRs pela identificação exata da CR só retornou #19.
 
-O símbolo `task` observado em programas FJ permanece a informação real do semântico; sua publicação está pendente de ratificação v1.1. B deve restringir a homologação atual aos programas sem FJ suportados e exibir estado genérico de fase com erro quando não houver diagnóstico. Não interpretar ausência de diagnóstico como sucesso.
+O comportamento inicial omitindo itens sem código está documentado no histórico do
+handoff. A correção agora preparada LOCALMENTE atribui os códigos propostos nos
+pontos de detecção e conserva todos os diagnósticos semânticos, mensagem e linha.
+Não se usa code=null como solução: o catálogo fechado não autoriza esse valor.
+
+Nos quatro casos da revisão: SEM_RESERVED_NAME/linha 1,
+SEM_UNSUPPORTED_FEATURE/linha 2, SEM_FJ_07/linha 2 e
+TAC_UNSUPPORTED_FEATURE/linha 3. A guarda TAC identifica o JoinExpr na linha 3;
+não foi alterado seu percurso nem implementado CORE-06. A guarda C++ equivalente
+permanece, com CPP_UNSUPPORTED_FEATURE na captura do serviço. A linha vem do
+prefixo explícito da exceção existente; sem localização, line=null e column=null,
+sem presumir Fork/Join para outras recusas. Mensagem separada do prefixo Linha N:
+conforme §1.5. Nenhum campo novo no envelope.
+
+Também foram codificadas as demais detecções existentes sem código:
+SEM_FJ_01, 03, 04, 05, 06, 08, SEM_INHERITANCE_CYCLE e
+SEM_UNSUPPORTED_FEATURE para listas de strings. SEM_FJ_02 continua apenas proposto:
+a detecção de aridade FJ já usa SEM_ARITY, vigente, e foi preservada.
+Nenhuma regra de linguagem ou especialização foi alterada. O símbolo task continua
+real e ainda pendente de ratificação. O serviço local usa a extensão proposta, não
+é compatível com o catálogo v1 estrito para esses erros e não está autorizado para publicação.
+
+Os testes novos estão em ProposedDiagnosticsTests, identificados como pendentes de
+ratificação. PASS demonstra o comportamento técnico proposto; não valida aceite
+contratual. FIX-01–04 e seus oráculos permanecem intactos. O teste antigo de símbolos
+especializados só teve sua expectativa obsoleta de diagnostics=[] substituída por
+uma asserção explicitamente provisória; nenhuma ampliação silenciosa do catálogo.
 
 ## Migração, testes e aceite
 
-Após aprovação A+B, atribuir os novos códigos nos pontos de detecção, publicar os itens hoje omitidos, atualizar catálogo e fixtures por revisão controlada e testar negativos FJ, recursos não suportados e tipos. Após integração de #17/#18, revalidar todo o pipeline FJ na base integrada, ajustando `generate_text` à assinatura entregue pelo CORE-07; não incorporar commits informalmente.
+Após aprovação A+B, conferir a implementação local contra a versão ratificada, atualizar o catálogo por revisão controlada e revalidar negativos FJ, recursos não suportados e tipos. Não atualizar fixtures apenas para acomodar divergências. Após integração de #17/#18, revalidar todo o pipeline FJ na base integrada, ajustando `generate_text` à assinatura entregue pelo CORE-07; não incorporar commits informalmente.
 
 Consumidores: WEB-03/04, CORE-08/09, inspeção didática de TAC/FJ. Revisores necessários: coordenador A e Riquelme B, com consulta C para os significados FJ. Sem mudança de runtime ou linguagem. Testes atuais e comandos estão no handoff CORE-08; a aprovação humana continua pendente.

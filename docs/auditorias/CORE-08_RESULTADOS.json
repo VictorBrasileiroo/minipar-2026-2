@@ -191,14 +191,14 @@
     "main.py": "5139e91da50feec19426f19d58a41c28df428fe66d3a6beb640e53e248075d2d",
     "src/lexer.py": "161fe85cee64d3ed92a6dcf5c21ba7afeb3ff15d847ec1c25d30c863b015240b",
     "src/parser.py": "e73ce96e488b06c46ee9be68c12cfb660b51b09a9a0bbe8a589dd4b69c3cb6e4",
-    "src/semantic.py": "1cc1bd62daeafcccf65c7024ace8f4aa7f5285aa8d6f65673a5d825ecb27b7c5",
+    "src/semantic.py": "ed7dfeb9eaf4020b94ec461a92657b6d4f1434a16685791ced7a084b71d44b89",
     "src/tac.py": "778f8e9e0f03dc0d391973e35befb237d2e8d8f44a4cfe75e4c0837c39c7fb99",
     "src/codegen.py": "e1c20058bdb4e38003f9ee421a8214d2bb845a30bb79448494d9ee76a740b496",
-    "src/service.py": "42e42ee50e2f3375c0774c2ad0fa3eae49b6b5c59e79fbed17cbb065551b5059",
+    "src/service.py": "9e7c55c294e62a9458a2cd4bf00c2789b41390c44e0c54b81dc06e24ecc65d4e",
     "src/service_ast.py": "133436f7a6a273b1312e7d20412383deb33e3c676524f0535e0d7edc1cade831",
     "src/service_process.py": "bda7b22f93de9f2b3005342df40760805b71001bb82a5b5a3af0c6c982e18d0e",
     "tests/2026_2/core08/smoke_legacy.py": "60576993d302fc017435b1c0bf27efa5ded7a79a1f3c801ae63b42dcfe336882",
-    "tests/2026_2/core08/test_service.py": "14157a85cf95beaba46e8a9a9897e38cd372e510bf9b927a3f47df0b8fc262bf",
+    "tests/2026_2/core08/test_service.py": "8f50496613de859720bb44d7e425880d510c7719cc62324430efc04af70e394a",
     "tests/2026_2/core08/verify_core08.py": "802a4c7d6ed094184e8441afa39f87451d3ac6e327cb4f1bc0391f403fd0f2fa"
   },
   "logs": [
@@ -250,6 +250,23 @@
         "src/service_process.py": "53b7e7744fe7a18d170bf17d20adbea03fd50a77eade9d593776d035b2de328d",
         "tests/2026_2/core08/smoke_legacy.py": "60576993d302fc017435b1c0bf27efa5ded7a79a1f3c801ae63b42dcfe336882",
         "tests/2026_2/core08/test_service.py": "87ebc470ee557cdcb57e9cc3eebb70be21f9e9c0250e5633f11e35068f7cea08",
+        "tests/2026_2/core08/verify_core08.py": "802a4c7d6ed094184e8441afa39f87451d3ac6e327cb4f1bc0391f403fd0f2fa"
+      }
+    },
+    {
+      "context": "before_diagnostics_review_2026_11_03",
+      "source_sha256": {
+        "main.py": "5139e91da50feec19426f19d58a41c28df428fe66d3a6beb640e53e248075d2d",
+        "src/lexer.py": "161fe85cee64d3ed92a6dcf5c21ba7afeb3ff15d847ec1c25d30c863b015240b",
+        "src/parser.py": "e73ce96e488b06c46ee9be68c12cfb660b51b09a9a0bbe8a589dd4b69c3cb6e4",
+        "src/semantic.py": "1cc1bd62daeafcccf65c7024ace8f4aa7f5285aa8d6f65673a5d825ecb27b7c5",
+        "src/tac.py": "778f8e9e0f03dc0d391973e35befb237d2e8d8f44a4cfe75e4c0837c39c7fb99",
+        "src/codegen.py": "e1c20058bdb4e38003f9ee421a8214d2bb845a30bb79448494d9ee76a740b496",
+        "src/service.py": "42e42ee50e2f3375c0774c2ad0fa3eae49b6b5c59e79fbed17cbb065551b5059",
+        "src/service_ast.py": "133436f7a6a273b1312e7d20412383deb33e3c676524f0535e0d7edc1cade831",
+        "src/service_process.py": "bda7b22f93de9f2b3005342df40760805b71001bb82a5b5a3af0c6c982e18d0e",
+        "tests/2026_2/core08/smoke_legacy.py": "60576993d302fc017435b1c0bf27efa5ded7a79a1f3c801ae63b42dcfe336882",
+        "tests/2026_2/core08/test_service.py": "14157a85cf95beaba46e8a9a9897e38cd372e510bf9b927a3f47df0b8fc262bf",
         "tests/2026_2/core08/verify_core08.py": "802a4c7d6ed094184e8441afa39f87451d3ac6e327cb4f1bc0391f403fd0f2fa"
       }
     }
@@ -603,5 +620,522 @@
       "PR": false,
       "merge": false
     }
+  },
+  "review_diagnostics": {
+    "date": "2026-11-03",
+    "state": "PARTIAL",
+    "contract_state": "PROPOSAL_PENDING_A+B_RATIFICATION",
+    "review_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/19#pullrequestreview-5758787987",
+    "review_state": "CHANGES_REQUESTED",
+    "approval_evidence": "PR #19 timeline has only Riquelme request; exact CR PR search returned #19 only. No express subsequent A+B ratification found.",
+    "branch": "eixo-a/CORE-08-servico-fases",
+    "head": "28e7329f09d217779e5f5480740f59282b40702b",
+    "origin_dev": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+    "initial_status": "clean",
+    "before": [
+      {
+        "case": "A",
+        "source": "func len(a) { return 1; }\nprint(1);\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:d292d57f761b106fda6682b58697c0da655652d601206e6f7170bc1764b3cec6",
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "error"
+            },
+            "tac": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "semantic": [
+          {
+            "phase": "semantic",
+            "severity": "error",
+            "code": null,
+            "message": "Nome nativo reservado: 'len'.",
+            "line": 1,
+            "column": null
+          }
+        ]
+      },
+      {
+        "case": "B",
+        "source": "var s = \"abc\";\nprint(s[0]);\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:27c19c7c3268a3f839942539316d640da0d78da227cd069838a83c8698e7bdc6",
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "error"
+            },
+            "tac": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "semantic": [
+          {
+            "phase": "semantic",
+            "severity": "error",
+            "code": null,
+            "message": "Indexacao de string nao suportada; use substr(s, i, 1).",
+            "line": 2,
+            "column": null
+          }
+        ]
+      },
+      {
+        "case": "C",
+        "source": "func f(x){return x;}\nfork f(1);\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:2a3024bef025633649cf578875d84cbcea78c3dcd61ff04c4c22bf1abab841ee",
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "error"
+            },
+            "tac": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "semantic": [
+          {
+            "phase": "semantic",
+            "severity": "error",
+            "code": null,
+            "message": "FJ-SEM-07: handle de fork descartado; guarde-o para join.",
+            "line": 2,
+            "column": null
+          }
+        ]
+      },
+      {
+        "case": "D",
+        "source": "func f(x){return x;}\nvar h = fork f(1);\nprint(join(h));\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:d5694d4d84b9bdf2e756c41064867f52de1cc7908e4dae9978b137c14435d975",
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "ok"
+            },
+            "tac": {
+              "status": "error"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "semantic": [],
+        "tac": {
+          "exception": "NotImplementedError",
+          "message": "Linha 3: Fork/Join requer CORE-06; TAC nao gerado."
+        },
+        "cpp": {
+          "exception": "NotImplementedError",
+          "message": "Linha 3: Fork/Join requer CORE-07; C++ nao gerado."
+        }
+      }
+    ],
+    "after": [
+      {
+        "case": "A",
+        "source": "func len(a) { return 1; }\nprint(1);\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:d292d57f761b106fda6682b58697c0da655652d601206e6f7170bc1764b3cec6",
+          "diagnostics": [
+            {
+              "phase": "semantic",
+              "severity": "error",
+              "code": "SEM_RESERVED_NAME",
+              "message": "Nome nativo reservado: 'len'.",
+              "line": 1,
+              "column": null
+            }
+          ],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "error"
+            },
+            "tac": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        }
+      },
+      {
+        "case": "B",
+        "source": "var s = \"abc\";\nprint(s[0]);\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:27c19c7c3268a3f839942539316d640da0d78da227cd069838a83c8698e7bdc6",
+          "diagnostics": [
+            {
+              "phase": "semantic",
+              "severity": "error",
+              "code": "SEM_UNSUPPORTED_FEATURE",
+              "message": "Indexacao de string nao suportada; use substr(s, i, 1).",
+              "line": 2,
+              "column": null
+            }
+          ],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "error"
+            },
+            "tac": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        }
+      },
+      {
+        "case": "C",
+        "source": "func f(x){return x;}\nfork f(1);\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:2a3024bef025633649cf578875d84cbcea78c3dcd61ff04c4c22bf1abab841ee",
+          "diagnostics": [
+            {
+              "phase": "semantic",
+              "severity": "error",
+              "code": "SEM_FJ_07",
+              "message": "FJ-SEM-07: handle de fork descartado; guarde-o para join.",
+              "line": 2,
+              "column": null
+            }
+          ],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "error"
+            },
+            "tac": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        }
+      },
+      {
+        "case": "D",
+        "source": "func f(x){return x;}\nvar h = fork f(1);\nprint(join(h));\n",
+        "envelope": {
+          "ok": false,
+          "source_hash": "sha256:d5694d4d84b9bdf2e756c41064867f52de1cc7908e4dae9978b137c14435d975",
+          "diagnostics": [
+            {
+              "phase": "tac",
+              "severity": "error",
+              "code": "TAC_UNSUPPORTED_FEATURE",
+              "message": "Fork/Join requer CORE-06; TAC nao gerado.",
+              "line": 3,
+              "column": null
+            }
+          ],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok"
+            },
+            "parser": {
+              "status": "ok"
+            },
+            "semantic": {
+              "status": "ok"
+            },
+            "tac": {
+              "status": "error"
+            },
+            "cpp": {
+              "status": "skipped",
+              "reason": "previous_phase_failed"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        }
+      }
+    ],
+    "before_tests": {
+      "tests": 8,
+      "subcase_failures": 11,
+      "note": "Initial run also exposed incorrect expectation column=None for lexer; test corrected to real columns 1/7. Four baseline envelopes independently prove diagnostic loss.",
+      "evidence": "output/core08/review-diagnostics/before-tests.log"
+    },
+    "results": {
+      "core08": {
+        "PASS": 35,
+        "FAIL": 0,
+        "ERROR": 0,
+        "existing_tests": 27,
+        "proposal_tests": 8,
+        "evidence": "output/core08/tests-final.json"
+      },
+      "core0405": {
+        "counts": {
+          "PASS": 126
+        },
+        "evidence": "output/core0405/run-736qtv97/summary.json"
+      },
+      "core03": {
+        "counts": {
+          "PASS": 78,
+          "KNOWN_FAIL": 1
+        },
+        "evidence": "output/core03/run-cdijttyv/summary.json"
+      },
+      "core02": {
+        "PASS": 5,
+        "FAIL": 0
+      },
+      "smoke": {
+        "status": "PASS",
+        "interfaces": [
+          "CLI",
+          "old Web"
+        ],
+        "evidence": "output/core08/legacy/smoke.json"
+      },
+      "planning": {
+        "status": "PASS",
+        "cards": 43
+      }
+    },
+    "commands": [
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core08/verify_core08.py",
+        "exit_code": 0
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core08/smoke_legacy.py",
+        "exit_code": 0
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core0405/verify_core0405.py",
+        "exit_code": 0
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core03/verify_core03.py",
+        "exit_code": 0
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v",
+        "exit_code": 0
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B scripts/validar_planejamento.py",
+        "exit_code": 0
+      }
+    ],
+    "proposed_codes_emitted": [
+      "SEM_RESERVED_NAME",
+      "SEM_INHERITANCE_CYCLE",
+      "SEM_UNSUPPORTED_FEATURE",
+      "SEM_FJ_01",
+      "SEM_FJ_03",
+      "SEM_FJ_04",
+      "SEM_FJ_05",
+      "SEM_FJ_06",
+      "SEM_FJ_07",
+      "SEM_FJ_08",
+      "TAC_UNSUPPORTED_FEATURE",
+      "CPP_UNSUPPORTED_FEATURE"
+    ],
+    "approved_codes_preserved": "All existing codes; FJ-SEM-02 still uses SEM_ARITY. SEM_FJ_02 not activated.",
+    "limitations": [
+      "New codes are not catalog-v1 compatible until ratification A+B",
+      "Fork/Join still blocked at TAC; CORE-06/07 not integrated",
+      "POSIX untested on this Windows host",
+      "Generator location decoded only from existing explicit Linha N: prefix; otherwise line=null"
+    ],
+    "files": [
+      "README.md",
+      "docs/CR-CORE08-DIAGNOSTICOS.md",
+      "docs/auditorias/CORE-08_RESULTADOS.json",
+      "docs/auditorias/CORE-08_SERVICO_FASES.md",
+      "src/semantic.py",
+      "src/service.py",
+      "tests/2026_2/core08/test_service.py"
+    ],
+    "source_sha256": {
+      "src/service.py": "9e7c55c294e62a9458a2cd4bf00c2789b41390c44e0c54b81dc06e24ecc65d4e",
+      "src/semantic.py": "ed7dfeb9eaf4020b94ec461a92657b6d4f1434a16685791ced7a084b71d44b89",
+      "tests/2026_2/core08/test_service.py": "8f50496613de859720bb44d7e425880d510c7719cc62324430efc04af70e394a"
+    },
+    "publication": {
+      "stage": false,
+      "commit": false,
+      "push": false,
+      "remote_PR_change": false,
+      "merge": false
+    },
+    "verdict": {
+      "technical": "SIM",
+      "publish": "DEPENDE DE APROVACAO A+B"
+    },
+    "git_checks": {
+      "diff_check": "PASS",
+      "cached_files": [],
+      "head_unchanged": true,
+      "origin_dev_unchanged": true
+    }
+  },
+  "subsequent_local_commit_authorization": {
+    "date": "2026-11-03",
+    "authorization": "ta pode commitar",
+    "scope": "Stage and local commit of the seven CORE-08 correction files on the existing branch",
+    "prior_publication_flags": "Historical snapshot of the preceding local-only delivery",
+    "push_authorized": false,
+    "merge_authorized": false,
+    "contract_state": "PROPOSAL_PENDING_A+B_RATIFICATION"
   }
 }
