@@ -3,7 +3,7 @@
 **Estado: `PARTIAL`.** As 126 verificações do harness deram `PASS` em três execuções completas (30/10/2026), e os 4 mutantes do programa foram detectados. O card fica `PARTIAL` porque:
 
 - o build usou uma **integração local, ainda não mergeada**: RUN-03 + `dev` + PR #17 (CORE-06, TAC) + PR #18 (CORE-07, backend C++ que chama o runtime);
-- o cenário remoto rodou **só no loopback** (6 processos worker no mesmo computador). Isso prova o protocolo e a distribuição das tarefas, mas não a execução entre computadores. A prova em duas máquinas depende do RUN-03 (#10);
+- o cenário remoto rodou **só no loopback** (6 processos worker no mesmo computador). Isso prova o protocolo e a distribuição das tarefas, mas não a execução entre computadores. O RUN-03 (#10, mergeado em 04/11/2026) provou o runtime entre dois computadores com o programa de demonstração; este teste não foi repetido em duas máquinas;
 - o formato de saída do Sierpinski (ASCII + SVG renderizado pelo harness) é uma **proposta** para a ADR-014, que continua `EM ABERTO` até o coordenador decidir.
 
 ## 1. Objetivo
@@ -174,4 +174,4 @@ Os tempos são **apenas informativos**: incluem o início do processo, foram med
 - **Carga equivalente:** `seq` e `par` executam os mesmos 6 trabalhos.
 - **IDs numéricos**, **LCG determinístico** e **tempo medido fora do programa**: mesmos motivos do T08/T09.
 - **Achados do CORE-07** (registrados para o Eixo A, `src/` não alterado): `to_number` devolve `double` e `%` com `double` é rejeitado, daí `para_inteiro`; `/` entre `int` trunca mesmo em função com retorno `double` (o Mandelbrot usa `* 1.0`, como no T09).
-- **Não testado:** dois computadores (RUN-03 #10), worker morto durante o T10 (coberto no runtime pelo RT-09) e Linux.
+- **Não testado:** dois computadores neste teste (o runtime foi provado em duas máquinas no RUN-03, #10), worker morto durante o T10 (coberto no runtime pelo RT-09) e Linux.
