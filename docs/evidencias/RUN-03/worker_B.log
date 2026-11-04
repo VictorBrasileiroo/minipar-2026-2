@@ -1,0 +1,9 @@
+[minipar_worker pc-B:28212] escutando em 192.168.x.131:7000 (host=pc-B pid=28212 build_id=minipar-demo-run03-v1)
+[minipar_worker pc-B:28212] conexao de 192.168.x.31:62502 aceita (build_id ok)
+[minipar_worker pc-B:28212] TASK task-1 fn=identidade de 192.168.x.31:62502: inicio
+[minipar_worker pc-B:28212] RESULT task-1 fn=identidade ok em 0 ms
+[minipar_worker pc-B:28212] TASK task-2 fn=soma_quadrados de 192.168.x.31:62502: inicio
+[minipar_worker pc-B:28212] TASK task-3 fn=soma_quadrados de 192.168.x.31:62502: inicio
+[minipar_worker pc-B:28212] RESULT task-2 fn=soma_quadrados ok em 149 ms
+[minipar_worker pc-B:28212] RESULT task-3 fn=soma_quadrados ok em 150 ms
+[minipar_worker pc-B:28212] TASK task-6 fn=trabalho_longo de 192.168.x.31:62502: inicio

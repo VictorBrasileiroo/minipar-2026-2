@@ -644,12 +644,13 @@
         "docs/evidencias/"
       ],
       "estimate_hours": 5,
-      "status": "BLOCKED",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10",
       "evidence": [
         "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md",
+        "docs/evidencias/RUN-03/worker_B.log",
         "runtime/examples/demo_distribuida.cpp"
       ]
     },
