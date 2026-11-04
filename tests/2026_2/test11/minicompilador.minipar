@@ -1,0 +1,429 @@
+# Teste 11 — MiniCompilador de expressões aritméticas escrito em MiniPar.
+# Contrato: C-T11-v1 (docs/02_CONTRATOS_TECNICOS.md §3). Referência do professor:
+# docs/fontes/teste11/MiniCompiladorCompleto_ARMv7.java.
+#
+# Listas de strings estão fora do recorte (C-T11-v1 §3.4): tokens e nós da AST
+# ficam em listas numéricas paralelas e todo texto é recuperado da própria
+# entrada com substr(e, inicio, tamanho).
+
+class MiniCompilador {
+    var e = "";
+    var erro = "";
+
+    # Tokens: tipo (0 = NUMERO, 1 = OPERADOR, 2 = PARENTESE), início e tamanho do lexema.
+    var tipos = [];
+    var inicios = [];
+    var tamanhos = [];
+
+    # Nós da AST: índice do token e filhos (-1 = nenhum).
+    var ntok = [];
+    var nesq = [];
+    var ndir = [];
+    var raiz = 0;
+
+    # Estado do parser: token atual e último nó construído.
+    var pos = 0;
+    var ultimo = 0;
+
+    # Tabela de símbolos: valor numérico e token da primeira ocorrência de cada constante.
+    var svals = [];
+    var stoks = [];
+
+    var temp = 1;
+    var reg = 0;
+
+    # --- utilitários -----------------------------------------------------
+
+    func lexema(t) {
+        return substr(this.e, this.inicios[t], this.tamanhos[t]);
+    }
+
+    func atual() {
+        if (this.pos < len(this.tipos)) {
+            return this.lexema(this.pos);
+        }
+        return "";
+    }
+
+    func digito(c) {
+        return c >= "0" && c <= "9";
+    }
+
+    func letra(c) {
+        return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || c == "_";
+    }
+
+    func falhar(fase, msg) {
+        if (this.erro == "") {
+            this.erro = "Erro " + fase + ": " + msg;
+        }
+    }
+
+    func coluna(i) {
+        return "coluna " + to_string(i + 1);
+    }
+
+    func nomeTipo(tipo) {
+        if (tipo == 0) {
+            return "NUMERO";
+        }
+        if (tipo == 1) {
+            return "OPERADOR";
+        }
+        return "PARENTESE";
+    }
+
+    func adicionarToken(tipo, inicio, tamanho) {
+        this.tipos.append(tipo);
+        this.inicios.append(inicio);
+        this.tamanhos.append(tamanho);
+    }
+
+    # --- análise léxica ----------------------------------------------------
+
+    func analisarLexico() {
+        var n = len(this.e);
+        var i = 0;
+        while (i < n && this.erro == "") {
+            var c = substr(this.e, i, 1);
+            if (c == " " || c == "\t") {
+                i = i + 1;
+            } else {
+                if (c == "#") {
+                    i = n;
+                } else {
+                    if (this.digito(c)) {
+                        var ini = i;
+                        while (i < n && this.digito(substr(this.e, i, 1))) {
+                            i = i + 1;
+                        }
+                        var num = substr(this.e, ini, i - ini);
+                        if (i < n && substr(this.e, i, 1) == ".") {
+                            this.falhar("léxico", "número decimal não suportado na " + this.coluna(ini));
+                        } else {
+                            if (len(num) > 1 && substr(num, 0, 1) == "0") {
+                                this.falhar("léxico", "zero à esquerda não suportado em '" + num + "' na " + this.coluna(ini));
+                            } else {
+                                # Maior constante que LDR rN, =k carrega como inteiro positivo de 32 bits.
+                                if (len(num) > 10 || to_number(num) > 2147483647) {
+                                    this.falhar("léxico", "constante '" + num + "' fora do intervalo 0..2147483647 na " + this.coluna(ini));
+                                } else {
+                                    this.adicionarToken(0, ini, i - ini);
+                                }
+                            }
+                        }
+                    } else {
+                        if (c == "+" || c == "-" || c == "*") {
+                            this.adicionarToken(1, i, 1);
+                        } else {
+                            if (c == "(" || c == ")") {
+                                this.adicionarToken(2, i, 1);
+                            } else {
+                                this.rejeitarCaractere(c, i);
+                            }
+                        }
+                        i = i + 1;
+                    }
+                }
+            }
+        }
+        if (this.erro == "" && len(this.tipos) == 0) {
+            this.falhar("léxico", "entrada vazia");
+        }
+    }
+
+    func rejeitarCaractere(c, i) {
+        if (c == "/") {
+            this.falhar("léxico", "divisão '/' não suportada na " + this.coluna(i));
+        } else {
+            if (c == "=") {
+                this.falhar("léxico", "atribuição '=' não suportada na " + this.coluna(i));
+            } else {
+                if (this.letra(c)) {
+                    this.falhar("léxico", "identificador não suportado na " + this.coluna(i));
+                } else {
+                    if (c == ".") {
+                        this.falhar("léxico", "número decimal não suportado na " + this.coluna(i));
+                    } else {
+                        if (c > " " && c <= "~") {
+                            this.falhar("léxico", "caractere desconhecido '" + c + "' na " + this.coluna(i));
+                        } else {
+                            this.falhar("léxico", "caractere não suportado na " + this.coluna(i));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    # --- análise sintática (descida recursiva expr -> term -> factor) -----
+    # Cada regra deixa o nó construído em this.ultimo.
+
+    func novoNo(t, esq, dir) {
+        this.ntok.append(t);
+        this.nesq.append(esq);
+        this.ndir.append(dir);
+        this.ultimo = len(this.ntok) - 1;
+    }
+
+    func parseExpr() {
+        this.parseTerm();
+        var no = this.ultimo;
+        while (this.erro == "" && (this.atual() == "+" || this.atual() == "-")) {
+            var t = this.pos;
+            this.pos = this.pos + 1;
+            this.parseTerm();
+            this.novoNo(t, no, this.ultimo);
+            no = this.ultimo;
+        }
+        this.ultimo = no;
+    }
+
+    func parseTerm() {
+        this.parseFactor();
+        var no = this.ultimo;
+        while (this.erro == "" && this.atual() == "*") {
+            var t = this.pos;
+            this.pos = this.pos + 1;
+            this.parseFactor();
+            this.novoNo(t, no, this.ultimo);
+            no = this.ultimo;
+        }
+        this.ultimo = no;
+    }
+
+    func parseFactor() {
+        if (this.erro == "") {
+            if (this.pos >= len(this.tipos)) {
+                this.falhar("sintático", "expressão incompleta: esperado número ou '(' no fim da entrada");
+            } else {
+                var t = this.pos;
+                var lx = this.lexema(t);
+                if (lx == "(") {
+                    this.pos = this.pos + 1;
+                    this.parseExpr();
+                    if (this.erro == "" && this.atual() != ")") {
+                        if (this.pos >= len(this.tipos)) {
+                            this.falhar("sintático", "'(' da " + this.coluna(this.inicios[t]) + " sem ')' correspondente");
+                        } else {
+                            this.falhar("sintático", "esperado ')' e encontrado '" + this.atual() + "' na " + this.coluna(this.inicios[this.pos]));
+                        }
+                    }
+                    this.pos = this.pos + 1;
+                } else {
+                    if (this.tipos[t] == 0) {
+                        this.pos = this.pos + 1;
+                        this.novoNo(t, 0 - 1, 0 - 1);
+                    } else {
+                        if (lx == "-") {
+                            this.falhar("sintático", "menos unário não suportado na " + this.coluna(this.inicios[t]));
+                        } else {
+                            this.falhar("sintático", "esperado número ou '(' e encontrado '" + lx + "' na " + this.coluna(this.inicios[t]));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func analisarSintatico() {
+        this.pos = 0;
+        this.parseExpr();
+        this.raiz = this.ultimo;
+        if (this.erro == "" && this.pos < len(this.tipos)) {
+            this.falhar("sintático", "token '" + this.atual() + "' inesperado depois do fim da expressão, na " + this.coluna(this.inicios[this.pos]));
+        }
+    }
+
+    # --- saídas --------------------------------------------------------------
+
+    func imprimirTokens() {
+        print("\n🔍 Tokens gerados pelo analisador léxico:");
+        var t = 0;
+        while (t < len(this.tipos)) {
+            print("[" + this.nomeTipo(this.tipos[t]) + ": '" + this.lexema(t) + "']");
+            t = t + 1;
+        }
+    }
+
+    # Ordem simétrica invertida (direita, nó, esquerda), dois espaços por nível.
+    func imprimirAST(no, nivel) {
+        if (no >= 0) {
+            this.imprimirAST(this.ndir[no], nivel + 1);
+            var recuo = "";
+            var k = 0;
+            while (k < nivel) {
+                recuo = recuo + "  ";
+                k = k + 1;
+            }
+            print(recuo + this.lexema(this.ntok[no]));
+            this.imprimirAST(this.nesq[no], nivel + 1);
+        }
+    }
+
+    # Pós-ordem; devolve o endereço (lexema ou temporário) do nó.
+    func gerarTAC(no) {
+        if (this.nesq[no] < 0) {
+            return this.lexema(this.ntok[no]);
+        }
+        var a1 = this.gerarTAC(this.nesq[no]);
+        var a2 = this.gerarTAC(this.ndir[no]);
+        var t = "t" + to_string(this.temp);
+        this.temp = this.temp + 1;
+        print(t + " = " + a1 + " " + this.lexema(this.ntok[no]) + " " + a2);
+        return t;
+    }
+
+    # Expressão totalmente parentizada, usada nos comentários do Assembly.
+    func formatExpr(no) {
+        if (this.nesq[no] < 0) {
+            return this.lexema(this.ntok[no]);
+        }
+        return "(" + this.formatExpr(this.nesq[no]) + " " + this.lexema(this.ntok[no]) + " " + this.formatExpr(this.ndir[no]) + ")";
+    }
+
+    # Mnemônico já alinhado no campo de 6 colunas da referência (%-6s).
+    func mnemonico(op) {
+        if (op == "+") {
+            return "ADD   ";
+        }
+        if (op == "-") {
+            return "SUB   ";
+        }
+        return "MUL   ";
+    }
+
+    # Pós-ordem; registradores por contador global, sem reaproveitamento.
+    func gerarARM(no) {
+        if (this.nesq[no] < 0) {
+            var rf = "r" + to_string(this.reg);
+            this.reg = this.reg + 1;
+            var k = this.lexema(this.ntok[no]);
+            if (to_number(k) > 255) {
+                print("    LDR    " + rf + ", =" + k);
+            } else {
+                print("    MOV    " + rf + ", #" + k);
+            }
+            return rf;
+        }
+        var a1 = this.gerarARM(this.nesq[no]);
+        var a2 = this.gerarARM(this.ndir[no]);
+        var r = "r" + to_string(this.reg);
+        this.reg = this.reg + 1;
+        print("    " + this.mnemonico(this.lexema(this.ntok[no])) + " " + r + ", " + a1 + ", " + a2 + "    @ resultado de '" + this.formatExpr(no) + "'");
+        return r;
+    }
+
+    # Constantes sem repetição, em ordem crescente de valor.
+    func registrarSimbolos() {
+        var no = 0;
+        while (no < len(this.ntok)) {
+            if (this.nesq[no] < 0) {
+                var v = to_number(this.lexema(this.ntok[no]));
+                var novo = true;
+                var j = 0;
+                while (j < len(this.svals)) {
+                    if (this.svals[j] == v) {
+                        novo = false;
+                    }
+                    j = j + 1;
+                }
+                if (novo) {
+                    this.svals.append(v);
+                    this.stoks.append(this.ntok[no]);
+                    j = len(this.svals) - 1;
+                    while (j > 0 && this.svals[j - 1] > this.svals[j]) {
+                        var tv = this.svals[j];
+                        this.svals[j] = this.svals[j - 1];
+                        this.svals[j - 1] = tv;
+                        var tt = this.stoks[j];
+                        this.stoks[j] = this.stoks[j - 1];
+                        this.stoks[j - 1] = tt;
+                        j = j - 1;
+                    }
+                }
+            }
+            no = no + 1;
+        }
+    }
+
+    func imprimirSimbolos() {
+        var j = 0;
+        while (j < len(this.stoks)) {
+            print("🔹 " + this.lexema(this.stoks[j]) + " → CONST");
+            j = j + 1;
+        }
+    }
+
+    # Valor de cada nó; o ARM calcula em registradores de 32 bits, então todo
+    # resultado intermediário precisa caber em inteiro com sinal de 32 bits.
+    func avaliar(no) {
+        if (this.nesq[no] < 0) {
+            return to_number(this.lexema(this.ntok[no]));
+        }
+        var a = this.avaliar(this.nesq[no]);
+        var b = this.avaliar(this.ndir[no]);
+        var op = this.lexema(this.ntok[no]);
+        var v = a * b;
+        if (op == "+") {
+            v = a + b;
+        }
+        if (op == "-") {
+            v = a - b;
+        }
+        if (v > 2147483647 || v < 0 - 2147483648) {
+            this.falhar("semântico", "o resultado de '" + this.formatExpr(no) + "' não cabe em 32 bits com sinal");
+        }
+        return v;
+    }
+
+    func analisarSemantico() {
+        # Um registrador por nó, de r0 a r12; r13–r15 são SP, LR e PC.
+        if (len(this.ntok) > 13) {
+            this.falhar("semântico", "a AST tem " + to_string(len(this.ntok)) + " nós e o Assembly comporta no máximo 13 (registradores r0 a r12)");
+        }
+    }
+
+    func compilar(entrada) {
+        this.e = entrada;
+        this.analisarLexico();
+        if (this.erro == "") {
+            this.imprimirTokens();
+            this.analisarSintatico();
+        }
+        if (this.erro == "") {
+            this.analisarSemantico();
+        }
+        if (this.erro == "") {
+            this.gerarSaidas(this.avaliar(this.raiz));
+        }
+        if (this.erro != "") {
+            print("\n❌ " + this.erro);
+        }
+    }
+
+    # Só é chamada depois de todas as fases de análise aceitarem a entrada.
+    func gerarSaidas(resultado) {
+        if (this.erro == "") {
+            this.registrarSimbolos();
+            print("\n🌳 Árvore Sintática Abstrata (AST):");
+            this.imprimirAST(this.raiz, 0);
+            print("\n📦 Código de Três Endereços (TAC):");
+            this.gerarTAC(this.raiz);
+            print("\n⚙️ Assembly ARMv7 (CPUlator):");
+            print(".global _start");
+            print(".text");
+            print("_start:");
+            this.gerarARM(this.raiz);
+            print("    b .    @ loop infinito para parar o programa");
+            print("\n📚 Tabela de Símbolos:");
+            this.imprimirSimbolos();
+            print("\n🧮 Resultado final da expressão:");
+            print("➡️  " + to_string(resultado) + ".0");
+        }
+    }
+}
+
+var entrada = input("Digite uma expressão infixada: ");
+var mc = new MiniCompilador();
+mc.compilar(entrada);
