@@ -630,7 +630,7 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** BLOCKED · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10) com o programa `runtime/examples/demo_distribuida.cpp` e o roteiro `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`; ensaio no loopback ok (não conta como prova). Bloqueio: execução em duas máquinas físicas ainda não feita (uma máquina disponível; regra de firewall temporária cabe à pessoa operadora). Responsável: C + equipe.
+**Estado atual (04/11/2026):** IN_REVIEW · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10). Prova executada em dois computadores físicos na mesma rede (A coordenador, B worker): as cinco verificações em PASS, conferidas pelo operador em A; log do worker anexado em `docs/evidencias/RUN-03/worker_B.log` (conexão e tarefas vindas do IP de A, executadas em B). Pendência: a saída do coordenador (`coordenador_A.txt`) não foi anexada. Registro em `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md` §6.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
