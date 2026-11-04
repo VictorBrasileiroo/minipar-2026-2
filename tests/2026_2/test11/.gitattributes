@@ -1,0 +1,2 @@
+# Bytes exatos (LF, UTF-8): o SHA-256 das evidências do T11-03 é calculado sobre eles.
+arm/* -text
