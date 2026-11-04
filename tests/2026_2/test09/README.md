@@ -3,7 +3,7 @@
 **Estado: `PARTIAL`.** As 54 verificações do harness deram `PASS` (duas execuções completas em 30/10/2026). Mesmo assim o card fica `PARTIAL` porque:
 
 - o build usou uma **integração local, ainda não mergeada**: RUN-03 + `dev` + PR #17 (CORE-06, TAC) + PR #18 (CORE-07, backend C++ que chama o runtime);
-- o cenário remoto rodou **só no loopback** (5 processos worker no mesmo computador). Isso prova o protocolo e a distribuição das tarefas, mas não a execução entre computadores. A prova em duas máquinas depende do RUN-03 (#10).
+- o cenário remoto rodou **só no loopback** (5 processos worker no mesmo computador). Isso prova o protocolo e a distribuição das tarefas, mas não a execução entre computadores. O RUN-03 (#10, mergeado em 04/11/2026) provou o runtime entre dois computadores com o programa de demonstração; este teste não foi repetido em duas máquinas.
 
 ## 1. Objetivo
 
@@ -159,4 +159,4 @@ Os tempos são **apenas informativos**. Outros agentes e processos usavam a máq
 - **Tempo medido fora do programa**, porque MiniPar não tem relógio nativo.
 - **Semântica de `/` (sondagem):** no C++ gerado, `/` entre dois valores `int` é divisão **inteira**. `print(7 / 2)` com variáveis `int` imprime `3`. A função `func divi(a, b) { return a / b; }` vira `double divi(auto a, auto b) { return (a / b); }`, e `divi(7, 2)` imprime `3`: o tipo de retorno é `double`, mas a divisão já foi truncada. Isso diverge do Python, onde `/` sempre dá `float`. O T09 contorna com `* 1.0`. Literais decimais como `2.4` e as somas em `double` funcionam (`print(2.4)` imprime `2.4`). O achado foi registrado para o Eixo A; `src/` não foi alterado.
 - `to_number` devolve `double` (`std::stod`), e `%` com `double` é rejeitado pela análise semântica CORE-07 ("operacao inteira com decimal"). Por isso o programa usa `para_inteiro`.
-- **Não testado:** dois computadores (RUN-03 #10), worker morto durante o T09 (coberto no runtime pelo RT-09, não neste teste) e Linux.
+- **Não testado:** dois computadores neste teste (o runtime foi provado em duas máquinas no RUN-03, #10), worker morto durante o T09 (coberto no runtime pelo RT-09, não neste teste) e Linux.
