@@ -7,7 +7,7 @@ Contrato: [`docs/02_CONTRATOS_TECNICOS.md` §2 (C-FJ-v1)](../docs/02_CONTRATOS_T
 |---|---|---|
 | `RUN-01` | Runtime local: registry, `start`/`join`, isolamento, erros, `Value` | implementado e testado |
 | `RUN-02` | Protocolo TCP enquadrado, worker pré-compilado, falhas | implementado e testado **no loopback** (prova de protocolo) |
-| `RUN-03` | Prova em dois computadores reais | programa e roteiro prontos, ensaio no loopback ok; **execução em duas máquinas BLOCKED** ([roteiro e registro](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)) |
+| `RUN-03` | Prova em dois computadores reais | programa e roteiro prontos, ensaio no loopback ok; **execução em duas máquinas PASS em 04/11/2026** (log do worker anexado; [roteiro e registro](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)) |
 | `RUN-04` | Handoff da API para o backend `CORE-07` | contrato dos 13 símbolos testado; interop pela CLI PASS **na integração local com #17/#18** e no loopback (seção 5) |
 
 ## 1. Arquivos
