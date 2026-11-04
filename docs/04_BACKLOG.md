@@ -278,6 +278,8 @@
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
+**Rodada local autorizada em 30/10/2026:** implementacao CORE-08 autorizada diretamente pelo coordenador, incluindo diagnosticos e separacao traducao/compilacao; sem promover CON-02, SET-02, CORE-06/07 ou `ready` por inferencia. Entrega local PARTIAL para revisao independente, sem commit/PR/DONE. [Handoff](auditorias/CORE-08_SERVICO_FASES.md) e [CR de diagnosticos pendente](CR-CORE08-DIAGNOSTICOS.md).
+
 #### `CORE-09` — Preservar terminal e Web antiga após mudanças
 
 **Prazo:** 30/10/2026 · **Prioridade:** P0 · **Estimativa:** 3 h · **Estado inicial:** BACKLOG
@@ -628,7 +630,7 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** BLOCKED · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10) com o programa `runtime/examples/demo_distribuida.cpp` e o roteiro `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`; ensaio no loopback ok (não conta como prova). Bloqueio: execução em duas máquinas físicas ainda não feita (uma máquina disponível; regra de firewall temporária cabe à pessoa operadora). Responsável: C + equipe.
+**Estado atual (04/11/2026):** DONE · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10) aprovado e mergeado em `dev`. Prova executada em dois computadores físicos na mesma rede (A coordenador, B worker): as cinco verificações em PASS, conferidas pelo operador em A; log do worker anexado em `docs/evidencias/RUN-03/worker_B.log` (conexão e tarefas vindas do IP de A, executadas em B). Pendência: a saída do coordenador (`coordenador_A.txt`) não foi anexada. Registro em `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md` §6.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
@@ -648,7 +650,7 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (30/10/2026):** IN_REVIEW (draft) · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), empilhado sobre o `RUN-03` (#10); merge só depois do #10. `ready=false`: depende do `RUN-03` (BLOCKED, falta a execução em duas máquinas). `python runtime/tests/run_tests.py`: 6 etapas PASS, incluindo `test_interop.cpp` (17/17), que fixa os 13 símbolos da API usados pelo C++ do `CORE-07`. `python runtime/tests/interop_codegen.py`: (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS na **integração local** com #17/#18 (ainda fora de `dev`); sem o `CORE-07` na árvore dá `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev` e o RUN-03 rodar em duas máquinas. `src/` não foi alterado.
+**Estado atual (04/11/2026):** IN_REVIEW (draft) · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), agora direto sobre `dev`. `ready=true`: `RUN-01`, `RUN-03` (#10, mergeado em 04/11) e `CORE-05` já estão em `dev`. `python runtime/tests/run_tests.py`: 6 etapas PASS, incluindo `test_interop.cpp` (17/17), que fixa os 13 símbolos da API usados pelo C++ do `CORE-07`. `python runtime/tests/interop_codegen.py`: (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS na **integração local** com #17/#18 (ainda fora de `dev`); sem o `CORE-07` na árvore dá `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev`. `src/` não foi alterado.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 

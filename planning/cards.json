@@ -343,11 +343,16 @@
         "app.py"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "IN_PROGRESS",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/auditorias/CORE-08_SERVICO_FASES.md",
+        "docs/auditorias/CORE-08_RESULTADOS.json",
+        "docs/CR-CORE08-DIAGNOSTICOS.md"
+      ],
+      "authorization": "30/10/2026: coordenador autoriza implementacao local CORE-08; sem stage/commit/push/PR/merge, sem promover dependencias ou ready. PARTIAL: catalogo C-WEB incompleto e CORE-06/07 nao integrados."
     },
     {
       "id": "CORE-09",
@@ -639,12 +644,13 @@
         "docs/evidencias/"
       ],
       "estimate_hours": 5,
-      "status": "BLOCKED",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10",
       "evidence": [
         "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md",
+        "docs/evidencias/RUN-03/worker_B.log",
         "runtime/examples/demo_distribuida.cpp"
       ]
     },
@@ -667,7 +673,7 @@
       ],
       "estimate_hours": 4,
       "status": "IN_REVIEW",
-      "ready": false,
+      "ready": true,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20",
       "evidence": [

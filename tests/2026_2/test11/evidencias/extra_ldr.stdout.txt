@@ -1,0 +1,47 @@
+Digite uma expressão infixada: 
+🔍 Tokens gerados pelo analisador léxico:
+[NUMERO: '1000']
+[OPERADOR: '*']
+[NUMERO: '3']
+[OPERADOR: '-']
+[PARENTESE: '(']
+[NUMERO: '65536']
+[OPERADOR: '+']
+[NUMERO: '2']
+[PARENTESE: ')']
+
+🌳 Árvore Sintática Abstrata (AST):
+    2
+  +
+    65536
+-
+    3
+  *
+    1000
+
+📦 Código de Três Endereços (TAC):
+t1 = 1000 * 3
+t2 = 65536 + 2
+t3 = t1 - t2
+
+⚙️ Assembly ARMv7 (CPUlator):
+.global _start
+.text
+_start:
+    LDR    r0, =1000
+    MOV    r1, #3
+    MUL    r2, r0, r1    @ resultado de '(1000 * 3)'
+    LDR    r3, =65536
+    MOV    r4, #2
+    ADD    r5, r3, r4    @ resultado de '(65536 + 2)'
+    SUB    r6, r2, r5    @ resultado de '((1000 * 3) - (65536 + 2))'
+    b .    @ loop infinito para parar o programa
+
+📚 Tabela de Símbolos:
+🔹 2 → CONST
+🔹 3 → CONST
+🔹 1000 → CONST
+🔹 65536 → CONST
+
+🧮 Resultado final da expressão:
+➡️  -62538.0
