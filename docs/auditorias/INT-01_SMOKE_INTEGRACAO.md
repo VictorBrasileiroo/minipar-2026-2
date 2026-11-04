@@ -4,6 +4,8 @@
 
 **Estado do card: PARTIAL / BLOCKED. Não marcar DONE.** O segmento A (Eixos A+C) passou na base de integração local; o segmento B (serviço CORE-08) passou só no recorte sem Fork/Join; o segmento C (Web didática) está BLOCKED porque o WEB-03 não começou. No `planning/cards.json` o INT-01 fica `BLOCKED`, `ready=false`, com o PR #24 em draft. As dependências `CORE-07`, `WEB-03` e `RUN-04` não estão concluídas. A execução foi antecipada pelo Eixo C (plano do M2 de 30/10) para encontrar os defeitos de integração cedo. Ela não promove o estado de nenhum outro card. A e B precisam validar os segmentos deles.
 
+> **Atualização de 04/11/2026.** A branch foi sincronizada com `dev` (via `RUN-04`), que agora inclui o RUN-03 (#10, prova em dois computadores, mergeado em 04/11) e o CORE-08 (#19). O smoke foi repetido no HEAD `f1188dd`: segmento A **BLOCKED** (#17/#18 ainda fora de `dev`, então a CLI desta base não compila Fork/Join); segmento B com `--core08-root .`, ou seja, o `src/service.py` que está em `dev` (SHA-256 `9e7c55c2…5d4e`), B1–B7 **PASS** e B8 **BLOCKED** (TAC/backend Fork/Join ausentes); segmento C **BLOCKED** (WEB-03). Sem `--core08-root`, o script ainda procura a pasta irmã `int01-core08` por padrão. As seções 2 a 4 abaixo registram a execução de 30/10.
+
 ## 1. Objetivo e escopo
 
 Ter **um script único e reproduzível** (`scripts/smoke_int01.py`) que exercite o caminho de ponta a ponta de cada eixo e dê um status real por segmento:
@@ -120,7 +122,7 @@ A inspeção de `web_didatica/` encontrou: não há `server.py`; nenhum `.py` im
 | INT01-02 | B | A | Alta (risco de integração; observado no código, **não executado**) | As interfaces divergem nas duas árvores: o #18 tem `CppCodeGenerator.generate_text(program, semantic=None, source=None)` e põe `-I runtime/include` no g++ dentro de `generate`. O #19 chama `generate_text(program)` sem `source` (que o #18 exige para o hash em FJ) e tem um `compile_cpp` próprio sem `-I runtime/include` | `int01/src/codegen.py:396,466`; `int01-core08/src/codegen.py:267,312`; `int01-core08/src/service.py` (fase `cpp`) | Na resolução do conflito, o serviço precisa passar `semantic` e `source` e compilar com o include do runtime; o handoff do CORE-08 já prevê "adaptar a assinatura textual aditiva" |
 | INT01-03 | B | A+B | Média | Uma fase com erro e `diagnostics=[]` não dá ao usuário da Web nenhuma mensagem do motivo da recusa (FJ sem backend) | B8: `tac=error`, `diagnostics: []` | CR `docs/CR-CORE08-DIAGNOSTICOS.md` (pendente, A+B); a Web mostra uma falha genérica da fase até a aprovação |
 | INT01-04 | C | B | Alta (bloqueia WEB-04 e INT-02) | WEB-03 não iniciado; a Web didática só usa fixtures mock | C1: sem `server.py`, sem import do serviço, sem `/api/v1` | Riquelme inicia o WEB-03 consumindo `src/service.py` (C-WEB-v1 §1.8); depois repetir `--only C` e acrescentar a verificação por cliente de teste Flask sem porta |
-| INT01-05 | A | C | Alta para o aceite final | Prova entre dois computadores pendente: este smoke usa só loopback | A6/A7 usam `127.0.0.1`; RUN-03 `BLOCKED` no `cards.json`, PR #10 | Executar o roteiro `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md` em duas máquinas; repetir o segmento A com o worker na máquina B |
+| INT01-05 | A | C | Média (o runtime já foi provado em duas máquinas) | Este smoke usa só loopback no segmento A | A6/A7 usam `127.0.0.1`. O RUN-03 foi concluído em 04/11/2026 (PR #10 mergeado, `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`) com o programa de demonstração | Opcional para o aceite do INT-01: depois de #17/#18 em `dev`, repetir o segmento A com o worker na máquina B |
 | INT01-06 | A | A | Média | O PASS do segmento A vale para uma base **local** (#17/#18 fora de `dev`). O handoff CORE-07 ainda registra "CLI integral BLOCKED por CORE-06"; nesta base combinada, a CLI integral funciona | A1–A8 PASS em `f09bdea` | Depois do merge de #17/#18 em `dev`, repetir `python scripts/smoke_int01.py --only A` em `dev` e atualizar o handoff CORE-07 |
 | INT01-07 | A | A | Baixa (cosmética) | `main.py` mantém a mensagem `integracao CLI CORE-06/CORE-07 pendente` no ramo `NotImplementedError` do TAC, já desatualizada com #17/#18 | `int01/main.py`, `compile_file` | Ajustar o texto na integração; o caminho não foi acionado neste smoke |
 
@@ -141,7 +143,7 @@ Nenhuma interface de produto foi alterada. O script expõe só a CLI `--port-bas
 
 - **Victor (A):** INT01-01, 02, 06 e 07 ao integrar #17/#18/#19; depois, repetir `python scripts/smoke_int01.py` em `dev`. A valida os segmentos A e B.
 - **Riquelme (B):** INT01-04 (WEB-03) e, junto com A, a CR de diagnósticos (INT01-03). B valida o segmento C.
-- **Eixo C:** INT01-05 (RUN-03 em duas máquinas) e a nova execução do smoke quando as dependências entrarem em `dev`.
+- **Eixo C:** a nova execução do smoke quando #17/#18 e o WEB-03 entrarem em `dev`, com o segmento A também em duas máquinas (INT01-05). O RUN-03 já está concluído (#10).
 - **INT-02:** reutiliza este script como pré-condição da regressão integral.
 
 Sem stage, commit, push, PR ou merge. Revisão por IA não substitui a conferência humana dos logs e da demonstração.
