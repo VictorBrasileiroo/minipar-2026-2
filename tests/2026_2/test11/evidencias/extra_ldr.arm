@@ -1,0 +1,12 @@
+.global _start
+.text
+_start:
+    LDR    r0, =1000
+    MOV    r1, #3
+    MUL    r2, r0, r1    @ resultado de '(1000 * 3)'
+    LDR    r3, =65536
+    MOV    r4, #2
+    ADD    r5, r3, r4    @ resultado de '(65536 + 2)'
+    SUB    r6, r2, r5    @ resultado de '((1000 * 3) - (65536 + 2))'
+    b .    @ loop infinito para parar o programa
+
