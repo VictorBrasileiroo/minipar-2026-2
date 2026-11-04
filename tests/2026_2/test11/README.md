@@ -10,6 +10,7 @@ Contrato: C-T11-v1 (`docs/02_CONTRATOS_TECNICOS.md` §3). Eixo B, cards `T11-01`
 | `verificar_t11.py` | Compila pelo pipeline real (`main.py` → g++), executa o binário com cada entrada e compara o stdout com os oráculos de C-T11-v1 §3.12 e o `.arm` com o de referência |
 | `extrair_arm.py` | Copia o bloco do Assembly do stdout para um `.arm` (regras de C-T11-v1 §3.6 item 2); não analisa nem reescreve o Assembly |
 | `arm/casoN.arm`, `arm/casoN.stdout.txt` | `.arm` dos três casos obrigatórios e o stdout completo de onde cada um foi extraído |
+| `evidencias/` | Execução dos `.arm` no CPUlator (T11-03): ambiente, procedimento, registradores finais, SHA-256 e capturas de tela |
 
 ## Como executar
 

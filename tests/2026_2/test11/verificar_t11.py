@@ -11,6 +11,7 @@ Uso (na raiz do repositório):
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -22,6 +23,7 @@ from extrair_arm import ExtractionError, extract_arm
 ROOT = Path(__file__).resolve().parents[3]
 SOURCE = Path(__file__).with_name("minicompilador.minipar")
 ARM_DIR = Path(__file__).with_name("arm")
+EVIDENCE_DIR = Path(__file__).with_name("evidencias")
 SOURCES = ROOT / "docs/fontes/teste11"
 CONTRACT = ROOT / "docs/02_CONTRATOS_TECNICOS.md"
 PROMPT = "Digite uma expressão infixada: "
@@ -203,6 +205,13 @@ def main() -> int:
         if "resultado" in found or "arm" in found or "tac" in found:
             problems.append("produziu TAC, Assembly ou resultado para entrada inválida")
         report(case_id, problems)
+
+    # T11-03: a execução no CPUlator registrada em evidencias/ vale para estes bytes.
+    evidence = (EVIDENCE_DIR / "README.md").read_text(encoding="utf-8")
+    for arm_file in sorted(ARM_DIR.glob("*.arm")) + sorted(EVIDENCE_DIR.glob("*.arm")):
+        digest = hashlib.sha256(arm_file.read_bytes()).hexdigest()
+        report(f"EVID-{arm_file.stem.upper()}",
+               [] if digest in evidence else [f"SHA-256 {digest} ausente de evidencias/README.md"])
 
     for case_id, stdout, expected in EXTRACTION:
         try:
