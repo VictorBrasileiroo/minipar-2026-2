@@ -4,8 +4,9 @@
 > execução inicial, anterior à publicação. O coordenador publicou posteriormente
 > `2fada7c`; o estado atual e as novas evidências constam na seção datada ao final.
 
-**Responsável:** Eixo A/coordenador, desenvolvimento assistido por Codex.  
-**Data:** 29/10/2026. **Branch local:** `eixo-a/CORE-06-tac-fork-join-par`.  
+**Responsável:** Eixo A/coordenador, desenvolvimento assistido por Codex.
+
+**Data:** 29/10/2026. **Branch local:** `eixo-a/CORE-06-tac-fork-join-par`.
 **Base HEAD/origin/dev:** `29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1`.
 
 **Parecer: SIM, implementado e pronto para revisão local no recorte descrito.**
@@ -649,3 +650,154 @@ Esses estados e as ratificações pendentes devem acompanhar a revisão independ
 Nenhum PR, commit, stage ou push foi realizado nesta execução. HEAD preservado
 em `2fada7c`; alterações corretivas permanecem locais na mesma branch. Não houve
 alteração de dev/main, runtime, Web didática, Teste 11, legado ou contratos.
+
+## Integração local do PR #17 com dev — 04/11/2026
+
+**Responsável:** Eixo A/coordenador, assistido por Codex. Autorização: pedido
+explícito de integrar CORE-06 à dev após #19 e #26–#28, resolver conflitos,
+ajustar somente expectativas obsoletas do serviço e validar regressões. Não
+autoriza CORE-07, commit, push, novo PR, aprovação ou merge remoto. Nenhum estado
+administrativo ou ratificação contratual foi promovido por esta integração.
+
+### Base, histórico e conflito
+
+Checkout inicial limpo em `eixo-a/CORE-08-servico-fases`, HEAD `c485819`.
+`git fetch origin` atualizou as referências. Trocou-se para a branch existente
+`eixo-a/CORE-06-tac-fork-join-par`, HEAD `33bc9d9b1b66ff678fcd0b10932f1b43235c9f63`,
+sem alterações preexistentes. `origin/dev` foi conferida em
+`05b43f995d6db31e72b1ed5e4b11ce7d90d0e204`, com os merges #19, #26, #27 e #28.
+Não houve rebase, reset, descarte ou alteração das branches locais dev/main.
+
+Comando: `git merge --no-commit --no-ff origin/dev`. Um único conflito textual:
+imports de [src/tac.py](../../src/tac.py). Resolução combina `if __package__`
+e import relativo de CORE-08 com os imports `ForkExpr`, `JoinExpr`,
+`iter_child_nodes` e `find_fork_join` de CORE-06 em ambos os modos. Todo o corpo
+do gerador CORE-06 foi preservado. README, backlog e cards mesclaram automaticamente.
+As demais mudanças recebidas são de origin/dev, não desenvolvimento novo desta rodada.
+
+O sandbox exigiu execução autorizada para fetch, switch e escrita do índice
+no merge. A exceção de propriedade foi usada apenas por comando de inspeção;
+nenhuma configuração global, dependência ou PATH do sistema foi alterado.
+
+### Ajustes, interfaces e oráculos
+
+- [test_service.py](../../tests/2026_2/core08/test_service.py): dois testes deixaram
+  de esperar recusa TAC em programas Fork/Join semanticamente válidos. Agora
+  verificam TAC real com capture/fork/join e recusa na fase C++, incluindo a
+  mensagem e linha existentes. O teste isolado da guarda C++ foi preservado.
+  Nenhum teste foi eliminado; a mudança do oráculo corresponde à funcionalidade
+  efetivamente entregue por CORE-06.
+- APIs `generate_text`, `generate`, `analyze`, `compile_program`, envelope,
+  imports legados e mensagens de diagnóstico foram preservados. Para Fork/Join,
+  `tac.status=ok`, `cpp.status=error`, diagnóstico `CPP_UNSUPPORTED_FEATURE`:
+  `Fork/Join requer CORE-07; C++ nao gerado.`. O `ok` global continua falso;
+  g++ fica ignorado e não há artefato de compilação publicado nesse erro.
+- [README](../../README.md): disponibilidade do TAC no serviço, fronteira C++
+  e estado local da integração. Evidências históricas não foram sobrescritas.
+
+### Sonda direta MiniPar → TAC
+
+Fonte, TAC e envelope observados: `output/core06_integration/probe.minipar`,
+`probe.tac` e `probe.json` (artefatos locais ignorados pelo Git).
+
+```minipar
+func dobro(x) { return x * 2; }
+var x = 10;
+var h = fork dobro(x);
+x = 99;
+par { seq { print(join(h, 30000)); } print(2); }
+print(3);
+```
+
+**PASS, 9/9 verificações:** captura antes do fork e da mutação; um fork e um
+join; timeout 30000; dois disparos e dois términos de branch; barreira e fechamento
+antes de `print 3`; regeneração determinística; mesmo TAC via serviço; guarda
+C++ com mensagem original; g++ não solicitado em analyze. Frontend e semântico
+reais executados, sem mock. Não houve execução da IR ou execução nativa Fork/Join.
+
+### Documentação e pendências
+
+Verificados AGENTS, MEMORY, README, BNF, docs 00/01/02/04/05, cards, template
+de handoff, CR-CORE05 e CR-CORE08 e handoffs CORE-06/08. Atualizados somente README
+e esta seção do handoff. BNF já descreve a notação real de CORE-06; contratos e
+CRs conservam as ratificações pendentes. Os documentos históricos CORE-08
+continuam retratando suas bases anteriores; o estado integrado está nesta seção.
+AGENTS e MEMORY não precisam mudar: não há nova regra, ownership, arquitetura
+ou fluxo permanente. Backlog e cards mantêm os registros anteriores após merge.
+
+Persistem ratificações C-FJ e das CRs, tipos genéricos, none implícito, consumo
+de handles e inicializadores de atributos FJ não representados, conforme seções
+anteriores. CORE-07 e PR #18 não incorporados; runtime, Web didática e legado
+intactos. Teste 11 recebido de dev sem edição. Esta rodada não reexecuta CPUlator
+nem homologa execução nativa de Fork/Join ou regressão global T01–T07.
+
+**Próximo consumidor:** revisor independente do PR #17, A/B para compatibilidade
+do serviço e A/C para as pendências contratuais. Merge local deixado aberto e
+sem commit para revisão; nenhum push, novo PR ou alteração remota foi realizado.
+
+### Resultados desta integração (04/11/2026)
+
+Ambiente executado: Windows, Python 3.12.4 da venv existente, G++ UCRT64
+16.2.0 (Rev6/MSYS2). Variáveis CXX, PATH e PYTHONIOENCODING apenas por processo.
+
+| Verificação executada | Resultado observado | Evidência local |
+|---|---|---|
+| CORE-06, suíte completa | 48 PASS, 0 falhas/erros | saída unittest; sondas nativas em `output/core06_review/native-*` |
+| CORE-08 | 35 PASS, 0 falhas/erros | `output/core08/tests-final.log` e `tests-final.json` |
+| CORE-04/05 | 126 PASS, 0 falhas/erros | `output/core0405/run-dh0ph83t/summary.json` |
+| CORE-03 | 78 PASS, 1 KNOWN_FAIL, 0 FAIL novos | `output/core03/run-30350_ot/summary.json` |
+| CORE-02 TAC | 5 PASS | saída unittest |
+| CORE-02 nativo | 17/17 normal e 17/17 com assertions PASS | `output/core02/run-20261104-101922-007062/validation.json` |
+| Teste 11 | 48/48 PASS, incluindo 22.0, -84.0, 22.0 e bytes ARM | saída do verificador; arquivos recebidos de dev intactos |
+| Sonda direta Fork/Join/par | 9/9 PASS estrutural e no serviço | `output/core06_integration/probe.json` |
+| Smoke terminal/Web antiga | PASS na repetição isolada | `output/core08/legacy/smoke.json` |
+| Planejamento | PASS, 43 cards, IDs/datas/dependências/DAG válidos | saída do validador |
+| Diagnósticos do editor para TAC e testes alterados | nenhum erro | ferramenta de problemas do workspace |
+| `git diff --check` e `git diff --check origin/dev` | PASS, exit 0 | sem saída |
+| `git diff --cached --check` | exit 2, oito avisos herdados do Teste 11 | mesma saída em `git diff --check HEAD origin/dev -- tests/2026_2/test11` |
+
+O KNOWN_FAIL de CORE-03 é `HERDADO-RETORNO-NUMERICO`: método recursivo com
+retornos numéricos cuja dedução C++ é inconsistente. O teste já esperava rejeição
+com `inconsistent deduction`; nenhum oráculo foi modificado nesta rodada.
+
+O smoke adicional teve uma primeira execução FAIL por
+`Tempo limite do compilador excedido.` na Web antiga enquanto outras suítes
+compilavam em paralelo. Repetido após terminar essas suítes, com o mesmo comando,
+limites e oráculos, passou em CLI, erro léxico e Web via Flask test_client com
+compilação/execução reais; sem servidor escutando. O timeout inicial fica registrado,
+sem afirmar sua causa definitivamente nem homologar estabilidade sob carga.
+
+Os oito avisos de whitespace no índice vêm dos arquivos `arm/caso{1,2,3}.arm`,
+seus stdout e `evidencias/extra_ldr.{arm,stdout.txt}` do Teste 11. São quatro linhas
+em branco finais em ARM e quatro espaços finais no prompt. A extração exige
+linha vazia final e o contrato exige o espaço do prompt; os hashes CPUlator
+dependem dos bytes. Não foram removidos para satisfazer o Git. Confirmado diff
+vazio contra origin/dev para Teste 11, runtime, Web didática e legado. Dois espaços
+de quebra Markdown no cabeçalho antigo deste handoff foram substituídos por
+separação de parágrafo para o diff de CORE-06 passar no check, sem reescrever provas.
+
+Comandos efetivamente executados, a partir da raiz:
+
+```powershell
+$env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
+$env:Path = 'C:\msys64\ucrt64\bin;' + $env:Path
+$env:PYTHONIOENCODING = 'utf-8'
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p 'test_*.py' -v
+.\.venv\Scripts\python.exe -B tests/2026_2/core08/verify_core08.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/verify_core0405.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core03/verify_core03.py
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
+.\.venv\Scripts\python.exe -B tests/validate_core02_native.py
+.\.venv\Scripts\python.exe -B tests/2026_2/test11/verificar_t11.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core08/smoke_legacy.py
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+git -c safe.directory=C:/Users/victo/Desktop/FACULDADE/Compiladores/minipar-2026-2 diff --check
+git -c safe.directory=C:/Users/victo/Desktop/FACULDADE/Compiladores/minipar-2026-2 diff --check origin/dev
+git -c safe.directory=C:/Users/victo/Desktop/FACULDADE/Compiladores/minipar-2026-2 diff --cached --check
+```
+
+**Estado final:** HEAD ainda `33bc9d9`, MERGE_HEAD `05b43f9`, nenhum caminho
+não resolvido (`git diff --name-only --diff-filter=U` vazio). O índice contém
+as mudanças recebidas de dev e a resolução de TAC; ajustes de testes/README e
+este handoff permanecem no working tree para revisão. Não executar `git commit`
+antes de revisar e incluir esses ajustes. Não há commit novo nem merge remoto.
