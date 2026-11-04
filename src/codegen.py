@@ -3,14 +3,26 @@ import os
 import subprocess
 import sys
 from typing import Optional
-from ast_nodes import (
-    ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock, BinaryExpr, 
-    UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
-    DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
-    ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
-    CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign, find_fork_join
-)
-from cpp_template import _CPP_HEADER
+if __package__:
+    from .ast_nodes import (
+        ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock, BinaryExpr,
+        UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
+        DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
+        ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
+        CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign, find_fork_join
+    )
+else:
+    from ast_nodes import (
+        ASTNode, Program, VarDecl, Assignment, PrintStmt, SeqBlock, ParBlock, BinaryExpr,
+        UnaryExpr, NumberExpr, StringExpr, BoolExpr, IdentifierExpr, IfStmt, WhileStmt,
+        DoWhileStmt, ForStmt, BreakStmt, ContinueStmt, InputExpr,
+        ClassDecl, FuncDecl, ReturnStmt, MethodCall, FuncCallExpr, PropertyAccess, PropertyAssign, NewExpr, ThisExpr,
+        CChannelExpr, SendStmt, ReceiveExpr, ListLiteral, MatrixCreateExpr, IndexExpr, IndexAssign, find_fork_join
+    )
+if __package__:
+    from .cpp_template import _CPP_HEADER
+else:
+    from cpp_template import _CPP_HEADER
 
 class CppCodeGenerator:
     @staticmethod
@@ -252,26 +264,13 @@ class CppCodeGenerator:
             return f"{self._translate_expression(node.target)} = {self._translate_expression(node.value)}"
         return self._translate_expression(node)
 
-    def generate(self, program: Program, output_name: str) -> bool:
-        if not self._validate_output_name(output_name):
-            return False
-        cpp_path = os.path.join("output", f"{output_name}.cpp")
-        exe_path = os.path.join("output", f"{output_name}.exe")
-        try:
-            os.makedirs("output", exist_ok=True)
-            if os.path.lexists(exe_path):
-                os.remove(exe_path)
-        except OSError as exc:
-            print(f"[ERRO] Nao foi possivel preparar saida: {exc}", file=sys.stderr)
-            return False
-
+    def generate_text(self, program: Program) -> str:
+        """Translate only: no filesystem writes and no compiler invocation."""
         unsupported = find_fork_join(program)
         if unsupported is not None:
-            print(f"[ERRO BACKEND] Linha {unsupported.line}: Fork/Join requer CORE-07; C++ nao gerado.", file=sys.stderr)
-            return False
-
+            raise NotImplementedError(f"Linha {unsupported.line}: Fork/Join requer CORE-07; C++ nao gerado.")
         cpp_code = _CPP_HEADER
-        
+
         for node in program.statements:
             if isinstance(node, ClassDecl):
                 cpp_code += f"class {node.name}" + (f" : public {node.superclass}" if node.superclass else "") + " {\npublic:\n"
@@ -307,45 +306,71 @@ class CppCodeGenerator:
                 else: cpp_code += self._translate_statement(node, "    ")
         cpp_code += "\n    return 0;\n}\n"
 
-        with open(cpp_path, "w", encoding="utf-8") as f: f.write(cpp_code)
-        
-        # CXX e um executavel (nome ou caminho), sem flags ou aspas embutidas.
-        compiler = os.environ.get("CXX") or "g++"
-        command = [compiler, "-std=c++20", "-O3", cpp_path, "-o", exe_path, "-pthread"]
-        if sys.platform == "win32":
-            command.append("-lws2_32")
-        print(f"[CODEGEN] Comando: {command!r}")
-        try:
-            result = subprocess.run(
-                command, capture_output=True, text=True, encoding="utf-8",
-                errors="replace", stdin=subprocess.DEVNULL, timeout=120,
-            )
-        except FileNotFoundError:
-            print(f"[ERRO] Compilador C++ nao encontrado: {compiler}. Configure CXX com o caminho do g++.", file=sys.stderr)
-        except subprocess.TimeoutExpired as exc:
-            print("[ERRO] Timeout na compilacao C++ (120 s).", file=sys.stderr)
-            for diagnostic in (exc.stdout, exc.stderr):
-                if diagnostic:
-                    print(diagnostic.decode("utf-8", errors="replace") if isinstance(diagnostic, bytes) else diagnostic, file=sys.stderr)
-        except OSError as exc:
-            print(f"[ERRO] Nao foi possivel executar compilador C++: {exc}", file=sys.stderr)
-        else:
-            if result.stdout:
-                print(result.stdout, end="")
-            if result.stderr:
-                print(result.stderr, end="", file=sys.stderr)
-            if result.returncode != 0:
-                print(f"[ERRO] Falha na compilacao C++ (exit={result.returncode}).", file=sys.stderr)
-            elif not os.path.isfile(exe_path) or os.path.getsize(exe_path) == 0:
-                print("[ERRO] Compilador retornou sucesso sem gerar binario valido nesta execucao.", file=sys.stderr)
-            else:
-                print(f"[SUCESSO] Executavel: {exe_path}")
-                return True
+        return cpp_code
 
-        # Um compilador que falhou pode ter deixado uma saida parcial.
+    @staticmethod
+    def compile_cpp(cpp_path, exe_path):
+        """Shared native build, explicit paths and bounded diagnostic streams."""
+        from pathlib import Path
+        if __package__:
+            from .service_process import run_bounded
+        else:
+            from service_process import run_bounded
+        cpp_path, exe_path = Path(cpp_path).absolute(), Path(exe_path).absolute()
+        compiler = os.environ.get("CXX") or "g++"
+        command = [compiler, "-std=c++20", "-O3", str(cpp_path), "-o", str(exe_path), "-pthread"]
+        if sys.platform == "win32": command.append("-lws2_32")
+        env = os.environ.copy()
+        # A configured MinGW toolchain needs its own DLL directory for this child.
+        if os.path.isabs(compiler):
+            env["PATH"] = str(Path(compiler).parent) + os.pathsep + env.get("PATH", "")
+        payload = dict(status="error", command=command, returncode=None, stdout="", stderr="", duration_ms=0)
+        code = None
         try:
+            result = run_bounded(command, cwd=cpp_path.parent, timeout=120, limit=65536, env=env)
+            timed_out = result.pop("timed_out")
+            payload.update(result)
+            if timed_out: code = "GPP_TIMEOUT"
+            elif result["returncode"] != 0: code = "GPP_FAILED"
+            elif not exe_path.is_file() or exe_path.is_symlink() or exe_path.stat().st_size == 0: code = "GPP_NO_BINARY"
+            else: payload["status"] = "ok"
+        except FileNotFoundError:
+            code = "GPP_NOT_FOUND"
+        if code and exe_path.is_file() and not exe_path.is_symlink(): exe_path.unlink()
+        return payload, code
+
+    def generate(self, program: Program, output_name: str) -> bool:
+        if not self._validate_output_name(output_name):
+            return False
+        cpp_path = os.path.join("output", f"{output_name}.cpp")
+        exe_path = os.path.join("output", f"{output_name}.exe")
+        try:
+            os.makedirs("output", exist_ok=True)
             if os.path.lexists(exe_path):
                 os.remove(exe_path)
         except OSError as exc:
-            print(f"[ERRO] Nao foi possivel remover saida parcial: {exc}", file=sys.stderr)
-        return False
+            print(f"[ERRO] Nao foi possivel preparar saida: {exc}", file=sys.stderr)
+            return False
+
+        unsupported = find_fork_join(program)
+        if unsupported is not None:
+            print(f"[ERRO BACKEND] Linha {unsupported.line}: Fork/Join requer CORE-07; C++ nao gerado.", file=sys.stderr)
+            return False
+
+        cpp_code = self.generate_text(program)
+
+        with open(cpp_path, "w", encoding="utf-8") as f: f.write(cpp_code)
+
+        try:
+            payload, code = self.compile_cpp(cpp_path, exe_path)
+        except OSError as exc:
+            print(f"[ERRO] Nao foi possivel executar compilador C++: {exc}", file=sys.stderr)
+            return False
+        print(f"[CODEGEN] Comando: {payload['command']!r}")
+        if payload["stdout"]: print(payload["stdout"], end="")
+        if payload["stderr"]: print(payload["stderr"], end="", file=sys.stderr)
+        if code:
+            print(f"[ERRO] {code}: falha na compilacao C++.", file=sys.stderr)
+            return False
+        print(f"[SUCESSO] Executavel: {exe_path}")
+        return True

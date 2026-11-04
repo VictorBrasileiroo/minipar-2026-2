@@ -1,6 +1,6 @@
 # RUN-03 — Prova de execução em dois computadores reais
 
-**Card:** `RUN-03` · **Eixo:** C (Erasmo) · **Contrato:** C-FJ-v1 (`docs/02_CONTRATOS_TECNICOS.md` §2) · **Data desta versão:** 22/10/2026
+**Card:** `RUN-03` · **Eixo:** C (Erasmo) · **Contrato:** C-FJ-v1 (`docs/02_CONTRATOS_TECNICOS.md` §2) · **Data desta versão:** 04/11/2026
 **Critério de aceite:** provar IPs distintos e cálculo remoto verdadeiro; `join` com erro/timeout quando o worker cai.
 **Programa:** `runtime/examples/demo_distribuida.cpp`, que usa a mesma biblioteca `minipar_rt` dos cards `RUN-01`/`RUN-02`.
 
@@ -10,9 +10,9 @@
 |---|---|---|
 | Programa da prova e roteiro | pronto | Este documento e `demo_distribuida.cpp` |
 | Ensaio do roteiro no loopback (mesmo PC) | **PASS como ensaio** | Seção 5. Prova que o programa e as verificações funcionam; **não** prova duas máquinas |
-| **Execução em dois computadores** | **BLOCKED** | Nesta sessão havia um computador só. A prova precisa de uma segunda máquina física na mesma rede e de liberar a porta do worker no firewall dela, ação que a pessoa que roda a prova faz (AGENTS regra 9; doc 05 §4) |
+| **Execução em dois computadores** | **PASS** (04/11/2026), log de A pendente | Seção 6. Log do worker (B) anexado em [`RUN-03/worker_B.log`](RUN-03/worker_B.log): conexão e tarefas vindas do IP de A, executadas pelo processo de B. As cinco verificações e o exit 0 do coordenador foram conferidos pelo operador na tela de A; a saída do coordenador (`coordenador_A.txt`) ainda não foi anexada |
 
-`RUN-03` só passa a `PASS` quando a seção 6 for preenchida com uma execução real entre dois computadores, todas as cinco verificações em `PASS` e os logs dos dois lados anexados. Localhost não substitui essa prova (ADR-017, AGENTS regra 6).
+`RUN-03` passa a `PASS` com a seção 6 preenchida com uma execução real entre dois computadores, as cinco verificações em `PASS` e os logs dos dois lados anexados. Localhost não substitui essa prova (ADR-017, AGENTS regra 6). Na execução de 04/11 só o log de B foi anexado; a revisão decide se pede a saída de A antes do merge.
 
 ## 2. O que a demonstração verifica
 
@@ -115,27 +115,29 @@ Rodado pelo `python runtime/tests/run_tests.py` (etapa `RUN-03 roteiro da demo e
 
 O `FAIL` da verificação 1 é o resultado **correto** no loopback: o programa não aceita o mesmo host como prova de duas máquinas. As outras quatro verificações mostram que o roteiro funciona.
 
-## 6. Registro da execução real (preencher)
+## 6. Registro da execução real (04/11/2026)
 
 | Campo | Máquina A (coordenador) | Máquina B (worker) |
 |---|---|---|
-| Data/hora | | |
-| Responsável | | |
-| Hostname (pode abreviar) | | |
-| IP na rede local (mascarar: `192.168.x.N`) | | |
-| SO e versão do G++ | | |
-| Commit do repositório | | |
-| SHA-256 do binário | | |
+| Data/hora | 04/11/2026, ~13:58 | 04/11/2026, ~13:58 (log gravado às 13:58) |
+| Responsável | equipe (operador de A) | Erasmo (Eixo C) |
+| Hostname (pode abreviar) | `pc-A` | `pc-B` |
+| IP na rede local (mascarar: `192.168.x.N`) | `192.168.x.31` | `192.168.x.131` |
+| SO e versão do G++ | não registrado | Windows 11, G++ 16.2.0 (MSYS2 UCRT64) |
+| Commit do repositório | não registrado (o worker aceitou o `build_id` de A: `minipar-demo-run03-v1`) | `ee8739c` |
+| SHA-256 do binário | não registrado | `39b65a5a35ca1cff4f270b00de3d9556b79c63b5683a7efa002261b535b1fee3` |
 
-| # | Verificação | Status | Trecho da saída |
+| # | Verificação | Status | Evidência |
 |---|---|---|---|
-| 1 | Worker em outro computador | | |
-| 2 | Cálculo remoto correto com duas entradas | | |
-| 3 | Executado pelo processo do worker | | |
-| 4 | Comparação com execução local | | |
-| 5 | Queda do worker → erro no `join` sem travar | | |
+| 1 | Worker em outro computador | PASS | Log de B: worker `pc-B` em `192.168.x.131` aceita a conexão de `192.168.x.31` (A). Resumo do coordenador conferido em A |
+| 2 | Cálculo remoto correto com duas entradas | PASS | Log de B: `task-2` e `task-3` `fn=soma_quadrados` vindas de A, `ok` em 149 ms e 150 ms. Conferência contra o cálculo local feita pelo coordenador em A |
+| 3 | Executado pelo processo do worker | PASS | Log de B: as tarefas rodaram no processo `pc-B:28212` |
+| 4 | Comparação com execução local | PASS | Conferido na saída do coordenador em A (só no lado de A) |
+| 5 | Queda do worker → erro no `join` sem travar | PASS | Log de B termina em `TASK task-6 fn=trabalho_longo ... inicio`, sem `RESULT`: o worker foi encerrado (Ctrl+C) durante a tarefa. O erro no `join` e o exit 0 foram conferidos em A |
 
-Anexos: `coordenador_A.txt` e `worker_B.log` sem dados pessoais (mascarar IPs públicos; hostnames podem ser trocados por `pc-A`/`pc-B` desde que de forma consistente). Opcional: foto ou print das duas telas lado a lado.
+Anexos:
+- [`RUN-03/worker_B.log`](RUN-03/worker_B.log): log completo do worker, com IPs mascarados (`192.168.x.N`) e hostname trocado por `pc-B`.
+- `coordenador_A.txt`: **não anexado**. As verificações 4 e 5 e o exit 0 do coordenador ficam registrados pelo operador de A, sem o log. Se a revisão pedir, a saída de A entra neste diretório.
 
 ## 7. Limitações
 
