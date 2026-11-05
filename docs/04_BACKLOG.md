@@ -277,7 +277,15 @@ As correções desta rodada de 05/11 ficam locais, sem commit/push.
 
 **Critério de aceite:** MiniPar→C++→binário cria tarefa local e remota de teste; join retorna dado correto.
 
-**Escopo de arquivos autorizado:** `src/codegen.py`, `src/cpp_template.py`.
+**Escopo original:** `src/codegen.py`, `src/cpp_template.py`.
+
+**Autorizacao especifica do coordenador (30/10/2026):** implementacao local e
+ampliacao delimitada a `src/semantic.py` (contexto CORE-07), `main.py`,
+`tests/2026_2/core07/`, documentacao e metadados impactados. Sem stage, commit,
+push, PR ou merge. BACKLOG/ready=false e dependencias nao promovidos.
+Backend local/worker loopback implementado para revisao; CLI completa BLOCKED
+por CORE-06/PR #17 ainda aberto em 30/10. Prova entre computadores pendente.
+Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
@@ -673,7 +681,9 @@ As correções desta rodada de 05/11 ficam locais, sem commit/push.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (04/11/2026):** IN_REVIEW (draft) · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), agora direto sobre `dev`. `ready=true`: `RUN-01`, `RUN-03` (#10, mergeado em 04/11) e `CORE-05` já estão em `dev`. `python runtime/tests/run_tests.py`: 6 etapas PASS, incluindo `test_interop.cpp` (17/17), que fixa os 13 símbolos da API usados pelo C++ do `CORE-07`. `python runtime/tests/interop_codegen.py`: (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS na **integração local** com #17/#18 (ainda fora de `dev`); sem o `CORE-07` na árvore dá `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev`. `src/` não foi alterado.
+**Estado atual (05/11/2026):** IN_REVIEW · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), pronto para revisão. Com o CORE-06 (#17) e o CORE-07 (#18) em `dev`, a branch sincronizada passa **sem integração local**: `run_tests.py` 6/6 etapas PASS e `interop_codegen.py` (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS. Loopback não prova dois computadores (RUN-03).
+
+**Estado anterior (04/11/2026):** IN_REVIEW (draft) · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), agora direto sobre `dev`. `ready=true`: `RUN-01`, `RUN-03` (#10, mergeado em 04/11) e `CORE-05` já estão em `dev`. `python runtime/tests/run_tests.py`: 6 etapas PASS, incluindo `test_interop.cpp` (17/17), que fixa os 13 símbolos da API usados pelo C++ do `CORE-07`. `python runtime/tests/interop_codegen.py`: (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS na **integração local** com #17/#18 (ainda fora de `dev`); sem o `CORE-07` na árvore dá `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev`. `src/` não foi alterado.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 

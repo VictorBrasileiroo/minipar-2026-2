@@ -1,0 +1,908 @@
+{
+  "date": "2026-10-30",
+  "state": "PARTIAL",
+  "base": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+  "branch": "eixo-a/CORE-07-backend-runtime",
+  "preexisting_changes": [],
+  "core06": {
+    "pr": 17,
+    "state": "open",
+    "merged": false,
+    "head": "33bc9d9b1b66ff678fcd0b10932f1b43235c9f63"
+  },
+  "tools": {
+    "python": "3.12.4",
+    "cxx": "g++ 16.2.0 UCRT64",
+    "platform": "Windows 11"
+  },
+  "native_suite": {
+    "tests": 13,
+    "exit": 0,
+    "log": "output/core07/native-suite.log",
+    "raw": "output\\core07\\run-puxgqyk8\\results.json",
+    "evidence": [
+      {
+        "kind": "build",
+        "name": "equivalence",
+        "source": "\nfunc integer(x) { return helper(x) / 2; }\nfunc decimal(x) { return helper(x) / 2; }\nfunc helper(x) { return x * 3; }\nfunc bits(x) { return (x % 3) + 7; }\nfunc text(s) { return substr(s, 1, 2) + \"!\"; }\nfunc flag(b) { return !b; }\nfunc numbers(xs) { xs.append(4); return xs; }\nfunc booleans(bs) { return bs; }\nfunc grid(m) { return m; }\nfunc noresult(x) { var y=x+1; }\nfunc branchresult(x) { par { return x; } }\nfunc complete(x) { if (x>0) { return 8; } else { return 9; } }\nvar dest=input();\nprint(integer(5),join(fork integer(5) on dest));\nprint(decimal(5.0),join(fork decimal(5.0) on dest));\nprint(bits(5),join(fork bits(5) on dest));\nprint(text(\"abcd\"),join(fork text(\"abcd\") on dest));\nprint(flag(true),join(fork flag(true) on dest));\nvar xs=[1,2];\nprint(numbers(xs),join(fork numbers(xs) on dest),xs);\nprint(booleans([true,false]),join(fork booleans([true,false]) on dest));\nvar m=matrix(2,2,3);\nprint(grid(m),join(fork grid(m) on dest));\nprint(complete(1),join(fork complete(1) on dest),complete(0));\nvar h=fork noresult(1) on dest; join(h);\nvar branch=fork branchresult(1) on dest; join(branch);\n",
+        "ok": true,
+        "stdout": "[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n",
+        "stderr": ""
+      },
+      {
+        "kind": "build",
+        "name": "failures",
+        "source": "\nfunc good(x) { return x+1; }\nfunc bad(s) { return substr(s,99,1); }\nfunc nested(s) { var h=fork bad(s); return join(h); }\nfunc branched(s) { par { print(substr(s,99,1)); } return s; }\nfunc slow(n) { var x=0.0; for(var i=0;i<n;i=i+1){ x=x+exp(0.001); } return x; }\nvar mode=input(); var dest=input();\nif(mode==\"bad\") { var h=fork bad(\"a\") on dest; print(join(h)); }\nif(mode==\"nested\") { var h=fork nested(\"a\") on dest; print(join(h)); }\nif(mode==\"par\") { var h=fork branched(\"a\") on dest; print(join(h)); }\nif(mode==\"second\") { var h=fork good(1) on dest; var copy=h; print(join(copy)); print(join(h)); }\nif(mode==\"timeout\") { var h=fork slow(2000000000) on dest; print(join(h,0)); }\nif(mode==\"good\") { var h=fork good(41) on dest; print(join(h)); }\n",
+        "ok": true,
+        "stdout": "[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n",
+        "stderr": ""
+      },
+      {
+        "kind": "build",
+        "name": "other-build",
+        "source": "\nfunc good(x) { return x+1; }\nfunc bad(s) { return substr(s,99,1); }\nfunc nested(s) { var h=fork bad(s); return join(h); }\nfunc branched(s) { par { print(substr(s,99,1)); } return s; }\nfunc slow(n) { var x=0.0; for(var i=0;i<n;i=i+1){ x=x+exp(0.001); } return x; }\nvar mode=input(); var dest=input();\nif(mode==\"bad\") { var h=fork bad(\"a\") on dest; print(join(h)); }\nif(mode==\"nested\") { var h=fork nested(\"a\") on dest; print(join(h)); }\nif(mode==\"par\") { var h=fork branched(\"a\") on dest; print(join(h)); }\nif(mode==\"second\") { var h=fork good(1) on dest; var copy=h; print(join(copy)); print(join(h)); }\nif(mode==\"timeout\") { var h=fork slow(2000000000) on dest; print(join(h,0)); }\nif(mode==\"good\") { var h=fork good(41) on dest; print(join(h)); }\n\n\n",
+        "ok": true,
+        "stdout": "[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n",
+        "stderr": ""
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "good\n127.0.0.1:55521\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "VERSION_MISMATCH",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: VERSION_MISMATCH: worker 127.0.0.1:55521: build_id do coordenador difere do worker (8565999f12a194c252f02c9e1c2d1f96b98f9d87b775f839e9d7ac113392de66)\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "build",
+        "name": "effects",
+        "source": "\nfunc pair(xs,n) { return xs[0]*10+n; }\nfunc id(x) { return x; }\nfunc word(x) { return x; }\nfunc boolcopy(xs) { return xs; }\nfunc collect(h) { return join(h); }\nfunc emit(x) { print(x); return x; }\nfunc launch(x) { var h=fork id(x); return join(h); }\nvar xs=[1,2];\nvar h=fork pair(xs,xs.pop()); xs[0]=9; var copy=h;\nprint(join(copy),xs);\nvar hs=[]; hs.append(fork id(11)); hs.append(fork id(22));\nvar copied=hs; var total=0; for(var item in copied) { total=total+join(item); }\nprint(total);\nvar replacement=fork id(2); replacement=fork id(3); print(join(replacement));\nvar more=[fork id(4),fork id(5)]; print(join(more[1]),join(more[0]));\nvar a=false && join(fork id(emit(999)))>0; var b=true || join(fork id(emit(888)))>0;\nprint(a,b);\nprint(launch(7),join(fork launch(8)));\nvar bs=[true,false]; var before=bs[0]; bs[0]=false; print(before,bs.pop(),bs);\nvar bools=[true]; for(var item in bools){bools[0]=false; print(item);}\nfor(var i=0;i<1;bools[0]=true){i=i+1;} print(bools[0]);\nprint(join(fork boolcopy([true]))[0]);\nprint(collect(fork id(6)),collect(fork word(\"ok\")));\nvar __fj_1_0=13; print(join(fork id(__fj_1_0)));\n",
+        "ok": true,
+        "stdout": "[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n",
+        "stderr": ""
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\effects\\output\\program.exe",
+        "stdin": "",
+        "expected": "12 [9]\n33\n3\n5 4\n0 1\n7 8\n1 0 [0]\n1\n1\n1\n6 ok\n13\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "12 [9]\n33\n3\n5 4\n0 1\n7 8\n1 0 [0]\n1\n1\n1\n6 ok\n13\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "build",
+        "name": "order",
+        "source": "\nfunc pair(a,b) { return a*10+b; }\nfunc emit(x) { print(x); return x; }\nfunc identity(x) { return x; }\nvar h=fork pair(emit(1),emit(2)) on input();\nprint(join(h,emit(3000)));\nvar tasks=[fork identity(4)];\nprint(join(tasks[emit(0)]));\n",
+        "ok": true,
+        "stdout": "[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n",
+        "stderr": ""
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\order\\output\\program.exe",
+        "stdin": "local\n",
+        "expected": "1\n2\n3000\n12\n0\n4\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "1\n2\n3000\n12\n0\n4\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\equivalence\\output\\program.exe",
+        "stdin": "local\n",
+        "expected": "7 7\n7.5 7.5\n9 9\nbc! bc!\n0 0\n[1, 2, 4] [1, 2, 4] [1, 2]\n[1, 0] [1, 0]\n[[3, 3], [3, 3]] [[3, 3], [3, 3]]\n8 8 9\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "7 7\n7.5 7.5\n9 9\nbc! bc!\n0 0\n[1, 2, 4] [1, 2, 4] [1, 2]\n[1, 0] [1, 0]\n[[3, 3], [3, 3]] [[3, 3], [3, 3]]\n8 8 9\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\equivalence\\output\\program.exe",
+        "stdin": "127.0.0.1:57189\n",
+        "expected": "7 7\n7.5 7.5\n9 9\nbc! bc!\n0 0\n[1, 2, 4] [1, 2, 4] [1, 2]\n[1, 0] [1, 0]\n[[3, 3], [3, 3]] [[3, 3], [3, 3]]\n8 8 9\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "7 7\n7.5 7.5\n9 9\nbc! bc!\n0 0\n[1, 2, 4] [1, 2, 4] [1, 2]\n[1, 0] [1, 0]\n[[3, 3], [3, 3]] [[3, 3], [3, 3]]\n8 8 9\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "bad\nlocal\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TASK_FAILED",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=99, tamanho=1, len=1)\n[minipar_rt] join task-1 falhou: TASK_FAILED: substr indices invalidos\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "nested\nlocal\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TASK_FAILED",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=99, tamanho=1, len=1)\n[minipar_rt] join task-1 falhou: TASK_FAILED: TASK_FAILED: substr indices invalidos\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "par\nlocal\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TASK_FAILED",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "Erro de execucao: substr indices invalidos (inicio=99, tamanho=1, len=1)\n[minipar_rt] join task-1 falhou: TASK_FAILED: substr indices invalidos\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "second\nlocal\n",
+        "expected": "2\n",
+        "expected_exit": 1,
+        "expected_error": "INVALID_HANDLE",
+        "exit": 1,
+        "stdout": "2\n",
+        "stderr": "[minipar_rt] join task-1 falhou: INVALID_HANDLE: handle desconhecido ou ja coletado: task-1\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "timeout\nlocal\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TIMEOUT",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 0 ms\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "good\nbad-destination\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "BAD_DESTINATION",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: BAD_DESTINATION: destino invalido 'bad-destination': esperado \"local\" ou \"host:porta\"\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "good\n127.0.0.1:57192\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "WORKER_UNAVAILABLE",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:57192 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "build",
+        "name": "ids",
+        "source": "\nfunc work(n) { var x=0.0; for(var i=0;i<n;i=i+1){x=x+exp(0.001);} return x/exp(0.001); }\nvar dest=input();\nvar a=fork work(1000000000) on dest; var b=fork work(2) on dest;\nprint(join(b),join(a));\n",
+        "ok": true,
+        "stdout": "[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\program.cpp', '-o', 'output\\\\program.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\program.exe\n",
+        "stderr": ""
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\ids\\output\\program.exe",
+        "stdin": "127.0.0.1:57204\n",
+        "expected": "2 1e+09\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "2 1e+09\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "bad\n127.0.0.1:57209\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TASK_FAILED",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: TASK_FAILED: substr indices invalidos\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "good\n127.0.0.1:57209\n",
+        "expected": "42\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "42\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "nested\n127.0.0.1:57209\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TASK_FAILED",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: TASK_FAILED: TASK_FAILED: substr indices invalidos\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "good\n127.0.0.1:57209\n",
+        "expected": "42\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "42\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "par\n127.0.0.1:57209\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TASK_FAILED",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: TASK_FAILED: substr indices invalidos\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "good\n127.0.0.1:57209\n",
+        "expected": "42\n",
+        "expected_exit": 0,
+        "expected_error": null,
+        "exit": 0,
+        "stdout": "42\n",
+        "stderr": "",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "second\n127.0.0.1:57209\n",
+        "expected": "2\n",
+        "expected_exit": 1,
+        "expected_error": "INVALID_HANDLE",
+        "exit": 1,
+        "stdout": "2\n",
+        "stderr": "[minipar_rt] join task-1 falhou: INVALID_HANDLE: handle desconhecido ou ja coletado: task-1\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "run",
+        "executable": "output\\core07\\run-puxgqyk8\\failures\\output\\program.exe",
+        "stdin": "timeout\n127.0.0.1:57209\n",
+        "expected": "",
+        "expected_exit": 1,
+        "expected_error": "TIMEOUT",
+        "exit": 1,
+        "stdout": "",
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 0 ms\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "CLI",
+        "status": "BLOCKED",
+        "reason": "CORE-06 PR #17 fora de dev",
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: <repo>\\output\\core07\\run-puxgqyk8\\cli\\p.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n",
+        "stderr": "[ERRO TAC] Linha 1: Fork/Join requer CORE-06; TAC nao gerado.; integracao CLI CORE-06/CORE-07 pendente. C++ nao executado.\n"
+      },
+      {
+        "kind": "compile_failure",
+        "log": "[CODEGEN] Comando: ['C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\.venv\\\\Scripts\\\\python.exe', '-std=c++20', '-O3', 'output\\\\probe.cpp', '-o', 'output\\\\probe.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\nUnknown option: -=\nusage: C:\\Users\\victo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe [option] ... [-c cmd | -m mod | file | -] [arg] ...\nTry `python -h' for more information.\n[ERRO] Falha na compilacao C++ (exit=2).\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var x; var h=fork f(x);",
+        "diagnostic": "CORE-07 linha 1: variavel sem tipo/inicializador comprovado",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var a=fork f(1); var b=fork f(1.0);",
+        "diagnostic": "CORE-07 linha 1: assinaturas de fork incompativeis para f",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var a=fork f(1); var b=fork f(\"a\");",
+        "diagnostic": "CORE-07 linha 1: assinaturas de fork incompativeis para f",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var a=fork f(1); var b=fork f(a);",
+        "diagnostic": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo task nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo task nao cruza tarefas.\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "class C{var x=1;} func f(x){return x;} var h=fork f(new C());",
+        "diagnostic": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo C nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo C nao cruza tarefas.\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var c=c_channel(\"127.0.0.1\",1); var h=fork f(c);",
+        "diagnostic": "[ERRO SEMANTICO] Linha 1: FJ-SEM-06: argumento de tipo c_channel nao cruza tarefas.\n[ERRO SEMANTICO] Linha 1: FJ-SEM-06: retorno de tipo c_channel nao cruza tarefas.\n",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var a=[]; var h=fork f(a);",
+        "diagnostic": "CORE-07 linha 1: tipo proibido/nao comprovado no transporte",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} var h=fork f(1); var a=[h,2];",
+        "diagnostic": "CORE-07 linha 1: representacoes incompativeis: CppType(kind='task', item=CppType(kind='int', item=None)) e CppType(kind='int', item=None)",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){return x;} func unused(x){var h=fork f(x);} var h=fork f(1);",
+        "diagnostic": "CORE-07 linha 1: fork sem contexto concreto de chamada comprovado",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func helper(x){if(x>0){return 2;}} func f(x){if(x>0){return 1;}} var h=fork f(0); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: retorno de f nao comprovado em todos os caminhos",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func helper(x){if(x>0){return 2;}} func f(x){while(x>0){return 1;}} var h=fork f(0); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: retorno de f nao comprovado em todos os caminhos",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func helper(x){if(x>0){return 2;}} func f(x){if(x>0){return 1;}else{return;}} var h=fork f(0); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: retorno de f nao comprovado em todos os caminhos",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func helper(x){if(x>0){return 2;}} func f(x){return f(x);} var h=fork f(0); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: retorno recursivo de f nao comprovado",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func helper(x){if(x>0){return 2;}} func f(x){return f([x]);} var h=fork f(0); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: retorno recursivo de f nao comprovado",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func helper(x){if(x>0){return 2;}} func f(x){return helper(x);} var h=fork f(0); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: retorno de helper nao comprovado em todos os caminhos",
+        "status": "PASS"
+      },
+      {
+        "kind": "negative",
+        "source": "func f(x){par{return x;}} var h=fork f(1); print(join(h));",
+        "diagnostic": "CORE-07 linha 1: none so pode ser comando isolado",
+        "status": "PASS"
+      }
+    ],
+    "worker_logs": {
+      "worker-equivalence.log": "[worker] escutando em 127.0.0.1:57189 (host=Br4ZZa pid=18332 build_id=b2f37721b3ab66eb06aba4cf80dac639c842d76f87e3db1ce82550249afc9140)\n[worker] conexao 127.0.0.1:57190 encerrada antes do HELLO\n[worker] conexao de 127.0.0.1:57191 aceita (build_id ok)\n[worker] TASK task-1 fn=integer de 127.0.0.1:57191: inicio\n[worker] RESULT task-1 fn=integer ok em 0 ms\n[worker] TASK task-2 fn=decimal de 127.0.0.1:57191: inicio\n[worker] RESULT task-2 fn=decimal ok em 0 ms\n[worker] TASK task-3 fn=bits de 127.0.0.1:57191: inicio\n[worker] RESULT task-3 fn=bits ok em 0 ms\n[worker] TASK task-4 fn=text de 127.0.0.1:57191: inicio\n[worker] RESULT task-4 fn=text ok em 0 ms\n[worker] TASK task-5 fn=flag de 127.0.0.1:57191: inicio\n[worker] RESULT task-5 fn=flag ok em 0 ms\n[worker] TASK task-6 fn=numbers de 127.0.0.1:57191: inicio\n[worker] RESULT task-6 fn=numbers ok em 0 ms\n[worker] TASK task-7 fn=booleans de 127.0.0.1:57191: inicio\n[worker] RESULT task-7 fn=booleans ok em 0 ms\n[worker] TASK task-8 fn=grid de 127.0.0.1:57191: inicio\n[worker] RESULT task-8 fn=grid ok em 0 ms\n[worker] TASK task-9 fn=complete de 127.0.0.1:57191: inicio\n[worker] RESULT task-9 fn=complete ok em 0 ms\n[worker] TASK task-10 fn=noresult de 127.0.0.1:57191: inicio\n[worker] RESULT task-10 fn=noresult ok em 0 ms\n[worker] TASK task-11 fn=branchresult de 127.0.0.1:57191: inicio\n[worker] RESULT task-11 fn=branchresult ok em 0 ms\n[worker] conexao de 127.0.0.1:57191 encerrada\n",
+      "worker-failures.log": "[worker] escutando em 127.0.0.1:57209 (host=Br4ZZa pid=18616 build_id=79abb4e838c999c06ddf56bd7f69e83b107fe2f467260418b75f9c2a76419b75)\n[worker] conexao 127.0.0.1:57210 encerrada antes do HELLO\n[worker] conexao de 127.0.0.1:57211 aceita (build_id ok)\n[worker] TASK task-1 fn=bad de 127.0.0.1:57211: inicio\nErro de execucao: substr indices invalidos (inicio=99, tamanho=1, len=1)\n[worker] RESULT task-1 fn=bad TASK_FAILED em 0 ms\n[worker] conexao de 127.0.0.1:57211 encerrada\n[worker] conexao de 127.0.0.1:57212 aceita (build_id ok)\n[worker] TASK task-1 fn=good de 127.0.0.1:57212: inicio\n[worker] RESULT task-1 fn=good ok em 0 ms\n[worker] conexao de 127.0.0.1:57212 encerrada\n[worker] conexao de 127.0.0.1:57213 aceita (build_id ok)\n[worker] TASK task-1 fn=nested de 127.0.0.1:57213: inicio\nErro de execucao: substr indices invalidos (inicio=99, tamanho=1, len=1)\n[worker] RESULT task-1 fn=nested TASK_FAILED em 0 ms\n[worker] conexao de 127.0.0.1:57213 encerrada\n[worker] conexao de 127.0.0.1:57214 aceita (build_id ok)\n[worker] TASK task-1 fn=good de 127.0.0.1:57214: inicio\n[worker] RESULT task-1 fn=good ok em 0 ms\n[worker] conexao de 127.0.0.1:57214 encerrada\n[worker] conexao de 127.0.0.1:57215 aceita (build_id ok)\n[worker] TASK task-1 fn=branched de 127.0.0.1:57215: inicio\nErro de execucao: substr indices invalidos (inicio=99, tamanho=1, len=1)\n[worker] RESULT task-1 fn=branched TASK_FAILED em 0 ms\n[worker] conexao de 127.0.0.1:57215 encerrada\n[worker] conexao de 127.0.0.1:57216 aceita (build_id ok)\n[worker] TASK task-1 fn=good de 127.0.0.1:57216: inicio\n[worker] RESULT task-1 fn=good ok em 0 ms\n[worker] conexao de 127.0.0.1:57216 encerrada\n[worker] conexao de 127.0.0.1:57217 aceita (build_id ok)\n[worker] TASK task-1 fn=good de 127.0.0.1:57217: inicio\n[worker] RESULT task-1 fn=good ok em 0 ms\n[worker] conexao de 127.0.0.1:57217 encerrada\n[worker] conexao de 127.0.0.1:57218 aceita (build_id ok)\n[worker] TASK task-1 fn=slow de 127.0.0.1:57218: inicio\n[worker] conexao de 127.0.0.1:57218 encerrada\n",
+      "worker-ids.log": "[worker] escutando em 127.0.0.1:57204 (host=Br4ZZa pid=28368 build_id=bd9795ab2ba103faf7c7504fd6a648a1fa9ad8ddaafc7c56a13529c95d1db18a)\n[worker] conexao 127.0.0.1:57205 encerrada antes do HELLO\n[worker] conexao de 127.0.0.1:57207 aceita (build_id ok)\n[worker] TASK task-1 fn=work de 127.0.0.1:57207: inicio\n[worker] TASK task-2 fn=work de 127.0.0.1:57207: inicio\n[worker] RESULT task-2 fn=work ok em 0 ms\n[worker] RESULT task-1 fn=work ok em 1005 ms\n[worker] conexao de 127.0.0.1:57207 encerrada\n",
+      "worker-mismatch.log": "[worker] escutando em 127.0.0.1:55521 (host=Br4ZZa pid=2104 build_id=8565999f12a194c252f02c9e1c2d1f96b98f9d87b775f839e9d7ac113392de66)\n[worker] conexao 127.0.0.1:55522 encerrada antes do HELLO\n[worker] conexao 127.0.0.1:55524 rejeitada: VERSION_MISMATCH: build_id do coordenador difere do worker (8565999f12a194c252f02c9e1c2d1f96b98f9d87b775f839e9d7ac113392de66)\n"
+    }
+  },
+  "regression": {
+    "core02_tac": "5 PASS",
+    "core02_native": "17 native + 17 assertions PASS",
+    "core03": "78 PASS, 1 KNOWN_FAIL, 0 FAIL",
+    "core0405": "126 PASS",
+    "runtime": "15 local + probe + 7 protocol + 19 remote PASS",
+    "core06": "BLOCKED: PR #17 outside dev",
+    "baseline": "T02 FAIL intermitente; T04 PARTIAL; T03/T05/T06/T07 PASS; T01 original BLOCKED; loopback PARTIAL",
+    "comparison": [
+      {
+        "variant": "base",
+        "case": "T01",
+        "statuses": [
+          "PASS",
+          "PASS",
+          "PASS"
+        ],
+        "main_sha256": "e3227204b3dcbab78f2b89e82f175e25eff5bb00146a3b4e254db3d3b1ab077e",
+        "scope": "PARTIAL: somente copia C++ com bind loopback; original BLOCKED por bind INADDR_ANY"
+      },
+      {
+        "variant": "base",
+        "case": "T02",
+        "statuses": [
+          "PASS",
+          "PASS",
+          "FAIL",
+          "PASS",
+          "PASS",
+          "PASS",
+          "FAIL",
+          "PASS",
+          "FAIL",
+          "PASS"
+        ],
+        "main_sha256": "7b5becc516be501d83f5b8c0b9d303cf37e22c0a920e50b75a0c902e0e2813bb",
+        "scope": "original"
+      },
+      {
+        "variant": "base",
+        "case": "T04",
+        "statuses": [
+          "PARTIAL"
+        ],
+        "main_sha256": "929daba59f32fc2b9bb8f39a6219e1419ff042e7e1c89760d8d60a8ebbb5d27f",
+        "scope": "original"
+      },
+      {
+        "variant": "current",
+        "case": "T01",
+        "statuses": [
+          "PASS",
+          "BLOCKED",
+          "PASS"
+        ],
+        "main_sha256": "e3227204b3dcbab78f2b89e82f175e25eff5bb00146a3b4e254db3d3b1ab077e",
+        "scope": "PARTIAL: somente copia C++ com bind loopback; original BLOCKED por bind INADDR_ANY"
+      },
+      {
+        "variant": "current",
+        "case": "T02",
+        "statuses": [
+          "PASS",
+          "PASS",
+          "PASS",
+          "PASS",
+          "PASS",
+          "PASS",
+          "FAIL",
+          "FAIL",
+          "FAIL",
+          "PASS"
+        ],
+        "main_sha256": "7b5becc516be501d83f5b8c0b9d303cf37e22c0a920e50b75a0c902e0e2813bb",
+        "scope": "original"
+      },
+      {
+        "variant": "current",
+        "case": "T04",
+        "statuses": [
+          "PARTIAL"
+        ],
+        "main_sha256": "929daba59f32fc2b9bb8f39a6219e1419ff042e7e1c89760d8d60a8ebbb5d27f",
+        "scope": "original"
+      }
+    ],
+    "body_comparison": "T01/T02/T04 identical program C++ after removing each version header",
+    "final_commands": [
+      {
+        "name": "core0405",
+        "command": [
+          "<repo>\\.venv\\Scripts\\python.exe",
+          "-B",
+          "tests/2026_2/core0405/verify_core0405.py"
+        ],
+        "exit": 0
+      },
+      {
+        "name": "planning",
+        "command": [
+          "<repo>\\.venv\\Scripts\\python.exe",
+          "-B",
+          "scripts/validar_planejamento.py"
+        ],
+        "exit": 0
+      }
+    ]
+  },
+  "demo": {
+    "source": "tests/2026_2/core07/demo.minipar",
+    "expected": "42 14 42\n",
+    "local": {
+      "stdin": "local\n",
+      "exit": 0,
+      "stdout": "42 14 42\n",
+      "stderr": ""
+    },
+    "worker_command": [
+      "<repo>\\output\\core07\\repro\\output\\demo.exe",
+      "--minipar-worker",
+      "64180",
+      "--bind",
+      "127.0.0.1"
+    ],
+    "loopback": {
+      "stdin": "127.0.0.1:64180\n",
+      "exit": 0,
+      "stdout": "42 14 42\n",
+      "stderr": ""
+    }
+  },
+  "limits": [
+    "CLI waits for CORE-06, TAC never bypassed",
+    "No physical two-computer proof",
+    "No contract ratification or human review claimed",
+    "No cancellation or implicit global wait",
+    "Unsupported or uncertain task representations rejected"
+  ],
+  "source_sha256": {
+    "src/codegen.py": "efda24d881d9e73a0c8089e0f74791e5f2e876c932953d153d8b48da9b8e9be3",
+    "src/cpp_template.py": "61ad05437ad1491a63050272374c33b8641b0510aadf8225df15199eebbb3847",
+    "src/semantic.py": "76902e99876f63badad7ec7ee6b50b1245e81f909339c86602c777364c47e174",
+    "main.py": "b8012ae4b65013c0c013c83f6b4711ca4ab2bbb76edf27f0ca69e86231e76d37",
+    "tests/2026_2/core07/test_core07.py": "fa61552ac20c55c57a779d3ab0efb8f6123030909162061e5a377611d09d8a5a",
+    "tests/2026_2/core07/compare_base.py": "12244f92a2b556e99af45357c26f1f62fd8c43f0aa9484db5320244c1d9ec93f",
+    "tests/2026_2/core07/compile_backend.py": "a6860614edf61d291c03c8124fa5d7576b6e62cbac0eb7b1c262a3a8c48c085d",
+    "tests/2026_2/core07/demo.minipar": "994f2f1a0d329d4221071f48a004e6388b14ff4509388ac15f94db38b4e82b24",
+    "tests/2026_2/core0405/verify_core0405.py": "d542028e54bf277c9bc50e084ce5b6a722c89495d3a0cc25e91432b300259fc4",
+    "tests/2026_2/core07/test_index_lifetime.py": "f12cb2cf9a19d28eae6c79d1485338e031a4030d15c8f4dfced3025df67f330e"
+  },
+  "final_review": {
+    "whitespace": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "index_whitespace": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "warning: unable to access 'C:\\Users\\victo/.config/git/ignore': Permission denied\n"
+    },
+    "index_empty": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "warning: unable to access 'C:\\Users\\victo/.config/git/ignore': Permission denied\n"
+    },
+    "head": {
+      "exit": 0,
+      "stdout": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1\n",
+      "stderr": ""
+    },
+    "branch": {
+      "exit": 0,
+      "stdout": "eixo-a/CORE-07-backend-runtime\n",
+      "stderr": ""
+    },
+    "stat": {
+      "exit": 0,
+      "stdout": " BNF-grammar.md                           |  37 ++++-\n README.md                                |  28 ++++\n docs/04_BACKLOG.md                       |  10 +-\n main.py                                  |  14 +-\n planning/cards.json                      |  20 ++-\n src/codegen.py                           | 194 +++++++++++++++++++---\n src/cpp_template.py                      |  46 ++++++\n src/semantic.py                          | 268 +++++++++++++++++++++++++++++++\n tests/2026_2/core0405/verify_core0405.py |   4 +-\n 9 files changed, 584 insertions(+), 37 deletions(-)\n",
+      "stderr": ""
+    },
+    "python_parse": "PASS",
+    "untracked_whitespace": []
+  },
+  "p1_index_lifetime": {
+    "date": "2026-10-30",
+    "state": "PARTIAL",
+    "scope": "P1 chained temporary matrix indexing only; no stage/commit/push/PR/merge",
+    "historical_source_sha256": {
+      "src/codegen.py": "85ee9f27cdc22336d4ca9b88402696adda02842d30c0862cfbfb5440828685b5",
+      "src/cpp_template.py": "61ad05437ad1491a63050272374c33b8641b0510aadf8225df15199eebbb3847",
+      "src/semantic.py": "77bd0afb2ed4ac00d32fc0b501fc5545c2ef5dfed534e04b952186ac63d4ab85",
+      "main.py": "b8012ae4b65013c0c013c83f6b4711ca4ab2bbb76edf27f0ca69e86231e76d37",
+      "tests/2026_2/core07/test_core07.py": "fa61552ac20c55c57a779d3ab0efb8f6123030909162061e5a377611d09d8a5a",
+      "tests/2026_2/core07/compare_base.py": "12244f92a2b556e99af45357c26f1f62fd8c43f0aa9484db5320244c1d9ec93f",
+      "tests/2026_2/core07/compile_backend.py": "a6860614edf61d291c03c8124fa5d7576b6e62cbac0eb7b1c262a3a8c48c085d",
+      "tests/2026_2/core07/demo.minipar": "994f2f1a0d329d4221071f48a004e6388b14ff4509388ac15f94db38b4e82b24",
+      "tests/2026_2/core0405/verify_core0405.py": "d542028e54bf277c9bc50e084ce5b6a722c89495d3a0cc25e91432b300259fc4"
+    },
+    "before_codegen_sha256": "85ee9f27cdc22336d4ca9b88402696adda02842d30c0862cfbfb5440828685b5",
+    "negative_control": {
+      "expected_exit": 1,
+      "compiler_exit": 1,
+      "diagnostics": [
+        "<repo>\\output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\reference-contract.cpp:357:454: error: static assertion failed: CORE07_INDEX_LIFETIME",
+        "<repo>\\output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\reference-contract.cpp:359:428: error: static assertion failed: CORE07_INDEX_LIFETIME",
+        "<repo>\\output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\reference-contract.cpp:361:850: error: static assertion failed: CORE07_INDEX_LIFETIME",
+        "<repo>\\output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\reference-contract.cpp:363:567: error: static assertion failed: CORE07_INDEX_LIFETIME",
+        "<repo>\\output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\reference-contract.cpp:365:766: error: static assertion failed: CORE07_INDEX_LIFETIME",
+        "<repo>\\output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\reference-contract.cpp:367:491: error: static assertion failed: CORE07_INDEX_LIFETIME"
+      ],
+      "raw": "output\\core07\\p1-index-lifetime\\run-3g5cnzyt\\results.json",
+      "log": "output/core07/p1-index-lifetime/before-test.log",
+      "status": "PASS: previous codegen rejected by deterministic reference contract"
+    },
+    "current": {
+      "command": {
+        "command": [
+          "<repo>\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests/2026_2/core07",
+          "-v"
+        ],
+        "exit": 0
+      },
+      "tests": 17,
+      "status": "PASS",
+      "raw": "output\\core07\\p1-index-lifetime\\run-maa_pw4g\\results.json",
+      "evidence": [
+        {
+          "kind": "compile",
+          "name": "reference-contract",
+          "command": [
+            "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "-std=c++20",
+            "-O2",
+            "-pthread",
+            "-I",
+            "<repo>\\runtime\\include",
+            "<repo>\\output\\core07\\p1-index-lifetime\\run-maa_pw4g\\reference-contract.cpp",
+            "-fsyntax-only"
+          ],
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "reference_contract",
+          "assertions": 34,
+          "source": "\nfunc idn(m) { return m; }\nfunc ids(m) { return m; }\nfunc idb(m) { return m; }\nfunc make() { print(101); return matrix(2,2,7); }\nfunc emit(x) { print(x); return x; }\nvar n=matrix(2,2,7);\nvar s=matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\");\nvar b=matrix(2,2,true);\nprint(idn(matrix(2,2,7))[0][0]);\nprint(join(fork idn(matrix(2,2,7)))[0][0]);\nprint(ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\"))[0][0]);\nprint(join(fork ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\")))[0][0]);\nprint(matrix(2,2,7)[0][1]);\nprint(make()[emit(0)][emit(1)]);\nn[1][0]=9; s[0][1]=\"changed\";\nprint(n[0][0],n[1][0],s[0][0],s[0][1]);\nvar before=b[0][0]; b[0][0]=false; print(before,b[0][0]);\nprint(idb(matrix(2,2,true))[0][0],join(fork idb(matrix(2,2,true)))[0][0]);\n",
+          "expected_exit": 0,
+          "exit": 0,
+          "status": "PASS"
+        },
+        {
+          "kind": "compile",
+          "name": "matrix-cases",
+          "command": [
+            "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "-std=c++20",
+            "-O2",
+            "-pthread",
+            "-I",
+            "<repo>\\runtime\\include",
+            "<repo>\\output\\core07\\p1-index-lifetime\\run-maa_pw4g\\matrix-cases.cpp",
+            "-o",
+            "<repo>\\output\\core07\\p1-index-lifetime\\run-maa_pw4g\\matrix-cases.exe",
+            "-lws2_32"
+          ],
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "native",
+          "name": "matrix-cases",
+          "attempt": 0,
+          "source": "\nfunc idn(m) { return m; }\nfunc ids(m) { return m; }\nfunc idb(m) { return m; }\nfunc make() { print(101); return matrix(2,2,7); }\nfunc emit(x) { print(x); return x; }\nvar n=matrix(2,2,7);\nvar s=matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\");\nvar b=matrix(2,2,true);\nprint(idn(matrix(2,2,7))[0][0]);\nprint(join(fork idn(matrix(2,2,7)))[0][0]);\nprint(ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\"))[0][0]);\nprint(join(fork ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\")))[0][0]);\nprint(matrix(2,2,7)[0][1]);\nprint(make()[emit(0)][emit(1)]);\nn[1][0]=9; s[0][1]=\"changed\";\nprint(n[0][0],n[1][0],s[0][0],s[0][1]);\nvar before=b[0][0]; b[0][0]=false; print(before,b[0][0]);\nprint(idb(matrix(2,2,true))[0][0],join(fork idb(matrix(2,2,true)))[0][0]);\n",
+          "expected": "7\n7\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n7\n101\n0\n1\n7\n7 9 abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ changed\n1 0\n1 1\n",
+          "exit": 0,
+          "stdout": "7\n7\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n7\n101\n0\n1\n7\n7 9 abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ changed\n1 0\n1 1\n",
+          "stderr": "",
+          "status": "PASS"
+        },
+        {
+          "kind": "native",
+          "name": "matrix-cases",
+          "attempt": 1,
+          "source": "\nfunc idn(m) { return m; }\nfunc ids(m) { return m; }\nfunc idb(m) { return m; }\nfunc make() { print(101); return matrix(2,2,7); }\nfunc emit(x) { print(x); return x; }\nvar n=matrix(2,2,7);\nvar s=matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\");\nvar b=matrix(2,2,true);\nprint(idn(matrix(2,2,7))[0][0]);\nprint(join(fork idn(matrix(2,2,7)))[0][0]);\nprint(ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\"))[0][0]);\nprint(join(fork ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\")))[0][0]);\nprint(matrix(2,2,7)[0][1]);\nprint(make()[emit(0)][emit(1)]);\nn[1][0]=9; s[0][1]=\"changed\";\nprint(n[0][0],n[1][0],s[0][0],s[0][1]);\nvar before=b[0][0]; b[0][0]=false; print(before,b[0][0]);\nprint(idb(matrix(2,2,true))[0][0],join(fork idb(matrix(2,2,true)))[0][0]);\n",
+          "expected": "7\n7\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n7\n101\n0\n1\n7\n7 9 abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ changed\n1 0\n1 1\n",
+          "exit": 0,
+          "stdout": "7\n7\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n7\n101\n0\n1\n7\n7 9 abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ changed\n1 0\n1 1\n",
+          "stderr": "",
+          "status": "PASS"
+        },
+        {
+          "kind": "native",
+          "name": "matrix-cases",
+          "attempt": 2,
+          "source": "\nfunc idn(m) { return m; }\nfunc ids(m) { return m; }\nfunc idb(m) { return m; }\nfunc make() { print(101); return matrix(2,2,7); }\nfunc emit(x) { print(x); return x; }\nvar n=matrix(2,2,7);\nvar s=matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\");\nvar b=matrix(2,2,true);\nprint(idn(matrix(2,2,7))[0][0]);\nprint(join(fork idn(matrix(2,2,7)))[0][0]);\nprint(ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\"))[0][0]);\nprint(join(fork ids(matrix(2,2,\"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\")))[0][0]);\nprint(matrix(2,2,7)[0][1]);\nprint(make()[emit(0)][emit(1)]);\nn[1][0]=9; s[0][1]=\"changed\";\nprint(n[0][0],n[1][0],s[0][0],s[0][1]);\nvar before=b[0][0]; b[0][0]=false; print(before,b[0][0]);\nprint(idb(matrix(2,2,true))[0][0],join(fork idb(matrix(2,2,true)))[0][0]);\n",
+          "expected": "7\n7\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n7\n101\n0\n1\n7\n7 9 abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ changed\n1 0\n1 1\n",
+          "exit": 0,
+          "stdout": "7\n7\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n7\n101\n0\n1\n7\n7 9 abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ changed\n1 0\n1 1\n",
+          "stderr": "",
+          "status": "PASS"
+        },
+        {
+          "kind": "compile",
+          "name": "original-reproducer",
+          "command": [
+            "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "-std=c++20",
+            "-O2",
+            "-pthread",
+            "-I",
+            "<repo>\\runtime\\include",
+            "<repo>\\output\\core07\\p1-index-lifetime\\run-maa_pw4g\\original-reproducer.cpp",
+            "-o",
+            "<repo>\\output\\core07\\p1-index-lifetime\\run-maa_pw4g\\original-reproducer.exe",
+            "-lws2_32"
+          ],
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "native",
+          "name": "original-reproducer",
+          "attempt": 0,
+          "source": "func f(m) { return m; } print(join(fork f(matrix(2, 2, 7)))[0][0]);",
+          "expected": "7\n",
+          "exit": 0,
+          "stdout": "7\n",
+          "stderr": "",
+          "status": "PASS"
+        },
+        {
+          "kind": "native",
+          "name": "original-reproducer",
+          "attempt": 1,
+          "source": "func f(m) { return m; } print(join(fork f(matrix(2, 2, 7)))[0][0]);",
+          "expected": "7\n",
+          "exit": 0,
+          "stdout": "7\n",
+          "stderr": "",
+          "status": "PASS"
+        },
+        {
+          "kind": "native",
+          "name": "original-reproducer",
+          "attempt": 2,
+          "source": "func f(m) { return m; } print(join(fork f(matrix(2, 2, 7)))[0][0]);",
+          "expected": "7\n",
+          "exit": 0,
+          "stdout": "7\n",
+          "stderr": "",
+          "status": "PASS"
+        },
+        {
+          "kind": "negative",
+          "source": "func f(m){return m;} var h=fork f(matrix(2,2,\"abc\")); print(join(h)[0][0][0]);",
+          "stderr": "[ERRO SEMANTICO] Linha 1: Indexacao de string nao suportada; use substr(s, i, 1).\n",
+          "status": "PASS"
+        }
+      ],
+      "full_suite_log": "output/core07/p1-index-lifetime/full-suite.log"
+    },
+    "regression": {
+      "commands": [
+        {
+          "name": "core0405",
+          "command": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "tests/2026_2/core0405/verify_core0405.py"
+          ],
+          "exit": 0
+        },
+        {
+          "name": "core03-index",
+          "command": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "tests/2026_2/core03/verify_core03.py",
+            "--case",
+            "INDEX-MATRIX-STRING-READ",
+            "--case",
+            "INDEX-MATRIX-STRING-WRITE",
+            "--case",
+            "INDEX-COLLECTIONS",
+            "--case",
+            "INDEX-SINGLE-EVALUATION",
+            "--case",
+            "EXTRA-NEG-LISTA-STRING"
+          ],
+          "exit": 0
+        }
+      ],
+      "core0405": "126 PASS",
+      "core03_index": "5 PASS"
+    },
+    "memory_diagnostic": {
+      "status": "BLOCKED: libasan absent; WSL unavailable",
+      "probe": {
+        "windows": {
+          "command": [
+            "C:/msys64/ucrt64/bin/g++.exe",
+            "-fsanitize=address",
+            "output\\core07\\p1-index-lifetime\\asan-probe.cpp",
+            "-o",
+            "output\\core07\\p1-index-lifetime\\asan-probe.exe"
+          ],
+          "exit": 1,
+          "stdout": "",
+          "stderr": "C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: cannot find -lasan: No such file or directory\ncollect2.exe: error: ld returned 1 exit status\n"
+        },
+        "wsl": {
+          "exit": 4294967295,
+          "stdout": "A\u0000c\u0000e\u0000s\u0000s\u0000o\u0000 \u0000n\u0000e\u0000g\u0000a\u0000d\u0000o\u0000.\u0000 \u0000\r\u0000\n\u0000C\u0000�\u0000d\u0000i\u0000g\u0000o\u0000 \u0000d\u0000e\u0000 \u0000e\u0000r\u0000r\u0000o\u0000:\u0000 \u0000W\u0000s\u0000l\u0000/\u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000/\u0000C\u0000r\u0000e\u0000a\u0000t\u0000e\u0000I\u0000n\u0000s\u0000t\u0000a\u0000n\u0000c\u0000e\u0000/\u0000E\u0000_\u0000A\u0000C\u0000C\u0000E\u0000S\u0000S\u0000D\u0000E\u0000N\u0000I\u0000E\u0000D\u0000\r\u0000\n\u0000S\u0000e\u0000 \u0000e\u0000s\u0000s\u0000e\u0000 \u0000e\u0000r\u0000r\u0000o\u0000 \u0000f\u0000o\u0000i\u0000 \u0000i\u0000n\u0000e\u0000s\u0000p\u0000e\u0000r\u0000a\u0000d\u0000o\u0000,\u0000 \u0000c\u0000o\u0000n\u0000s\u0000i\u0000d\u0000e\u0000r\u0000e\u0000 \u0000p\u0000e\u0000s\u0000q\u0000u\u0000i\u0000s\u0000a\u0000r\u0000 \u0000p\u0000r\u0000o\u0000b\u0000l\u0000e\u0000m\u0000a\u0000s\u0000 \u0000e\u0000x\u0000i\u0000s\u0000t\u0000e\u0000n\u0000t\u0000e\u0000s\u0000 \u0000o\u0000u\u0000 \u0000r\u0000e\u0000g\u0000i\u0000s\u0000t\u0000r\u0000a\u0000r\u0000 \u0000u\u0000m\u0000 \u0000n\u0000o\u0000v\u0000o\u0000 \u0000p\u0000r\u0000o\u0000b\u0000l\u0000e\u0000m\u0000a\u0000 \u0000e\u0000m\u0000 \u0000h\u0000t\u0000t\u0000p\u0000s\u0000:\u0000/\u0000/\u0000g\u0000i\u0000t\u0000h\u0000u\u0000b\u0000.\u0000c\u0000o\u0000m\u0000/\u0000m\u0000i\u0000c\u0000r\u0000o\u0000s\u0000o\u0000f\u0000t\u0000/\u0000W\u0000S\u0000L\u0000/\u0000i\u0000s\u0000s\u0000u\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000",
+          "stderr": ""
+        }
+      }
+    },
+    "final_review": {
+      "whitespace": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "index_whitespace": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "warning: unable to access 'C:\\Users\\victo/.config/git/ignore': Permission denied\n"
+      },
+      "index_empty": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": "warning: unable to access 'C:\\Users\\victo/.config/git/ignore': Permission denied\n"
+      },
+      "head": {
+        "exit": 0,
+        "stdout": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1\n",
+        "stderr": ""
+      },
+      "branch": {
+        "exit": 0,
+        "stdout": "eixo-a/CORE-07-backend-runtime\n",
+        "stderr": ""
+      }
+    },
+    "documentation": {
+      "updated": [
+        "docs/auditorias/CORE-07_BACKEND_RUNTIME.md",
+        "docs/auditorias/CORE-07_RESULTADOS.json",
+        "BNF-grammar.md"
+      ],
+      "reviewed_unchanged": [
+        "README.md",
+        "AGENTS.md",
+        "MEMORY.md"
+      ],
+      "reason": "Storage lifetime fix; ownership, contracts and development workflow unchanged"
+    }
+  }
+}

@@ -15,6 +15,10 @@ _CPP_HEADER = """\
 #include <iomanip>
 #include <limits>
 #include <locale>
+#include <stdexcept>
+
+// Ativo apenas durante wrappers de tarefa e suas branches par.
+inline thread_local bool __fj_in_task = false;
 
 #ifdef _WIN32
   #include <winsock2.h>
@@ -84,6 +88,7 @@ std::string __minipar_substr(const std::string& s, I start, N count) {
         std::cout.flush();
         std::cerr << "Erro de execucao: substr indices invalidos (inicio=" << inicio
                   << ", tamanho=" << tamanho << ", len=" << s.size() << ")" << std::endl;
+        if (__fj_in_task) throw std::out_of_range("substr indices invalidos");
         std::exit(1);
     }
     return s.substr(static_cast<std::size_t>(inicio), static_cast<std::size_t>(tamanho));
@@ -220,3 +225,44 @@ public:
 };
 
 """
+
+_FJ_HEADER = r'''
+#include "minipar_rt/minipar_rt.hpp"
+#include <exception>
+
+struct __fj_scope {
+    bool previous;
+    explicit __fj_scope(bool active) : previous(__fj_in_task) { __fj_in_task = active; }
+    ~__fj_scope() { __fj_in_task = previous; }
+};
+
+// No coordenador usa a API contratada; dentro de tarefa, preserva o worker.
+inline minipar_rt::Value __fj_join(const minipar_rt::TaskHandle& h, int timeout) {
+    if (!__fj_in_task) return minipar_rt::join_or_exit(h, timeout);
+    auto r = minipar_rt::join(h, timeout);
+    if (!r.ok) throw std::runtime_error(std::string(minipar_rt::to_string(r.error.code)) + ": " + r.error.message);
+    return std::move(r.value);
+}
+
+template<typename T> int __fj_timeout(T value) {
+    double n = static_cast<double>(value);
+    if (!std::isfinite(n) || n < std::numeric_limits<int>::min() || n > std::numeric_limits<int>::max())
+        throw std::invalid_argument("timeout fora da representacao int");
+    return static_cast<int>(value);
+}
+
+template<int Line, typename T, typename I>
+decltype(auto) __fj_index(T&& value, I index) {
+    double n = static_cast<double>(index);
+    if (!std::isfinite(n) || std::trunc(n) != n || n < 0 || n >= static_cast<double>(value.size()))
+        throw std::out_of_range("indice de lista invalido na linha " + std::to_string(Line));
+    return std::forward<T>(value).at(static_cast<std::size_t>(index));
+}
+
+template<typename T> T __fj_pop(std::vector<T>& values) {
+    if (values.empty()) return T{};
+    T value = values.back(); // materializa inclusive vector<bool>::reference
+    values.pop_back();
+    return value;
+}
+'''

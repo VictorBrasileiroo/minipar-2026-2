@@ -1,5 +1,10 @@
 # HANDOFF — CORE-06: TAC autêntico para Fork/Join e `par`
 
+> Integração posterior de 05/11/2026: #17 está mergeado em `origin/dev=f432cc6`.
+> A branch CORE-07 combina localmente TAC, backend e serviço, sem commit/push.
+> Novos resultados e limites em [CORE-07_INTEGRACAO_DEV.md](CORE-07_INTEGRACAO_DEV.md).
+> As guardas CLI/C++ citadas nas rodadas históricas abaixo foram superadas nessa integração.
+
 > **Leitura temporal:** execuções e estados anteriores são históricos.
 > Implementação/revisão publicadas em `2fada7c`/`33bc9d9`, integração em `fef7507`
 > e ajustes em `14fc239`, no PR #17. A convenção de instruções abaixo reflete

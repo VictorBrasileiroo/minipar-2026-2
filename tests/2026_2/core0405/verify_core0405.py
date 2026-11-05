@@ -241,7 +241,7 @@ for i, source in enumerate(MALFORMED):
 
 
 class BackendBoundaryTests(unittest.TestCase):
-    def test_tac_translates_nested_fork_cpp_stays_blocked(self):
+    def test_tac_guard_and_backend_build_id_requirement(self):
         program = parse('func f(){return 1;}func unused(){var h=fork f();return 2;}')
         tac = TACGenerator().generate_text(program)
         self.assertRegex(tac, r'func unused:\nt\d+ = fork f\(\) on "local"\nh = t\d+\nreturn 2\nendfunc unused')
@@ -260,12 +260,13 @@ class BackendBoundaryTests(unittest.TestCase):
                 self.assertFalse(CppCodeGenerator().generate(program, 'probe'))
                 compiler.assert_not_called()
             self.assertIn('CORE-07', stderr.getvalue())
+            self.assertIn('exige source', stderr.getvalue())
             self.assertFalse(binary.exists())
             self.assertFalse((output / 'probe.cpp').exists())
         finally:
             os.chdir(previous)
 
-    def test_cli_refuses_before_artifacts(self):
+    def test_cli_fork_join_compiles_and_replaces_stale_binary(self):
         folder = Path(tempfile.mkdtemp(dir=WORK))
         source = folder / 'program.minipar'
         source.write_text(IDENTITY + 'var h=fork f(2);print(join(h));', encoding='utf-8')
@@ -273,14 +274,12 @@ class BackendBoundaryTests(unittest.TestCase):
         binary = folder / 'output/program.exe'
         binary.write_bytes(b'previous artifact')
         result = subprocess.run([sys.executable, '-B', str(ROOT / 'main.py'), str(source), 'program'],
-                                cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=20)
+                                cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=120)
         EVIDENCE.append(dict(command=result.args, exit=result.returncode, stdout=result.stdout, stderr=result.stderr))
-        self.assertEqual(result.returncode, 1)
-        self.assertIn('Fork/Join possui TAC via API; compilacao C++ depende de CORE-07.', result.stderr)
-        self.assertNotIn('ERRO SEMANTICO', result.stderr)
-        self.assertFalse(binary.exists())
-        self.assertFalse((folder / 'output/program.cpp').exists())
-        self.assertFalse((folder / 'output/program.tac').exists())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(' = fork f(', (folder / 'output/program.tac').read_text())
+        executed = subprocess.run([str(binary)], capture_output=True, text=True, timeout=10)
+        self.assertEqual((executed.returncode, executed.stdout, executed.stderr), (0, '2\n', ''))
 
     def test_legacy_native_smoke(self):
         folder = Path(tempfile.mkdtemp(dir=WORK))
