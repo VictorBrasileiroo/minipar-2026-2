@@ -1,0 +1,966 @@
+{
+  "meta": {
+    "card": "INT-01",
+    "started": "2026-11-05T15:16:18-03:00",
+    "cwd": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack",
+    "int01_head": "debc3d9efffff08a0ad2538b0d178c9e46bdd43e",
+    "python": "3.12.10",
+    "python_exe": "C:\\Users\\ERASMO~1\\AppData\\Local\\Temp\\claude\\C--Users-ErasmoJunior-Dev-minipar-2026-2\\84e5b790-1bd4-47ee-9c2d-e1fa3b1ea999\\scratchpad\\venv\\Scripts\\python.exe",
+    "gpp": "g++.EXE (Rev3, Built by MSYS2 project) 16.2.0",
+    "platform": "win32",
+    "args": {
+      "port_base": 7500,
+      "only": null,
+      "timeout": 30,
+      "core08_root": null
+    }
+  },
+  "exit_code": 0,
+  "segments": [
+    {
+      "id": "A",
+      "title": "CLI Fork/Join + runtime (local e worker no loopback)",
+      "eixos": "A+C",
+      "status": "PASS",
+      "blocked_reason": null,
+      "notes": [
+        "Worker em 127.0.0.1: prova protocolo/integração no mesmo host, NÃO dois computadores (RUN-03 #10)."
+      ],
+      "checks": [
+        {
+          "id": "A1",
+          "desc": "CLI exit 0 e percorre Fases 1-4 (léxico/sintático, semântico, TAC, C++/g++)",
+          "status": "PASS",
+          "evidence": {
+            "exit": 0,
+            "fases": [
+              "[Fase 1]",
+              "[Fase 2]",
+              "[Fase 3]",
+              "[Fase 4]"
+            ]
+          }
+        },
+        {
+          "id": "A2",
+          "desc": "Artefatos TAC, C++ e .exe existem e não estão vazios",
+          "status": "PASS",
+          "evidence": {
+            "int01_segA.tac": 616,
+            "int01_segA.cpp": 12322,
+            "int01_segA.exe": 580479
+          }
+        },
+        {
+          "id": "A3",
+          "desc": "TAC contém fork soma_quadrados/fib ... on <destino> e 2 joins",
+          "status": "PASS",
+          "evidence": {
+            "fork_lines": [
+              "t10 = fork soma_quadrados(t8) on t9",
+              "t13 = fork fib(t11) on t12"
+            ],
+            "join_lines": [
+              "t14 = join h2",
+              "t15 = join h1"
+            ]
+          }
+        },
+        {
+          "id": "A4",
+          "desc": "C++ gerado usa a API do runtime (include, register_function, worker, start, build_id)",
+          "status": "PASS",
+          "evidence": {
+            "ausentes": []
+          }
+        },
+        {
+          "id": "A5",
+          "desc": "Destino local: stdout == oráculo, exit 0, stderr vazio",
+          "status": "PASS",
+          "evidence": {
+            "exit": 0,
+            "stdout": "832040\n328350\n",
+            "esperado": "832040\n328350\n",
+            "stderr": ""
+          }
+        },
+        {
+          "id": "A6",
+          "desc": "Destino 127.0.0.1:7500: stdout == oráculo, exit 0, stderr vazio",
+          "status": "PASS",
+          "evidence": {
+            "exit": 0,
+            "stdout": "832040\n328350\n",
+            "esperado": "832040\n328350\n",
+            "stderr": ""
+          }
+        },
+        {
+          "id": "A7",
+          "desc": "Log do worker: TASK e RESULT ok de soma_quadrados e fib, emitidos pelo PID do worker",
+          "status": "PASS",
+          "evidence": {
+            "worker_pid": 24224,
+            "tasks": [
+              [
+                "Jarvis",
+                "24224",
+                "task-1",
+                "soma_quadrados"
+              ],
+              [
+                "Jarvis",
+                "24224",
+                "task-2",
+                "fib"
+              ]
+            ],
+            "results": [
+              [
+                "Jarvis",
+                "24224",
+                "task-1",
+                "soma_quadrados",
+                "ok"
+              ],
+              [
+                "Jarvis",
+                "24224",
+                "task-2",
+                "fib",
+                "ok"
+              ]
+            ]
+          }
+        },
+        {
+          "id": "A8",
+          "desc": "Controle negativo 127.0.0.1:7501 (sem worker): exit != 0, erro em stderr e sem o resultado do oráculo",
+          "status": "PASS",
+          "evidence": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "[minipar_rt] join task-2 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7501 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\n"
+          }
+        }
+      ],
+      "data": {
+        "source": "output\\int01\\segA_fork.minipar",
+        "oracle": "832040\n328350\n",
+        "oracle_def": "fib(30), soma_quadrados(100) calculados em Python",
+        "compile": {
+          "cmd": [
+            "C:\\Users\\ERASMO~1\\AppData\\Local\\Temp\\claude\\C--Users-ErasmoJunior-Dev-minipar-2026-2\\84e5b790-1bd4-47ee-9c2d-e1fa3b1ea999\\scratchpad\\venv\\Scripts\\python.exe",
+            "-B",
+            "main.py",
+            "output\\int01\\segA_fork.minipar",
+            "int01_segA"
+          ],
+          "exit": 0,
+          "duration_ms": 5688,
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: output\\int01\\segA_fork.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\int01_segA.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['g++', '-std=c++20', '-O3', 'C:\\\\Users\\\\ErasmoJunior\\\\Dev\\\\minipar-wt\\\\stack\\\\output\\\\int01_segA.cpp', '-o', 'C:\\\\Users\\\\ErasmoJunior\\\\Dev\\\\minipar-wt\\\\stack\\\\output\\\\int01_segA.exe', '-pthread', '-I', 'C:\\\\Users\\\\ErasmoJunior\\\\Dev\\\\minipar-wt\\\\stack\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\int01_segA.exe\n=== Processo Finalizado ===\n",
+          "stderr": ""
+        },
+        "run_local": {
+          "stdin": "local",
+          "exit": 0,
+          "stdout": "832040\n328350\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_ms": 171
+        },
+        "worker": {
+          "cmd": [
+            "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\int01_segA.exe",
+            "--minipar-worker",
+            "7500",
+            "--bind",
+            "127.0.0.1"
+          ],
+          "pid": 24224,
+          "port": 7500,
+          "log": "output\\int01\\segA_worker.log"
+        },
+        "run_worker": {
+          "stdin": "127.0.0.1:7500",
+          "exit": 0,
+          "stdout": "832040\n328350\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_ms": 47
+        },
+        "worker_log_excerpt": [
+          "[minipar_worker Jarvis:24224] escutando em 127.0.0.1:7500 (host=Jarvis pid=24224 build_id=d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1)",
+          "[minipar_worker Jarvis:24224] TASK task-1 fn=soma_quadrados de 127.0.0.1:58887: inicio",
+          "[minipar_worker Jarvis:24224] TASK task-2 fn=fib de 127.0.0.1:58887: inicio",
+          "[minipar_worker Jarvis:24224] RESULT task-1 fn=soma_quadrados ok em 0 ms",
+          "[minipar_worker Jarvis:24224] RESULT task-2 fn=fib ok em 0 ms"
+        ],
+        "run_sem_worker": {
+          "stdin": "127.0.0.1:7501",
+          "exit": 1,
+          "stdout": "",
+          "stderr": "[minipar_rt] join task-2 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7501 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\n"
+        },
+        "duration_ms": 8094
+      }
+    },
+    {
+      "id": "B",
+      "title": "Serviço C-WEB-v1 (CORE-08, src/service.py)",
+      "eixos": "A+B",
+      "status": "PASS",
+      "blocked_reason": null,
+      "notes": [],
+      "checks": [
+        {
+          "id": "B1",
+          "desc": "Subprocesso isolado importa src.service do CORE-08 e chama a API sem exceção",
+          "status": "PASS",
+          "evidence": {
+            "service_file": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\src\\service.py",
+            "cwd": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack"
+          }
+        },
+        {
+          "id": "B2",
+          "desc": "Envelope minipar.compile.v1 de analyze conforme C-WEB-v1 §1.3/1.4",
+          "status": "PASS",
+          "evidence": {
+            "problemas": [],
+            "request_id": "decd86d7629345fa8ae35399b4555029",
+            "duration_ms": 0,
+            "phases": {
+              "lexer": "ok",
+              "parser": "ok",
+              "semantic": "ok",
+              "tac": "ok",
+              "cpp": "ok",
+              "gpp": "skipped"
+            }
+          }
+        },
+        {
+          "id": "B3",
+          "desc": "Envelope minipar.compile.v1 de compile conforme C-WEB-v1 §1.3/1.4",
+          "status": "PASS",
+          "evidence": {
+            "problemas": [],
+            "request_id": "6be000ad0c374a6e92f5680097b6d852",
+            "duration_ms": 2234,
+            "phases": {
+              "lexer": "ok",
+              "parser": "ok",
+              "semantic": "ok",
+              "tac": "ok",
+              "cpp": "ok",
+              "gpp": "ok"
+            }
+          }
+        },
+        {
+          "id": "B4",
+          "desc": "request_id distintos e source_hash igual entre analyze e compile",
+          "status": "PASS",
+          "evidence": {
+            "analyze": "decd86d7629345fa8ae35399b4555029",
+            "compile": "6be000ad0c374a6e92f5680097b6d852",
+            "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4"
+          }
+        },
+        {
+          "id": "B5",
+          "desc": "execute: envelope minipar.execute.v1 completo e stdout == oráculo",
+          "status": "PASS",
+          "evidence": {
+            "stdout": "ola int01\n328350\n832040\n",
+            "esperado": "ola int01\n328350\n832040\n",
+            "exit_code": 0,
+            "chaves_extras_ou_faltando": []
+          }
+        },
+        {
+          "id": "B6",
+          "desc": "get_artifact cpp/tac/binary: nome, media_type e arquivo no diretório do request_id (§1.7)",
+          "status": "PASS",
+          "evidence": {
+            "cpp": {
+              "ok": true,
+              "path": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.cpp",
+              "filename": "minipar_6be000ad.cpp",
+              "media_type": "text/x-c++src"
+            },
+            "tac": {
+              "ok": true,
+              "path": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.tac",
+              "filename": "minipar_6be000ad.tac",
+              "media_type": "text/plain"
+            },
+            "binary": {
+              "ok": true,
+              "path": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.exe",
+              "filename": "minipar_6be000ad.exe",
+              "media_type": "application/octet-stream"
+            }
+          }
+        },
+        {
+          "id": "B7",
+          "desc": "Erros contratuais: id inválido -> INVALID_ARGUMENT; id desconhecido -> ARTIFACT_NOT_FOUND; kind 'arm' -> INVALID_ARGUMENT",
+          "status": "PASS",
+          "evidence": {
+            "invalid": {
+              "code": "INVALID_ARGUMENT",
+              "message": "ID, stdin ou timeout invalido"
+            },
+            "unknown": {
+              "code": "ARTIFACT_NOT_FOUND",
+              "message": "Artefato nao encontrado"
+            },
+            "bad_kind": {
+              "code": "INVALID_ARGUMENT",
+              "message": "ID ou tipo de artefato invalido"
+            }
+          }
+        },
+        {
+          "id": "B8",
+          "desc": "Programa Fork/Join pelo serviço: compile + execute(local) == oráculo",
+          "status": "PASS",
+          "evidence": {
+            "stdout": "832040\n328350\n",
+            "esperado": "832040\n328350\n"
+          }
+        }
+      ],
+      "data": {
+        "core08_root": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack",
+        "core08_origin": "árvore atual",
+        "core08_head": "debc3d9efffff08a0ad2538b0d178c9e46bdd43e",
+        "int01_tem_service": true,
+        "helper": {
+          "exit": 0,
+          "duration_ms": 8875,
+          "stderr": "",
+          "timed_out": false,
+          "cwd": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack"
+        },
+        "service_sha256": "d6029024145eb01e3255fad27d22db0e95cc9c187ab36462691b68159367c5dd",
+        "python_core08": "3.12.10",
+        "analyze": {
+          "contract": "minipar.compile.v1",
+          "operation": "analyze",
+          "request_id": "decd86d7629345fa8ae35399b4555029",
+          "ok": true,
+          "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4",
+          "duration_ms": 0,
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok",
+              "tokens": "<omitido>"
+            },
+            "parser": {
+              "status": "ok",
+              "ast": "<omitido>",
+              "ast_stats": "<omitido>"
+            },
+            "semantic": {
+              "status": "ok",
+              "scopes": "<omitido>",
+              "symbols": "<omitido>"
+            },
+            "tac": {
+              "status": "ok",
+              "text": "<omitido>",
+              "lines": 42
+            },
+            "cpp": {
+              "status": "ok",
+              "text": "<omitido>"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "compile": {
+          "contract": "minipar.compile.v1",
+          "operation": "compile",
+          "request_id": "6be000ad0c374a6e92f5680097b6d852",
+          "ok": true,
+          "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4",
+          "duration_ms": 2234,
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": "6be000ad0c374a6e92f5680097b6d852",
+            "tac_id": "6be000ad0c374a6e92f5680097b6d852",
+            "binary_id": "6be000ad0c374a6e92f5680097b6d852"
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok",
+              "tokens": "<omitido>"
+            },
+            "parser": {
+              "status": "ok",
+              "ast": "<omitido>",
+              "ast_stats": "<omitido>"
+            },
+            "semantic": {
+              "status": "ok",
+              "scopes": "<omitido>",
+              "symbols": "<omitido>"
+            },
+            "tac": {
+              "status": "ok",
+              "text": "<omitido>",
+              "lines": 42
+            },
+            "cpp": {
+              "status": "ok",
+              "text": "<omitido>"
+            },
+            "gpp": {
+              "status": "ok",
+              "command": [
+                "g++",
+                "-std=c++20",
+                "-O3",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.cpp",
+                "-o",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.exe",
+                "-pthread",
+                "-I",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\runtime\\include",
+                "-lws2_32"
+              ],
+              "returncode": 0,
+              "stdout": "<omitido>",
+              "stderr": "<omitido>",
+              "duration_ms": "<omitido>",
+              "stdout_truncated": "<omitido>",
+              "stderr_truncated": "<omitido>"
+            }
+          }
+        },
+        "execute": {
+          "contract": "minipar.execute.v1",
+          "artifact_id": "6be000ad0c374a6e92f5680097b6d852",
+          "ok": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_ms": 641,
+          "stdout": "ola int01\n328350\n832040\n",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "error": null
+        },
+        "artifacts": {
+          "cpp": {
+            "ok": true,
+            "path": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.cpp",
+            "filename": "minipar_6be000ad.cpp",
+            "media_type": "text/x-c++src"
+          },
+          "tac": {
+            "ok": true,
+            "path": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.tac",
+            "filename": "minipar_6be000ad.tac",
+            "media_type": "text/plain"
+          },
+          "binary": {
+            "ok": true,
+            "path": "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\6be000ad0c374a6e92f5680097b6d852\\program.exe",
+            "filename": "minipar_6be000ad.exe",
+            "media_type": "application/octet-stream"
+          }
+        },
+        "execute_invalid": {
+          "contract": "minipar.execute.v1",
+          "artifact_id": "../x",
+          "ok": false,
+          "exit_code": null,
+          "timed_out": false,
+          "duration_ms": 0,
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "error": {
+            "code": "INVALID_ARGUMENT",
+            "message": "ID, stdin ou timeout invalido"
+          }
+        },
+        "execute_unknown": {
+          "contract": "minipar.execute.v1",
+          "artifact_id": "00000000000000000000000000000000",
+          "ok": false,
+          "exit_code": null,
+          "timed_out": false,
+          "duration_ms": 0,
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "error": {
+            "code": "ARTIFACT_NOT_FOUND",
+            "message": "Artefato nao encontrado"
+          }
+        },
+        "artifact_bad_kind": {
+          "ok": false,
+          "error": {
+            "code": "INVALID_ARGUMENT",
+            "message": "ID ou tipo de artefato invalido"
+          }
+        },
+        "oracle_sem_fork": "ola int01\n328350\n832040\n",
+        "fork_analyze": {
+          "contract": "minipar.compile.v1",
+          "operation": "analyze",
+          "request_id": "6166ffbbce35439a867e1e33b23050b3",
+          "ok": true,
+          "source_hash": "sha256:d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1",
+          "duration_ms": 0,
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok",
+              "tokens": "<omitido>"
+            },
+            "parser": {
+              "status": "ok",
+              "ast": "<omitido>",
+              "ast_stats": "<omitido>"
+            },
+            "semantic": {
+              "status": "ok",
+              "scopes": "<omitido>",
+              "symbols": "<omitido>"
+            },
+            "tac": {
+              "status": "ok",
+              "text": "<omitido>",
+              "lines": 46
+            },
+            "cpp": {
+              "status": "ok",
+              "text": "<omitido>"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "fork_compile": {
+          "contract": "minipar.compile.v1",
+          "operation": "compile",
+          "request_id": "b630910ffce74e088c3017999a7be8a3",
+          "ok": true,
+          "source_hash": "sha256:d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1",
+          "duration_ms": 5062,
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": "b630910ffce74e088c3017999a7be8a3",
+            "tac_id": "b630910ffce74e088c3017999a7be8a3",
+            "binary_id": "b630910ffce74e088c3017999a7be8a3"
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok",
+              "tokens": "<omitido>"
+            },
+            "parser": {
+              "status": "ok",
+              "ast": "<omitido>",
+              "ast_stats": "<omitido>"
+            },
+            "semantic": {
+              "status": "ok",
+              "scopes": "<omitido>",
+              "symbols": "<omitido>"
+            },
+            "tac": {
+              "status": "ok",
+              "text": "<omitido>",
+              "lines": 46
+            },
+            "cpp": {
+              "status": "ok",
+              "text": "<omitido>"
+            },
+            "gpp": {
+              "status": "ok",
+              "command": [
+                "g++",
+                "-std=c++20",
+                "-O3",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\b630910ffce74e088c3017999a7be8a3\\program.cpp",
+                "-o",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\b630910ffce74e088c3017999a7be8a3\\program.exe",
+                "-pthread",
+                "-I",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\runtime\\include",
+                "-lws2_32"
+              ],
+              "returncode": 0,
+              "stdout": "<omitido>",
+              "stderr": "<omitido>",
+              "duration_ms": "<omitido>",
+              "stdout_truncated": "<omitido>",
+              "stderr_truncated": "<omitido>"
+            }
+          }
+        },
+        "fork_execute": {
+          "contract": "minipar.execute.v1",
+          "artifact_id": "b630910ffce74e088c3017999a7be8a3",
+          "ok": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_ms": 719,
+          "stdout": "832040\n328350\n",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "error": null
+        },
+        "duration_ms": 8937
+      }
+    },
+    {
+      "id": "C",
+      "title": "Web didática chamando o serviço real (WEB-03/WEB-04)",
+      "eixos": "A+B",
+      "status": "PASS",
+      "blocked_reason": null,
+      "notes": [
+        "Cobre server.py e as rotas /api/v1. O front-end (static/js/fonte_real.js, app.js) não é executado: só a existência de fonte_real.js é conferida (C1). O fluxo no navegador fica com o Eixo B (WEB-03/WEB-04)."
+      ],
+      "checks": [
+        {
+          "id": "C1",
+          "desc": "server.py presente e importa src.service; fonte_real.js presente",
+          "status": "PASS",
+          "evidence": {
+            "server_py": true,
+            "py": [
+              "web_didatica/server.py: from src import service",
+              "web_didatica/server.py: compile_program("
+            ],
+            "fonte_real": true
+          }
+        },
+        {
+          "id": "C2",
+          "desc": "POST /api/v1/analyze: HTTP 200",
+          "status": "PASS",
+          "evidence": {
+            "status": 200
+          }
+        },
+        {
+          "id": "C3",
+          "desc": "Envelope minipar.compile.v1 de analyze conforme C-WEB-v1 §1.3/1.4",
+          "status": "PASS",
+          "evidence": {
+            "problemas": [],
+            "request_id": "8b8e0614d0ef4ba0b4f1594b10488b08",
+            "duration_ms": 0,
+            "phases": {
+              "lexer": "ok",
+              "parser": "ok",
+              "semantic": "ok",
+              "tac": "ok",
+              "cpp": "ok",
+              "gpp": "skipped"
+            }
+          }
+        },
+        {
+          "id": "C4",
+          "desc": "POST /api/v1/compile do programa Fork/Join: HTTP 200",
+          "status": "PASS",
+          "evidence": {
+            "status": 200
+          }
+        },
+        {
+          "id": "C5",
+          "desc": "Envelope minipar.compile.v1 de compile conforme C-WEB-v1 §1.3/1.4",
+          "status": "PASS",
+          "evidence": {
+            "problemas": [],
+            "request_id": "f528eaac24514b3783e316e5b65ec557",
+            "duration_ms": 5469,
+            "phases": {
+              "lexer": "ok",
+              "parser": "ok",
+              "semantic": "ok",
+              "tac": "ok",
+              "cpp": "ok",
+              "gpp": "ok"
+            }
+          }
+        },
+        {
+          "id": "C6",
+          "desc": "POST /api/v1/execute (destino local): HTTP 200, minipar.execute.v1 completo e stdout == oráculo",
+          "status": "PASS",
+          "evidence": {
+            "status": 200,
+            "stdout": "832040\n328350\n",
+            "esperado": "832040\n328350\n",
+            "exit_code": 0,
+            "timed_out": false,
+            "stderr": "",
+            "truncados": [
+              false,
+              false
+            ]
+          }
+        },
+        {
+          "id": "C7",
+          "desc": "GET /api/v1/artifacts/<id>/binary: anexo com o nome do §1.7 e bytes iguais ao binário registrado",
+          "status": "PASS",
+          "evidence": {
+            "status": 200,
+            "disposition": "attachment; filename=minipar_f528eaac.exe",
+            "mimetype": "application/octet-stream",
+            "bytes": 580479,
+            "sha256": "ababcedcbea9093fa95a38c414d1d7aff5beaf060a4116c33b456aafae68878c",
+            "sha256_registrado": "ababcedcbea9093fa95a38c414d1d7aff5beaf060a4116c33b456aafae68878c"
+          }
+        },
+        {
+          "id": "C8",
+          "desc": "Erros do contrato pelo HTTP (§1.6/§1.8): 400 BAD_REQUEST, 404 ARTIFACT_NOT_FOUND no download, ARTIFACT_NOT_FOUND no envelope do execute",
+          "status": "PASS",
+          "evidence": {
+            "obtido": {
+              "analyze_sem_source": {
+                "status": 400,
+                "code": "BAD_REQUEST"
+              },
+              "execute_timeout_31": {
+                "status": 400,
+                "code": "BAD_REQUEST"
+              },
+              "artifact_kind_arm": {
+                "status": 400,
+                "code": "BAD_REQUEST"
+              },
+              "artifact_inexistente": {
+                "status": 404,
+                "code": "ARTIFACT_NOT_FOUND"
+              },
+              "execute_inexistente": {
+                "status": 200,
+                "code": "ARTIFACT_NOT_FOUND"
+              }
+            },
+            "divergentes": {}
+          }
+        },
+        {
+          "id": "C9",
+          "desc": "kind 'arm' no download -> 400 BAD_REQUEST (§1.7 + web_didatica/README.md, fora do §1.8)",
+          "status": "PASS",
+          "evidence": {
+            "obtido": {
+              "status": 400,
+              "code": "BAD_REQUEST"
+            },
+            "divergentes": {}
+          }
+        }
+      ],
+      "data": {
+        "server_py": true,
+        "fonte_mock": true,
+        "fonte_real": true,
+        "py_usa_servico": [
+          "web_didatica/server.py: from src import service",
+          "web_didatica/server.py: compile_program("
+        ],
+        "js_chama_api": [],
+        "metodo": "cliente de teste do Flask em subprocesso isolado; nenhum servidor iniciado, nenhuma porta aberta",
+        "helper": {
+          "exit": 0,
+          "duration_ms": 6609,
+          "stderr": "",
+          "timed_out": false
+        },
+        "analyze": {
+          "contract": "minipar.compile.v1",
+          "operation": "analyze",
+          "request_id": "8b8e0614d0ef4ba0b4f1594b10488b08",
+          "ok": true,
+          "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4",
+          "duration_ms": 0,
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": null,
+            "tac_id": null,
+            "binary_id": null
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok",
+              "tokens": "<omitido>"
+            },
+            "parser": {
+              "status": "ok",
+              "ast": "<omitido>",
+              "ast_stats": "<omitido>"
+            },
+            "semantic": {
+              "status": "ok",
+              "scopes": "<omitido>",
+              "symbols": "<omitido>"
+            },
+            "tac": {
+              "status": "ok",
+              "text": "<omitido>",
+              "lines": 42
+            },
+            "cpp": {
+              "status": "ok",
+              "text": "<omitido>"
+            },
+            "gpp": {
+              "status": "skipped",
+              "reason": "not_requested"
+            }
+          }
+        },
+        "fork_compile": {
+          "contract": "minipar.compile.v1",
+          "operation": "compile",
+          "request_id": "f528eaac24514b3783e316e5b65ec557",
+          "ok": true,
+          "source_hash": "sha256:d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1",
+          "duration_ms": 5469,
+          "diagnostics": [],
+          "artifacts": {
+            "cpp_id": "f528eaac24514b3783e316e5b65ec557",
+            "tac_id": "f528eaac24514b3783e316e5b65ec557",
+            "binary_id": "f528eaac24514b3783e316e5b65ec557"
+          },
+          "phases": {
+            "lexer": {
+              "status": "ok",
+              "tokens": "<omitido>"
+            },
+            "parser": {
+              "status": "ok",
+              "ast": "<omitido>",
+              "ast_stats": "<omitido>"
+            },
+            "semantic": {
+              "status": "ok",
+              "scopes": "<omitido>",
+              "symbols": "<omitido>"
+            },
+            "tac": {
+              "status": "ok",
+              "text": "<omitido>",
+              "lines": 46
+            },
+            "cpp": {
+              "status": "ok",
+              "text": "<omitido>"
+            },
+            "gpp": {
+              "status": "ok",
+              "command": [
+                "g++",
+                "-std=c++20",
+                "-O3",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\f528eaac24514b3783e316e5b65ec557\\program.cpp",
+                "-o",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\output\\web\\f528eaac24514b3783e316e5b65ec557\\program.exe",
+                "-pthread",
+                "-I",
+                "C:\\Users\\ErasmoJunior\\Dev\\minipar-wt\\stack\\runtime\\include",
+                "-lws2_32"
+              ],
+              "returncode": 0,
+              "stdout": "<omitido>",
+              "stderr": "<omitido>",
+              "duration_ms": "<omitido>",
+              "stdout_truncated": "<omitido>",
+              "stderr_truncated": "<omitido>"
+            }
+          }
+        },
+        "fork_execute": {
+          "contract": "minipar.execute.v1",
+          "artifact_id": "f528eaac24514b3783e316e5b65ec557",
+          "ok": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_ms": 703,
+          "stdout": "832040\n328350\n",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "error": null
+        },
+        "download": {
+          "status": 200,
+          "disposition": "attachment; filename=minipar_f528eaac.exe",
+          "mimetype": "application/octet-stream",
+          "bytes": 580479,
+          "sha256": "ababcedcbea9093fa95a38c414d1d7aff5beaf060a4116c33b456aafae68878c",
+          "sha256_registrado": "ababcedcbea9093fa95a38c414d1d7aff5beaf060a4116c33b456aafae68878c"
+        },
+        "erros": {
+          "analyze_sem_source": {
+            "status": 400,
+            "code": "BAD_REQUEST"
+          },
+          "execute_timeout_31": {
+            "status": 400,
+            "code": "BAD_REQUEST"
+          },
+          "artifact_kind_arm": {
+            "status": 400,
+            "code": "BAD_REQUEST"
+          },
+          "artifact_inexistente": {
+            "status": 404,
+            "code": "ARTIFACT_NOT_FOUND"
+          },
+          "execute_inexistente": {
+            "status": 200,
+            "code": "ARTIFACT_NOT_FOUND"
+          }
+        },
+        "duration_ms": 6657
+      }
+    }
+  ],
+  "summary": {
+    "A": "PASS",
+    "B": "PASS",
+    "C": "PASS"
+  },
+  "finished": "2026-11-05T15:16:42-03:00"
+}
