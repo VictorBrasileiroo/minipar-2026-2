@@ -1,0 +1,1934 @@
+{
+ "card": "DOC-01",
+ "python": "3.14.7",
+ "passed": 114,
+ "total": 114,
+ "results": [
+  {
+   "id": "LEX-01 palavras reservadas FJ",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "FORK",
+      "fork"
+     ],
+     [
+      "JOIN",
+      "join"
+     ],
+     [
+      "ON",
+      "on"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "FORK",
+      "fork"
+     ],
+     [
+      "JOIN",
+      "join"
+     ],
+     [
+      "ON",
+      "on"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-02 tipos são TYPE",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "TYPE",
+      "number"
+     ],
+     [
+      "TYPE",
+      "int"
+     ],
+     [
+      "TYPE",
+      "string"
+     ],
+     [
+      "TYPE",
+      "bool"
+     ],
+     [
+      "TYPE",
+      "void"
+     ],
+     [
+      "TYPE",
+      "list"
+     ],
+     [
+      "TYPE",
+      "dict"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "TYPE",
+      "number"
+     ],
+     [
+      "TYPE",
+      "int"
+     ],
+     [
+      "TYPE",
+      "string"
+     ],
+     [
+      "TYPE",
+      "bool"
+     ],
+     [
+      "TYPE",
+      "void"
+     ],
+     [
+      "TYPE",
+      "list"
+     ],
+     [
+      "TYPE",
+      "dict"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-03 true/false são BOOL_LITERAL",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "BOOL_LITERAL",
+      "true"
+     ],
+     [
+      "BOOL_LITERAL",
+      "false"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "BOOL_LITERAL",
+      "true"
+     ],
+     [
+      "BOOL_LITERAL",
+      "false"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-04 número inteiro, real e '1.'",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "NUMBER",
+      "12"
+     ],
+     [
+      "NUMBER",
+      "3.25"
+     ],
+     [
+      "NUMBER",
+      "1."
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "NUMBER",
+      "12"
+     ],
+     [
+      "NUMBER",
+      "3.25"
+     ],
+     [
+      "NUMBER",
+      "1."
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-05 '.5' não é número",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "DOT",
+      "."
+     ],
+     [
+      "NUMBER",
+      "5"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "DOT",
+      "."
+     ],
+     [
+      "NUMBER",
+      "5"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-06 escapes conhecidos",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "STRING_LITERAL",
+      "a\nb\t\"\\"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "STRING_LITERAL",
+      "a\nb\t\"\\"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-07 escape desconhecido descarta a barra",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "STRING_LITERAL",
+      "q"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "STRING_LITERAL",
+      "q"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-08 string sem fechamento",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "STRING_LITERAL",
+      "abc"
+     ]
+    ],
+    "codes": [
+     "LEX_UNTERMINATED_STRING"
+    ]
+   },
+   "observed": {
+    "tokens": [
+     [
+      "STRING_LITERAL",
+      "abc"
+     ]
+    ],
+    "codes": [
+     "LEX_UNTERMINATED_STRING"
+    ]
+   }
+  },
+  {
+   "id": "LEX-09 operadores de dois caracteres",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "EQ",
+      "=="
+     ],
+     [
+      "NEQ",
+      "!="
+     ],
+     [
+      "LTE",
+      "<="
+     ],
+     [
+      "GTE",
+      ">="
+     ],
+     [
+      "AND",
+      "&&"
+     ],
+     [
+      "OR",
+      "||"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "EQ",
+      "=="
+     ],
+     [
+      "NEQ",
+      "!="
+     ],
+     [
+      "LTE",
+      "<="
+     ],
+     [
+      "GTE",
+      ">="
+     ],
+     [
+      "AND",
+      "&&"
+     ],
+     [
+      "OR",
+      "||"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-10 '&' e '|' isolados",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "UNKNOWN",
+      "&"
+     ],
+     [
+      "UNKNOWN",
+      "|"
+     ]
+    ],
+    "codes": [
+     "LEX_UNKNOWN_CHAR",
+     "LEX_UNKNOWN_CHAR"
+    ]
+   },
+   "observed": {
+    "tokens": [
+     [
+      "UNKNOWN",
+      "&"
+     ],
+     [
+      "UNKNOWN",
+      "|"
+     ]
+    ],
+    "codes": [
+     "LEX_UNKNOWN_CHAR",
+     "LEX_UNKNOWN_CHAR"
+    ]
+   }
+  },
+  {
+   "id": "LEX-11 caractere desconhecido",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "UNKNOWN",
+      "@"
+     ]
+    ],
+    "codes": [
+     "LEX_UNKNOWN_CHAR"
+    ]
+   },
+   "observed": {
+    "tokens": [
+     [
+      "UNKNOWN",
+      "@"
+     ]
+    ],
+    "codes": [
+     "LEX_UNKNOWN_CHAR"
+    ]
+   }
+  },
+  {
+   "id": "LEX-12 comentário até o fim da linha",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "VAR",
+      "var"
+     ],
+     [
+      "IDENTIFIER",
+      "x"
+     ],
+     [
+      "SEMICOLON",
+      ";"
+     ],
+     [
+      "IDENTIFIER",
+      "x"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "VAR",
+      "var"
+     ],
+     [
+      "IDENTIFIER",
+      "x"
+     ],
+     [
+      "SEMICOLON",
+      ";"
+     ],
+     [
+      "IDENTIFIER",
+      "x"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-13 identificador com letra Unicode (str.isalpha)",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "IDENTIFIER",
+      "ação_1"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "IDENTIFIER",
+      "ação_1"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "LEX-14 '!' isolado é NOT",
+   "kind": "lexer",
+   "status": "PASS",
+   "expected": {
+    "tokens": [
+     [
+      "NOT",
+      "!"
+     ],
+     [
+      "IDENTIFIER",
+      "x"
+     ]
+    ],
+    "codes": []
+   },
+   "observed": {
+    "tokens": [
+     [
+      "NOT",
+      "!"
+     ],
+     [
+      "IDENTIFIER",
+      "x"
+     ]
+    ],
+    "codes": []
+   }
+  },
+  {
+   "id": "SYN-01",
+   "kind": "parser",
+   "production": "<declaracao_variavel> var",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-02",
+   "kind": "parser",
+   "production": "<declaracao_variavel> tipo",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-03",
+   "kind": "parser",
+   "production": "<declaracao_variavel> exige ';'",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   }
+  },
+  {
+   "id": "SYN-04",
+   "kind": "parser",
+   "production": "<declaracao_funcao> com parâmetro tipado",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-05",
+   "kind": "parser",
+   "production": "<declaracao_funcao> exige bloco '{'",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   }
+  },
+  {
+   "id": "SYN-06",
+   "kind": "parser",
+   "production": "<declaracao_classe> extends + membros",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-07",
+   "kind": "parser",
+   "production": "<membro_classe> não aceita declaração tipada",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   }
+  },
+  {
+   "id": "SYN-08",
+   "kind": "parser",
+   "production": "<comando_return> com ';' opcional",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-09",
+   "kind": "parser",
+   "production": "<comando_break>/<comando_continue> com ';' opcional",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-10",
+   "kind": "parser",
+   "production": "<bloco_seq> com e sem 'seq'",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-11",
+   "kind": "parser",
+   "production": "<bloco_par>",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-12",
+   "kind": "parser",
+   "production": "<comando_if> else-if encadeado",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-13",
+   "kind": "parser",
+   "production": "<comando_do_while> com ';' opcional",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-14",
+   "kind": "parser",
+   "production": "<for_classico> todas as partes",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-15",
+   "kind": "parser",
+   "production": "<for_classico> partes vazias",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-16",
+   "kind": "parser",
+   "production": "<for_classico> inicializador tipado",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-17",
+   "kind": "parser",
+   "production": "<for_iterador> exige 'var'",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-18",
+   "kind": "parser",
+   "production": "<for_iterador> sem 'var' não é aceito",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   }
+  },
+  {
+   "id": "SYN-19",
+   "kind": "parser",
+   "production": "<comando_print> sem argumentos",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-20",
+   "kind": "parser",
+   "production": "<comando_send>",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-21",
+   "kind": "parser",
+   "production": "<comando_expressao> chamada de função",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-22",
+   "kind": "parser",
+   "production": "<comando_expressao> chamada de método encadeada",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-23",
+   "kind": "parser",
+   "production": "<comando_expressao> rejeita expressão sem efeito",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_INVALID_STATEMENT"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_INVALID_STATEMENT"
+   }
+  },
+  {
+   "id": "SYN-24",
+   "kind": "parser",
+   "production": "<comando_expressao> rejeita 'input()' isolado",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_INVALID_STATEMENT"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_INVALID_STATEMENT"
+   }
+  },
+  {
+   "id": "SYN-25",
+   "kind": "parser",
+   "production": "<comando> não começa com literal",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_UNRECOGNIZED_STATEMENT"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_UNRECOGNIZED_STATEMENT"
+   }
+  },
+  {
+   "id": "SYN-26",
+   "kind": "parser",
+   "production": "<comando> não começa com '('",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_UNRECOGNIZED_STATEMENT"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_UNRECOGNIZED_STATEMENT"
+   }
+  },
+  {
+   "id": "SYN-27",
+   "kind": "parser",
+   "production": "<atribuicao> a propriedade e índice",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-28",
+   "kind": "parser",
+   "production": "<atribuicao> alvo inválido",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_INVALID_ASSIGNMENT"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_INVALID_ASSIGNMENT"
+   }
+  },
+  {
+   "id": "SYN-29",
+   "kind": "parser",
+   "production": "<expressao_fork> com e sem 'on'",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-30",
+   "kind": "parser",
+   "production": "<expressao_fork> exige identificador",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   }
+  },
+  {
+   "id": "SYN-31",
+   "kind": "parser",
+   "production": "<expressao_join> com timeout",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-32",
+   "kind": "parser",
+   "production": "<comando_expressao> fork/join como comando (sintaxe)",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-33",
+   "kind": "parser",
+   "production": "<expressao_matrix> exige 3 argumentos",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_TOKEN"
+   }
+  },
+  {
+   "id": "SYN-34",
+   "kind": "parser",
+   "production": "<expressao_input> com e sem prompt",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-35",
+   "kind": "parser",
+   "production": "<expressao_new> com argumentos",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-36",
+   "kind": "parser",
+   "production": "<expressao_lista> vazia e aninhada",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-37",
+   "kind": "parser",
+   "production": "<expressao_unaria> repetida",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-38",
+   "kind": "parser",
+   "production": "<expressao_posfixo> após primária parentizada",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-39",
+   "kind": "parser",
+   "production": "<declaracao_funcao> aninhada em bloco (comando)",
+   "status": "PASS",
+   "expected": {
+    "result": "accept",
+    "code": null
+   },
+   "observed": {
+    "result": "accept",
+    "code": null
+   }
+  },
+  {
+   "id": "SYN-40",
+   "kind": "parser",
+   "production": "<expressao_primaria> ausente",
+   "status": "PASS",
+   "expected": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_EXPRESSION"
+   },
+   "observed": {
+    "result": "reject",
+    "code": "SYN_EXPECTED_EXPRESSION"
+   }
+  },
+  {
+   "id": "PREC-01 * antes de +",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "(1 + (2 * 3))",
+   "observed": "(1 + (2 * 3))"
+  },
+  {
+   "id": "PREC-02 + esquerda",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "((1 - 2) - 3)",
+   "observed": "((1 - 2) - 3)"
+  },
+  {
+   "id": "PREC-03 comparações no mesmo nível, esquerda",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "((1 < 2) == true)",
+   "observed": "((1 < 2) == true)"
+  },
+  {
+   "id": "PREC-04 && antes de ||",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "(a || (b && c))",
+   "observed": "(a || (b && c))"
+  },
+  {
+   "id": "PREC-05 unário antes de *",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "((-a) * b)",
+   "observed": "((-a) * b)"
+  },
+  {
+   "id": "PREC-06 posfixo antes de unário",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "(-l[0])",
+   "observed": "(-l[0])"
+  },
+  {
+   "id": "PREC-07 'on' consome expressão completa",
+   "kind": "precedence",
+   "status": "PASS",
+   "expected": "fork f() on (d + 1)",
+   "observed": "fork f() on (d + 1)"
+  },
+  {
+   "id": "SEM-01 não declarada",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_VARIABLE"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_VARIABLE"
+    ]
+   }
+  },
+  {
+   "id": "SEM-02 redeclaração no mesmo escopo",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_REDECLARED"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_REDECLARED"
+    ]
+   }
+  },
+  {
+   "id": "SEM-03 sombreamento em escopo interno",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "SEM-04 tipo incompatível",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_TYPE_MISMATCH"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_TYPE_MISMATCH"
+    ]
+   }
+  },
+  {
+   "id": "SEM-05 int e number compatíveis",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "SEM-06 break fora de laço",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_OUTSIDE_LOOP"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_OUTSIDE_LOOP"
+    ]
+   }
+  },
+  {
+   "id": "SEM-07 aridade de função",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_ARITY"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_ARITY"
+    ]
+   }
+  },
+  {
+   "id": "SEM-08 função não declarada",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_FUNCTION"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_FUNCTION"
+    ]
+   }
+  },
+  {
+   "id": "SEM-09 nome nativo reservado",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_RESERVED_NAME"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_RESERVED_NAME"
+    ]
+   }
+  },
+  {
+   "id": "SEM-10 string + número sem conversão",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_TYPE_MISMATCH"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_TYPE_MISMATCH"
+    ]
+   }
+  },
+  {
+   "id": "SEM-11 operador aritmético exige números",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_NUMERIC_OPERANDS"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_NUMERIC_OPERANDS"
+    ]
+   }
+  },
+  {
+   "id": "SEM-12 indexação de string",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNSUPPORTED_FEATURE"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNSUPPORTED_FEATURE"
+    ]
+   }
+  },
+  {
+   "id": "SEM-13 lista de strings",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNSUPPORTED_FEATURE"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNSUPPORTED_FEATURE"
+    ]
+   }
+  },
+  {
+   "id": "SEM-14 superclasse não declarada",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_SUPERCLASS"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_SUPERCLASS"
+    ]
+   }
+  },
+  {
+   "id": "SEM-15 atributo herdado",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "SEM-16 atributo inexistente",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_ATTRIBUTE"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_ATTRIBUTE"
+    ]
+   }
+  },
+  {
+   "id": "SEM-17 método inexistente",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_METHOD"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_METHOD"
+    ]
+   }
+  },
+  {
+   "id": "SEM-18 classe não declarada",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_CLASS"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_UNDECLARED_CLASS"
+    ]
+   }
+  },
+  {
+   "id": "SEM-19 substr com tipo errado",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "SEM_TYPE_MISMATCH"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "SEM_TYPE_MISMATCH"
+    ]
+   }
+  },
+  {
+   "id": "SEM-20 função declarada depois do uso",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "FJ-01 fork de função global válida",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "FJ-02 fork de nome não global (FJ-SEM-01)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-01"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-01"
+    ]
+   }
+  },
+  {
+   "id": "FJ-03 fork de método (FJ-SEM-01)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-01"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-01"
+    ]
+   }
+  },
+  {
+   "id": "FJ-04 aridade (FJ-SEM-02 / SEM_ARITY)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-02"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-02"
+    ]
+   }
+  },
+  {
+   "id": "FJ-05 join de não-task (FJ-SEM-03)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-03"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-03"
+    ]
+   }
+  },
+  {
+   "id": "FJ-06 destino não string (FJ-SEM-04)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-04"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-04"
+    ]
+   }
+  },
+  {
+   "id": "FJ-07 timeout não numérico (FJ-SEM-04)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-04"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-04"
+    ]
+   }
+  },
+  {
+   "id": "FJ-08 global mutável na tarefa (FJ-SEM-05)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-05"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-05"
+    ]
+   }
+  },
+  {
+   "id": "FJ-09 global mutável transitivo (FJ-SEM-05)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-05"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-05"
+    ]
+   }
+  },
+  {
+   "id": "FJ-10 input na tarefa (FJ-SEM-05)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-05"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-05"
+    ]
+   }
+  },
+  {
+   "id": "FJ-11 objeto como argumento (FJ-SEM-06)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-06"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-06"
+    ]
+   }
+  },
+  {
+   "id": "FJ-12 aritmética com handle (FJ-SEM-06)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-06"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-06"
+    ]
+   }
+  },
+  {
+   "id": "FJ-13 handle descartado (FJ-SEM-07)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-07"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-07"
+    ]
+   }
+  },
+  {
+   "id": "FJ-14 none usado como valor (FJ-SEM-08)",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-08"
+    ]
+   },
+   "observed": {
+    "result": "error",
+    "codes": [
+     "FJ-SEM-08"
+    ]
+   }
+  },
+  {
+   "id": "FJ-15 join de none como comando",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "FJ-16 lista de handles + for-in",
+   "kind": "semantic",
+   "status": "PASS",
+   "expected": {
+    "result": "ok",
+    "codes": []
+   },
+   "observed": {
+    "result": "ok",
+    "codes": []
+   }
+  },
+  {
+   "id": "SYM-01 kinds publicados",
+   "kind": "symbols",
+   "status": "PASS",
+   "expected": [
+    [
+     "A",
+     "class",
+     null,
+     "global"
+    ],
+    [
+     "x",
+     "attribute",
+     "number",
+     "class"
+    ],
+    [
+     "m",
+     "method",
+     null,
+     "class"
+    ],
+    [
+     "p",
+     "parameter",
+     "var",
+     "method"
+    ],
+    [
+     "f",
+     "function",
+     null,
+     "global"
+    ],
+    [
+     "a",
+     "parameter",
+     "var",
+     "function"
+    ],
+    [
+     "l",
+     "variable",
+     "number",
+     "seq"
+    ],
+    [
+     "i",
+     "iterator",
+     "var",
+     "for"
+    ]
+   ],
+   "observed": {
+    "result": "ok",
+    "codes": [],
+    "symbols": [
+     [
+      "A",
+      "class",
+      null,
+      "global"
+     ],
+     [
+      "x",
+      "attribute",
+      "number",
+      "class"
+     ],
+     [
+      "m",
+      "method",
+      null,
+      "class"
+     ],
+     [
+      "p",
+      "parameter",
+      "var",
+      "method"
+     ],
+     [
+      "f",
+      "function",
+      null,
+      "global"
+     ],
+     [
+      "a",
+      "parameter",
+      "var",
+      "function"
+     ],
+     [
+      "l",
+      "variable",
+      "number",
+      "seq"
+     ],
+     [
+      "i",
+      "iterator",
+      "var",
+      "for"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "REAL tests/2026_2/core06/examples/capture.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/2026_2/core06/examples/handles.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/2026_2/core06/examples/par.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/2026_2/core07/demo.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/2026_2/test11/minicompilador.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste1_calculadora_cliente_servidor.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste2_fatorial_fibonacci_par.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste3_neuronio.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste4_rede_neural_xor.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste5_recomendacao.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste6_quicksort_classes.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste7_quicksort_iterativo_tac.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste_adicional1_paralelismo_3_computadores.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste_adicional2_tapete_sierpinski.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste_ascii_art_divertidapkrl.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  },
+  {
+   "id": "REAL tests/teste_bnf_controles_input.minipar",
+   "kind": "corpus",
+   "status": "PASS",
+   "expected": "accept",
+   "observed": "accept"
+  }
+ ]
+}
