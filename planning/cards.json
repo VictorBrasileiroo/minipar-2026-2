@@ -852,8 +852,8 @@
         "scripts/"
       ],
       "estimate_hours": 3,
-      "status": "BLOCKED",
-      "ready": false,
+      "status": "IN_REVIEW",
+      "ready": true,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24",
       "evidence": [

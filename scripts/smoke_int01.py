@@ -9,8 +9,10 @@ Três segmentos independentes, cada um com status próprio
   B  Eixos A+B: serviço de fases C-WEB-v1 (`src/service.py`, CORE-08, em `dev`
      desde o PR #19), executado em subprocesso isolado. Por padrão usa a própria
      árvore; `--core08-root` aponta para outra.
-  C  Eixo B: Web didática (WEB-03). Só inspeção estática do código; não sobe
-     servidor nem abre porta.
+  C  Eixos A+B: Web didática (WEB-03/WEB-04). `web_didatica/server.py` chamado
+     pelo cliente de teste do Flask em subprocesso isolado (analyze, compile e
+     execute do programa Fork/Join, download do binário, erros HTTP). Não sobe
+     servidor nem abre porta. Sem Flask no Python usado, fica BLOCKED.
 
 Os oráculos são calculados aqui, em Python, a partir dos mesmos parâmetros
 usados para gerar os fontes MiniPar; nenhuma saída esperada é fixada à mão.
@@ -524,8 +526,72 @@ def segment_b(args) -> Segment:
 
 
 # --------------------------------------------------------------------------- segmento C
+# Roda em subprocesso: importa web_didatica/server.py (Flask) e chama as rotas com o cliente de
+# teste, sem abrir porta. O stdout é capturado para não misturar com o relatório.
+WEB_HELPER = r"""
+import contextlib, hashlib, io, json, sys, traceback
+root, out_path = sys.argv[1], sys.argv[2]
+sys.path.insert(0, root + "/web_didatica")
+req = json.loads(sys.stdin.read())
+res = {}
+buf = io.StringIO()
+def chamar(resp):
+    try:
+        body = resp.get_json(silent=True)
+    finally:
+        resp.close()
+    return {"status": resp.status_code, "body": body}
+def erro(resp):
+    r = chamar(resp)
+    return {"status": r["status"], "code": ((r["body"] or {}).get("error") or {}).get("code")}
+try:
+    try:
+        import flask  # noqa: F401
+    except ImportError as exc:
+        res["flask_ausente"] = repr(exc)
+        raise SystemExit(0)
+    with contextlib.redirect_stdout(buf):
+        import server
+        cli = server.app.test_client()
+        res["analyze"] = chamar(cli.post("/api/v1/analyze", json={"source": req["plain"]}))
+        fc = chamar(cli.post("/api/v1/compile", json={"source": req["fork"]}))
+        res["fork_compile"] = fc
+        bid = ((fc["body"] or {}).get("artifacts") or {}).get("binary_id")
+        res["fork_execute"] = chamar(cli.post("/api/v1/execute", json={"artifact_id": bid, "stdin": "local\n",
+                                              "timeout_sec": req["timeout"]})) if bid else {"status": None, "body": None}
+        d = {"status": None}
+        if bid:
+            r = cli.get(f"/api/v1/artifacts/{bid}/binary")
+            try:
+                dados = r.get_data()
+                d = {"status": r.status_code, "disposition": r.headers.get("Content-Disposition"),
+                     "mimetype": r.mimetype, "bytes": len(dados),
+                     "sha256": hashlib.sha256(dados).hexdigest() if r.status_code == 200 else None}
+            finally:
+                r.close()
+            reg = server.service.get_artifact(bid, "binary")
+            d["sha256_registrado"] = hashlib.sha256(open(reg["path"], "rb").read()).hexdigest() if reg.get("ok") else None
+        res["download"] = d
+        ex = chamar(cli.post("/api/v1/execute", json={"artifact_id": "0" * 32, "stdin": "", "timeout_sec": 10}))
+        res["erros"] = {
+            "analyze_sem_source": erro(cli.post("/api/v1/analyze", json={})),
+            "execute_timeout_31": erro(cli.post("/api/v1/execute", json={"artifact_id": "0" * 32, "timeout_sec": 31})),
+            "artifact_kind_arm": erro(cli.get(f"/api/v1/artifacts/{'0' * 32}/arm")),
+            "artifact_inexistente": erro(cli.get(f"/api/v1/artifacts/{'0' * 32}/binary")),
+            "execute_inexistente": {"status": ex["status"], "code": ((ex["body"] or {}).get("error") or {}).get("code")},
+        }
+except SystemExit:
+    pass
+except BaseException:
+    res["helper_exception"] = traceback.format_exc()
+res["captured_stdout"] = buf.getvalue()[-4000:]
+with open(out_path, "w", encoding="utf-8") as fh:
+    json.dump(res, fh, ensure_ascii=False, indent=1)
+"""
+
+
 def segment_c(args) -> Segment:
-    seg = Segment("C", "Web didática chamando o serviço real (WEB-03)", "B")
+    seg = Segment("C", "Web didática chamando o serviço real (WEB-03/WEB-04)", "A+B")
     web = ROOT / "web_didatica"
     if not web.is_dir():
         seg.check("C1", "web_didatica/ presente", "BLOCKED", "pasta ausente")
@@ -545,19 +611,71 @@ def segment_c(args) -> Segment:
             js_hits += [f"{rel}: {m.group(0).strip()}" for m in js_re.finditer(text)]
     server = web / "server.py"
     mock = web / "static" / "js" / "fonte_mock.js"
-    seg.data.update(server_py=server.is_file(), fonte_mock=mock.is_file(), py_usa_servico=py_hits, js_chama_api=js_hits,
-                    metodo="inspeção estática; nenhum servidor iniciado, nenhuma porta aberta")
+    real = web / "static" / "js" / "fonte_real.js"
+    seg.data.update(server_py=server.is_file(), fonte_mock=mock.is_file(), fonte_real=real.is_file(),
+                    py_usa_servico=py_hits, js_chama_api=js_hits,
+                    metodo="cliente de teste do Flask em subprocesso isolado; nenhum servidor iniciado, nenhuma porta aberta")
     if not server.is_file() and not py_hits and not js_hits:
         seg.check("C1", "Web didática integrada ao serviço real (rotas /api/v1 + src/service.py)", "BLOCKED",
                   dict(motivo="WEB-03 não iniciado: sem web_didatica/server.py, sem import de service/compile_program, "
                               "sem fetch para /api/v1; dados vêm de fixtures via static/js/fonte_mock.js",
                        fonte_mock=mock.is_file()))
         seg.block("WEB-03 não iniciado (Eixo B)")
-    else:
-        seg.check("C1", "Web didática integrada ao serviço real", "UNTESTED",
-                  dict(motivo="indícios de integração encontrados; este smoke não sobe servidor. Validar com o Eixo B "
-                              "(cliente de teste Flask sem porta, ou 127.0.0.1:5001 autorizado)",
-                       server_py=server.is_file(), py=py_hits, js=js_hits))
+        return seg
+    seg.ok("C1", "server.py presente e importa src.service; fonte_real.js presente",
+           server.is_file() and any(h.startswith("web_didatica/server.py") for h in py_hits) and real.is_file(),
+           dict(server_py=server.is_file(), py=py_hits, fonte_real=real.is_file()))
+
+    out_json = OUT / "segC_web_raw.json"
+    if out_json.exists():
+        out_json.unlink()
+    plain, fork = fonte_sem_fork(), fonte_fork()
+    req = dict(plain=plain, fork=fork, timeout=min(max(args.timeout, 1), 30))
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONIOENCODING="utf-8")
+    r = run([sys.executable, "-B", "-c", WEB_HELPER, ROOT, out_json], cwd=ROOT,
+            stdin_text=json.dumps(req), timeout=4 * COMPILE_TIMEOUT, env=env)
+    seg.data["helper"] = dict(exit=r["exit"], duration_ms=r["duration_ms"], stderr=_tail(r["stderr"], 1500),
+                              timed_out=r["timed_out"])
+    if r["exit"] != 0 or not out_json.exists():
+        seg.ok("C2", "Subprocesso importa web_didatica/server.py", False, seg.data["helper"])
+        return seg
+    res = json.loads(out_json.read_text(encoding="utf-8"))
+    if res.get("flask_ausente"):
+        seg.check("C2", "Importar Flask no Python do smoke", "BLOCKED",
+                  dict(motivo="Flask não instalado neste Python; use a .venv com requeriments.txt", python=sys.executable,
+                       erro=res["flask_ausente"]))
+        seg.block("Flask ausente no Python usado pelo smoke")
+        return seg
+    if res.get("helper_exception"):
+        seg.ok("C2", "Chamadas HTTP à Web didática sem exceção", False, _tail(res["helper_exception"], 1500))
+        return seg
+    a, c, fe = res["analyze"], res["fork_compile"], res["fork_execute"]
+    seg.data.update(analyze=_summ(a["body"]), fork_compile=_summ(c["body"]),
+                    fork_execute=fe["body"], download=res["download"], erros=res["erros"])
+    seg.ok("C2", "POST /api/v1/analyze: HTTP 200", a["status"] == 200, dict(status=a["status"]))
+    _check_envelope(seg, "C3", a["body"], "analyze", plain, expect_artifacts=False)
+    seg.ok("C4", "POST /api/v1/compile do programa Fork/Join: HTTP 200", c["status"] == 200, dict(status=c["status"]))
+    _check_envelope(seg, "C5", c["body"], "compile", fork, expect_artifacts=True)
+    body = fe["body"] or {}
+    seg.ok("C6", "POST /api/v1/execute (destino local): HTTP 200, minipar.execute.v1 completo e stdout == oráculo",
+           fe["status"] == 200 and set(body) == EXEC_KEYS and body.get("contract") == "minipar.execute.v1"
+           and body.get("artifact_id") == (c["body"] or {}).get("request_id") and body.get("ok") is True
+           and body.get("exit_code") == 0 and body.get("stdout") == oraculo_fork() and body.get("error") is None,
+           dict(status=fe["status"], stdout=body.get("stdout"), esperado=oraculo_fork(), exit_code=body.get("exit_code")))
+    d = res["download"]
+    rid = (c["body"] or {}).get("request_id") or ""
+    nome = f"minipar_{rid[:8]}{'.exe' if os.name == 'nt' else ''}"
+    seg.ok("C7", "GET /api/v1/artifacts/<id>/binary: anexo com o nome do §1.7 e bytes iguais ao binário registrado",
+           d["status"] == 200 and nome in (d.get("disposition") or "") and d.get("sha256") is not None
+           and d.get("sha256") == d.get("sha256_registrado"), d)
+    e = res["erros"]
+    esperado = dict(analyze_sem_source=(400, "BAD_REQUEST"), execute_timeout_31=(400, "BAD_REQUEST"),
+                    artifact_kind_arm=(400, "BAD_REQUEST"), artifact_inexistente=(404, "ARTIFACT_NOT_FOUND"),
+                    execute_inexistente=(200, "ARTIFACT_NOT_FOUND"))
+    divergentes = {k: e.get(k) for k, (st, code) in esperado.items()
+                   if not e.get(k) or e[k].get("status") != st or e[k].get("code") != code}
+    seg.ok("C8", "Erros pelo HTTP (§1.6/§1.8): 400 BAD_REQUEST, 404 ARTIFACT_NOT_FOUND no download, "
+                 "ARTIFACT_NOT_FOUND no envelope do execute", not divergentes, dict(obtido=e, divergentes=divergentes))
     return seg
 
 
