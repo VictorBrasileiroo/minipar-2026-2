@@ -1,8 +1,7 @@
 # Teste 9 — 160 avaliações + Mandelbrot ASCII (card `T09-01`, Eixo C)
 
-**Estado: `PARTIAL`.** As 54 verificações do harness deram `PASS` (duas execuções completas em 30/10/2026). Mesmo assim o card fica `PARTIAL` porque:
+**Estado: `PARTIAL`.** As 54 verificações do harness deram `PASS` (duas execuções completas em 30/10/2026, na integração local RUN-03 + `dev` + PR #17 + PR #18). Em 05/11/2026, com o #17 (CORE-06) e o #18 (CORE-07) já em `dev`, o harness foi repetido na própria branch sincronizada (`4a4b09a`), sem integração local: **54/54 PASS**. O motivo restante do `PARTIAL`:
 
-- o build usou uma **integração local, ainda não mergeada**: RUN-03 + `dev` + PR #17 (CORE-06, TAC) + PR #18 (CORE-07, backend C++ que chama o runtime);
 - o cenário remoto rodou **só no loopback** (5 processos worker no mesmo computador). Isso prova o protocolo e a distribuição das tarefas, mas não a execução entre computadores. O RUN-03 (#10, mergeado em 04/11/2026) provou o runtime entre dois computadores com o programa de demonstração; este teste não foi repetido em duas máquinas.
 
 ## 1. Objetivo
