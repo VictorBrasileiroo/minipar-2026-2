@@ -20,7 +20,7 @@ import uuid
 if __package__:
     from .lexer import Lexer, TokenType
     from .parser import Parser, ParseError
-    from .semantic import SemanticAnalyzer
+    from .semantic import SemanticAnalyzer, CppProofError
     from .tac import TACGenerator
     from .codegen import CppCodeGenerator
     from .service_ast import serialize_ast
@@ -28,7 +28,7 @@ if __package__:
 else:
     from lexer import Lexer, TokenType
     from parser import Parser, ParseError
-    from semantic import SemanticAnalyzer
+    from semantic import SemanticAnalyzer, CppProofError
     from tac import TACGenerator
     from codegen import CppCodeGenerator
     from service_ast import serialize_ast
@@ -51,10 +51,10 @@ def _unsupported(phase, exc):
     """LOCAL CR proposal. Decode the generators' explicit location prefix only.
 
     No feature is inferred from a message; other refusals without location
-    retain line=None. Existing guards and their CLI messages are unchanged.
+    retain line=None. CORE-07 proof refusals carry their own explicit prefix.
     """
     message = str(exc)
-    location = re.match(r"^Linha ([1-9][0-9]*):\s*", message)
+    location = re.match(r"^(?:Linha |CORE-07 linha )([1-9][0-9]*):\s*", message)
     line = int(location[1]) if location else None
     if location: message = message[location.end():]
     return _diag(phase, phase.upper()+"_UNSUPPORTED_FEATURE",
@@ -128,8 +128,8 @@ def _pipeline(source, operation):
         result["phases"][phase] = dict(status="ok", text=tac, lines=len(tac.splitlines()))
         phase = "cpp"
         generator = CppCodeGenerator()
-        try: cpp = generator.generate_text(program)
-        except NotImplementedError as exc:
+        try: cpp = generator.generate_text(program, semantic=semantic, source=source)
+        except (NotImplementedError, CppProofError) as exc:
             result["phases"][phase] = dict(status="error")
             result["diagnostics"].append(_unsupported(phase, exc))
             return result
