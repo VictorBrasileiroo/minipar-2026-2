@@ -89,6 +89,29 @@ O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo 
 
 Os validadores nativos usam `CXX`, o G++ UCRT64 local ou `--cxx CAMINHO_GPP`, sem alterar o PATH do sistema. Os artefatos e logs ficam em `output/`, ignorado pelo Git. O `.expected.tac` do T07 permanece como referência histórica; igualdade textual não é o critério de aceite.
 
+## Validação local do CORE-06
+
+O gerador TAC representa `fork` com captura por valor, `join`/timeout,
+regiões `par` com branches e barreira e laços `for-in` com controle de fluxo.
+Use as APIs `TACGenerator.generate_text(program)` ou `generate(program, nome)`
+após análise semântica. A CLI e o backend C++ continuam bloqueando Fork/Join
+até CORE-07; gerar TAC não comprova execução de tarefas.
+
+```powershell
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p "test_*.py" -v
+```
+
+Notação, exemplos, limites e evidências em
+[`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
+A implementação e a revisão corretiva estão em `2fada7c` e `33bc9d9`, na branch
+`eixo-a/CORE-06-tac-fork-join-par` ([PR #17](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17)).
+A integração de 04/11/2026 com `origin/dev` em `05b43f9` foi commitada em
+`fef7507`, com ajustes em `14fc239`, preservando o TAC e os imports por pacote
+do serviço CORE-08. `par_return` distingue término de branch do retorno de função;
+recusas TAC com localização na AST informam a linha ao serviço. Histórico,
+regressões e limites estão no handoff. Contratos e card não são declarados
+aprovados/concluídos.
+
 ## Proveniência e direitos
 
 Base anterior informada no README e na BNF históricos: <https://github.com/luizwhirl/minipar-improvement>. Créditos preservados: Emanuele Vitória de Jesus Lima ([Manu-Vii](https://github.com/Manu-Vii)), José Lucas de Oliveira Quintela ([lucasqtl](https://github.com/lucasqtl)) e Luiz Miguel de Melo Bomfim ([luizwhirl](https://github.com/luizwhirl)).
@@ -103,7 +126,16 @@ O PDF oficial do projeto, a BNF anterior, o exemplo Python do Teste 10 e materia
 
 `src/service.py` fornece `analyze`, `compile_program`, `execute` e `get_artifact` no envelope C-WEB-v1. A análise gera texto sem invocar G++; cada compilação nativa usa diretório próprio em `output/web/<uuid>/`. `CXX` seleciona um executável C++20, sem flags embutidas. Execução usa stdin não interativo, timeout 1–30 s e saídas limitadas a 1 MiB por stream. O registro é local ao processo e retém todas as compilações durante sua vida; não existe limpeza automática nem recuperação do registro após reiniciar.
 
-Estado **PARTIAL**: CORE-06/07 não estão integrados nesta base. A correção local de 03/11 preserva diagnósticos semânticos e recusas TAC/C++ usando a proposta da CR, **dependente de ratificação A+B antes de publicação**. Esses códigos ainda não pertencem ao catálogo v1; o envelope mantém seu formato, mas a extensão local não deve ser declarada compatível com o catálogo aprovado. Fork/Join continua bloqueado no TAC nesta base. Detalhes, reprodução e evidências: [handoff CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md), [proposta de CR](docs/CR-CORE08-DIAGNOSTICOS.md).
+Estado **PARTIAL**: na integração local CORE-06/CORE-08 de 04/11/2026, Fork/Join
+produz TAC real pelo serviço. A fase C++ ainda retorna `CPP_UNSUPPORTED_FEATURE`
+com a mensagem `Fork/Join requer CORE-07; C++ nao gerado.`; o envelope global
+continua com `ok=false` e o g++ não é executado. `analyze` não registra artefatos.
+O catálogo proposto pela CR permanece **dependente de ratificação A+B**, incluindo
+o tipo `task`; esta integração não o aprova nem altera o envelope ou as APIs.
+`TAC_UNSUPPORTED_FEATURE` continua aplicável a outras construções não representadas.
+Detalhes e evidências: [integração CORE-06](docs/auditorias/CORE-06_TAC_FORK_JOIN.md),
+[histórico CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md) e
+[proposta de CR](docs/CR-CORE08-DIAGNOSTICOS.md).
 
 ```python
 from src.service import analyze, compile_program, execute, get_artifact
