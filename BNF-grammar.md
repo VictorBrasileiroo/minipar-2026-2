@@ -19,7 +19,7 @@
 > sem novos tokens ou produções. Os créditos e a gramática de origem foram preservados.
 > **CORE-04/05 (23/10/2026):** tokens e produções Fork/Join na seção 10 e BNF
 > consolidada; análise semântica implementada. CORE-06 (29/10/2026): TAC Fork/Join,
-> `par` e `for-in` disponível pela API; C++/execução continuam pendentes de CORE-07.
+> `par` e `for-in` disponível pela API; CLI/CORE-08 integrados ao backend CORE-07 em 05/11/2026.
 
 ---
 
@@ -584,15 +584,16 @@ seq {
 ```
 
 Este exemplo passa pelo Lexer/Parser/AST/semântico e pelas APIs
-`TACGenerator.generate_text`/`generate`; **não executa ainda**.
+`TACGenerator.generate_text`/`generate`; CLI/CORE-08 também compilam e executam
+no recorte tipado CORE-07 integrado localmente em 05/11/2026.
 CORE-06 representa captura por valor, fork, join/timeout, branches/barreira de
 `par` e iteração real de `for-in`. Notação e limites em
 [`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
 No TAC, `return` da branch é `par_return R, i[, value v]`: avalia o valor
 opcional e termina somente a branch indicada; `return [v]` permanece exclusivo
 do contexto da função/lançador. Não há mudança na sintaxe MiniPar de `return`.
-A CLI completa ainda recusa Fork/Join antes dos artefatos; o backend C++ mantém
-a guarda CORE-07. Não há mudança nas produções nem nos diagnósticos abaixo.
+A CLI gera TAC antes do C++; recusas de representação/retorno continuam explícitas.
+Não há mudança nas produções nem ratificação dos diagnósticos propostos abaixo.
 
 | Regra | Validação implementada |
 |---|---|
@@ -625,8 +626,9 @@ tipos idênticos repetidos são removidos, mantendo a primeira ordem e todas as
 alternativas distintas, inclusive unknown, objetos, canais e handles. A chave do
 cache continua distinguindo assinatura, isolamento, globais, dono e fase provisória.
 Retorno por caminho implícito ainda não é modelado: `if (x > 0) { return 1; }`
-sem retorno final pode ser inferido como number. Antes de liberar o backend,
-CORE-07 deve tratar esse caminho potencialmente none (CR-CORE05/PEND-FJ-07).
+sem retorno final pode ser inferido como number.
+O backend CORE-07 recusa esse retorno parcial, inclusive pela CLI e pelo serviço.
+Ver adendo e handoff CORE-07 (CR-CORE05/PEND-FJ-07).
 Ausência de diagnóstico nesses casos **não comprova** serialização nem execução.
 Detalhes da AST, metadados, evidências e limites em
 [`docs/auditorias/CORE-04-05_FORK_JOIN.md`](docs/auditorias/CORE-04-05_FORK_JOIN.md).
@@ -1054,7 +1056,7 @@ A seguir a gramática completa em formato BNF, em ordem de definição:
 (* send já listado em <comando_send> *)
 
 
-(* ─── FORK/JOIN — 2026.2; frontend implementado, backend pendente ─── *)
+(* ─── FORK/JOIN — 2026.2; frontend e backend tipado implementados ─── *)
 
 <expressao_fork> ::= "fork" <IDENTIFIER> "(" [ <lista_argumentos> ] ")" [ "on" <expressao> ]
 <expressao_join> ::= "join" "(" <expressao> [ "," <expressao> ] ")"
@@ -1217,3 +1219,36 @@ O analisador semântico (`src/semantic.py`) usa inferência simples de tipos com
 ---
 
 *Gramática gerada em 15 de junho de 2026 — MiniPar-Improvement v2026.1*
+
+### Adendo de implementação CORE-07 — 30/10/2026
+
+Sem novas producoes gramaticais. `fork` e `join` mantem AST e precedencia acima.
+AST → TAC e AST → C++ continuam ramos independentes. Backend C++ usa a mesma
+AST validada e contexto concreto por funcao/assinatura, sem consumir TAC.
+
+- `number` nao e convertido globalmente para double: literais inteiros e suas
+  operacoes preservam int, decimais double; listas numericas preservam o
+  vector<double> legado. Retorno preserva a escolha legada de double quando
+  ha divisao/decimal nos returns, sem promover os operandos da divisao.
+- Todos os forks concretos de uma funcao devem comprovar a mesma assinatura.
+  Genericos sem contexto, recursao e tipos incertos/incompativeis sao recusados.
+- Valor exige retorno total: return incondicional ou ambos os ramos retornando;
+  lacos nao provam totalidade. Return em par sai da lambda da branch e nao da
+  funcao externa. Funcoes sem retorno de valor geram none, so coletavel como comando.
+- Handles sao TaskHandle copiaveis, inclusive em listas homogeneas com append,
+  indices e for-in. Copiar preserva identidade; segundo join falha no runtime.
+- Indexação de matriz preserva referência somente quando toda a cadeia está
+  apoiada em uma variável; resultados temporários de função/join são
+  materializados antes da destruição de seu proprietário. O primeiro índice
+  seleciona uma linha; o segundo, uma célula. Células string continuam sem
+  indexação textual, e leituras de bool não deixam escapar proxies.
+- Argumentos sao avaliados sequencialmente e convertidos para Value antes do
+  destino e de efeitos posteriores; join avalia handle antes do timeout.
+  &&/|| preservam curto-circuito. Registro antecede worker e tarefas.
+- Erros controlaveis em tarefas (substr, indice e joins aninhados) lancam
+  excecoes para TASK_FAILED. Fora de tarefa substr preserva exit legado.
+  Nao ha cancelamento ou espera global: tarefas sem join nao tem conclusao garantida.
+
+Recorte e evidencias: `docs/auditorias/CORE-07_BACKEND_RUNTIME.md`.
+O contrato C-FJ-v1 revisao 2 e a CR-CORE05 mantem seu estado de ratificacao;
+esta implementacao local nao equivale a FROZEN, DONE ou aprovacao humana.

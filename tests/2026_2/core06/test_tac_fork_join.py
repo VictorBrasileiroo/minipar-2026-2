@@ -330,7 +330,7 @@ class Core06TAC(unittest.TestCase):
             finally:
                 os.chdir(previous)
 
-    def test_cpp_guard_does_not_compile_or_reuse_old_executable(self):
+    def test_cpp_requires_source_and_invalidates_old_executable(self):
         program = frontend(IDENTITY + 'var h=fork f(2);join(h);')
         parent = ROOT / 'output/core06'
         parent.mkdir(parents=True, exist_ok=True)
@@ -348,7 +348,7 @@ class Core06TAC(unittest.TestCase):
             finally:
                 os.chdir(previous)
 
-    def test_cli_guard_rejects_before_tac_cpp_and_invalidates_old_exe(self):
+    def test_cli_runs_tac_cpp_and_replaces_old_exe(self):
         parent = ROOT / 'output/core06'
         parent.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(prefix='cli-ação-🙂-', dir=parent) as folder:
@@ -358,13 +358,14 @@ class Core06TAC(unittest.TestCase):
             (folder / 'output').mkdir()
             (folder / 'output/probe.exe').write_bytes(b'old artifact')
             result = subprocess.run([sys.executable, '-B', str(ROOT / 'main.py'), str(source), 'probe'],
-                                    cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=20,
+                                    cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=120,
                                     env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})
-            self.assertEqual(result.returncode, 1)
-            self.assertIn('CORE-07', result.stderr)
-            self.assertNotIn('[TAC] Arquivo gerado', result.stdout)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('[TAC] Arquivo gerado', result.stdout)
             for extension in ['exe', 'cpp', 'tac']:
-                self.assertFalse((folder / f'output/probe.{extension}').exists())
+                self.assertTrue((folder / f'output/probe.{extension}').exists())
+            executed = subprocess.run([str(folder / 'output/probe.exe')], capture_output=True, text=True, timeout=10)
+            self.assertEqual((executed.returncode, executed.stdout, executed.stderr), (0, '', ''))
 
 
 if __name__ == '__main__':

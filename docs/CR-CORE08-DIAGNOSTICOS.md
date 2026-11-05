@@ -4,6 +4,14 @@
 
 ## Contrato anterior e lacuna
 
+> Integração técnica local de 05/11/2026, sem ratificação: CORE-06/07 presentes
+> permitem FJ válido pela CLI/API. `CPP_UNSUPPORTED_FEATURE` agora também cobre
+> `CppProofError` real (representação/retorno não comprovados), com a linha do
+> prefixo explícito `CORE-07 linha N:`. Sem código novo, inferência de localização
+> ou alteração do envelope. `TAC_UNSUPPORTED_FEATURE` segue cobrindo recusas
+> reais do TAC. Proposta e publicação do tipo task continuam dependentes de A+B.
+> Evidências e limites: [integração CORE-07](auditorias/CORE-07_INTEGRACAO_DEV.md).
+
 C-WEB-v1 §1.5 só permite os códigos enumerados. A base `29cff941` já possui erros esperados sem código compatível: FJ-SEM-01 a 08; nome nativo reservado; herança cíclica; listas de strings e indexação de strings não suportadas. TAC recusa Fork/Join com `NotImplementedError` enquanto CORE-06 não está integrado. O backend tem recusa equivalente até CORE-07. São recusas esperadas, não `INTERNAL_ERROR`. O tipo semântico `task` também não consta da lista fechada de tipos publicada por C-WEB-v1.
 
 ## Proposta v1.1, sujeita a A+B
