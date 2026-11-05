@@ -705,6 +705,10 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (05/11/2026):** IN_REVIEW · PR [#21](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/21), pronto para revisão. Com #17 e #18 em `dev`, `python tests/2026_2/test08/run_t08.py` na branch sincronizada, sem integração local: **32/32 PASS** (seq, par local e 4 workers no loopback). Teste `PASS` no loopback; não prova dois computadores.
+
+**Estado anterior (30/10/2026):** IN_REVIEW (draft) · PR [#21](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/21), empilhado sobre o `RUN-04` (#20). `ready=false`: consome o `CORE-07` (#18, ainda não em `dev`). `python tests/2026_2/test08/run_t08.py` na **integração local** RUN-03 + `dev` + #17 + #18 (30/10): 32/32 PASS em duas execuções (seq, par local e par com 4 workers no loopback); 160 IDs únicos, `SOMA_NOTAS 7630` igual ao oráculo; 3 mutantes detectados. Sem o `CORE-07` na árvore: `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev`. O RUN-03 (#10) foi mergeado em 04/11.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `T09-01` — MiniPar T09: avaliadores + Mandelbrot ASCII
@@ -723,6 +727,10 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
+**Estado atual (05/11/2026):** IN_REVIEW · PR [#22](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/22), pronto para revisão. Com #17 e #18 em `dev`, `python tests/2026_2/test09/run_t09.py` na branch sincronizada, sem integração local: **54/54 PASS**. Segue PARTIAL só porque o remoto rodou no loopback (5 workers no mesmo computador).
+
+**Estado anterior (30/10/2026):** IN_REVIEW (draft) · PR [#22](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/22), empilhado sobre o `T08-01` (#21). `ready=false`: consome o `CORE-07` (#18, ainda não em `dev`). `python tests/2026_2/test09/run_t09.py` na **integração local** RUN-03 + `dev` + #17 + #18: 54/54 PASS em duas execuções; Mandelbrot igual ao Python caractere a caractere em dois conjuntos de parâmetros; as 5 tarefas em execução antes do primeiro `RESULT` (5 workers no loopback). Sem o `CORE-07`: `BLOCKED` (exit 2). PARTIAL até #17/#18 em `dev`. O RUN-03 (#10) foi mergeado em 04/11.
+
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 #### `T10-01` — MiniPar T10: avaliações + Mandelbrot + Sierpinski
@@ -740,6 +748,10 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 **Escopo de arquivos autorizado:** `tests/2026_2/test10/`.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
+
+**Estado atual (05/11/2026):** IN_REVIEW · PR [#23](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/23), pronto para revisão. Com #17 e #18 em `dev`, `python tests/2026_2/test10/run_t10.py` na branch sincronizada, sem integração local: **126/126 PASS**. Segue PARTIAL pelo loopback (6 workers no mesmo computador) e pela ADR-014 (formato do Sierpinski) em aberto.
+
+**Estado anterior (30/10/2026):** IN_REVIEW (draft) · PR [#23](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/23), empilhado sobre o `T09-01` (#22). `ready=false`: consome o `CORE-07` (#18, ainda não em `dev`). `python tests/2026_2/test10/run_t10.py` na **integração local** RUN-03 + `dev` + #17 + #18: 126/126 PASS em três execuções; Sierpinski como sexto `fork` (6 workers no loopback, os 6 `TASK` antes do primeiro `RESULT` de avaliação); 4 mutantes detectados. Formato ASCII + SVG proposto para a ADR-014, que segue EM ABERTO. Sem o `CORE-07`: `BLOCKED` (exit 2). PARTIAL até #17/#18 em `dev`. O RUN-03 (#10) foi mergeado em 04/11.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
