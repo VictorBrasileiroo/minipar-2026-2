@@ -15,7 +15,7 @@
 
 ## 1. C-WEB-v1 — Serviço de inspeção/compilação do MiniPar
 
-**Estado:** `v1 FROZEN` desde 22/10/2026, quando A aprovou o PR #3 do card `CON-02` (quadro em 1.11). Proposta redigida pelo B em 19/10/2026. Nomes e campos abaixo são definitivos; mudanças só por CR (seção 4).
+**Estado:** `v1 FROZEN` desde 22/10/2026, quando A aprovou o PR #3 do card `CON-02` (quadro em 1.11). Proposta redigida pelo B em 19/10/2026. Nomes e campos abaixo são definitivos; mudanças só por CR (seção 4). Os itens marcados **v1.1** pertencem à revisão aditiva da CR-CORE08-DIAGNOSTICOS (1.12) e só valem depois das aprovações registradas lá.
 
 **Revisão 2 (19/10/2026):** incorpora a revisão do coordenador no PR do `CON-02`: `\n` final explícito nas fixtures, regra única para fases ignoradas, tipos e escopos da tabela de símbolos, algoritmo de truncamento da AST, testes de isolamento/timeout/artefatos e entrega do `.arm` do Teste 11 pela Web. Ajuste de 22/10/2026: a extração do `.arm` (1.7) segue todos os erros de C-T11-v1 §3.6 item 2 e normaliza CRLF, conferida na integração com o PR do `CON-03`.
 
@@ -248,8 +248,8 @@ Lista de todos os escopos abertos pelo semântico, na ordem em que são abertos.
 | semantic | `SEM_FJ_06` | FJ-SEM-06: argumento ou retorno que não cruza tarefas, ou aritmética com objeto, canal ou handle |
 | semantic | `SEM_FJ_07` | FJ-SEM-07: handle de `fork` descartado |
 | semantic | `SEM_FJ_08` | FJ-SEM-08: `join` de resultado `none` fora de comando isolado |
-| tac | `TAC_UNSUPPORTED_FEATURE` | `NotImplementedError` do gerador TAC (hoje: Fork/Join até o `CORE-06`). `line` vem do prefixo `Linha N:` da exceção, ou `null` sem ele |
-| cpp | `CPP_UNSUPPORTED_FEATURE` | `NotImplementedError` do gerador C++ (hoje: Fork/Join até o `CORE-07`), mesma regra de `line` |
+| tac | `TAC_UNSUPPORTED_FEATURE` | `NotImplementedError` do gerador TAC: recusas reais que restaram após o `CORE-06` (PR #17), como `join` sem handle, `fork` descartado e inicializador Fork/Join de atributo. `line` vem do prefixo `Linha N:` da exceção, ou `null` sem ele |
+| cpp | `CPP_UNSUPPORTED_FEATURE` | `NotImplementedError` ou `CppProofError` do gerador C++ após o `CORE-07` (PR #18): representação ou retorno não comprovados. `line` vem do prefixo `CORE-07 linha N:`, ou `null` sem ele |
 
 FJ-SEM-02 (aridade de `fork`) continua publicado como `SEM_ARITY`, código v1. `SEM_FJ_02` não é emitido.
 
@@ -535,7 +535,7 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 
 ### 1.12 Revisão v1.1 — CR-CORE08-DIAGNOSTICOS
 
-Mudança aditiva e compatível: envelopes, funções e regras de fase não mudam. Acrescenta os códigos do catálogo v1.1 (1.5), o tipo `"task"` em `semantic.symbols` e os nós `ForkExpr`/`JoinExpr` (1.4). A proposta, o motivo e a evidência estão em `docs/CR-CORE08-DIAGNOSTICOS.md`. A implementação entrou no `dev` com o PR #19 (`CORE-08`, commit `c485819`).
+Mudança aditiva e compatível: envelopes, funções e regras de fase não mudam. Acrescenta os códigos do catálogo v1.1 (1.5), o tipo `"task"` em `semantic.symbols` e os nós `ForkExpr`/`JoinExpr` (1.4). A proposta, o motivo e a evidência estão em `docs/CR-CORE08-DIAGNOSTICOS.md`. A implementação entrou no `dev` com o PR #19 (`CORE-08`, commit `c485819`). Depois do `CORE-06` (PR #17) e do `CORE-07` (PR #18), `TAC_UNSUPPORTED_FEATURE` e `CPP_UNSUPPORTED_FEATURE` deixaram de recusar todo Fork/Join e passaram a cobrir só as recusas reais descritas em 1.5. O `CPP_UNSUPPORTED_FEATURE` também passou a cobrir o `CppProofError` (`docs/auditorias/CORE-07_INTEGRACAO_DEV.md`).
 
 A v1.1 só vale depois das três decisões abaixo. Até lá, o serviço já emite esses códigos, mas eles não fazem parte do contrato.
 
