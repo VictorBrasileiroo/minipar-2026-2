@@ -1016,7 +1016,7 @@
       "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/39",
       "evidence": [
         "docs/14_PRODUCT_E_SPRINT_BACKLOGS.md",
         "docs/03_DECISOES.md"

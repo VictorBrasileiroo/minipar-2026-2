@@ -99,7 +99,7 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | CORE-10 | C | Regressão final T01–T07 | IN_REVIEW | #38 |
 | RUN-05 | C | Benchmarks e falhas | IN_REVIEW (`par_rede` pendente) | #36 |
 | RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (reprodução pendente) | #37 |
-| DOC-03 | C | Product/Sprint Backlogs e decisões | IN_REVIEW | este PR |
+| DOC-03 | C | Product/Sprint Backlogs e decisões | IN_REVIEW | #39 |
 | CORE-09 | A | Interfaces antigas preservadas | IN_REVIEW | #35 |
 | INT-02 | B | Regressão integral e rede real | BACKLOG (depende do CORE-10) | — |
 | DOC-02 | B | UML | BACKLOG | — |

@@ -57,7 +57,7 @@
 | `INT-02` | B | BACKLOG | — | Depende do CORE-10 (em revisão). |
 | `DOC-01` | B | DONE | #32 |  |
 | `DOC-02` | B | BACKLOG | — | Dependência (INT-01) concluída; sem PR até 05/11. |
-| `DOC-03` | C | IN_REVIEW | — |  |
+| `DOC-03` | C | IN_REVIEW | #39 |  |
 | `DOC-04` | B | BACKLOG | — |  |
 | `REL-01` | A | BACKLOG | — |  |
 | `EST-01` | EQUIPE | BACKLOG | — |  |
