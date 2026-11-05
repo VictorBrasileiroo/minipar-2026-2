@@ -6,8 +6,9 @@ Três segmentos independentes, cada um com status próprio
   A  Eixos A+C: programa MiniPar com Fork/Join -> CLI (`main.py`: Lexer, Parser,
      Semântico, TAC, C++, g++) -> execução com destino "local" e com um worker
      no loopback (o mesmo .exe em modo `--minipar-worker`).
-  B  Eixos A+B: serviço de fases C-WEB-v1 (`src/service.py`, CORE-08/PR #19),
-     executado em OUTRA árvore (`--core08-root`), em subprocesso isolado.
+  B  Eixos A+B: serviço de fases C-WEB-v1 (`src/service.py`, CORE-08, em `dev`
+     desde o PR #19), executado em subprocesso isolado. Por padrão usa a própria
+     árvore; `--core08-root` aponta para outra.
   C  Eixo B: Web didática (WEB-03). Só inspeção estática do código; não sobe
      servidor nem abre porta.
 
@@ -28,7 +29,7 @@ e a integração compilador+runtime, NÃO a execução entre dois computadores
 Uso (na raiz do repositório):
     python scripts/smoke_int01.py
     python scripts/smoke_int01.py --only A --port-base 7500 --timeout 30
-    python scripts/smoke_int01.py --only B --core08-root ../int01-core08
+    python scripts/smoke_int01.py --only B --core08-root ../outra-arvore
 """
 from __future__ import annotations
 
@@ -252,7 +253,7 @@ def segment_a(args) -> Segment:
         blob = comp["stdout"] + comp["stderr"]
         if re.search(r"ERRO TAC|Fork/Join requer|CORE-06|CORE-07|NotImplementedError", blob):
             seg.check("A1", "CLI compila programa Fork/Join", "BLOCKED", _tail(blob, 600))
-            seg.block("Backend/TAC sem Fork/Join nesta base (CORE-06 #17 / CORE-07 #18 ausentes)")
+            seg.block("TAC/backend Fork/Join indisponível nesta base (depende do CORE-06 #17 e do CORE-07 #18)")
         else:
             seg.ok("A1", "CLI compila programa Fork/Join (exit 0)", False, _tail(blob, 1200))
         return seg
@@ -385,8 +386,8 @@ def resolve_core08(arg: str | None) -> tuple[Path | None, str]:
         return Path(arg).resolve(), "--core08-root"
     if os.environ.get("MINIPAR_CORE08_ROOT"):
         return Path(os.environ["MINIPAR_CORE08_ROOT"]).resolve(), "MINIPAR_CORE08_ROOT"
-    sib = ROOT.parent / "int01-core08"
-    return (sib.resolve(), "pasta irmã int01-core08") if sib.exists() else (None, "não encontrado")
+    # O CORE-08 (#19) está em `dev`: o padrão é o src/service.py desta árvore.
+    return ROOT, "árvore atual"
 
 
 def _check_envelope(seg, cid, env, operation, source, expect_artifacts):
@@ -429,14 +430,14 @@ def _summ(env):
 
 
 def segment_b(args) -> Segment:
-    seg = Segment("B", "Serviço C-WEB-v1 (CORE-08, PR #19) em árvore separada", "A+B")
+    seg = Segment("B", "Serviço C-WEB-v1 (CORE-08, src/service.py)", "A+B")
     core08, origin = resolve_core08(args.core08_root)
     seg.data["core08_root"] = str(core08) if core08 else None
     seg.data["core08_origin"] = origin
     if core08 is None or not (core08 / "src" / "service.py").is_file():
         seg.check("B0", "Localizar src/service.py do CORE-08", "BLOCKED",
                   f"{core08} ({origin}) sem src/service.py; informe --core08-root ou MINIPAR_CORE08_ROOT")
-        seg.block("Árvore do CORE-08 (#19) indisponível")
+        seg.block("src/service.py do CORE-08 indisponível")
         return seg
     seg.data["core08_head"] = git_head(core08)
     seg.data["int01_tem_service"] = (ROOT / "src" / "service.py").is_file()
@@ -499,7 +500,7 @@ def segment_b(args) -> Segment:
            and bad.get("ok") is False and (bad.get("error") or {}).get("code") == "INVALID_ARGUMENT",
            dict(invalid=inv.get("error"), unknown=unk.get("error"), bad_kind=bad.get("error")))
 
-    # Programa com Fork/Join pelo serviço: #19 sozinho não tem o backend de #17/#18.
+    # Programa com Fork/Join pelo serviço: depende do TAC (CORE-06) e do backend (CORE-07) na mesma árvore.
     fa = res.get("fork_analyze") or {}
     seg.data["fork_analyze"] = _summ(fa)
     statuses = {k: v.get("status") for k, v in fa.get("phases", {}).items()}
@@ -513,8 +514,8 @@ def segment_b(args) -> Segment:
         front_ok = all(statuses.get(p) == "ok" for p in ("lexer", "parser", "semantic"))
         if front_ok and failed in ("tac", "cpp"):
             seg.check("B8", "Programa Fork/Join pelo serviço", "BLOCKED",
-                      dict(motivo="conflito #19 × #17/#18 em src/codegen.py e src/tac.py: o serviço do #19 não "
-                                  "tem o TAC/backend Fork/Join; integração cabe ao Eixo A",
+                      dict(motivo="a árvore do serviço não tem o TAC/backend Fork/Join (CORE-06 #17 / "
+                                  "CORE-07 #18); integração cabe ao Eixo A",
                            fase_recusada=failed, phases=statuses, diagnostics=fa.get("diagnostics")))
         else:
             seg.ok("B8", "Programa Fork/Join pelo serviço: frontend (léxico/sintático/semântico) aceita", False,
@@ -566,7 +567,7 @@ def main(argv=None) -> int:
     ap.add_argument("--port-base", type=int, default=PORT_MIN, help=f"primeira porta do worker ({PORT_MIN}-{PORT_MAX})")
     ap.add_argument("--only", choices=("A", "B", "C"), help="executa só um segmento")
     ap.add_argument("--timeout", type=int, default=30, help="limite (s) de cada execução de programa compilado")
-    ap.add_argument("--core08-root", help="raiz da árvore com CORE-08/PR #19 (ou env MINIPAR_CORE08_ROOT)")
+    ap.add_argument("--core08-root", help="raiz da árvore com src/service.py do CORE-08 (padrão: esta árvore; ou env MINIPAR_CORE08_ROOT)")
     args = ap.parse_args(argv)
     for stream in (sys.stdout, sys.stderr):
         try:

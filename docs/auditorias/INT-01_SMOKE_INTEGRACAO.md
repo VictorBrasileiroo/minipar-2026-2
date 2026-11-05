@@ -4,7 +4,12 @@
 
 **Estado do card: PARTIAL / BLOCKED. Não marcar DONE.** O segmento A (Eixos A+C) passou na base de integração local; o segmento B (serviço CORE-08) passou só no recorte sem Fork/Join; o segmento C (Web didática) está BLOCKED porque o WEB-03 não começou. No `planning/cards.json` o INT-01 fica `BLOCKED`, `ready=false`, com o PR #24 em draft. As dependências `CORE-07`, `WEB-03` e `RUN-04` não estão concluídas. A execução foi antecipada pelo Eixo C (plano do M2 de 30/10) para encontrar os defeitos de integração cedo. Ela não promove o estado de nenhum outro card. A e B precisam validar os segmentos deles.
 
-> **Atualização de 04/11/2026.** A branch foi sincronizada com `dev` (via `RUN-04`), que agora inclui o RUN-03 (#10, prova em dois computadores, mergeado em 04/11) e o CORE-08 (#19). O smoke foi repetido no HEAD `f1188dd`: segmento A **BLOCKED** (#17/#18 ainda fora de `dev`, então a CLI desta base não compila Fork/Join); segmento B com `--core08-root .`, ou seja, o `src/service.py` que está em `dev` (SHA-256 `9e7c55c2…5d4e`), B1–B7 **PASS** e B8 **BLOCKED** (TAC/backend Fork/Join ausentes); segmento C **BLOCKED** (WEB-03). Sem `--core08-root`, o script ainda procura a pasta irmã `int01-core08` por padrão. As seções 2 a 4 abaixo registram a execução de 30/10.
+> **Atualização de 05/11/2026.** O CORE-06 (#17) entrou em `dev` e o PR #18 (CORE-07) foi sincronizado com `dev` pelo Eixo A, então a sua árvore já contém o CORE-08 (#19). A branch foi sincronizada de novo com `dev` (via `RUN-04`), e o script passou a usar por padrão o `src/service.py` da própria árvore (a pasta irmã `int01-core08` deixou de ser procurada). Resultados, sem `--core08-root`:
+> - **Nesta base** (HEAD `2762d88`, sem o #18): segmento A **BLOCKED** (`[ERRO BACKEND] ... compilacao C++ depende de CORE-07`); segmento B **PARTIAL**: B1–B7 PASS (`src/service.py` SHA-256 `9e7c55c2…5d4e`) e B8 **BLOCKED** com `tac=ok` e `cpp=error` (`CPP_UNSUPPORTED_FEATURE`); segmento C **BLOCKED** (WEB-03). Exit 0.
+> - **Integração local** (`0be890c` = esta branch + T08–T10 + PR #18 `257613f`, sem push): segmento A **PASS** (A1–A8); segmento B **PASS** (B1–B8, `src/service.py` SHA-256 `d6029024…c5dd`), ou seja, o programa Fork/Join compila e executa pelo serviço com `stdout` igual ao oráculo; segmento C **BLOCKED** (WEB-03). Exit 0.
+> - Com isso, os achados INT01-01 e INT01-02 (seção 5) estão resolvidos **no PR #18**; só ficam resolvidos em `dev` depois do merge dele. O card segue PARTIAL/BLOCKED por causa do #18 e do WEB-03.
+
+> **Atualização de 04/11/2026.** A branch foi sincronizada com `dev` (via `RUN-04`), que agora inclui o RUN-03 (#10, prova em dois computadores, mergeado em 04/11) e o CORE-08 (#19). O smoke foi repetido no HEAD `f1188dd`: segmento A **BLOCKED** (#17/#18 ainda fora de `dev`, então a CLI desta base não compila Fork/Join); segmento B com `--core08-root .`, ou seja, o `src/service.py` que está em `dev` (SHA-256 `9e7c55c2…5d4e`), B1–B7 **PASS** e B8 **BLOCKED** (TAC/backend Fork/Join ausentes); segmento C **BLOCKED** (WEB-03). Naquela data, sem `--core08-root`, o script ainda procurava a pasta irmã `int01-core08` por padrão. As seções 2 a 4 abaixo registram a execução de 30/10.
 
 ## 1. Objetivo e escopo
 
@@ -41,11 +46,11 @@ Na raiz do worktree `int01`:
 ```powershell
 python scripts/smoke_int01.py                       # A, B e C; resultados em output/int01/results.json
 python scripts/smoke_int01.py --only A --port-base 7500 --timeout 30
-python scripts/smoke_int01.py --only B --core08-root ..\int01-core08   # ou $env:MINIPAR_CORE08_ROOT
+python scripts/smoke_int01.py --only B --core08-root ..\outra-arvore    # ou $env:MINIPAR_CORE08_ROOT; padrão: esta árvore
 python scripts/smoke_int01.py --only C
 ```
 
-- **Raiz do CORE-08:** `--core08-root`, depois a variável `MINIPAR_CORE08_ROOT`, depois a pasta irmã `../int01-core08`. Se nenhuma tiver `src/service.py`, o segmento B fica **BLOCKED** com o motivo (testado: `--core08-root ./nao-existe` dá `B0 BLOCKED`).
+- **Raiz do CORE-08:** `--core08-root`, depois a variável `MINIPAR_CORE08_ROOT`, depois a própria árvore (desde 05/11; antes era a pasta irmã `../int01-core08`). Se nenhuma tiver `src/service.py`, o segmento B fica **BLOCKED** com o motivo (testado: `--core08-root ./nao-existe` dá `B0 BLOCKED`).
 - **Código de saída:** `0` quando nenhuma verificação executada falhou. Nesse caso cada segmento não BLOCKED é PASS, ou é PARTIAL formado só por PASS mais BLOCKED. `1` quando houve FAIL; `2` para argumentos inválidos (testado: `--port-base 8000`). **Exit 0 com BLOCKED/PARTIAL não conclui o card**, e o script imprime isso no resumo.
 - Os oráculos são calculados em Python a partir dos mesmos parâmetros que geram os fontes MiniPar (`soma_quadrados(100)`, `fib(30)`, stdin `int01`). Nenhuma saída esperada foi escrita à mão.
 - Cada subprocesso tem limite de tempo: compilação em 300 s, execução em `--timeout` (padrão 30 s), helper do serviço em 1200 s e espera do worker em 15 s.
