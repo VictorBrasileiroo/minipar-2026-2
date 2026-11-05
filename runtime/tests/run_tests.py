@@ -84,9 +84,10 @@ def free_ports(n: int) -> list[int]:
     return ports
 
 
-def start_worker(exe: Path, port: int, log: Path, env: dict) -> subprocess.Popen:
+def start_worker(exe: Path, port: int, log: Path, env: dict, extra: tuple[str, ...] = ()) -> subprocess.Popen:
     fh = open(log, "w", encoding="utf-8")
-    proc = subprocess.Popen([str(exe), "--minipar-worker", str(port)], stdout=subprocess.DEVNULL, stderr=fh, env=env)
+    proc = subprocess.Popen([str(exe), "--minipar-worker", str(port), *extra], stdout=subprocess.DEVNULL, stderr=fh,
+                            env=env)
     deadline = time.time() + 10
     while time.time() < deadline:
         if proc.poll() is not None:
@@ -132,6 +133,34 @@ def step_remote(exe: Path, ctx: dict) -> tuple[bool, str]:
     return ok, report
 
 
+def step_interop(exe: Path, ctx: dict) -> tuple[bool, str]:
+    """RUN-04: API consumida pelo CORE-07. Worker com o mesmo build_id e outro com build_id diferente."""
+    port, port_outro = free_ports(2)
+    log, log_outro = OUT / "worker_interop.log", OUT / "worker_interop_outro.log"
+    loopback = ("--bind", "127.0.0.1")
+    w = start_worker(exe, port, log, ctx["env"], loopback)
+    wo = start_worker(exe, port_outro, log_outro, ctx["env"], (*loopback, "--build-id-outro"))
+    env = dict(ctx["env"], MINIPAR_INTEROP_PORT=str(port), MINIPAR_INTEROP_PORT_OUTRO=str(port_outro))
+    try:
+        p = run([str(exe)], env, timeout=180)
+        probe = run([str(exe), "--sondagem-join-coordenador"], ctx["env"])
+        vivo = w.poll() is None
+    finally:
+        for proc in (w, wo):
+            if proc.poll() is None:
+                proc.kill()
+                proc.wait(timeout=5)
+    log_txt = log.read_text(encoding="utf-8", errors="replace")
+    probe_ok = (probe.returncode == 1 and "NAO DEVERIA" not in probe.stdout
+                and "[minipar_rt] join task-1 falhou: TASK_FAILED: " in probe.stderr)
+    ok = p.returncode == 0 and probe_ok and vivo
+    report = (p.stdout + p.stderr).rstrip() + "\n"
+    report += f"worker (porta {port}): vivo no fim={vivo}; linhas TASK={log_txt.count('] TASK ')}\n"
+    report += (f"sondagem join no coordenador: exit={probe.returncode} (esperado 1); "
+               f"stderr: {probe.stderr.strip()}")
+    return ok, report
+
+
 def step_demo_loopback(exe: Path, ctx: dict) -> tuple[bool, str]:
     """Roteiro do RUN-03 no loopback: confere o programa, NÃO prova duas máquinas.
 
@@ -169,6 +198,7 @@ STEPS = [
     ("RUN-02 codec JSON e frames", "tests/test_protocol.cpp", step_unit),
     ("RUN-02 coordenador <-> 2 workers (processos no loopback)", "tests/test_remote.cpp", step_remote),
     ("RUN-03 roteiro da demo em loopback (nao prova duas maquinas)", "examples/demo_distribuida.cpp", step_demo_loopback),
+    ("RUN-04 contrato da API consumida pelo CORE-07 (loopback)", "tests/test_interop.cpp", step_interop),
 ]
 
 

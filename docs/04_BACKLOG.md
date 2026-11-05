@@ -663,7 +663,7 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (04/11/2026):** IN_REVIEW · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10). Prova executada em dois computadores físicos na mesma rede (A coordenador, B worker): as cinco verificações em PASS, conferidas pelo operador em A; log do worker anexado em `docs/evidencias/RUN-03/worker_B.log` (conexão e tarefas vindas do IP de A, executadas em B). Pendência: a saída do coordenador (`coordenador_A.txt`) não foi anexada. Registro em `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md` §6.
+**Estado atual (04/11/2026):** DONE · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10) aprovado e mergeado em `dev`. Prova executada em dois computadores físicos na mesma rede (A coordenador, B worker): as cinco verificações em PASS, conferidas pelo operador em A; log do worker anexado em `docs/evidencias/RUN-03/worker_B.log` (conexão e tarefas vindas do IP de A, executadas em B). Pendência: a saída do coordenador (`coordenador_A.txt`) não foi anexada. Registro em `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md` §6.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
@@ -682,6 +682,10 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 **Escopo de arquivos autorizado:** `runtime/`, `docs/`.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
+
+**Estado atual (05/11/2026):** IN_REVIEW · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), pronto para revisão. Com o CORE-06 (#17) e o CORE-07 (#18) em `dev`, a branch sincronizada passa **sem integração local**: `run_tests.py` 6/6 etapas PASS e `interop_codegen.py` (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS. Loopback não prova dois computadores (RUN-03).
+
+**Estado anterior (04/11/2026):** IN_REVIEW (draft) · PR [#20](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20), agora direto sobre `dev`. `ready=true`: `RUN-01`, `RUN-03` (#10, mergeado em 04/11) e `CORE-05` já estão em `dev`. `python runtime/tests/run_tests.py`: 6 etapas PASS, incluindo `test_interop.cpp` (17/17), que fixa os 13 símbolos da API usados pelo C++ do `CORE-07`. `python runtime/tests/interop_codegen.py`: (a) local, (b) worker no loopback e (c) queda → `WORKER_LOST` PASS na **integração local** com #17/#18 (ainda fora de `dev`); sem o `CORE-07` na árvore dá `BLOCKED` (exit 2). PARTIAL até #17/#18 entrarem em `dev`. `src/` não foi alterado.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
