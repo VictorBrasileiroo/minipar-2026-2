@@ -96,11 +96,14 @@ wrappers tipados, runtime real, mesmo binário coordenador/worker, handles/lista
 e falhas recuperáveis. Execução nativa local e entre processos no loopback
 verificada; prova entre computadores continua pendente.
 
-**CLI completa BLOCKED:** CORE-06/PR #17 continua fora de `dev`. `main.py`
-executa a etapa TAC e interrompe em sua recusa explícita, sem contorná-la.
-Para exercitar apenas o backend use o driver de prova abaixo. `generate_text`
-e `generate` aceitam `semantic` da mesma AST e `source` (obrigatório em FJ,
-para SHA-256); chamadas antigas sem FJ continuam compatíveis.
+**Integração local de 05/11/2026:** `origin/dev` contém CORE-06 (#17).
+A CLI oficial gera TAC real antes do C++ e passa contexto semântico e fonte ao
+backend; o serviço CORE-08 usa o mesmo backend e compilação limitada (120 s,
+64 KB por stream), com includes do runtime. `generate_text` e `generate`
+aceitam `semantic` da mesma AST e `source` (obrigatório em FJ para SHA-256);
+chamadas antigas sem FJ continuam compatíveis. Revisão humana/merge pendentes.
+Reprodução CLI/API/loopback e relatório em
+[integração CORE-07](docs/auditorias/CORE-07_INTEGRACAO_DEV.md).
 
 ```powershell
 $env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
@@ -117,6 +120,29 @@ Detalhes, limites e regressões no
 [handoff CORE-07](docs/auditorias/CORE-07_BACKEND_RUNTIME.md).
 Estado administrativo e aprovações humanas não foram promovidos.
 
+## Validação local do CORE-06
+
+O gerador TAC representa `fork` com captura por valor, `join`/timeout,
+regiões `par` com branches e barreira e laços `for-in` com controle de fluxo.
+Use as APIs `TACGenerator.generate_text(program)` ou `generate(program, nome)`
+após análise semântica. A CLI e o serviço integram o backend CORE-07 no recorte
+tipado documentado; gerar TAC por si só não comprova execução de tarefas.
+
+```powershell
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p "test_*.py" -v
+```
+
+Notação, exemplos, limites e evidências em
+[`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
+A implementação e a revisão corretiva estão em `2fada7c` e `33bc9d9`, na branch
+`eixo-a/CORE-06-tac-fork-join-par` ([PR #17](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17)).
+A integração de 04/11/2026 com `origin/dev` em `05b43f9` foi commitada em
+`fef7507`, com ajustes em `14fc239`, preservando o TAC e os imports por pacote
+do serviço CORE-08. `par_return` distingue término de branch do retorno de função;
+recusas TAC com localização na AST informam a linha ao serviço. Histórico,
+regressões e limites estão no handoff. Contratos e card não são declarados
+aprovados/concluídos.
+
 ## Proveniência e direitos
 
 Base anterior informada no README e na BNF históricos: <https://github.com/luizwhirl/minipar-improvement>. Créditos preservados: Emanuele Vitória de Jesus Lima ([Manu-Vii](https://github.com/Manu-Vii)), José Lucas de Oliveira Quintela ([lucasqtl](https://github.com/lucasqtl)) e Luiz Miguel de Melo Bomfim ([luizwhirl](https://github.com/luizwhirl)).
@@ -126,3 +152,29 @@ O código herdado está incluído neste workspace. O **commit de origem não foi
 ## Documentos não incluídos
 
 O PDF oficial do projeto, a BNF anterior, o exemplo Python do Teste 10 e materiais anteriores de modelagem foram incluídos em `docs/fontes/`, para consulta interna. O **código Java integral do Teste 11 e os códigos completos dos testes 8 e 9 não estão incluídos** neste pacote; também não incluí o vídeo grande. Para publicação pública, confirme antes direitos de compartilhamento das referências.
+
+## Serviço de fases CORE-08 (entrega local para revisão)
+
+`src/service.py` fornece `analyze`, `compile_program`, `execute` e `get_artifact` no envelope C-WEB-v1. A análise gera texto sem invocar G++; cada compilação nativa usa diretório próprio em `output/web/<uuid>/`. `CXX` seleciona um executável C++20, sem flags embutidas. Execução usa stdin não interativo, timeout 1–30 s e saídas limitadas a 1 MiB por stream. O registro é local ao processo e retém todas as compilações durante sua vida; não existe limpeza automática nem recuperação do registro após reiniciar.
+
+Estado **PARTIAL** contratual: na integração local de 05/11/2026, Fork/Join
+produz TAC, C++ e binário real pelo serviço, com execução e artefatos conferidos.
+Recusas de representação/retorno do backend geram `CPP_UNSUPPORTED_FEATURE`,
+com linha quando disponível, e impedem G++. `analyze` não registra artefatos.
+O catálogo proposto pela CR permanece **dependente de ratificação A+B**, incluindo
+o tipo `task`; esta integração não o aprova nem altera o envelope ou as APIs.
+`TAC_UNSUPPORTED_FEATURE` continua aplicável a outras construções não representadas.
+Detalhes e evidências: [integração CORE-06](docs/auditorias/CORE-06_TAC_FORK_JOIN.md),
+[histórico CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md) e
+[proposta de CR](docs/CR-CORE08-DIAGNOSTICOS.md).
+
+```python
+from src.service import analyze, compile_program, execute, get_artifact
+analysis = analyze("print(5);\n")
+build = compile_program("print(5);\n")
+if build["ok"]:
+    execution = execute(build["artifacts"]["binary_id"])
+    download = get_artifact(build["request_id"], "cpp")
+```
+
+A Web didática deve chamar as funções no mesmo processo. Rotas e extração `.arm` permanecem responsabilidade do B. Para repetir a validação local: `.\.venv\Scripts\python.exe -B tests/2026_2/core08/verify_core08.py` com `CXX` configurado; logs em `output/core08/`.

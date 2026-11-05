@@ -33,6 +33,10 @@ def compile_file(source_path: str, output_name: str) -> bool:
     print("[Fase 1] Analise Lexica e Sintatica...")
     lexer  = Lexer(source_code)
     tokens = lexer.tokenize()
+    if lexer.diagnostics:
+        for diagnostic in lexer.diagnostics:
+            print(f"[ERRO LEXICO] Linha {diagnostic['line']}: {diagnostic['message']}", file=sys.stderr)
+        return False
 
     parser  = Parser(tokens)
     program = parser.parse()
@@ -48,7 +52,7 @@ def compile_file(source_path: str, output_name: str) -> bool:
     try:
         tac_path = tac.generate(program, output_name)
     except NotImplementedError as exc:
-        print(f"[ERRO TAC] {exc}; integracao CLI CORE-06/CORE-07 pendente. C++ nao executado.", file=sys.stderr)
+        print(f"[ERRO TAC] {exc}; C++ nao executado.", file=sys.stderr)
         return False
     print(f"[TAC] Arquivo gerado: {tac_path}")
 

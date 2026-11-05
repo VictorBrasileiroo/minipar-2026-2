@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-05",
+  "branch": "eixo-a/CORE-07-backend-runtime",
+  "head": "d7b52d5",
+  "merge_head": "f432cc6",
+  "merge_state": "pending_no_commit",
+  "conflicts_resolved": [
+    "main.py",
+    "src/codegen.py",
+    "tests/2026_2/core0405/verify_core0405.py",
+    "README.md",
+    "BNF-grammar.md"
+  ],
+  "tests": {
+    "core06": {
+      "status": "PASS",
+      "tests": 54
+    },
+    "core07": {
+      "status": "PASS",
+      "tests": 17
+    },
+    "core08": {
+      "status": "PASS",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0
+    },
+    "core0405": {
+      "status": "PASS",
+      "tests": 126
+    },
+    "core03": {
+      "status": "PARTIAL",
+      "passed": 78,
+      "known_fail": 1,
+      "new_fail": 0,
+      "reason": "HERDADO-RETORNO-NUMERICO"
+    },
+    "core02": {
+      "status": "PASS",
+      "tac": 5,
+      "native": 17,
+      "assertions": 17
+    },
+    "test11": {
+      "status": "PASS",
+      "tests": 48,
+      "scope": "local verifier; CPUlator not rerun"
+    },
+    "legacy": {
+      "status": "PASS",
+      "stdout": "5\n"
+    },
+    "runtime": {
+      "status": "PASS",
+      "steps": 5,
+      "scope": "loopback"
+    },
+    "planning": {
+      "status": "PASS",
+      "cards": 43
+    },
+    "T02": {
+      "status": "FAIL",
+      "reason": "Fibonacci initial zero absent, known intermittent baseline"
+    },
+    "T04": {
+      "status": "PARTIAL",
+      "reason": "numeric divergence without agreed tolerance"
+    },
+    "physical_hosts": {
+      "status": "UNTESTED",
+      "owner": "RUN-03"
+    },
+    "cpulator": {
+      "status": "UNTESTED",
+      "reason": "historical evidence preserved; not rerun"
+    },
+    "git_diff_check": {
+      "status": "PASS",
+      "exit": 0
+    },
+    "git_cached_check_origin_dev": {
+      "status": "PASS",
+      "exit": 0
+    },
+    "git_cached_check_head": {
+      "status": "FAIL",
+      "exit": 1,
+      "inherited": true,
+      "findings": 8,
+      "reason": "Test11 artifacts identical to origin/dev; preserved"
+    }
+  },
+  "e2e": {
+    "status": "PASS",
+    "stdout": "14 42\n",
+    "crash_error": "WORKER_LOST",
+    "source_hash": "bc2fdd7df46de52f4a270fc4be2aae535a88779473b9a242df5043f5656e26ed",
+    "work": "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core07\\integration\\official-7rtv0pg9",
+    "evidence": "output/core07/integration/e2e.json"
+  },
+  "contracts": {
+    "diagnostics_cr": "PROPOSAL_PENDING_A_B",
+    "frozen_or_done_changed": false
+  },
+  "documents": {
+    "updated": [
+      "README.md",
+      "BNF-grammar.md",
+      "docs/CR-CORE08-DIAGNOSTICOS.md",
+      "docs/auditorias/CORE-06_TAC_FORK_JOIN.md",
+      "docs/auditorias/CORE-07_BACKEND_RUNTIME.md",
+      "docs/auditorias/CORE-08_SERVICO_FASES.md",
+      "docs/auditorias/CORE-07_INTEGRACAO_DEV.md"
+    ],
+    "agents_review": "unchanged: ownership, architecture and workflow preserved"
+  },
+  "logs": {
+    "baseline.log": "b3b284f939cdf7f5b891943113b09f50006dd71f4afd4e8fa3c9a40b0c99535d",
+    "core02-native.log": "bf1a45f57308e32725d372b184cc700be8713b264a55dc9aea2637a6f5d570f7",
+    "core02-tac.log": "8123de193577aaf2f48007b9a40bc296cc6b0179bd2c8d351c5d3301a11f1062",
+    "core03.log": "d99c686b2cd926625273714a366bc2a6a5e541a3bd88bbd0df01038bbb1638ba",
+    "core0405.log": "75519094d40d1154bc07603c5a43a8a38d059d18095b053e285ec3bb9de8605a",
+    "core06.log": "01ba9af56eaad1474f5861c7a114e0ce0f00b28166c919d44c7f49da39f9be7c",
+    "core07.log": "ebb5c5bc40f0f0ee48c655ef4251ca7ca155514a1c4754bf5a45a7228b0cf834",
+    "core08-final.log": "ce557569341fef51852767e4bbf8ee09bf7d622856d5b5d8c3bdf2b6260d8dec",
+    "core08-first.log": "ae39f678e26c64b7ea13f56c94b3f2a0300bd08aab8a030f62f6558a7ca23217",
+    "core08.log": "23865a7f7baf06a9870ab0bd18c2b2bbfef76b0426074aca8577c014f0a7a5ab",
+    "e2e-final.log": "e734a9127aa05b7f8fcce96e8a912589f2e403120b5dc6abe8f4cb3775cef265",
+    "e2e.log": "f94b1dc799a7674bc6f34fb32f387a5f5bdc88b80ca3dcff5e61d6eb013aa330",
+    "legacy.log": "b7a9756419a65cdd3edcf894262700d20b09e7bf26bbc4cdda69aa917205e7a0",
+    "planning.log": "6d119d4a537d4f4c2500d442e6fed56b079ee0e545ac38e1300f56cdc2f9c8b6",
+    "runtime.log": "b30d1ad14603c70b98828bdf5414a4d8f14069faf58ee53143df7dce44427b48",
+    "test11.log": "b6c1239045721c1033be0345ce90143aaadd3ec948549ab3abba2910d011abb2"
+  },
+  "git": {
+    "unmerged_entries": 0,
+    "unstaged_files": 0,
+    "index": "merge and integration changes staged for review",
+    "commits_created": 0,
+    "push": false,
+    "remote_pr_edited": false,
+    "protected_paths_equal_origin_dev": [
+      "legacy",
+      "web_didatica",
+      "runtime",
+      "tests/2026_2/test11"
+    ]
+  }
+}

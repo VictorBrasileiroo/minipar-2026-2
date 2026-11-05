@@ -1,5 +1,10 @@
 # HANDOFF — CORE-07 — backend integrado ao runtime
 
+> Atualização de 05/11/2026: CORE-06 já está em `origin/dev`; integração local
+> CLI/CORE-08 e novas provas em [CORE-07_INTEGRACAO_DEV.md](CORE-07_INTEGRACAO_DEV.md).
+> O bloqueio CLI descrito nas rodadas abaixo é histórico. O merge local fica
+> sem commit/push para revisão; ratificações e aceite humano permanecem pendentes.
+
 Responsável: Eixo A/coordenador. Data: 30/10/2026. Branch local:
 `eixo-a/CORE-07-backend-runtime`. **Estado: PARTIAL**, disponível para revisão
 local independente. Backend completo no recorte tipado demonstrado; CLI integral

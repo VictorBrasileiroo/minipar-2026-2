@@ -292,14 +292,16 @@ class ProofTests(unittest.TestCase):
         finally: os.chdir(previous)
         record(kind='compile_failure', log=log.getvalue(), status='PASS')
 
-    def test_cli_waits_for_tac_without_stale_binary(self):
+    def test_cli_generates_tac_and_executes_fork_join(self):
         folder=WORK/'cli'; (folder/'output').mkdir(parents=True)
         source=folder/'p.minipar'; source.write_text('func f(x){return x;} var h=fork f(1); print(join(h));',encoding='utf-8')
         exe=folder/'output/p.exe'; exe.write_bytes(b'stale')
-        p=subprocess.run([sys.executable,'-B',str(ROOT/'main.py'),str(source),'p'],cwd=folder,capture_output=True,text=True,timeout=15)
-        self.assertEqual(p.returncode,1); self.assertIn('CORE-06',p.stderr)
-        self.assertFalse(exe.exists()); self.assertFalse((folder/'output/p.cpp').exists())
-        record(kind='CLI', status='BLOCKED', reason='CORE-06 PR #17 fora de dev', stdout=p.stdout,stderr=p.stderr)
+        p=subprocess.run([sys.executable,'-B',str(ROOT/'main.py'),str(source),'p'],cwd=folder,capture_output=True,text=True,timeout=120)
+        self.assertEqual(p.returncode,0,p.stderr)
+        self.assertIn(' = fork f(', (folder/'output/p.tac').read_text())
+        run(exe, expected='1\n')
+        record(kind='CLI', status='PASS', stdout=p.stdout,stderr=p.stderr)
+
 
 
 if __name__ == '__main__': unittest.main(verbosity=2)
