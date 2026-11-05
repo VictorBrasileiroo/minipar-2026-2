@@ -10,7 +10,7 @@
   <header class="topo">
     <div class="marca">
       <h1>MiniPar <span>· Web didática</span></h1>
-      <p class="aviso-mock" role="status" id="aviso-mock">MOCK · dados de fixtures do contrato C-WEB-v1, sem compilador real</p>
+      <p class="aviso-mock" id="aviso-mock">MOCK · dados de fixtures do contrato C-WEB-v1, sem compilador real</p>
     </div>
     <label class="seletor">
       <span>Exemplo</span>
@@ -30,9 +30,18 @@
         <textarea id="codigo" spellcheck="false" autocomplete="off" aria-label="Código MiniPar"></textarea>
       </div>
       <div class="acoes">
-        <button type="button" id="analisar" disabled title="Disponível na integração com o serviço real (WEB-03)">Analisar</button>
-        <button type="button" id="compilar" disabled title="Disponível na integração com o serviço real (WEB-04)">Compilar e executar</button>
+        <button type="button" id="analisar" disabled>Analisar</button>
+        <button type="button" id="compilar" disabled>Compilar e executar</button>
       </div>
+      <div class="entrada-execucao">
+        <label class="rotulo-entrada" for="entrada">Entrada (stdin) <small>entregue inteira antes da execução; cada <code>input()</code> lê uma linha</small></label>
+        <textarea id="entrada" rows="2" spellcheck="false" autocomplete="off"></textarea>
+        <div class="linha-entrada">
+          <label>Tempo limite <input type="number" id="tempo-limite" min="1" max="30" step="1" value="10" inputmode="numeric"> s</label>
+          <span class="casos-t11" id="casos-t11" hidden></span>
+        </div>
+      </div>
+      <p class="situacao" id="situacao" role="status" aria-live="polite"></p>
       <h3 class="subtitulo">Diagnósticos</h3>
       <ul class="diagnosticos" id="diagnosticos"></ul>
     </section>

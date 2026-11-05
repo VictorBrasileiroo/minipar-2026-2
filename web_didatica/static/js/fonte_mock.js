@@ -1,5 +1,6 @@
 // Fonte de dados do modo mock (WEB-01): lê as fixtures de web_didatica/fixtures/.
-// Na integração (WEB-03/WEB-04) entra uma fonte que chama /api/v1/… e devolve o mesmo formato.
+// Só é usada com ?fonte=mock; o padrão é a fonte real (fonte_real.js, WEB-03), com o mesmo formato.
+// Não tem analisar(): no mock o botão Analisar fica desabilitado.
 const BASE = "/fixtures/";
 
 async function lerJson(arquivo) {

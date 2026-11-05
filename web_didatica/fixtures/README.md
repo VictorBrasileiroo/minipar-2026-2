@@ -1,6 +1,8 @@
 # Fixtures mock da Web didática (WEB-01)
 
-Respostas de exemplo no formato do contrato **C-WEB-v1** (`docs/02_CONTRATOS_TECNICOS.md`, §1), usadas pela Web didática enquanto o serviço `src/service.py` do Eixo A (`CORE-08`) não existe. **Tudo aqui é mock**: a interface deve exibir esse estado ao usuário.
+Respostas de exemplo no formato do contrato **C-WEB-v1** (`docs/02_CONTRATOS_TECNICOS.md`, §1), criadas para a Web didática antes de existir o serviço `src/service.py` do Eixo A (`CORE-08`). **Tudo aqui é mock**: a interface exibe esse estado ao usuário.
+
+Desde o WEB-03 a Web usa o serviço real por padrão e, nesse modo, lê destas fixtures **só os campos `source` e `stdin`** (o código e a entrada dos exemplos; `stdin` desde o WEB-04, para EXEC-01); os envelopes daqui só aparecem com `?fonte=mock`. Medido em 05/11/2026 sobre o `dev` atual: o serviço real devolve para FIX-01 a FIX-04, PROG-02 e EXEC-01 (em `analyze`) o mesmo conteúdo destas fixtures, fora `request_id`, `duration_ms` e o texto C++. O PROG-01 diverge em `semantic.symbols` e `tac.text`, porque a fixture foi gerada antes das mudanças do TAC e do semântico do Eixo A; no modo real a Web mostra o resultado atual.
 
 ## Arquivos
 

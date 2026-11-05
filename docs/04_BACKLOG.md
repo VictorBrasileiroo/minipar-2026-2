@@ -238,6 +238,29 @@
 
 **Escopo de arquivos autorizado:** `src/tac.py`.
 
+**Autorização local registrada em `planning/cards.json` (29/10/2026):** coordenador
+autoriza desenvolvimento de CORE-06, testes próprios, ajuste do oráculo TAC de
+CORE-04/05 e documentação/metadados pertinentes. Base
+`29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1`, branch
+`eixo-a/CORE-06-tac-fork-join-par`; C-FJ-v1 revisão 2 com ratificações pendentes.
+Sem `git add`, commit, push, PR, merge ou implementação CORE-07/08; `ready=false`
+e `BACKLOG` preservados. Evidências locais para revisão:
+[`CORE-06_TAC_FORK_JOIN.md`](auditorias/CORE-06_TAC_FORK_JOIN.md).
+
+**Publicação posterior e revisão (29/10/2026):** o coordenador publicou a
+implementação inicial em `2fada7ce1fbc70249c42d501566a3aa07188bf90`, um commit
+sobre a base acima; presença remota confirmada por Git, nenhum PR encontrado
+para essa head na consulta da revisão. Autorização corretiva registrada no JSON:
+investigar A–D antes de corrigir, preservar argumentos de new quando comprovado
+e atualizar evidências. Na execução daquela revisão, as alterações ficaram locais;
+depois foram commitadas em `33bc9d9` e publicadas no
+[PR #17](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17).
+A integração de `origin/dev` em `05b43f9` consta em `fef7507`, com ajustes em
+`14fc239` (04/11). A revisão do Eixo B de 05/11 autoriza correções TAC/CLI,
+testes próprios e de integração CORE-08, documentação e metadados afetados;
+não inicia CORE-07/08 nem altera ready/status, contratos ou aprovações humanas.
+As correções desta rodada de 05/11 ficam locais, sem commit/push.
+
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
@@ -254,7 +277,17 @@
 
 **Critério de aceite:** MiniPar→C++→binário cria tarefa local e remota de teste; join retorna dado correto.
 
-**Escopo de arquivos autorizado:** `src/codegen.py`, `src/cpp_template.py`.
+**Escopo original:** `src/codegen.py`, `src/cpp_template.py`.
+
+**Autorizacao especifica do coordenador (30/10/2026):** implementacao local e
+ampliacao delimitada a `src/semantic.py` (contexto CORE-07), `main.py`,
+`tests/2026_2/core07/`, documentacao e metadados impactados. Sem stage, commit,
+push, PR ou merge. BACKLOG/ready=false e dependencias nao promovidos.
+Backend local/worker loopback implementado para revisao; CLI completa BLOCKED
+por CORE-06/PR #17 ainda aberto em 30/10. Prova entre computadores pendente.
+Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
+
+**Atualização de 05/11/2026:** o PR #18 foi aprovado (review do Eixo C) e mergeado em `dev` (`b6e2705`), depois do CORE-06 (#17). A CLI e o serviço (CORE-08) compilam e executam Fork/Join. Estado do card: `IN_REVIEW`; `DONE` depende da validação do dono (A). A prova do código gerado entre dois computadores segue pendente (o RUN-03 provou o runtime). A autorização de 05/11 para tocar CLI, serviço e testes do CORE-04/05/06/08 está registrada no card. As restrições "sem stage, commit, push, PR ou merge" acima são da rodada de 30/10.
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
@@ -630,7 +663,7 @@
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** BLOCKED · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10) com o programa `runtime/examples/demo_distribuida.cpp` e o roteiro `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`; ensaio no loopback ok (não conta como prova). Bloqueio: execução em duas máquinas físicas ainda não feita (uma máquina disponível; regra de firewall temporária cabe à pessoa operadora). Responsável: C + equipe.
+**Estado atual (04/11/2026):** IN_REVIEW · PR [#10](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10). Prova executada em dois computadores físicos na mesma rede (A coordenador, B worker): as cinco verificações em PASS, conferidas pelo operador em A; log do worker anexado em `docs/evidencias/RUN-03/worker_B.log` (conexão e tarefas vindas do IP de A, executadas em B). Pendência: a saída do coordenador (`coordenador_A.txt`) não foi anexada. Registro em `docs/evidencias/RUN-03_DOIS_COMPUTADORES.md` §6.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 

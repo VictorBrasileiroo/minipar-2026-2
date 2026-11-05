@@ -118,11 +118,13 @@
         "docs/02_CONTRATOS_TECNICOS.md"
       ],
       "estimate_hours": 2,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "DONE",
+      "ready": true,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/3",
+      "evidence": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ]
     },
     {
       "id": "CON-03",
@@ -139,11 +141,13 @@
         "docs/02_CONTRATOS_TECNICOS.md"
       ],
       "estimate_hours": 2,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "DONE",
+      "ready": true,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/2",
+      "evidence": [
+        "docs/02_CONTRATOS_TECNICOS.md"
+      ]
     },
     {
       "id": "CORE-01",
@@ -299,8 +303,20 @@
       "status": "BACKLOG",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17",
+      "evidence": [
+        "docs/auditorias/CORE-06_TAC_FORK_JOIN.md"
+      ],
+      "scope_authorization": "29/10/2026: coordenador autoriza desenvolvimento exclusivamente local de CORE-06, src/tac.py, testes próprios, ajuste do oráculo TAC de CORE-04/05 e documentação/metadados pertinentes, usando C-FJ-v1 revisão 2 com ratificações pendentes. Não autoriza git add, commits, push, PR, merge, CORE-07/08, alteração unilateral de contrato, DONE ou FROZEN; ready/status preservados. Branch eixo-a/CORE-06-tac-fork-join-par, base 29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1.",
+      "subsequent_publication": {
+        "observed_date": "2026-10-29",
+        "published_sha": "2fada7ce1fbc70249c42d501566a3aa07188bf90",
+        "base_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+        "note": "Publicação posterior pelo coordenador conforme relato; presença e SHA remotos confirmados por git ls-remote. Consulta GitHub head/estado all não encontrou PR; não é DONE ou aprovação contratual."
+      },
+      "review_authorization": "29/10/2026: revisão corretiva local na mesma branch publicada; investigar e registrar A-D antes de alterar produção. Corrigir somente regressão comprovada de CORE-06 e atualizar testes/documentação. Sem git add, commit, push, PR, merge/rebase, CORE-07/08/09, mudança de runtime/Web/Teste 11/legacy ou contratos compartilhados. Revisão não publicada naquele momento; posteriormente commitada em 33bc9d9; estados e aprovações preservados.",
+      "integration_authorization": "04/11/2026: coordenador autoriza integrar origin/dev à CORE-06, resolver conflitos e ajustar as expectativas CORE-08 que rejeitavam TAC Fork/Join, com documentação impactada. Integração posteriormente commitada/publicada em fef7507 e 14fc239 no PR #17; não implementa CORE-07 nem aprova CRs.",
+      "review_b_authorization": "05/11/2026: coordenador solicita analisar e resolver os achados do Eixo B no PR #17, incluindo par_return, linhas das recusas, snapshots condicionais, encoding do teste CLI, mensagem de main.py, metadados e documentação. Autoriza testes de integração em tests/2026_2/core08/test_service.py e a seção CORE-08 do README como consequências do CORE-06, não implementação autônoma de CORE-08. Manter branch existente, sem stage/commit/push, runtime/Web/Teste 11/legacy ou contratos compartilhados; ready/status e ratificações preservados."
     },
     {
       "id": "CORE-07",
@@ -320,11 +336,37 @@
         "src/cpp_template.py"
       ],
       "estimate_hours": 6,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/18",
+      "evidence": [
+        "docs/auditorias/CORE-07_RESULTADOS.json"
+      ],
+      "local_execution": {
+        "date": "2026-10-30",
+        "authorization": "Coordenador autorizou implementacao local CORE-07, ampliacao delimitada para contexto semantico, CLI, testes e documentacao. Sem stage/commit/push/PR/merge ou promocao de dependencias.",
+        "branch": "eixo-a/CORE-07-backend-runtime",
+        "base": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+        "scope": [
+          "src/codegen.py",
+          "src/cpp_template.py",
+          "src/semantic.py (CORE-07)",
+          "main.py",
+          "tests/2026_2/core07/",
+          "documentacao e metadados impactados"
+        ],
+        "state": "Historico de 30/10: backend local/loopback implementado; CLI aguardava CORE-06 (#17). Em 05/11: #17 e #18 em dev; ver merge",
+        "handoff": "docs/auditorias/CORE-07_BACKEND_RUNTIME.md"
+      },
+      "merge": {
+        "date": "2026-11-05",
+        "commit": "b6e270566f0fac3c2804fa1dbbac3024fac81ad7",
+        "review": "Aprovado por Erasmo (Eixo C) em 05/11/2026, review rodada 2 no PR #18; ajustes pedidos no PR de acompanhamento",
+        "evidence": "docs/auditorias/CORE-07_INTEGRACAO_DEV.md",
+        "pending": "DONE depende da validacao do dono (A); prova do codigo gerado entre dois computadores pendente (RUN-03 provou o runtime)"
+      },
+      "scope_authorization": "05/11/2026: coordenador autorizou integrar eixo-a/CORE-07-backend-runtime e corrigir CLI, backend, servico (src/service.py, CORE-08) e testes de bloqueios superados (core04/05, core06, core08), conforme docs/auditorias/CORE-07_INTEGRACAO_DEV.md; registrado no card a pedido da review do PR #18. Ratificacoes contratuais seguem pendentes."
     },
     {
       "id": "CORE-08",
@@ -644,12 +686,13 @@
         "docs/evidencias/"
       ],
       "estimate_hours": 5,
-      "status": "BLOCKED",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10",
       "evidence": [
         "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md",
+        "docs/evidencias/RUN-03/worker_B.log",
         "runtime/examples/demo_distribuida.cpp"
       ]
     },

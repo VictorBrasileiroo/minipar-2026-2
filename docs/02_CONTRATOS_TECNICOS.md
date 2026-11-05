@@ -15,7 +15,7 @@
 
 ## 1. C-WEB-v1 — Serviço de inspeção/compilação do MiniPar
 
-**Estado:** `v1 — PROPOSTA DE CONGELAMENTO` redigida pelo B em 19/10/2026 no card `CON-02`. Passa a `v1 FROZEN` quando A aprovar o PR (quadro em 1.11). Até lá, nenhum lado trata nomes e campos abaixo como definitivos.
+**Estado:** `v1 FROZEN` desde 22/10/2026, quando A aprovou o PR #3 do card `CON-02` (quadro em 1.11). Proposta redigida pelo B em 19/10/2026. Nomes e campos abaixo são definitivos; mudanças só por CR (seção 4).
 
 **Revisão 2 (19/10/2026):** incorpora a revisão do coordenador no PR do `CON-02`: `\n` final explícito nas fixtures, regra única para fases ignoradas, tipos e escopos da tabela de símbolos, algoritmo de truncamento da AST, testes de isolamento/timeout/artefatos e entrega do `.arm` do Teste 11 pela Web. Ajuste de 22/10/2026: a extração do `.arm` (1.7) segue todos os erros de C-T11-v1 §3.6 item 2 e normaliza CRLF, conferida na integração com o PR do `CON-03`.
 
@@ -530,7 +530,8 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 | Parte | Responsável | Decisão | Data |
 |---|---|---|---|
 | B — consumidor | José Riquelme | Proposta apresentada | 19/10/2026 |
-| A — fornecedor | Coordenador | *pendente* | |
+| A — fornecedor | Coordenador (Victor) | Pediu ajustes no PR #3 | 19/10/2026 |
+| A — fornecedor | Coordenador (Victor) | Aprovou o PR #3 após o último commit; merge no `dev` em 22/10/2026 → `v1 FROZEN` | 22/10/2026 |
 
 ### 1.12 Revisão v1.1 — CR-CORE08-DIAGNOSTICOS
 
@@ -817,7 +818,7 @@ Mudança depois do congelamento segue a seção 4 (CR). Funções novas no runti
 
 ## 3. C-T11-v1 — MiniCompilador escrito em MiniPar
 
-**Estado:** `v1 — PROPOSTA DE CONGELAMENTO, revisão 2` (22/10/2026). A revisão 1 foi redigida pelo B em 19/10/2026 no card `CON-03`; a revisão 2 incorpora os ajustes pedidos na revisão de 22/10 (quadro em 3.10). Passa a `v1 FROZEN` quando A aprovar o PR. Até lá, nenhum lado trata as sintaxes abaixo como definitivas.
+**Estado:** `v1 FROZEN` (revisão 2) desde 22/10/2026, quando A aprovou o PR #2 do card `CON-03` (quadro em 3.10). A revisão 1 foi redigida pelo B em 19/10/2026; a revisão 2 incorpora os ajustes pedidos na revisão de 22/10. As sintaxes abaixo são definitivas; primitiva nova entra como `v1.1` por CR (seção 4).
 
 **Conferido contra a referência do professor em 22/10/2026.** Os três anexos do Classroom estão, sem alteração de conteúdo, em `docs/fontes/teste11/`: `MiniCompiladorCompleto_ARMv7.java` (o MiniCompilador), `Codigo-Assembly-ARMV7.arm` (o `.arm` de referência) e `Execucao-Saida-okRodounoCPULATOR.txt` (a saída de uma execução de `((2+4)*7)-(5*4)`). A comparação item a item está em 3.11, e o formato de saída que o T11 reproduz está em 3.12.
 
@@ -1395,7 +1396,7 @@ Sondagem de 22/10/2026 no `src/` do commit `a37c168`: **NEG-01 compila e executa
 | B — consumidor | José Riquelme | Proposta apresentada (revisão 1) | 19/10/2026 |
 | Revisão | Colega da equipe | De acordo com listas numéricas + `substr` no T11; pediu ajustes antes de aprovar | 22/10/2026 |
 | B — consumidor | José Riquelme | Revisão 2: listas de strings mantidas na linguagem (3.4), especificação do `substr` (3.3.1), PROVA-06 a 09, ERR e NEG (3.5), BNF no escopo do `CORE-03`, comparação com a referência do professor (3.11), formato do Assembly e da saída iguais aos da referência (3.6, 3.6.1, 3.12), PRIM-01 estendida a retornos de função | 22/10/2026 |
-| A — fornecedor | Coordenador | *pendente* | |
+| A — fornecedor | Coordenador (Victor) | Aprovou a revisão 2 no PR #2 após o último commit; merge no `dev` em 22/10/2026 → `v1 FROZEN` | 22/10/2026 |
 
 O congelamento não depende de mais nenhuma comparação: 3.11 foi concluída com os arquivos do professor e não pediu primitiva nova além da extensão de PRIM-01 (retorno literal), já incluída nesta revisão. Primitiva nova que surgir depois entra como `v1.1` aditiva, por CR.
 
@@ -1520,10 +1521,10 @@ Data:
 |---|---|---|---|
 | CT-01 | Sintaxe definitiva Fork/Join na BNF 2026.2 — proposta do C em C-FJ-v1 §2.2 (revisão 2, 23/10), adotada pelo A no `CORE-04`/`05` (PR #15), aguardando aprovação formal do A | A+C | 18/10 |
 | CT-02 | API runtime C++ final e registry de workers — proposta em C-FJ-v1 §2.3–2.5, implementada no `RUN-01`/`RUN-02`, aguardando A | A+C | 18/10 |
-| CT-03 | Estrutura JSON e API da Web | A+B | 18/10 |
-| CT-04 | Primitivas para strings/coleções Teste 11 — proposta em C-T11-v1 §3.3–3.5 (revisão 2, 22/10), aguardando A | A+B | 18/10 |
+| CT-03 | Estrutura JSON e API da Web — **congelada** em C-WEB-v1 (PR #3, 22/10) | A+B | 18/10 |
+| CT-04 | Primitivas para strings/coleções Teste 11 — **congeladas** em C-T11-v1 §3.3–3.5 (revisão 2, PR #2, 22/10) | A+B | 18/10 |
 | CT-05 | Modelo de deploy dos workers entre hosts — proposta em C-FJ-v1 §2.2.3 e §2.6: mesmo binário compilado em cada máquina, modo `--minipar-worker`, `build_id` conferido no `HELLO` | C+A | 18/10 |
-| CT-06 | CPUlator e escrita `.arm` — proposta em C-T11-v1 §3.6–3.7, alinhada à referência do professor; escrita direta desnecessária (PEND-T11-02 resolvida em 22/10) | B+A | 19/10 |
+| CT-06 | CPUlator e escrita `.arm` — **congelada** em C-T11-v1 §3.6–3.7 (PR #2, 22/10), alinhada à referência do professor; escrita direta desnecessária (PEND-T11-02 resolvida em 22/10) | B+A | 19/10 |
 | CT-07 | Saída gráfica do T10 | C | 20/10 |
 
 **Não iniciar implementação ampla sem estes contratos.** Provas isoladas reversíveis são permitidas para reduzir risco.
