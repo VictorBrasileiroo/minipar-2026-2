@@ -132,10 +132,13 @@ class ContractTests(unittest.TestCase):
         self.assertTrue(analyzer.analyze(program))
         self.assertEqual([s['name'] for s in analyzer.symbols], ['f','x','y','h'])
         r = service.analyze(source)
-        self.assertEqual(r['phases']['tac']['status'], 'error')
-        self.assertEqual(r['phases']['cpp']['reason'], 'previous_phase_failed')
+        self.assertEqual(r['phases']['tac']['status'], 'ok')
+        self.assertIn(' = capture 2\n', r['phases']['tac']['text'])
+        self.assertIn(' = fork f(', r['phases']['tac']['text'])
+        self.assertIn(' = join h\n', r['phases']['tac']['text'])
+        self.assertEqual(r['phases']['cpp']['status'], 'error')
         # LOCAL proposal only: this extension is still pending A+B ratification.
-        self.assertEqual([d['code'] for d in r['diagnostics']], ['TAC_UNSUPPORTED_FEATURE'])
+        self.assertEqual([d['code'] for d in r['diagnostics']], ['CPP_UNSUPPORTED_FEATURE'])
 
     def test_expected_unmapped_is_not_internal(self):
         r = service.analyze('var h=fork missing();')
@@ -349,13 +352,20 @@ class ProposedDiagnosticsTests(unittest.TestCase):
         self.assert_failure('func f(x){return x;}\nfork f(1);\n',
             'semantic', 'SEM_FJ_07', 2, 'FJ-SEM-07: handle de fork descartado; guarde-o para join.')
 
-    def test_review_real_tac_refusal(self):
+    def test_review_real_tac_success_cpp_refusal(self):
         source = 'func f(x){return x;}\nvar h = fork f(1);\nprint(join(h));\n'
-        self.assert_failure(source, 'tac', 'TAC_UNSUPPORTED_FEATURE', 3,
-            'Fork/Join requer CORE-06; TAC nao gerado.')
+        # CORE-06 now lowers Fork/Join; the independent C++ backend still refuses it.
+        analyzed = self.assert_failure(source, 'cpp', 'CPP_UNSUPPORTED_FEATURE', 3,
+            'Fork/Join requer CORE-07; C++ nao gerado.')
+        self.assertEqual(analyzed['phases']['tac']['status'], 'ok')
+        tac = analyzed['phases']['tac']['text']
+        self.assertIn(' = capture 1\n', tac)
+        self.assertIn(' = fork f(', tac)
+        self.assertIn(' = join h\n', tac)
         with patch('subprocess.Popen', side_effect=AssertionError('unexpected compiler')):
             compiled = service.compile_program(source)
         self.assertEqual(compiled['phases']['gpp'], dict(status='skipped', reason='previous_phase_failed'))
+        self.assertEqual(compiled['phases']['tac'], analyzed['phases']['tac'])
         self.assertTrue(all(v is None for v in compiled['artifacts'].values()))
 
     def test_real_cpp_refusal_when_tac_isolated(self):
@@ -364,6 +374,16 @@ class ProposedDiagnosticsTests(unittest.TestCase):
         with patch.object(service.TACGenerator, 'generate_text', return_value=''):
             self.assert_failure(source, 'cpp', 'CPP_UNSUPPORTED_FEATURE', 3,
                 'Fork/Join requer CORE-07; C++ nao gerado.')
+
+    def test_real_tac_refusals_include_source_line(self):
+        for statement in ('break;', 'continue;'):
+            source = 'var i=0;\nwhile(i<3){\npar {\n' + statement + '\n}\n}'
+            with self.subTest(statement=statement):
+                self.assert_failure(source, 'tac', 'TAC_UNSUPPORTED_FEATURE', 4,
+                    'TAC: ' + statement[:-1] + ' sem laco na branch atual')
+        source = 'func f(){return 1;}\nclass C {\nvar h=fork f();\n}\nvar c=new C();'
+        self.assert_failure(source, 'tac', 'TAC_UNSUPPORTED_FEATURE', 3,
+            'TAC: inicializador Fork/Join de atributo ainda nao representado')
 
     def test_other_unsupported_and_unknown_location(self):
         for phase, cls in [('tac', service.TACGenerator), ('cpp', service.CppCodeGenerator)]:
