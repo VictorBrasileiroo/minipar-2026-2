@@ -1,0 +1,246 @@
+{
+  "card": "WEB-05",
+  "gerado_por": "web_didatica/tools/capturar_telas.py",
+  "data": "2026-11-05T13:44:47-03:00",
+  "ambiente": {
+    "sistema": "Windows-11-10.0.22631-SP0",
+    "python": "3.14.7",
+    "navegador": "Chrome/156.0.8078.80",
+    "gpp": "g++ (Rev6, Built by MSYS2 project) 16.2.0",
+    "janela": "1280x860, tema claro",
+    "url": "http://127.0.0.1:5001"
+  },
+  "capturas": [
+    {
+      "arquivo": "01_tokens.png",
+      "sha256": "73800b1838857ed5617652fed9c66df294b8613cbb5bd21155caa362a6aa1919",
+      "titulo": "FIX-01 analisado pelo serviço real: tabela de tokens",
+      "conferido": [
+        "análise sem erros",
+        "12 tokens (o mesmo número do envelope de fix-01-sucesso.json)"
+      ],
+      "lido": {
+        "situacao": "Análise concluída em 1 ms, sem erros.",
+        "request_id": "5905ee4c2b764114bede3087297821c8"
+      }
+    },
+    {
+      "arquivo": "02_ast.png",
+      "sha256": "f42b399dd81838e9d500c06ade0b92026a1b325fa9ff895809bc097b7ed8fac1",
+      "titulo": "FIX-01: AST recolhível com o nó VarDecl(x) selecionado e a linha destacada no editor",
+      "conferido": [
+        "nó VarDecl(x) presente e selecionado"
+      ],
+      "lido": {
+        "estatistica": "O analisador sintático organiza os tokens numa árvore (AST) que segue a gramática do MiniPar. Cada nó mostra o campo do pai que o contém e a linha de origem."
+      }
+    },
+    {
+      "arquivo": "03_semantico.png",
+      "sha256": "ca194ac1c3f0c70f409cb78f15e98bce272455e5455aafd6697194947fb9416a",
+      "titulo": "FIX-01: escopos e tabela de símbolos",
+      "conferido": [
+        "painel do semântico aberto"
+      ],
+      "lido": {
+        "painel": "Semântico\n\nO analisador semântico confere se nomes foram declarados, se tipos são compatíveis e quantos argumentos cada chamada recebe. Aqui aparecem os escopos abertos e os símbolos de cada um.\n\n1 escopos · 1 símbolos · clique num símbolo para ver a linha no código\n\nglobal s0 · linha 1\nNOME\tCATEGORIA\tTIPO\tLINHA\tPARÂMETROS\nx\tvariable\tnumber\t1\t—"
+      }
+    },
+    {
+      "arquivo": "04_tac.png",
+      "sha256": "433254ed820c8e88541cf93e58165ff892375ad9234b45064397240cac00e570",
+      "titulo": "FIX-01: código de três endereços (TAC)",
+      "conferido": [
+        "painel do TAC aberto"
+      ],
+      "lido": {
+        "tac": "t0 = 2 + 3\nx = t0\nprint x"
+      }
+    },
+    {
+      "arquivo": "05_cpp.png",
+      "sha256": "0f7483937b3c815a4d3b58cf30ae302f45c9cfd1516856a761578402ba465036",
+      "titulo": "FIX-01: C++ gerado",
+      "conferido": [
+        "C++ contém int main"
+      ],
+      "lido": {}
+    },
+    {
+      "arquivo": "06_compilar_executar.png",
+      "sha256": "ae06481159586f8201bb2bfa72988daa5ff7ad3931b335441b207922cc1d9874",
+      "titulo": "FIX-01 compilado pelo g++ e executado: código 0, stdout 5",
+      "conferido": [
+        "g++ com código de retorno 0",
+        "execução com código 0",
+        "stdout igual a '5'"
+      ],
+      "lido": {
+        "situacao": "Executado em 103 ms, código de saída 0.",
+        "stdout": "5"
+      }
+    },
+    {
+      "arquivo": "07_saida_e_downloads.png",
+      "sha256": "8338a2f5d2494eb7228a590ece80864e5f932c91c968ccaadaa3483b90f4e8cc",
+      "titulo": "FIX-01: saída do programa e botões de download da compilação exibida",
+      "conferido": [
+        "mesma execução da captura 06"
+      ],
+      "lido": {}
+    },
+    {
+      "arquivo": "08_erro_lexico.png",
+      "sha256": "0fdcb4a23e92b42fe8d233b3c4e287632a309064f46fb543b0aae7d1d5880af9",
+      "titulo": "Erro léxico (fix-02-erro-lexico.json): cartão do diagnóstico e fase com erro",
+      "conferido": [
+        "códigos ['LEX_UNKNOWN_CHAR'] iguais aos da fixture gerada pelo compilador"
+      ],
+      "lido": {
+        "situacao": "Análise concluída em 0 ms com 1 erro(s).",
+        "cartoes": [
+          "Erro léxico · linha 1, coluna 11\n1 │ var x = 2 @ 3;\n  │           ^\n\nO caractere @ não faz parte do MiniPar. O analisador léxico não consegue formar nenhum token com ele, então a análise para aqui. Confira se não é um erro de digitação ou um operador de outra linguagem.\n\nMensagem do compilador: Caractere desconhecido '@' · LEX_UNKNOWN_CHAR"
+        ]
+      }
+    },
+    {
+      "arquivo": "09_erro_sintatico.png",
+      "sha256": "08cf98452bc1a268b6b09512a681721f4b39ef58103362594aab4a433a088e22",
+      "titulo": "Erro sintático (fix-03-erro-sintatico.json): cartão do diagnóstico e fase com erro",
+      "conferido": [
+        "códigos ['SYN_EXPECTED_EXPRESSION'] iguais aos da fixture gerada pelo compilador"
+      ],
+      "lido": {
+        "situacao": "Análise concluída em 0 ms com 1 erro(s).",
+        "cartoes": [
+          "Erro sintático · linha 1, coluna 13\n1 │ var x = 2 + ;\n  │             ^\n\nNeste ponto o parser esperava um valor: um número, uma string, um nome, uma chamada de função ou uma expressão entre parênteses. Encontrou ;. Como o parser para no primeiro erro, não há AST para mostrar.\n\nMensagem do compilador: Expressao esperada · SYN_EXPECTED_EXPRESSION"
+        ]
+      }
+    },
+    {
+      "arquivo": "10_erro_semantico.png",
+      "sha256": "06568f2c8f49b7c27b872dfe40a9cc89f122f95a6faef17a7cc6b362fe2472a4",
+      "titulo": "Erro semântico (fix-04-erro-semantico.json): cartão do diagnóstico e fase com erro",
+      "conferido": [
+        "códigos ['SEM_UNDECLARED_VARIABLE'] iguais aos da fixture gerada pelo compilador"
+      ],
+      "lido": {
+        "situacao": "Análise concluída em 0 ms com 1 erro(s).",
+        "cartoes": [
+          "Erro semântico · linha 1\n1 │ print(y);\n\ny é usado sem ter sido declarado em nenhum escopo visível daqui. Declare antes de usar, por exemplo var y = 0;, ou confira a grafia. O semântico só informa a linha, por isso não há marcador de coluna.\n\nMensagem do compilador: Variavel 'y' nao declarada. · SEM_UNDECLARED_VARIABLE"
+        ]
+      }
+    },
+    {
+      "arquivo": "11_ast_programa_maior.png",
+      "sha256": "6cbfa6112d7fdbc22cc9d474e00c03abfaff3223ac384a4921ac71af7a28c0cc",
+      "titulo": "PROG-01 (Quicksort com classes, Teste 6): AST nos três primeiros níveis",
+      "conferido": [
+        "análise sem erros"
+      ],
+      "lido": {
+        "situacao": "Análise concluída em 4 ms, sem erros.",
+        "estatistica": "149 de 149 nós · profundidade 11"
+      }
+    },
+    {
+      "arquivo": "12_tempo_esgotado.png",
+      "sha256": "699e23272d5c7bd876b0352a6f6ba01956c49d8a27a8f908c25a1bd565d0a8ef",
+      "titulo": "Laço infinito com tempo limite de 2 s: encerrado pelo serviço, sem código de saída",
+      "conferido": [
+        "caixa 'Tempo esgotado'",
+        "timed_out = sim"
+      ],
+      "lido": {}
+    },
+    {
+      "arquivo": "13_t11_caso1.png",
+      "sha256": "03e0e22e2725c64b27f2674bf44fb66bce782bb3b407388c3eac6aa7dae112f4",
+      "titulo": "Teste 11, caso 1 ((2+4)*7)-(5*4): stdout do MiniCompilador com resultado 22",
+      "conferido": [
+        "stdout idêntico a tests/2026_2/test11/arm/caso1.stdout.txt",
+        "resultado ➡️  22.0"
+      ],
+      "lido": {}
+    },
+    {
+      "arquivo": "14_t11_caso2_executar_de_novo.png",
+      "sha256": "f895f6689688eeba72fd06e8a91e902c63b61fe995b69b42248f98b3f2bae9e6",
+      "titulo": "Teste 11, caso 2 ((10 -8*7)+4)*2 no mesmo binário, sem recompilar: -84",
+      "conferido": [
+        "stdout idêntico a tests/2026_2/test11/arm/caso2.stdout.txt",
+        "resultado ➡️  -84.0",
+        "binário da execução igual ao da compilação do caso 1"
+      ],
+      "lido": {
+        "binario": "28f1c17048ea4c7aa702ec18cc0ae91f"
+      }
+    },
+    {
+      "arquivo": "15_t11_baixar_arm.png",
+      "sha256": "fb76b79012c9b28711869b8c86c680bb3f0329bc1a339e86330b975a08ebbb4a",
+      "titulo": "Teste 11: .arm do caso 2 recortado do stdout e baixado pelo navegador",
+      "conferido": [
+        "SHA-256 do .arm baixado igual ao de tests/2026_2/test11/arm/caso2.arm (1a232e2b6b98906d…)"
+      ],
+      "lido": {
+        "situacao": "Baixado t11_28f1c170.arm: 13 linhas de Assembly recortadas do stdout desta execução.",
+        "arquivo": "t11_28f1c170.arm",
+        "sha256": "1a232e2b6b98906d4dde70f08992a82b1af0f206a3c723ce0821b4c16793445e"
+      }
+    },
+    {
+      "arquivo": "16_teste_arm_html.png",
+      "sha256": "80129ac5f5a87fe5e59bc42360eaf67f242c36d3393b07501c76252ad06fdb6f",
+      "titulo": "static/testes/arm.html: recorte do .arm no navegador igual ao de extrair_arm.py",
+      "conferido": [
+        "7/7 PASS"
+      ],
+      "lido": {
+        "resultado": {
+          "passaram": 7,
+          "total": 7,
+          "resultados": [
+            {
+              "id": "valido_lf",
+              "passou": true
+            },
+            {
+              "id": "valido_crlf",
+              "passou": true
+            },
+            {
+              "id": "titulo_ausente",
+              "passou": true
+            },
+            {
+              "id": "titulo_repetido",
+              "passou": true
+            },
+            {
+              "id": "sem_global_start",
+              "passou": true
+            },
+            {
+              "id": "sem_linha_vazia",
+              "passou": true
+            },
+            {
+              "id": "validos_iguais_entre_si",
+              "passou": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arquivo": "17_modo_mock.png",
+      "sha256": "837e4f23a62e27e9346993f952b5e65371e41c68185edb3e1b65a92b250009fb",
+      "titulo": "Modo mock (?fonte=mock): resultado gravado do EXEC-01, com Compilar e downloads desabilitados",
+      "conferido": [
+        "faixa MOCK visível"
+      ],
+      "lido": {}
+    }
+  ]
+}
