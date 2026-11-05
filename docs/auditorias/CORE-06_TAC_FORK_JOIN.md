@@ -1,8 +1,9 @@
 # HANDOFF — CORE-06: TAC autêntico para Fork/Join e `par`
 
-> **Leitura temporal:** o registro abaixo até “Revisão corretiva” descreve a
-> execução inicial, anterior à publicação. O coordenador publicou posteriormente
-> `2fada7c`; o estado atual e as novas evidências constam na seção datada ao final.
+> **Leitura temporal:** execuções e estados anteriores são históricos.
+> Implementação/revisão publicadas em `2fada7c`/`33bc9d9`, integração em `fef7507`
+> e ajustes em `14fc239`, no PR #17. A convenção de instruções abaixo reflete
+> a revisão atual. Estado local e novas evidências na seção de 05/11 ao final.
 
 **Responsável:** Eixo A/coordenador, desenvolvimento assistido por Codex.
 
@@ -93,6 +94,7 @@ AST, envelopes Web ou API C++. Não é uma afirmação de execução da IR.
 | `par_spawn R, i, L` | Disparar a branch i em L e continuar o lançador sem esperar seu corpo |
 | `par_branch R, i` | Entrada do contexto independente da branch i da ativação R |
 | `par_end_branch R, i` | Terminar/sinalizar conclusão da branch; instrução terminal, sem fall-through |
+| `par_return R, i[, value v]` | Avaliar o valor opcional e terminar somente a branch indicada, sem retornar da função lançadora; terminal alternativo ao fim normal |
 | `par_barrier R` | Suspender o lançador até todas as branches dessa ativação R terminarem |
 | `par_end R` | Fechar a região após a barreira e continuar sequencialmente |
 | `it = iter_begin v` | Avaliar/bindar uma coleção uma vez e criar cursor na posição inicial, com limite final dessa iteração |
@@ -121,8 +123,9 @@ nem acessado por rede. O nome vem de `ForkExpr.function_name`. Argumentos são
 listados na própria instrução de fork, sem disputar uma pilha `param` global.
 
 Chamadas comuns e métodos avaliam todos os argumentos antes de emitir seus
-`param` contíguos. Identificadores usados como valores de argumentos são salvos
-antes de avaliar o próximo argumento; o mesmo cuidado vale para listas/matrizes.
+`param` contíguos. Um identificador usado como argumento só é salvo quando algum
+argumento posterior pode ter efeitos; o mesmo cuidado vale para listas/matrizes
+e argumentos de `new`. Sem efeitos posteriores, usa-se diretamente seu nome.
 Assim `pair(x, inc(3))` conclui `inc` antes de abrir os parâmetros de `pair`, e
 `fork first(values, values.pop())` captura a lista antes do pop.
 
@@ -155,8 +158,10 @@ As pilhas de break/continue são isoladas ao entrar em branch ou função.
 Laços locais restauram corretamente os destinos externos quando terminam.
 Um `break`/`continue` de branch que tenta atingir laço do lançador falha
 explicitamente: o semântico herdado ainda aceita esse caso, mas C++ o coloca
-numa lambda onde o salto não é válido. `return` dentro de branch retorna dessa
-branch (concluindo-a), conforme a lambda herdada, sem encerrar o lançador.
+numa lambda onde o salto não é válido. `return` dentro de branch é representado
+por `par_return R, i[, value v]`, concluindo-a conforme a lambda herdada,
+sem encerrar o lançador. Funções usam `return [v]`; regiões aninhadas identificam
+explicitamente sua própria branch e restauram o contexto externo ao sair.
 Nenhum salto conecta corpos de branches diferentes.
 
 **For-in:** binding do iterável fora do laço → label de teste → teste de fim →
@@ -432,7 +437,8 @@ join em todas. Retornar da lambda termina normalmente a thread; join espera essa
 conclusão, sem depender de instrução MiniPar adicional. O contrato distingue
 par compartilhado de fork isolado, sem exigir sinalização explícita após return.
 
-**Esclarecimento da notação:** `par_end_branch R,i` é terminal no caminho normal
+**Notação em 29/10 (histórica, substituída por `par_return` na revisão de 05/11):**
+`par_end_branch R,i` é terminal no caminho normal
 que o alcança. `return [valor]` é um terminal alternativo do contexto invocado:
 no corpo da branch, conclui aquela branch, avalia eventual valor e o descarta no
 lançador; numa função chamada, retorna dessa função. A conclusão da branch é
@@ -801,3 +807,104 @@ não resolvido (`git diff --name-only --diff-filter=U` vazio). O índice contém
 as mudanças recebidas de dev e a resolução de TAC; ajustes de testes/README e
 este handoff permanecem no working tree para revisão. Não executar `git commit`
 antes de revisar e incluir esses ajustes. Não há commit novo nem merge remoto.
+
+## Revisão do Eixo B — correções locais de 05/11/2026
+
+**Responsável:** Eixo A/coordenador, assistido por Codex. Branch existente
+`eixo-a/CORE-06-tac-fork-join-par`, HEAD e referência remota local em `14fc239`;
+árvore inicialmente limpa, sem merge pendente. O pedido do coordenador autoriza
+resolver os achados transcritos do Eixo B, sem stage, commit ou push. O PR vigente
+é [#17](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17). Não foi
+inferida aprovação humana ou contratual; pronto para nova revisão, não DONE.
+
+### Achados confirmados e alterações
+
+| Achado | Reprodução e correção |
+|---|---|
+| Retorno de branch ambíguo | `func g(){par{return 1;print(2);}return 5;}` gerava `return 1` dentro da branch. Agora gera `par_return PAR_0, 0, value 1`, e mantém `return 5` na função após barreira/fechamento. Contexto identificado e restaurado para par aninhado e funções; valor opcional avaliado uma vez e descartado pelo lançador |
+| Recusa sem localização | `break` na linha 4 de par dentro de while chegava ao serviço com `line=null`. Agora toda recusa TAC usa o prefixo `Linha N:` quando a AST informa linha positiva. A recusa de atributo usa a linha do atributo, não da classe. Serviço e catálogo não mudaram: o prefixo existente é extraído por `_unsupported` e a mensagem/code preservados |
+| Cópias sem efeitos posteriores | `f(y)` emitia `t = y; param t`. Agora usa `param y`; identificadores só são salvos se algum argumento posterior tem efeito, em chamadas, métodos, coleções, matriz e `new`. Capturas de fork permanecem obrigatórias e imediatas. Sequências param continuam contíguas após avaliar chamadas aninhadas |
+| Estado publicado descrito como local | README/backlog agora registram publicação no PR #17 e commits `33bc9d9`, `fef7507`, `14fc239`. `pr_url` preenchido. Estados antigos no handoff são explicitamente históricos; as correções de 05/11 permanecem locais |
+| Escopo da integração CORE-08 | Registradas no card as autorizações de 04/11 e do presente pedido de 05/11 para testes e seção CORE-08 do README afetados pelo TAC. Não constitui implementação autônoma CORE-08, liberação de CORE-07 nem ratificação A/B |
+| Encoding do teste CLI | Filho agora recebe `PYTHONIOENCODING=utf-8`. O teste usa caminho com acentos/emoji. Passou com pai em CP1252, `PYTHONUTF8=0` e `-X utf8=0`, sem usar substituição de caracteres que esconderia falha |
+| Mensagem CLI desatualizada | Agora: `Fork/Join possui TAC via API; compilacao C++ depende de CORE-07.` A CLI completa mantém a guarda antes de artefatos; a API TAC continua disponível |
+
+`par_return` é notação textual interna para a semântica já documentada de `par`,
+não mudança na linguagem, AST ou contrato runtime/Web. É terminal e conclui a
+branch como `par_end_branch`; as linhas posteriores a um retorno incondicional
+continuam presentes, mas inalcançáveis naquele caminho. `return [v]` fica reservado
+ao contexto da função/lançador. O backend C++ continua um ramo independente da
+AST, não um consumidor de TAC; não foi implementado interpretador ou CORE-07.
+
+### Arquivos e revisão documental
+
+- Produção: [src/tac.py](../../src/tac.py), [main.py](../../main.py).
+- Testes: [CORE-06 estrutural](../../tests/2026_2/core06/test_tac_fork_join.py),
+  [revisão CORE-06](../../tests/2026_2/core06/test_review_core06.py),
+  [CORE-04/05](../../tests/2026_2/core0405/verify_core0405.py) e
+  [serviço CORE-08](../../tests/2026_2/core08/test_service.py).
+- Documentação/metadados: [README](../../README.md),
+  [BNF](../../BNF-grammar.md) (somente tradução/notação, sem produção nova),
+  [backlog](../04_BACKLOG.md), [cards](../../planning/cards.json) e este handoff.
+- Verificados AGENTS, MEMORY, docs 01/02/04/05, CRs CORE-05/08 e evidências anteriores.
+  AGENTS e MEMORY não precisam mudar: mesmas regras, ownership, arquitetura e
+  processo permanente; convenção TAC específica do card documentada aqui/BNF.
+  Contratos compartilhados e JSONs de provas históricas não foram alterados.
+
+Os oráculos ajustados correspondem à mudança real de representação: `return`
+de branch torna-se `par_return`, cópias puras de argumentos desaparecem e a
+mensagem CLI deixa de atribuir ao TAC uma dependência já resolvida. Nenhum teste
+removido. Há novos casos de retorno condicional/aninhado/com efeito, distinção
+de retorno de função, cópias necessárias/desnecessárias e linhas reais no serviço.
+
+### Validação executada
+
+Python 3.12.4 da venv e G++ UCRT64 16.2.0 existentes; sem instalar dependências.
+Não há Python 3.14 validado nesta rodada; a condição de encoding foi exercitada
+explicitamente no 3.12 com UTF-8 mode desativado e CP1252 no pai.
+
+| Verificação | Resultado |
+|---|---|
+| CORE-06 completo | 54 PASS, zero falhas/erros; inclui sondas nativas do backend preexistente para construtores e `par`/return, não execução do TAC |
+| CORE-08 contrato/diagnósticos | 24 PASS, zero falhas/erros; novos diagnósticos TAC de break/continue na linha 4 e atributo na linha 3 |
+| CORE-04/05 completo | 126 PASS, zero falhas/erros; evidência `output/core0405/run-ddttxj6i/summary.json` |
+| CORE-02 TAC | 5 PASS |
+| CLI com encoding CP1252 no pai e UTF-8 mode desativado | 1 PASS, stdout/stderr do filho lidos como UTF-8 sem erro |
+| Teste 11 | 48/48 PASS, incluindo oráculos e hashes de ARM |
+| Planejamento | PASS, 43 cards, IDs/datas/dependências/DAG válidos |
+
+Checagens finais desta revisão: compilação sintática dos seis arquivos Python
+alterados PASS; `git diff --check` PASS; índice sem alterações staged. A ferramenta
+de problemas do editor estava indisponível; não se atribui a ela validação nesta
+rodada. Nenhuma mudança em runtime, Web didática, Teste 11 ou legado.
+
+Logs desta rodada em `output/core06_review_b/{core06,core08-tac-service,core0405,encoding-cp1252,t11}.log`.
+Reprodução a partir da raiz, com CXX/PATH configurados somente no processo:
+
+```powershell
+$env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
+$env:Path = 'C:\msys64\ucrt64\bin;' + $env:Path
+$env:PYTHONIOENCODING = 'utf-8'
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p 'test_*.py' -v
+$env:PYTHONPATH = 'tests/2026_2/core08'
+.\.venv\Scripts\python.exe -B -m unittest test_service.ContractTests test_service.ProposedDiagnosticsTests -v
+.\.venv\Scripts\python.exe -B tests/2026_2/core0405/verify_core0405.py
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
+.\.venv\Scripts\python.exe -B tests/2026_2/test11/verificar_t11.py
+.\.venv\Scripts\python.exe -B scripts/validar_planejamento.py
+$env:PYTHONIOENCODING = 'cp1252'
+$env:PYTHONUTF8 = '0'
+.\.venv\Scripts\python.exe -X utf8=0 -B -m unittest discover -s tests/2026_2/core06 -p test_tac_fork_join.py -k test_cli_guard -v
+git diff --check
+```
+
+CORE-03 e partes nativas/processos/artefatos de CORE-08 não foram reexecutados
+nesta rodada: os resultados da integração de 04/11 acima continuam históricos.
+As alterações desta revisão não mudam semântico, C++, execução ou retenção.
+Sem nova prova CPUlator, execução nativa Fork/Join ou execução distribuída.
+
+**Pendências e handoff:** ratificações contratuais, none implícito, tipos genéricos,
+vida dos handles e inicializadores FJ continuam pendentes como antes. Eixo B pode
+revisar a representação TAC e localização dos erros; Eixo A confere compatibilidade
+da CLI/serviço. HEAD preservado em `14fc239`, alterações apenas no working tree,
+sem stage/commit/push, merge, fetch ou alterações remotas nesta rodada.

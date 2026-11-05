@@ -71,10 +71,28 @@ class ReviewCore06(unittest.TestCase):
         self.assertEqual(generate('class C{var a=0;}var c=new C(1);'),
                          '# class C\nt0 = new C(1)\nc = t0\n')
 
-    def test_constructor_variable_values_saved_in_order(self):
+    def test_constructor_pure_variable_arguments_need_no_snapshots(self):
         tac = generate('class Pair{var a=0;var b=0;}var x=2;var y=3;var p=new Pair(x,y);')
-        self.assertRegex(tac, r'x = 2\ny = 3\n(t\d+) = x\n(t\d+) = y\n'
-                         r'(t\d+) = new Pair\(\1, \2\)\np = \3')
+        self.assertRegex(tac, r'x = 2\ny = 3\n(t\d+) = new Pair\(x, y\)\np = \1')
+
+    def test_argument_snapshot_only_before_later_effect(self):
+        pure = generate('func f(x){return x;}var y=2;print(f(y));')
+        self.assertIn('y = 2\nparam y\nt0 = call f, 1\nprint t0\n', pure)
+        effectful = generate('func inc(x){return x+1;}class Pair{var a=0;var b=0;}'
+                             'var x=2;var p=new Pair(x,inc(3));')
+        self.assertRegex(effectful, r'(t\d+) = x\nparam 3\n(t\d+) = call inc, 1\n'
+                         r't\d+ = new Pair\(\1, \2\)')
+        trailing = generate('func f(a,b,c){return a;}func inc(x){return x+1;}'
+                            'var x=2;var y=3;print(f(x,inc(4),y));')
+        self.assertRegex(trailing, r'(t\d+) = x\nparam 4\n(t\d+) = call inc, 1\n'
+                         r'param \1\nparam \2\nparam y\n')
+        self.assertNotRegex(trailing, r't\d+ = y\n')
+
+    def test_pure_collection_arguments_need_no_snapshots(self):
+        tac = generate('var x=2;var y=3;var xs=[x,y];var m=matrix(x,y,0);')
+        self.assertRegex(tac, r't\d+ = \[x, y\]')
+        self.assertRegex(tac, r't\d+ = matrix\(x, y, 0\)')
+        self.assertNotRegex(tac, r't\d+ = [xy]\n')
 
     def test_constructor_nested_calls_do_not_mix_param_frames(self):
         tac = generate('func inc(x){return x+1;}class Pair{var a=0;var b=0;}'
@@ -120,10 +138,44 @@ var xs=[1,2];var effect=new Pair(xs.pop(),9);print(effect.a,effect.b,len(xs));
 
     def test_return_is_alternative_exit_not_forced_fallthrough(self):
         tac = generate(PAR_RETURN_CASES[0][1])
-        self.assertIn('return\na = 99\npar_end_branch PAR_0, 0', tac)
-        # Unreachable source statements are retained; no invented jump after return.
-        self.assertNotIn('return\ngoto ', tac)
+        self.assertIn('par_return PAR_0, 0\na = 99\npar_end_branch PAR_0, 0', tac)
+        # Retain unreachable source statements; the branch terminal is explicit.
+        self.assertNotRegex(tac, re.compile(r'^return(?: |$)', re.M))
         self.assertTrue(tac.endswith('par_barrier PAR_0\npar_end PAR_0\nprint a\n'))
+
+    def test_branch_return_cannot_be_confused_with_function_return(self):
+        tac = generate('func g(){par{return 1;print(2);}return 5;}print(g());')
+        self.assertIn('par_return PAR_0, 0, value 1\n', tac)
+        self.assertNotIn('\nreturn 1\n', tac)
+        self.assertIn('par_barrier PAR_0\npar_end PAR_0\nreturn 5\nendfunc g', tac)
+
+    def test_nested_branch_return_restores_outer_context(self):
+        tac = generate('par{seq{par{return 1;}return 2;}}func f(){return 5;}')
+        regions = re.findall(r'^par_begin (\w+),', tac, re.M)
+        self.assertEqual(len(regions), 2)
+        self.assertIn(f'par_return {regions[1]}, 0, value 1\n', tac)
+        self.assertIn(f'par_return {regions[0]}, 0, value 2\n', tac)
+        self.assertIn('func f:\nreturn 5\nendfunc f', tac)
+
+    def test_branch_return_value_effect_evaluated_once(self):
+        tac = generate('func f(){return 7;}par{seq{if(true){return f();}print(2);}}')
+        self.assertEqual(tac.count('call f, 0'), 1)
+        self.assertRegex(tac, r'(t\d+) = call f, 0\npar_return PAR_0, 0, value \1')
+
+    def test_unsupported_nodes_preserve_their_location(self):
+        from ast_nodes import Program, VarDecl, ForkExpr, JoinExpr, ASTNode
+        programs = [
+            (Program([ForkExpr('f', [], line=7)]), 7, 'fork descartado'),
+            (Program([JoinExpr(None, line=8)]), 8, 'join sem handle'),
+            (Program([VarDecl('h', ForkExpr('', [], line=9))]), 9, 'fork invalido'),
+        ]
+        unknown = ASTNode()
+        unknown.line = 10
+        programs.append((Program([unknown]), 10, 'nao suportado'))
+        for program, line, message in programs:
+            with self.subTest(line=line), self.assertRaisesRegex(
+                    NotImplementedError, rf'^Linha {line}: TAC: .*{message}'):
+                TACGenerator().generate_text(program)
 
 
 if __name__ == '__main__':

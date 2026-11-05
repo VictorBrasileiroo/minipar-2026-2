@@ -201,7 +201,7 @@ class Core06TAC(unittest.TestCase):
         self.assertEqual(tac.count('par_begin'), 2)
         self.assertIn(' = fork f(', tac)
         self.assertIn('join h\n', tac)
-        self.assertRegex(tac, r'par_end PAR_\d+\nreturn\npar_end_branch PAR_\d+, 1')
+        self.assertRegex(tac, r'par_end PAR_\d+\npar_return (PAR_\d+), 1\npar_end_branch \1, 1')
         self.assert_flow(tac)
 
     def test_tac13_fork_join_if_while_and_classic_for(self):
@@ -351,14 +351,15 @@ class Core06TAC(unittest.TestCase):
     def test_cli_guard_rejects_before_tac_cpp_and_invalidates_old_exe(self):
         parent = ROOT / 'output/core06'
         parent.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=parent) as folder:
+        with tempfile.TemporaryDirectory(prefix='cli-ação-🙂-', dir=parent) as folder:
             folder = Path(folder)
             source = folder / 'probe.minipar'
             source.write_text(IDENTITY + 'var h=fork f(2);join(h);', encoding='utf-8')
             (folder / 'output').mkdir()
             (folder / 'output/probe.exe').write_bytes(b'old artifact')
             result = subprocess.run([sys.executable, '-B', str(ROOT / 'main.py'), str(source), 'probe'],
-                                    cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=20)
+                                    cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=20,
+                                    env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})
             self.assertEqual(result.returncode, 1)
             self.assertIn('CORE-07', result.stderr)
             self.assertNotIn('[TAC] Arquivo gerado', result.stdout)

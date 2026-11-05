@@ -32,6 +32,13 @@ class TACGenerator:
         self.continue_stack: list[str] = []
         self.reserved: set[str] = set()
         self.has_fork_join = False
+        self.branch_context: Optional[tuple[str, int]] = None
+
+    @staticmethod
+    def _unsupported(node: Optional[ASTNode], message: str) -> NotImplementedError:
+        line = getattr(node, "line", None)
+        prefix = f"Linha {line}: " if isinstance(line, int) and line > 0 else ""
+        return NotImplementedError(prefix + message)
 
     def _temp(self) -> str:
         while True:
@@ -65,15 +72,20 @@ class TACGenerator:
 
     def _arguments(self, arguments: list[ASTNode]) -> list[str]:
         # Finish nested calls before opening the caller's param sequence.
+        later_effects = [False] * len(arguments)
+        effect = False
+        for index in range(len(arguments) - 1, -1, -1):
+            later_effects[index] = effect
+            effect = effect or self._has_effect(arguments[index])
         values = []
-        for arg in arguments:
+        for arg, later_effect in zip(arguments, later_effects):
             value = self._expr(arg)
-            values.append(self._save(value) if isinstance(arg, IdentifierExpr) else value)
+            values.append(self._save(value) if isinstance(arg, IdentifierExpr) and later_effect else value)
         return values
 
     def _join(self, node: JoinExpr, value_required: bool) -> str:
         if node.handle is None:
-            raise NotImplementedError("TAC: join sem handle")
+            raise self._unsupported(node, "TAC: join sem handle")
         handle = self._expr(node.handle)
         # A timeout expression can change the original handle variable.
         if node.timeout is not None:
@@ -97,11 +109,14 @@ class TACGenerator:
             self._emit(f"{label}:")
             self._emit(f"par_branch {region}, {index}")
             outer_break, outer_continue = self.break_stack, self.continue_stack
+            outer_branch = self.branch_context
             self.break_stack, self.continue_stack = [], []
+            self.branch_context = (region, index)
             try:
                 self._stmt(stmt)
             finally:
                 self.break_stack, self.continue_stack = outer_break, outer_continue
+                self.branch_context = outer_branch
             # Terminal in the branch context: never falls into the next body.
             self._emit(f"par_end_branch {region}, {index}")
         self._emit(f"{barrier}:")
@@ -110,7 +125,7 @@ class TACGenerator:
 
     def _expr(self, node: Optional[ASTNode]) -> str:
         if node is None:
-            raise NotImplementedError("TAC: expressao ausente")
+            raise self._unsupported(node, "TAC: expressao ausente")
         if isinstance(node, NumberExpr): return node.value
         if isinstance(node, StringExpr): return json.dumps(node.value, ensure_ascii=False)
         if isinstance(node, BoolExpr): return "true" if node.value else "false"
@@ -118,7 +133,7 @@ class TACGenerator:
         if isinstance(node, ThisExpr): return "this"
         if isinstance(node, ForkExpr):
             if not node.function_name or any(arg is None for arg in node.arguments):
-                raise NotImplementedError("TAC: fork invalido")
+                raise self._unsupported(node, "TAC: fork invalido")
             # capture is a value snapshot, recursively copying transportable lists.
             args = [self._save(self._expr(arg), "capture ") for arg in node.arguments]
             destination = '"local"' if node.destination is None else self._save(self._expr(node.destination))
@@ -194,7 +209,7 @@ class TACGenerator:
             else:
                 self._emit(f"{tmp} = input()")
             return tmp
-        raise NotImplementedError(f"TAC: expressao nao suportada: {type(node).__name__}")
+        raise self._unsupported(node, f"TAC: expressao nao suportada: {type(node).__name__}")
 
     def _stmt(self, node: Optional[ASTNode]) -> None:
         if node is None: return
@@ -274,47 +289,58 @@ class TACGenerator:
             self.break_stack.pop(); self.continue_stack.pop()
         elif isinstance(node, BreakStmt):
             if not self.break_stack:
-                raise NotImplementedError("TAC: break sem laco na branch atual")
+                raise self._unsupported(node, "TAC: break sem laco na branch atual")
             self._emit(f"goto {self.break_stack[-1]}")
         elif isinstance(node, ContinueStmt):
             if not self.continue_stack:
-                raise NotImplementedError("TAC: continue sem laco na branch atual")
+                raise self._unsupported(node, "TAC: continue sem laco na branch atual")
             self._emit(f"goto {self.continue_stack[-1]}")
         elif isinstance(node, ReturnStmt):
-            self._emit(f"return {self._expr(node.value)}" if node.value else "return")
+            value = self._expr(node.value) if node.value is not None else None
+            if self.branch_context is not None:
+                region, index = self.branch_context
+                suffix = f", value {value}" if value is not None else ""
+                self._emit(f"par_return {region}, {index}{suffix}")
+            else:
+                self._emit(f"return {value}" if value is not None else "return")
         elif isinstance(node, (FuncCallExpr, MethodCall)):
             self._expr(node)
         elif isinstance(node, JoinExpr):
             self._join(node, False)
         elif isinstance(node, ForkExpr):
-            raise NotImplementedError("TAC: fork descartado; requer handle (FJ-SEM-07)")
+            raise self._unsupported(node, "TAC: fork descartado; requer handle (FJ-SEM-07)")
         elif isinstance(node, ClassDecl):
             # Legacy class metadata does not lower deferred field initializers.
             # In an FJ program, calls here could hide a transitive fork/join too.
-            if self.has_fork_join and any(attr.init_value is not None and self._has_effect(attr.init_value)
-                                          for attr in node.attributes):
-                raise NotImplementedError("TAC: inicializador Fork/Join de atributo ainda nao representado")
+            if self.has_fork_join:
+                for attr in node.attributes:
+                    if attr.init_value is not None and self._has_effect(attr.init_value):
+                        raise self._unsupported(attr, "TAC: inicializador Fork/Join de atributo ainda nao representado")
             self._emit(f"# class {node.name}")
             for method in node.methods: self._stmt(method)
         elif isinstance(node, FuncDecl):
             self._emit(f"func {node.name}:")
             outer_break, outer_continue = self.break_stack, self.continue_stack
+            outer_branch = self.branch_context
             self.break_stack, self.continue_stack = [], []
+            self.branch_context = None
             try:
                 self._stmt(node.body)
             finally:
                 self.break_stack, self.continue_stack = outer_break, outer_continue
+                self.branch_context = outer_branch
             self._emit(f"endfunc {node.name}")
         else:
-            raise NotImplementedError(f"TAC: comando nao suportado: {type(node).__name__}")
+            raise self._unsupported(node, f"TAC: comando nao suportado: {type(node).__name__}")
 
     def generate_text(self, program: Program) -> str:
         if not isinstance(program, Program):
-            raise NotImplementedError("TAC: raiz deve ser Program")
+            raise self._unsupported(program, "TAC: raiz deve ser Program")
         self.lines.clear()
         self.temp_count = self.label_count = 0
         self.break_stack.clear(); self.continue_stack.clear()
         self.reserved.clear()
+        self.branch_context = None
         pending = [program]
         while pending:
             node = pending.pop()
@@ -324,7 +350,7 @@ class TACGenerator:
             try:
                 pending.extend(iter_child_nodes(node))
             except TypeError as exc:
-                raise NotImplementedError(f"TAC: no nao suportado: {type(node).__name__}") from exc
+                raise self._unsupported(node, f"TAC: no nao suportado: {type(node).__name__}") from exc
         self.has_fork_join = find_fork_join(program) is not None
         for stmt in program.statements:
             self._stmt(stmt)

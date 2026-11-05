@@ -588,6 +588,9 @@ Este exemplo passa pelo Lexer/Parser/AST/semântico e pelas APIs
 CORE-06 representa captura por valor, fork, join/timeout, branches/barreira de
 `par` e iteração real de `for-in`. Notação e limites em
 [`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
+No TAC, `return` da branch é `par_return R, i[, value v]`: avalia o valor
+opcional e termina somente a branch indicada; `return [v]` permanece exclusivo
+do contexto da função/lançador. Não há mudança na sintaxe MiniPar de `return`.
 A CLI completa ainda recusa Fork/Join antes dos artefatos; o backend C++ mantém
 a guarda CORE-07. Não há mudança nas produções nem nos diagnósticos abaixo.
 

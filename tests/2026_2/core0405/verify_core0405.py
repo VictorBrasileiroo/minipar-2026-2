@@ -276,7 +276,7 @@ class BackendBoundaryTests(unittest.TestCase):
                                 cwd=folder, capture_output=True, text=True, encoding='utf-8', timeout=20)
         EVIDENCE.append(dict(command=result.args, exit=result.returncode, stdout=result.stdout, stderr=result.stderr))
         self.assertEqual(result.returncode, 1)
-        self.assertIn('CORE-06/CORE-07', result.stderr)
+        self.assertIn('Fork/Join possui TAC via API; compilacao C++ depende de CORE-07.', result.stderr)
         self.assertNotIn('ERRO SEMANTICO', result.stderr)
         self.assertFalse(binary.exists())
         self.assertFalse((folder / 'output/program.cpp').exists())

@@ -104,10 +104,13 @@ até CORE-07; gerar TAC não comprova execução de tarefas.
 Notação, exemplos, limites e evidências em
 [`CORE-06_TAC_FORK_JOIN.md`](docs/auditorias/CORE-06_TAC_FORK_JOIN.md).
 A implementação e a revisão corretiva estão em `2fada7c` e `33bc9d9`, na branch
-`eixo-a/CORE-06-tac-fork-join-par` (PR #17). A integração local de 04/11/2026
-com `origin/dev` em `05b43f9` preserva o TAC e os imports por pacote do serviço
-CORE-08. O merge permanece sem commit para revisão. Histórico, regressões e
-limites estão no handoff. Contratos e card não são declarados aprovados/concluídos.
+`eixo-a/CORE-06-tac-fork-join-par` ([PR #17](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17)).
+A integração de 04/11/2026 com `origin/dev` em `05b43f9` foi commitada em
+`fef7507`, com ajustes em `14fc239`, preservando o TAC e os imports por pacote
+do serviço CORE-08. `par_return` distingue término de branch do retorno de função;
+recusas TAC com localização na AST informam a linha ao serviço. Histórico,
+regressões e limites estão no handoff. Contratos e card não são declarados
+aprovados/concluídos.
 
 ## Proveniência e direitos
 

@@ -375,6 +375,16 @@ class ProposedDiagnosticsTests(unittest.TestCase):
             self.assert_failure(source, 'cpp', 'CPP_UNSUPPORTED_FEATURE', 3,
                 'Fork/Join requer CORE-07; C++ nao gerado.')
 
+    def test_real_tac_refusals_include_source_line(self):
+        for statement in ('break;', 'continue;'):
+            source = 'var i=0;\nwhile(i<3){\npar {\n' + statement + '\n}\n}'
+            with self.subTest(statement=statement):
+                self.assert_failure(source, 'tac', 'TAC_UNSUPPORTED_FEATURE', 4,
+                    'TAC: ' + statement[:-1] + ' sem laco na branch atual')
+        source = 'func f(){return 1;}\nclass C {\nvar h=fork f();\n}\nvar c=new C();'
+        self.assert_failure(source, 'tac', 'TAC_UNSUPPORTED_FEATURE', 3,
+            'TAC: inicializador Fork/Join de atributo ainda nao representado')
+
     def test_other_unsupported_and_unknown_location(self):
         for phase, cls in [('tac', service.TACGenerator), ('cpp', service.CppCodeGenerator)]:
             for message, line in [('Recurso de teste indisponivel', None),
