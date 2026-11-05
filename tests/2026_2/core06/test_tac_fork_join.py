@@ -351,7 +351,9 @@ class Core06TAC(unittest.TestCase):
     def test_cli_runs_tac_cpp_and_replaces_old_exe(self):
         parent = ROOT / 'output/core06'
         parent.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix='cli-ação-🙂-', dir=parent) as folder:
+        # Sem emoji: o ld do MinGW (MSYS2 UCRT64) nao abre caminhos fora do code page
+        # ANSI e falharia mesmo sem Fork/Join. O acento continua cobrindo nao-ASCII.
+        with tempfile.TemporaryDirectory(prefix='cli-ação-', dir=parent) as folder:
             folder = Path(folder)
             source = folder / 'probe.minipar'
             source.write_text(IDENTITY + 'var h=fork f(2);join(h);', encoding='utf-8')

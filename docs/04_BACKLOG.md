@@ -287,6 +287,8 @@ Backend local/worker loopback implementado para revisao; CLI completa BLOCKED
 por CORE-06/PR #17 ainda aberto em 30/10. Prova entre computadores pendente.
 Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
+**Atualização de 05/11/2026:** o PR #18 foi aprovado (review do Eixo C) e mergeado em `dev` (`b6e2705`), depois do CORE-06 (#17). A CLI e o serviço (CORE-08) compilam e executam Fork/Join. Estado do card: `IN_REVIEW`; `DONE` depende da validação do dono (A). A prova do código gerado entre dois computadores segue pendente (o RUN-03 provou o runtime). A autorização de 05/11 para tocar CLI, serviço e testes do CORE-04/05/06/08 está registrada no card. As restrições "sem stage, commit, push, PR ou merge" acima são da rodada de 30/10.
+
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.

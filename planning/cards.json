@@ -332,10 +332,10 @@
         "src/cpp_template.py"
       ],
       "estimate_hours": 6,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/18",
       "evidence": [
         "docs/auditorias/CORE-07_RESULTADOS.json"
       ],
@@ -352,9 +352,17 @@
           "tests/2026_2/core07/",
           "documentacao e metadados impactados"
         ],
-        "state": "PARTIAL: backend local/loopback implementado; CLI aguarda CORE-06 PR #17; prova fisica e revisao independente pendentes",
+        "state": "Historico de 30/10: backend local/loopback implementado; CLI aguardava CORE-06 (#17). Em 05/11: #17 e #18 em dev; ver merge",
         "handoff": "docs/auditorias/CORE-07_BACKEND_RUNTIME.md"
-      }
+      },
+      "merge": {
+        "date": "2026-11-05",
+        "commit": "b6e270566f0fac3c2804fa1dbbac3024fac81ad7",
+        "review": "Aprovado por Erasmo (Eixo C) em 05/11/2026, review rodada 2 no PR #18; ajustes pedidos no PR de acompanhamento",
+        "evidence": "docs/auditorias/CORE-07_INTEGRACAO_DEV.md",
+        "pending": "DONE depende da validacao do dono (A); prova do codigo gerado entre dois computadores pendente (RUN-03 provou o runtime)"
+      },
+      "scope_authorization": "05/11/2026: coordenador autorizou integrar eixo-a/CORE-07-backend-runtime e corrigir CLI, backend, servico (src/service.py, CORE-08) e testes de bloqueios superados (core04/05, core06, core08), conforme docs/auditorias/CORE-07_INTEGRACAO_DEV.md; registrado no card a pedido da review do PR #18. Ratificacoes contratuais seguem pendentes."
     },
     {
       "id": "CORE-08",
