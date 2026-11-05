@@ -1,5 +1,10 @@
 # Handoff — integração CORE-07 / PR #18 — 05/11/2026
 
+> **Após o merge (05/11/2026):** esta integração foi publicada no PR #18, aprovada na
+> review do Eixo C e mergeada em `dev` (`b6e2705`). As frases "sem commit, push ou
+> merge" abaixo descrevem o estado antes da publicação. Não é DONE nem aprovação
+> contratual: o card fica `IN_REVIEW` até a validação do dono (A).
+
 **Responsável:** Eixo A/coordenador, assistido por Codex. **Estado:** integração
 local preparada para revisão; sem commit, push, atualização remota do PR ou merge
 remoto. Não é DONE nem aprovação contratual/humana.

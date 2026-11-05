@@ -1,0 +1,54 @@
+{
+  "origem": "tests/2026_2/test11/arm/caso1.stdout.txt; esperado calculado por tests/2026_2/test11/extrair_arm.py",
+  "gerador": "web_didatica/tools/gerar_casos_arm.py",
+  "casos": [
+    {
+      "id": "valido_lf",
+      "descricao": "bloco válido, fim de linha \\n (stdout real do caso 1)",
+      "stdout": "Digite uma expressão infixada: \n🔍 Tokens gerados pelo analisador léxico:\n[PARENTESE: '(']\n[PARENTESE: '(']\n[NUMERO: '2']\n[OPERADOR: '+']\n[NUMERO: '4']\n[PARENTESE: ')']\n[OPERADOR: '*']\n[NUMERO: '7']\n[PARENTESE: ')']\n[OPERADOR: '-']\n[PARENTESE: '(']\n[NUMERO: '5']\n[OPERADOR: '*']\n[NUMERO: '4']\n[PARENTESE: ')']\n\n🌳 Árvore Sintática Abstrata (AST):\n    4\n  *\n    5\n-\n    7\n  *\n      4\n    +\n      2\n\n📦 Código de Três Endereços (TAC):\nt1 = 2 + 4\nt2 = t1 * 7\nt3 = 5 * 4\nt4 = t2 - t3\n\n⚙️ Assembly ARMv7 (CPUlator):\n.global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n📚 Tabela de Símbolos:\n🔹 2 → CONST\n🔹 4 → CONST\n🔹 5 → CONST\n🔹 7 → CONST\n\n🧮 Resultado final da expressão:\n➡️  22.0\n",
+      "esperado": {
+        "arm": ".global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n"
+      }
+    },
+    {
+      "id": "valido_crlf",
+      "descricao": "o mesmo bloco com \\r\\n, como o stdout no Windows",
+      "stdout": "Digite uma expressão infixada: \r\n🔍 Tokens gerados pelo analisador léxico:\r\n[PARENTESE: '(']\r\n[PARENTESE: '(']\r\n[NUMERO: '2']\r\n[OPERADOR: '+']\r\n[NUMERO: '4']\r\n[PARENTESE: ')']\r\n[OPERADOR: '*']\r\n[NUMERO: '7']\r\n[PARENTESE: ')']\r\n[OPERADOR: '-']\r\n[PARENTESE: '(']\r\n[NUMERO: '5']\r\n[OPERADOR: '*']\r\n[NUMERO: '4']\r\n[PARENTESE: ')']\r\n\r\n🌳 Árvore Sintática Abstrata (AST):\r\n    4\r\n  *\r\n    5\r\n-\r\n    7\r\n  *\r\n      4\r\n    +\r\n      2\r\n\r\n📦 Código de Três Endereços (TAC):\r\nt1 = 2 + 4\r\nt2 = t1 * 7\r\nt3 = 5 * 4\r\nt4 = t2 - t3\r\n\r\n⚙️ Assembly ARMv7 (CPUlator):\r\n.global _start\r\n.text\r\n_start:\r\n    MOV    r0, #2\r\n    MOV    r1, #4\r\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\r\n    MOV    r3, #7\r\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\r\n    MOV    r5, #5\r\n    MOV    r6, #4\r\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\r\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\r\n    b .    @ loop infinito para parar o programa\r\n\r\n📚 Tabela de Símbolos:\r\n🔹 2 → CONST\r\n🔹 4 → CONST\r\n🔹 5 → CONST\r\n🔹 7 → CONST\r\n\r\n🧮 Resultado final da expressão:\r\n➡️  22.0\r\n",
+      "esperado": {
+        "arm": ".global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n"
+      }
+    },
+    {
+      "id": "titulo_ausente",
+      "descricao": "linha de título removida",
+      "stdout": "Digite uma expressão infixada: \n🔍 Tokens gerados pelo analisador léxico:\n[PARENTESE: '(']\n[PARENTESE: '(']\n[NUMERO: '2']\n[OPERADOR: '+']\n[NUMERO: '4']\n[PARENTESE: ')']\n[OPERADOR: '*']\n[NUMERO: '7']\n[PARENTESE: ')']\n[OPERADOR: '-']\n[PARENTESE: '(']\n[NUMERO: '5']\n[OPERADOR: '*']\n[NUMERO: '4']\n[PARENTESE: ')']\n\n🌳 Árvore Sintática Abstrata (AST):\n    4\n  *\n    5\n-\n    7\n  *\n      4\n    +\n      2\n\n📦 Código de Três Endereços (TAC):\nt1 = 2 + 4\nt2 = t1 * 7\nt3 = 5 * 4\nt4 = t2 - t3\n\n.global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n📚 Tabela de Símbolos:\n🔹 2 → CONST\n🔹 4 → CONST\n🔹 5 → CONST\n🔹 7 → CONST\n\n🧮 Resultado final da expressão:\n➡️  22.0\n",
+      "esperado": {
+        "erro": "título do Assembly ausente"
+      }
+    },
+    {
+      "id": "titulo_repetido",
+      "descricao": "título e bloco aparecem duas vezes",
+      "stdout": "Digite uma expressão infixada: \n🔍 Tokens gerados pelo analisador léxico:\n[PARENTESE: '(']\n[PARENTESE: '(']\n[NUMERO: '2']\n[OPERADOR: '+']\n[NUMERO: '4']\n[PARENTESE: ')']\n[OPERADOR: '*']\n[NUMERO: '7']\n[PARENTESE: ')']\n[OPERADOR: '-']\n[PARENTESE: '(']\n[NUMERO: '5']\n[OPERADOR: '*']\n[NUMERO: '4']\n[PARENTESE: ')']\n\n🌳 Árvore Sintática Abstrata (AST):\n    4\n  *\n    5\n-\n    7\n  *\n      4\n    +\n      2\n\n📦 Código de Três Endereços (TAC):\nt1 = 2 + 4\nt2 = t1 * 7\nt3 = 5 * 4\nt4 = t2 - t3\n\n⚙️ Assembly ARMv7 (CPUlator):\n.global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n⚙️ Assembly ARMv7 (CPUlator):\n.global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n📚 Tabela de Símbolos:\n🔹 2 → CONST\n🔹 4 → CONST\n🔹 5 → CONST\n🔹 7 → CONST\n\n🧮 Resultado final da expressão:\n➡️  22.0\n",
+      "esperado": {
+        "erro": "título do Assembly repetido"
+      }
+    },
+    {
+      "id": "sem_global_start",
+      "descricao": "primeira linha do bloco é .globl, não .global _start",
+      "stdout": "Digite uma expressão infixada: \n🔍 Tokens gerados pelo analisador léxico:\n[PARENTESE: '(']\n[PARENTESE: '(']\n[NUMERO: '2']\n[OPERADOR: '+']\n[NUMERO: '4']\n[PARENTESE: ')']\n[OPERADOR: '*']\n[NUMERO: '7']\n[PARENTESE: ')']\n[OPERADOR: '-']\n[PARENTESE: '(']\n[NUMERO: '5']\n[OPERADOR: '*']\n[NUMERO: '4']\n[PARENTESE: ')']\n\n🌳 Árvore Sintática Abstrata (AST):\n    4\n  *\n    5\n-\n    7\n  *\n      4\n    +\n      2\n\n📦 Código de Três Endereços (TAC):\nt1 = 2 + 4\nt2 = t1 * 7\nt3 = 5 * 4\nt4 = t2 - t3\n\n⚙️ Assembly ARMv7 (CPUlator):\n.globl _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa\n\n📚 Tabela de Símbolos:\n🔹 2 → CONST\n🔹 4 → CONST\n🔹 5 → CONST\n🔹 7 → CONST\n\n🧮 Resultado final da expressão:\n➡️  22.0\n",
+      "esperado": {
+        "erro": "bloco do Assembly não começa com .global _start"
+      }
+    },
+    {
+      "id": "sem_linha_vazia",
+      "descricao": "saída termina na última instrução, sem a linha vazia que fecha o bloco",
+      "stdout": "Digite uma expressão infixada: \n🔍 Tokens gerados pelo analisador léxico:\n[PARENTESE: '(']\n[PARENTESE: '(']\n[NUMERO: '2']\n[OPERADOR: '+']\n[NUMERO: '4']\n[PARENTESE: ')']\n[OPERADOR: '*']\n[NUMERO: '7']\n[PARENTESE: ')']\n[OPERADOR: '-']\n[PARENTESE: '(']\n[NUMERO: '5']\n[OPERADOR: '*']\n[NUMERO: '4']\n[PARENTESE: ')']\n\n🌳 Árvore Sintática Abstrata (AST):\n    4\n  *\n    5\n-\n    7\n  *\n      4\n    +\n      2\n\n📦 Código de Três Endereços (TAC):\nt1 = 2 + 4\nt2 = t1 * 7\nt3 = 5 * 4\nt4 = t2 - t3\n\n⚙️ Assembly ARMv7 (CPUlator):\n.global _start\n.text\n_start:\n    MOV    r0, #2\n    MOV    r1, #4\n    ADD    r2, r0, r1    @ resultado de '(2 + 4)'\n    MOV    r3, #7\n    MUL    r4, r2, r3    @ resultado de '((2 + 4) * 7)'\n    MOV    r5, #5\n    MOV    r6, #4\n    MUL    r7, r5, r6    @ resultado de '(5 * 4)'\n    SUB    r8, r4, r7    @ resultado de '(((2 + 4) * 7) - (5 * 4))'\n    b .    @ loop infinito para parar o programa",
+      "esperado": {
+        "erro": "bloco do Assembly sem a linha vazia que o fecha"
+      }
+    }
+  ]
+}
