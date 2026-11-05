@@ -238,6 +238,29 @@
 
 **Escopo de arquivos autorizado:** `src/tac.py`.
 
+**Autorização local registrada em `planning/cards.json` (29/10/2026):** coordenador
+autoriza desenvolvimento de CORE-06, testes próprios, ajuste do oráculo TAC de
+CORE-04/05 e documentação/metadados pertinentes. Base
+`29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1`, branch
+`eixo-a/CORE-06-tac-fork-join-par`; C-FJ-v1 revisão 2 com ratificações pendentes.
+Sem `git add`, commit, push, PR, merge ou implementação CORE-07/08; `ready=false`
+e `BACKLOG` preservados. Evidências locais para revisão:
+[`CORE-06_TAC_FORK_JOIN.md`](auditorias/CORE-06_TAC_FORK_JOIN.md).
+
+**Publicação posterior e revisão (29/10/2026):** o coordenador publicou a
+implementação inicial em `2fada7ce1fbc70249c42d501566a3aa07188bf90`, um commit
+sobre a base acima; presença remota confirmada por Git, nenhum PR encontrado
+para essa head na consulta da revisão. Autorização corretiva registrada no JSON:
+investigar A–D antes de corrigir, preservar argumentos de new quando comprovado
+e atualizar evidências. Na execução daquela revisão, as alterações ficaram locais;
+depois foram commitadas em `33bc9d9` e publicadas no
+[PR #17](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17).
+A integração de `origin/dev` em `05b43f9` consta em `fef7507`, com ajustes em
+`14fc239` (04/11). A revisão do Eixo B de 05/11 autoriza correções TAC/CLI,
+testes próprios e de integração CORE-08, documentação e metadados afetados;
+não inicia CORE-07/08 nem altera ready/status, contratos ou aprovações humanas.
+As correções desta rodada de 05/11 ficam locais, sem commit/push.
+
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
