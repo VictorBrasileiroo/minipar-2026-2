@@ -861,11 +861,14 @@
         "scripts/"
       ],
       "estimate_hours": 3,
-      "status": "BACKLOG",
-      "ready": false,
+      "status": "IN_REVIEW",
+      "ready": true,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24",
+      "evidence": [
+        "docs/auditorias/INT-01_SMOKE_INTEGRACAO.md",
+        "scripts/smoke_int01.py"
+      ]
     },
     {
       "id": "INT-02",
