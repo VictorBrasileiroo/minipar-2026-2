@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recorte do .arm · teste</title>
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+    body { display: block; height: auto; padding: 16px; }
+    main { display: grid; gap: 12px; max-width: 110ch; }
+    td.pass { color: var(--ok); font-weight: 700; }
+    td.fail { color: var(--erro); font-weight: 700; }
+    td { white-space: normal; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Recorte do .arm no navegador (WEB-04)</h1>
+    <p class="explica">Roda <code>static/js/arm.js</code> sobre as seis saídas de C-WEB-v1 §1.10 e compara, byte a byte em UTF-8, com o resultado de <code>tests/2026_2/test11/extrair_arm.py</code> gravado em <code>arm_casos.json</code> por <code>web_didatica/tools/gerar_casos_arm.py</code>.</p>
+    <p id="resumo" class="situacao" role="status">Executando…</p>
+    <table>
+      <thead><tr><th scope="col">caso</th><th scope="col">descrição</th><th scope="col">esperado</th><th scope="col">obtido</th><th scope="col">resultado</th></tr></thead>
+      <tbody id="linhas"></tbody>
+    </table>
+  </main>
+  <script type="module">
+    import { extrairArm } from "../js/arm.js";
+
+    const bytes = (texto) => Array.from(new TextEncoder().encode(texto)).join(",");
+    const resumir = (r) => (r.arm !== undefined ? `.arm com ${new TextEncoder().encode(r.arm).length} bytes` : `erro: ${r.erro}`);
+
+    const dados = await (await fetch("arm_casos.json", { cache: "no-store" })).json();
+    const resultados = [];
+    const armValidos = [];
+    for (const caso of dados.casos) {
+      let obtido;
+      try { obtido = { arm: extrairArm(caso.stdout) }; } catch (erro) { obtido = { erro: erro.message }; }
+      const esperado = caso.esperado;
+      const passou = esperado.arm !== undefined
+        ? obtido.arm !== undefined && bytes(obtido.arm) === bytes(esperado.arm)
+        : obtido.erro === esperado.erro;
+      if (obtido.arm !== undefined) armValidos.push(obtido.arm);
+      resultados.push({ id: caso.id, passou });
+      const tr = document.createElement("tr");
+      for (const [texto, classe] of [[caso.id], [caso.descricao], [resumir(esperado)], [resumir(obtido)], [passou ? "PASS" : "FAIL", passou ? "pass" : "fail"]]) {
+        const td = document.createElement("td");
+        td.textContent = texto;
+        if (classe) td.className = classe;
+        tr.append(td);
+      }
+      document.getElementById("linhas").append(tr);
+    }
+    // §1.10: só as duas saídas válidas geram arquivo, iguais byte a byte entre si.
+    const doisIguais = armValidos.length === 2 && bytes(armValidos[0]) === bytes(armValidos[1]);
+    resultados.push({ id: "validos_iguais_entre_si", passou: doisIguais });
+    const passaram = resultados.filter((r) => r.passou).length;
+    const resumo = document.getElementById("resumo");
+    resumo.textContent = `${passaram}/${resultados.length} PASS · arquivos gerados: ${armValidos.length} (esperado 2, iguais entre si: ${doisIguais ? "sim" : "não"})`;
+    resumo.className = `situacao ${passaram === resultados.length ? "ok" : "erro"}`;
+    document.body.dataset.resultado = JSON.stringify({ passaram, total: resultados.length, resultados });
+  </script>
+</body>
+</html>
