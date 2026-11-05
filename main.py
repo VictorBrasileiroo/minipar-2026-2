@@ -15,11 +15,12 @@ def compile_file(source_path: str, output_name: str) -> bool:
     print(f"\n=== Compilando: {source_path} ===")
     if not CppCodeGenerator._validate_output_name(output_name):
         return False
-    # Invalidar a saida anterior mesmo se a entrada falhar antes do codegen.
-    exe_path = os.path.join("output", f"{output_name}.exe")
+    # Invalidar todos os artefatos antes de qualquer fase, inclusive parser.
     try:
-        if os.path.lexists(exe_path):
-            os.remove(exe_path)
+        for extension in ("exe", "cpp", "tac"):
+            path = os.path.join("output", f"{output_name}.{extension}")
+            if os.path.lexists(path):
+                os.remove(path)
     except OSError as exc:
         print(f"[ERRO] Nao foi possivel invalidar executavel anterior: {exc}", file=sys.stderr)
         return False
@@ -39,7 +40,11 @@ def compile_file(source_path: str, output_name: str) -> bool:
         return False
 
     parser  = Parser(tokens)
-    program = parser.parse()
+    try:
+        program = parser.parse()
+    except SystemExit:
+        # O parser já emitiu o diagnóstico; o menu deve continuar aberto.
+        return False
 
     print("[Fase 2] Analise Semantica e Tabela de Simbolos...")
     semantic = SemanticAnalyzer()

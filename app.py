@@ -3,6 +3,7 @@ import subprocess
 import os
 import sys
 import glob
+import uuid
 
 from test_orchestrator import (
     get_spec_summary,
@@ -112,17 +113,26 @@ def session_clear():
 
 @app.route('/api/compile', methods=['POST'])
 def compile_code():
-    data = request.json
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Requisição JSON inválida.", "success": False}), 400
     code = data.get('code')
     filename = data.get('filename', 'ide_temp.minipar')
     user_inputs = data.get('inputs', [])
+
+    if (not isinstance(code, str) or not isinstance(filename, str)
+            or not filename.endswith('.minipar')
+            or os.path.basename(filename) != filename or '/' in filename or '\\' in filename
+            or not isinstance(user_inputs, list) or not all(isinstance(value, str) for value in user_inputs)):
+        return jsonify({"error": "Código, nome de arquivo ou entradas inválidos.", "success": False}), 400
     
     # Salva o código recebido da IDE em um arquivo temporário
-    file_path = os.path.join(TEMP_DIR, filename)
+    # Nome interno exclusivo: requisições com o mesmo nome não compartilham artefatos.
+    base_name = 'ide_' + uuid.uuid4().hex
+    file_path = os.path.join(TEMP_DIR, base_name + '.minipar')
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(code)
         
-    base_name = filename.replace('.minipar', '')
     stdin_lines = user_inputs  # valores coletados pela IDE para input() no .minipar
     
     try:
@@ -131,11 +141,15 @@ def compile_code():
         # ==========================================
         # 1. FASE DE COMPILAÇÃO (Gera TAC e C++)
         # ==========================================
+        compiler_env = os.environ.copy()
+        compiler_env['PYTHONIOENCODING'] = 'utf-8'
         process = subprocess.run(
-            ['python', 'main.py', file_path], 
+            [sys.executable, os.path.join(os.path.dirname(__file__), 'main.py'), file_path, base_name],
             capture_output=True, 
             text=True, 
-            timeout=15
+            encoding='utf-8',
+            env=compiler_env,
+            timeout=130
         )
         
         # Junta logs do sistema
@@ -151,14 +165,14 @@ def compile_code():
         if success:
             set_session_phase("compiling", "Compilação concluída.", percent=80)
             append_session_log("Compilação concluída — executando binário.")
-            exe_ext = ".exe" if sys.platform == "win32" else ""
-            exe_path = os.path.join(OUTPUT_DIR, f"{base_name}{exe_ext}")
+            # O backend atual gera .exe também nas plataformas POSIX.
+            exe_path = os.path.join(OUTPUT_DIR, f"{base_name}.exe")
             
             if os.path.exists(exe_path):
                 full_output += f"\n--- Executando {base_name} ---\n"
                 set_session_phase("executing", f"Executando {base_name}...", percent=90)
                 try:
-                    stdin_data = None
+                    stdin_data = ""
                     if stdin_lines:
                         stdin_data = "\n".join(stdin_lines) + "\n"
                     exe_proc = subprocess.run(
@@ -166,13 +180,20 @@ def compile_code():
                         input=stdin_data,
                         capture_output=True, 
                         text=True, 
+                        encoding='utf-8',
                         timeout=30
                     )
                     full_output += exe_proc.stdout
                     if exe_proc.stderr:
                         full_output += "\n[ERRO NA EXECUÇÃO]:\n" + exe_proc.stderr
+                    if exe_proc.returncode != 0:
+                        full_output += f"\n[ERRO] Programa encerrou com codigo {exe_proc.returncode}."
+                        success = False
                     record_execution_output(exe_proc.stdout or "")
-                except subprocess.TimeoutExpired:
+                except subprocess.TimeoutExpired as exc:
+                    for stream in (exc.stdout, exc.stderr):
+                        if stream:
+                            full_output += stream.decode('utf-8', errors='replace') if isinstance(stream, bytes) else stream
                     full_output += "\n[ERRO] Tempo limite de execução excedido (O programa entrou em loop infinito ou aguarda entrada de dados do usuário?)."
                     success = False
                 except Exception as e:
@@ -185,6 +206,9 @@ def compile_code():
                     test_source = os.path.join(TESTS_DIR, filename)
                     if os.path.exists(test_source):
                         finalize_test_execution(test_source, full_output)
+            else:
+                success = False
+                full_output += "\n[ERRO] Executável não encontrado após compilação."
         
         # ==========================================
         # 3. COLETA DOS ARQUIVOS GERADOS
@@ -216,6 +240,9 @@ def compile_code():
         return jsonify({"error": "Tempo limite do compilador excedido.", "success": False}), 500
     except Exception as e:
         return jsonify({"error": str(e), "success": False}), 500
+    finally:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
 if __name__ == '__main__':
     # Roda a IDE silenciosamente

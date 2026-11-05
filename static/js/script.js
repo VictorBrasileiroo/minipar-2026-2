@@ -298,6 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
         setCompiling(true);
         terminalOutput.textContent = "Rodando compilador...";
         terminalOutput.classList.remove("error-text");
+        editorCpp.setValue("");
+        editorTac.setValue("");
 
         try {
             const res = await fetch("/api/compile", {
@@ -307,8 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const data = await res.json();
 
-            if (data.cpp) editorCpp.setValue(data.cpp);
-            if (data.tac) editorTac.setValue(data.tac);
+            editorCpp.setValue(data.cpp || "");
+            editorTac.setValue(data.tac || "");
 
             setTimeout(() => { editorCpp.refresh(); editorTac.refresh(); }, 50);
 

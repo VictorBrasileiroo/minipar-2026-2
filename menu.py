@@ -21,8 +21,7 @@ from test_orchestrator import (
 
 def executar_binario(output_name: str, interactive: bool = False) -> str:
     """Executa o binário. Modo interativo quando o programa usa input()."""
-    exe_ext = ".exe" if sys.platform == "win32" else ""
-    exe_path = os.path.join("output", f"{output_name}{exe_ext}")
+    exe_path = os.path.join("output", f"{output_name}.exe")
 
     if not os.path.exists(exe_path):
         print(f"[ERRO] Executavel {exe_path} nao encontrado apos compilacao.")
@@ -44,11 +43,14 @@ def executar_binario(output_name: str, interactive: bool = False) -> str:
         result = subprocess.run(
             [abs_exe_path],
             text=True,
+            encoding='utf-8',
             capture_output=True,
         )
         output = result.stdout
         if result.stderr:
             output += "\n" + result.stderr
+        if result.returncode != 0:
+            output += f"\n[ERRO] Programa encerrou com codigo {result.returncode}."
         if output.strip():
             print(output)
             record_execution_output(output)
