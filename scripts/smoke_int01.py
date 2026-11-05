@@ -17,12 +17,13 @@ Três segmentos independentes, cada um com status próprio
 Os oráculos são calculados aqui, em Python, a partir dos mesmos parâmetros
 usados para gerar os fontes MiniPar; nenhuma saída esperada é fixada à mão.
 
-Resultados: `output/int01/results.json` (output/ é ignorado pelo Git).
+Resultados: `output/int01/results.json`; com `--only X`, `output/int01/results_X.json`,
+para não sobrescrever a execução completa (output/ é ignorado pelo Git).
 
-Código de saída: 0 quando nenhuma verificação executada falhou (todo segmento
-não BLOCKED é PASS, ou PARTIAL formado só por PASS + BLOCKED/UNTESTED);
-1 quando houve FAIL; 2 para argumentos inválidos. Segmentos BLOCKED/PARTIAL
-significam que o card INT-01 NÃO está concluído, mesmo com exit 0.
+Código de saída: 0 só quando todos os segmentos executados estão PASS;
+1 quando houve FAIL; 2 para argumentos inválidos; 3 quando não houve FAIL mas
+algum segmento ficou BLOCKED, PARTIAL ou UNTESTED. Uma automação (INT-02) que
+olhe só o código de saída não confunde bloqueio com sucesso.
 
 Limitação permanente: o worker roda em 127.0.0.1. Loopback prova o protocolo
 e a integração compilador+runtime, NÃO a execução entre dois computadores
@@ -181,7 +182,10 @@ def free_ports(base: int, count: int) -> list[int]:
 
 
 class Segment:
+    ultimo: "Segment | None" = None   # o main recupera os checks já feitos se o segmento lançar exceção
+
     def __init__(self, sid: str, title: str, eixos: str):
+        Segment.ultimo = self
         self.sid, self.title, self.eixos = sid, title, eixos
         self.checks: list[dict] = []
         self.notes: list[str] = []
@@ -252,12 +256,9 @@ def segment_a(args) -> Segment:
     seg.data["compile"] = dict(cmd=comp["cmd"], exit=comp["exit"], duration_ms=comp["duration_ms"],
                                stdout=_tail(comp["stdout"]), stderr=_tail(comp["stderr"]))
     if comp["exit"] != 0:
-        blob = comp["stdout"] + comp["stderr"]
-        if re.search(r"ERRO TAC|Fork/Join requer|CORE-06|CORE-07|NotImplementedError", blob):
-            seg.check("A1", "CLI compila programa Fork/Join", "BLOCKED", _tail(blob, 600))
-            seg.block("TAC/backend Fork/Join indisponível nesta base (depende do CORE-06 #17 e do CORE-07 #18)")
-        else:
-            seg.ok("A1", "CLI compila programa Fork/Join (exit 0)", False, _tail(blob, 1200))
+        # CORE-06 e CORE-07 estão em `dev`: qualquer falha da CLI com Fork/Join é FAIL, nunca BLOCKED,
+        # mesmo que a mensagem cite CORE-07 (os erros do backend citam o card).
+        seg.ok("A1", "CLI compila programa Fork/Join (exit 0)", False, _tail(comp["stdout"] + comp["stderr"], 1200))
         return seg
     fases = [f"[Fase {i}]" for i in (1, 2, 3, 4)]
     seg.ok("A1", "CLI exit 0 e percorre Fases 1-4 (léxico/sintático, semântico, TAC, C++/g++)",
@@ -436,6 +437,7 @@ def segment_b(args) -> Segment:
     core08, origin = resolve_core08(args.core08_root)
     seg.data["core08_root"] = str(core08) if core08 else None
     seg.data["core08_origin"] = origin
+    print(f"  serviço: {core08} ({origin})")
     if core08 is None or not (core08 / "src" / "service.py").is_file():
         seg.check("B0", "Localizar src/service.py do CORE-08", "BLOCKED",
                   f"{core08} ({origin}) sem src/service.py; informe --core08-root ou MINIPAR_CORE08_ROOT")
@@ -512,16 +514,10 @@ def segment_b(args) -> Segment:
         seg.ok("B8", "Programa Fork/Join pelo serviço: compile + execute(local) == oráculo",
                fe.get("ok") is True and fe.get("stdout") == oraculo_fork(), dict(stdout=fe.get("stdout"), esperado=oraculo_fork()))
     else:
-        failed = next((k for k, v in statuses.items() if v == "error"), None)
-        front_ok = all(statuses.get(p) == "ok" for p in ("lexer", "parser", "semantic"))
-        if front_ok and failed in ("tac", "cpp"):
-            seg.check("B8", "Programa Fork/Join pelo serviço", "BLOCKED",
-                      dict(motivo="a árvore do serviço não tem o TAC/backend Fork/Join (CORE-06 #17 / "
-                                  "CORE-07 #18); integração cabe ao Eixo A",
-                           fase_recusada=failed, phases=statuses, diagnostics=fa.get("diagnostics")))
-        else:
-            seg.ok("B8", "Programa Fork/Join pelo serviço: frontend (léxico/sintático/semântico) aceita", False,
-                   dict(phases=statuses, diagnostics=fa.get("diagnostics")))
+        # CORE-06/CORE-07 estão em `dev`: fase com erro no programa Fork/Join é FAIL em qualquer fase.
+        seg.ok("B8", "Programa Fork/Join pelo serviço: analyze ok", False,
+               dict(fase_com_erro=next((k for k, v in statuses.items() if v == "error"), None),
+                    phases=statuses, diagnostics=fa.get("diagnostics")))
     return seg
 
 
@@ -615,6 +611,8 @@ def segment_c(args) -> Segment:
     seg.data.update(server_py=server.is_file(), fonte_mock=mock.is_file(), fonte_real=real.is_file(),
                     py_usa_servico=py_hits, js_chama_api=js_hits,
                     metodo="cliente de teste do Flask em subprocesso isolado; nenhum servidor iniciado, nenhuma porta aberta")
+    seg.notes.append("Cobre server.py e as rotas /api/v1. O front-end (static/js/fonte_real.js, app.js) não é executado: "
+                     "só a existência de fonte_real.js é conferida (C1). O fluxo no navegador fica com o Eixo B (WEB-03/WEB-04).")
     if not server.is_file() and not py_hits and not js_hits:
         seg.check("C1", "Web didática integrada ao serviço real (rotas /api/v1 + src/service.py)", "BLOCKED",
                   dict(motivo="WEB-03 não iniciado: sem web_didatica/server.py, sem import de service/compile_program, "
@@ -657,11 +655,16 @@ def segment_c(args) -> Segment:
     seg.ok("C4", "POST /api/v1/compile do programa Fork/Join: HTTP 200", c["status"] == 200, dict(status=c["status"]))
     _check_envelope(seg, "C5", c["body"], "compile", fork, expect_artifacts=True)
     body = fe["body"] or {}
+    # Mesmos critérios do B5, agora pela rota HTTP.
     seg.ok("C6", "POST /api/v1/execute (destino local): HTTP 200, minipar.execute.v1 completo e stdout == oráculo",
            fe["status"] == 200 and set(body) == EXEC_KEYS and body.get("contract") == "minipar.execute.v1"
            and body.get("artifact_id") == (c["body"] or {}).get("request_id") and body.get("ok") is True
-           and body.get("exit_code") == 0 and body.get("stdout") == oraculo_fork() and body.get("error") is None,
-           dict(status=fe["status"], stdout=body.get("stdout"), esperado=oraculo_fork(), exit_code=body.get("exit_code")))
+           and body.get("exit_code") == 0 and body.get("timed_out") is False and body.get("stdout") == oraculo_fork()
+           and body.get("stderr") == "" and body.get("stdout_truncated") is False
+           and body.get("stderr_truncated") is False and body.get("error") is None,
+           dict(status=fe["status"], stdout=body.get("stdout"), esperado=oraculo_fork(), exit_code=body.get("exit_code"),
+                timed_out=body.get("timed_out"), stderr=_tail(body.get("stderr") or "", 300),
+                truncados=[body.get("stdout_truncated"), body.get("stderr_truncated")]))
     d = res["download"]
     rid = (c["body"] or {}).get("request_id") or ""
     nome = f"minipar_{rid[:8]}{'.exe' if os.name == 'nt' else ''}"
@@ -669,20 +672,30 @@ def segment_c(args) -> Segment:
            d["status"] == 200 and nome in (d.get("disposition") or "") and d.get("sha256") is not None
            and d.get("sha256") == d.get("sha256_registrado"), d)
     e = res["erros"]
-    esperado = dict(analyze_sem_source=(400, "BAD_REQUEST"), execute_timeout_31=(400, "BAD_REQUEST"),
-                    artifact_kind_arm=(400, "BAD_REQUEST"), artifact_inexistente=(404, "ARTIFACT_NOT_FOUND"),
-                    execute_inexistente=(200, "ARTIFACT_NOT_FOUND"))
-    divergentes = {k: e.get(k) for k, (st, code) in esperado.items()
-                   if not e.get(k) or e[k].get("status") != st or e[k].get("code") != code}
-    seg.ok("C8", "Erros pelo HTTP (§1.6/§1.8): 400 BAD_REQUEST, 404 ARTIFACT_NOT_FOUND no download, "
-                 "ARTIFACT_NOT_FOUND no envelope do execute", not divergentes, dict(obtido=e, divergentes=divergentes))
+
+    def divergentes(esperado):
+        return {k: e.get(k) for k, (st, code) in esperado.items()
+                if not e.get(k) or e[k].get("status") != st or e[k].get("code") != code}
+
+    # C8: só os casos que o C-WEB-v1 lista (§1.6 e §1.8).
+    contratuais = divergentes(dict(analyze_sem_source=(400, "BAD_REQUEST"), execute_timeout_31=(400, "BAD_REQUEST"),
+                                   artifact_inexistente=(404, "ARTIFACT_NOT_FOUND"),
+                                   execute_inexistente=(200, "ARTIFACT_NOT_FOUND")))
+    seg.ok("C8", "Erros do contrato pelo HTTP (§1.6/§1.8): 400 BAD_REQUEST, 404 ARTIFACT_NOT_FOUND no download, "
+                 "ARTIFACT_NOT_FOUND no envelope do execute", not contratuais, dict(obtido=e, divergentes=contratuais))
+    # C9: o §1.8 não diz qual HTTP vale para kind inválido; o §1.7 define INVALID_ARGUMENT no serviço e o
+    # web_didatica/README.md (WEB-04) documenta a tradução para 400. Conferido à parte para não misturar.
+    documentado = divergentes(dict(artifact_kind_arm=(400, "BAD_REQUEST")))
+    seg.ok("C9", "kind 'arm' no download -> 400 BAD_REQUEST (§1.7 + web_didatica/README.md, fora do §1.8)",
+           not documentado, dict(obtido=e.get("artifact_kind_arm"), divergentes=documentado))
     return seg
 
 
 # --------------------------------------------------------------------------- main
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="INT-01: smoke de integração dos três eixos")
-    ap.add_argument("--port-base", type=int, default=PORT_MIN, help=f"primeira porta do worker ({PORT_MIN}-{PORT_MAX})")
+    ap.add_argument("--port-base", type=int, default=PORT_MIN,
+                    help=f"primeira porta do worker ({PORT_MIN}-{PORT_MAX - 1}; usa ela e a seguinte)")
     ap.add_argument("--only", choices=("A", "B", "C"), help="executa só um segmento")
     ap.add_argument("--timeout", type=int, default=30, help="limite (s) de cada execução de programa compilado")
     ap.add_argument("--core08-root", help="raiz da árvore com src/service.py do CORE-08 (padrão: esta árvore; ou env MINIPAR_CORE08_ROOT)")
@@ -710,10 +723,13 @@ def main(argv=None) -> int:
             continue
         print(f"\n== Segmento {sid} ==")
         t0 = time.monotonic()
+        Segment.ultimo = None
         try:
             seg = fn(args)
         except Exception as exc:          # falha do próprio smoke: registrada como FAIL, nunca PASS
-            seg = Segment(sid, f"segmento {sid}", "?")
+            # Mantém os checks feitos antes da exceção, se o segmento já tinha sido criado.
+            seg = Segment.ultimo if Segment.ultimo is not None and Segment.ultimo.sid == sid \
+                else Segment(sid, f"segmento {sid}", "?")
             seg.ok(f"{sid}!", "smoke executou sem exceção", False, f"{type(exc).__name__}: {exc}")
         seg.data["duration_ms"] = round((time.monotonic() - t0) * 1000)
         segs.append(seg)
@@ -726,7 +742,7 @@ def main(argv=None) -> int:
             print(f"{'':<21}bloqueio: {s.blocked_reason}")
     failed = [s.sid for s in segs if s.status == "FAIL"]
     pending = [s.sid for s in segs if s.status != "PASS"]
-    code = 1 if failed else 0
+    code = 1 if failed else 3 if pending else 0
     if pending:
         print(f"\nATENÇÃO: segmentos {', '.join(pending)} não estão PASS. BLOCKED/PARTIAL significam que o card "
               "INT-01 NÃO está concluído; A e B precisam validar seus segmentos.")
@@ -734,8 +750,9 @@ def main(argv=None) -> int:
     report = dict(meta=meta, exit_code=code, segments=[s.as_dict() for s in segs],
                   summary={s.sid: s.status for s in segs},
                   finished=_dt.datetime.now().astimezone().isoformat(timespec="seconds"))
-    (OUT / "results.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Resultados: {(OUT / 'results.json').relative_to(ROOT)} | exit {code}")
+    destino = OUT / (f"results_{args.only}.json" if args.only else "results.json")
+    destino.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Resultados: {destino.relative_to(ROOT)} | exit {code}")
     return code
 
 
