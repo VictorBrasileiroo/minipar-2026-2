@@ -10,6 +10,7 @@
 |---|---|---|
 | README do runtime com protocolo, topologia, deploy, testes e problemas comuns | **pronto para revisão** | `runtime/README.md` §4–§7 |
 | Ferramenta para mascarar logs | **PASS** | `runtime/tools/mascarar_log.py`, conferida com um log sintético: IPs `192.168.x.N`, hostname trocado, pasta do usuário trocada por `<home>`; recusa sobrescrever a entrada |
+| Ensaio dos comandos do §7.2, §7.4 e §7.5 no loopback, pelo autor (05/11) | **PASS como ensaio** | Mesmos comandos PowerShell com `127.0.0.1` no lugar do IP de B: 4 workers escutando, coordenador com `TOTAL 160`, `UNICOS 160`, `DUPLICADOS 0`, `PERDIDOS 0`, `SOMA_NOTAS 7630` igual à do `seq`, exit 0; log do worker com `conexao ... aceita`, `TASK`/`RESULT ok` de `avaliar_lote`. Confere a sintaxe do roteiro; **não** prova duas máquinas |
 | **Reprodução por outro integrante** | **PENDENTE** | Ninguém além do autor executou o roteiro até 05/11. Não há prova sem essa execução (AGENTS regra 6) |
 | Logs dos dois lados anexados | **PENDENTE** | Fecha também a lacuna do `RUN-03`, que só anexou o log do worker |
 
