@@ -89,13 +89,44 @@ O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo 
 
 Os validadores nativos usam `CXX`, o G++ UCRT64 local ou `--cxx CAMINHO_GPP`, sem alterar o PATH do sistema. Os artefatos e logs ficam em `output/`, ignorado pelo Git. O `.expected.tac` do T07 permanece como referência histórica; igualdade textual não é o critério de aceite.
 
+## Backend Fork/Join — CORE-07 (30/10/2026)
+
+Implementação local para revisão em `eixo-a/CORE-07-backend-runtime`: C++ com
+wrappers tipados, runtime real, mesmo binário coordenador/worker, handles/listas
+e falhas recuperáveis. Execução nativa local e entre processos no loopback
+verificada; prova entre computadores continua pendente.
+
+**Integração local de 05/11/2026:** `origin/dev` contém CORE-06 (#17).
+A CLI oficial gera TAC real antes do C++ e passa contexto semântico e fonte ao
+backend; o serviço CORE-08 usa o mesmo backend e compilação limitada (120 s,
+64 KB por stream), com includes do runtime. `generate_text` e `generate`
+aceitam `semantic` da mesma AST e `source` (obrigatório em FJ para SHA-256);
+chamadas antigas sem FJ continuam compatíveis. Revisão humana/merge pendentes.
+Reprodução CLI/API/loopback e relatório em
+[integração CORE-07](docs/auditorias/CORE-07_INTEGRACAO_DEV.md).
+
+```powershell
+$env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
+$env:PATH = 'C:\msys64\ucrt64\bin;' + $env:PATH # somente este processo
+.\.venv\Scripts\python.exe -B tests/2026_2/core07/compile_backend.py tests/2026_2/core07/demo.minipar
+'local' | .\output\core07\repro\output\demo.exe
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core07 -v
+```
+
+Demo observada: `42 14 42`, exit 0. A suíte inicia workers somente em
+`127.0.0.1` e encerra seus próprios processos. Tipos desconhecidos, assinaturas
+incompatíveis e retornos não comprovados são recusados, sem despacho dinâmico.
+Detalhes, limites e regressões no
+[handoff CORE-07](docs/auditorias/CORE-07_BACKEND_RUNTIME.md).
+Estado administrativo e aprovações humanas não foram promovidos.
+
 ## Validação local do CORE-06
 
 O gerador TAC representa `fork` com captura por valor, `join`/timeout,
 regiões `par` com branches e barreira e laços `for-in` com controle de fluxo.
 Use as APIs `TACGenerator.generate_text(program)` ou `generate(program, nome)`
-após análise semântica. A CLI e o backend C++ continuam bloqueando Fork/Join
-até CORE-07; gerar TAC não comprova execução de tarefas.
+após análise semântica. A CLI e o serviço integram o backend CORE-07 no recorte
+tipado documentado; gerar TAC por si só não comprova execução de tarefas.
 
 ```powershell
 .\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core06 -p "test_*.py" -v
@@ -126,10 +157,10 @@ O PDF oficial do projeto, a BNF anterior, o exemplo Python do Teste 10 e materia
 
 `src/service.py` fornece `analyze`, `compile_program`, `execute` e `get_artifact` no envelope C-WEB-v1. A análise gera texto sem invocar G++; cada compilação nativa usa diretório próprio em `output/web/<uuid>/`. `CXX` seleciona um executável C++20, sem flags embutidas. Execução usa stdin não interativo, timeout 1–30 s e saídas limitadas a 1 MiB por stream. O registro é local ao processo e retém todas as compilações durante sua vida; não existe limpeza automática nem recuperação do registro após reiniciar.
 
-Estado **PARTIAL**: na integração local CORE-06/CORE-08 de 04/11/2026, Fork/Join
-produz TAC real pelo serviço. A fase C++ ainda retorna `CPP_UNSUPPORTED_FEATURE`
-com a mensagem `Fork/Join requer CORE-07; C++ nao gerado.`; o envelope global
-continua com `ok=false` e o g++ não é executado. `analyze` não registra artefatos.
+Estado **PARTIAL** contratual: na integração local de 05/11/2026, Fork/Join
+produz TAC, C++ e binário real pelo serviço, com execução e artefatos conferidos.
+Recusas de representação/retorno do backend geram `CPP_UNSUPPORTED_FEATURE`,
+com linha quando disponível, e impedem G++. `analyze` não registra artefatos.
 O catálogo proposto pela CR permanece **dependente de ratificação A+B**, incluindo
 o tipo `task`; esta integração não o aprova nem altera o envelope ou as APIs.
 `TAC_UNSUPPORTED_FEATURE` continua aplicável a outras construções não representadas.
