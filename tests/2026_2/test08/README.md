@@ -1,6 +1,8 @@
 # Teste 8: 160 avaliações em quatro trabalhadores (card `T08-01`, Eixo C)
 
-**Estado: `PARTIAL`.** O teste passou (32 PASS, 0 FAIL) numa **integração local, não mergeada**, da branch RUN-03 com `dev`, o PR #17 (CORE-06, TAC) e o PR #18 (CORE-07, backend C++ que chama o runtime). O cenário remoto rodou só no **loopback** (`127.0.0.1`). O RUN-03 (#10, mergeado em 04/11/2026) provou o runtime entre dois computadores com o programa de demonstração; este teste não foi repetido em duas máquinas. O `PASS` final depende do merge de #17 e #18 em `dev` e de repetir este roteiro em seguida.
+**Estado: `PASS` (no loopback).** Em 05/11/2026, com o PR #17 (CORE-06) e o PR #18 (CORE-07) já em `dev`, o harness foi repetido na própria branch sincronizada (`946647f`), sem integração local: **32 PASS, 0 FAIL, 0 BLOCKED**, exit 0. O cenário remoto continua só no loopback; isso não prova execução entre computadores.
+
+**Estado anterior (30/10/2026): `PARTIAL`.** O teste passou (32 PASS, 0 FAIL) numa **integração local, não mergeada**, da branch RUN-03 com `dev`, o PR #17 (CORE-06, TAC) e o PR #18 (CORE-07, backend C++ que chama o runtime). O cenário remoto rodou só no **loopback** (`127.0.0.1`). O RUN-03 (#10, mergeado em 04/11/2026) provou o runtime entre dois computadores com o programa de demonstração; este teste não foi repetido em duas máquinas. O `PASS` final depende do merge de #17 e #18 em `dev` e de repetir este roteiro em seguida.
 
 ## 1. Objetivo
 
@@ -163,6 +165,6 @@ Calibração: o modo `seq` levou cerca de 2.2–2.9 s, dentro da faixa de 0.5 a 
 
 ## 8. Pendências
 
-- Repetir o teste após o merge de #17 e #18 em `dev`. Só então o estado pode passar de `PARTIAL` para `PASS`.
+- ~~Repetir o teste após o merge de #17 e #18 em `dev`.~~ Feito em 05/11/2026: 32/32 PASS na branch sincronizada com `dev`.
 - Opcional: repetir o cenário remoto em dois computadores reais. O runtime já foi provado em duas máquinas no RUN-03 (#10), com o programa de demonstração.
 - O caminho `BLOCKED` (backend sem CORE-07) é tratado no harness, mas não foi exercitado nesta integração.
