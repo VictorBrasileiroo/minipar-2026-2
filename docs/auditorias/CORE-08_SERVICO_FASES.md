@@ -1,5 +1,11 @@
 # HANDOFF — CORE-08: serviço de fases para a Web didática
 
+> Integração posterior de 05/11/2026: CLI/serviço combinados com CORE-06/07 na
+> branch CORE-07, sem commit/push. CORE-08 final: 36 PASS. FJ válido gera TAC,
+> C++, binário e execução reais; recusas tipadas têm diagnóstico estruturado.
+> Relatório: [CORE-07_INTEGRACAO_DEV.md](CORE-07_INTEGRACAO_DEV.md).
+> Os bloqueios por dependência ausente abaixo são históricos; a CR continua pendente.
+
 > Atualização local de 03/11/2026: consultar as seções corretivas ao final. As descrições de diagnostics=[] abaixo são histórico da entrega anterior. A extensão agora implementada depende de ratificação A+B; nenhuma aprovação ou publicação foi realizada.
 
 **Estado: PARTIAL, implementação local para revisão independente.** Responsável A/coordenador. Data: 30/10/2026. Contrato: C-WEB-v1 §1, sem mudança de envelope ou aprovação inferida. Sem stage, commit, push, PR ou merge.

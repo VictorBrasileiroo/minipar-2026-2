@@ -8,7 +8,7 @@ Contrato: [`docs/02_CONTRATOS_TECNICOS.md` §2 (C-FJ-v1)](../docs/02_CONTRATOS_T
 | `RUN-01` | Runtime local: registry, `start`/`join`, isolamento, erros, `Value` | implementado e testado |
 | `RUN-02` | Protocolo TCP enquadrado, worker pré-compilado, falhas | implementado e testado **no loopback** (prova de protocolo) |
 | `RUN-03` | Prova em dois computadores reais | programa e roteiro prontos, ensaio no loopback ok; **execução em duas máquinas PASS em 04/11/2026** (log do worker anexado; [roteiro e registro](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)) |
-| `RUN-04` | Handoff da API para o backend `CORE-07` | contrato dos 13 símbolos testado; interop pela CLI PASS **na integração local com #17/#18** e no loopback (seção 5) |
+| `RUN-04` | Handoff da API para o backend `CORE-07` | contrato dos 13 símbolos testado; interop pela CLI PASS em `dev` (com #17/#18 mergeados), no loopback (seção 5) |
 
 ## 1. Arquivos
 
@@ -152,7 +152,7 @@ python runtime/tests/run_tests.py                              # inclui test_int
 python runtime/tests/interop_codegen.py [--port-base 7100]     # só com o CORE-07 na árvore
 ```
 
-Resultado em 30/10/2026 (Windows 11, G++ 16.2.0 UCRT64): `run_tests.py` com as 6 etapas PASS (17/17 casos do `test_interop.cpp`); `interop_codegen.py` com (a), (b) e (c) PASS, rodado na **integração local** RUN-03 + `dev` + #17 + #18, que ainda não está em `dev`. Sem o `CORE-07` na árvore, o `interop_codegen.py` dá `BLOCKED`. Nada disso prova execução em dois computadores (RUN-03).
+Resultado em 30/10/2026 (Windows 11, G++ 16.2.0 UCRT64): `run_tests.py` com as 6 etapas PASS (17/17 casos do `test_interop.cpp`); `interop_codegen.py` com (a), (b) e (c) PASS, rodado na **integração local** RUN-03 + `dev` + #17 + #18. Em 05/11/2026, com o #17 e o #18 já em `dev`, os dois scripts foram repetidos na branch sincronizada, sem integração local: 6/6 etapas e (a), (b), (c) PASS. Sem o `CORE-07` na árvore, o `interop_codegen.py` dá `BLOCKED`. Nada disso prova execução em dois computadores (RUN-03).
 
 ## 6. Limitações conhecidas
 
