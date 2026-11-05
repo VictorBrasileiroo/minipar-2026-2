@@ -31,7 +31,15 @@
       </div>
       <div class="acoes">
         <button type="button" id="analisar" disabled>Analisar</button>
-        <button type="button" id="compilar" disabled title="Disponível com as rotas de compilação e execução (WEB-04)">Compilar e executar</button>
+        <button type="button" id="compilar" disabled>Compilar e executar</button>
+      </div>
+      <div class="entrada-execucao">
+        <label class="rotulo-entrada" for="entrada">Entrada (stdin) <small>entregue inteira antes da execução; cada <code>input()</code> lê uma linha</small></label>
+        <textarea id="entrada" rows="2" spellcheck="false" autocomplete="off"></textarea>
+        <div class="linha-entrada">
+          <label>Tempo limite <input type="number" id="tempo-limite" min="1" max="30" step="1" value="10" inputmode="numeric"> s</label>
+          <span class="casos-t11" id="casos-t11" hidden></span>
+        </div>
       </div>
       <p class="situacao" id="situacao" role="status" aria-live="polite"></p>
       <h3 class="subtitulo">Diagnósticos</h3>

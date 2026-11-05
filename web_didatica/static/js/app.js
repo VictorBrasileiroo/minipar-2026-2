@@ -1,5 +1,7 @@
 // Web didática. Desenha as fases a partir do envelope C-WEB-v1. Por padrão os dados vêm do serviço
-// real (fonte_real.js → server.py → src/service.py, WEB-03); com ?fonte=mock, das fixtures (WEB-01).
+// real (fonte_real.js → server.py → src/service.py: análise no WEB-03, compilação, execução e
+// downloads no WEB-04); com ?fonte=mock, das fixtures (WEB-01).
+import { armDaExecucao, SUFIXO_TITULO } from "./arm.js";
 import * as fonteMock from "./fonte_mock.js";
 import * as fonteReal from "./fonte_real.js";
 import { criarArvoreAst } from "./arvore_ast.js";
@@ -22,7 +24,7 @@ const EXPLICA = {
   semantic: "O analisador semântico confere se nomes foram declarados, se tipos são compatíveis e quantos argumentos cada chamada recebe. Aqui aparecem os escopos abertos e os símbolos de cada um.",
   tac: "O código de três endereços (TAC) quebra o programa em instruções simples, com no máximo um operador cada, usando temporários t0, t1…",
   cpp: "O gerador traduz a AST para C++. Este é o texto que seria gravado no arquivo .cpp e entregue ao g++.",
-  gpp: "Compila o C++ com o g++ e executa o binário desta compilação.",
+  gpp: "Compila o C++ com o g++ e executa o binário desta compilação, com a entrada (stdin) e o tempo limite escolhidos ao lado do editor. Os downloads são os arquivos desta compilação, identificados pelo request_id.",
 };
 
 const fonte = new URLSearchParams(location.search).get("fonte") === "mock" ? fonteMock : fonteReal;
@@ -31,8 +33,12 @@ const REAL = fonte.modo === "real";
 const $ = (id) => document.getElementById(id);
 // exemplo.codigo: código original do exemplo (Restaurar). exemplo.codigoAnalisado: código que gerou
 // exemplo.analise; é dele que saem os trechos dos diagnósticos.
+// estado.ocupado: null, "analisar", "compilar" ou "executar" (pedido em andamento no serviço).
 const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false, arvore: null, linhaDestacada: null,
-  filtroSimbolos: "", analisando: false };
+  filtroSimbolos: "", ocupado: null };
+
+// Os três casos obrigatórios do Teste 11 (C-T11-v1 §3.1), uma expressão por execução.
+const CASOS_T11 = [["caso 1", "((2+4)*7)-(5*4)"], ["caso 2", "((10 -8*7)+4)*2"], ["caso 3", "((2+4)*7)-(5*4)"]];
 
 function h(tag, atributos = {}, ...filhos) {
   const el = document.createElement(tag);
@@ -129,7 +135,7 @@ function desenharDiagnosticos() {
     return;
   }
   if (!estado.exemplo.analise) {
-    lista.append(h("li", { class: "diag-vazio" }, estado.analisando ? "Aguardando o serviço…" : "Sem análise."));
+    lista.append(h("li", { class: "diag-vazio" }, estado.ocupado ? "Aguardando o serviço…" : "Sem análise."));
     return;
   }
   const diagnosticos = estado.exemplo.analise.diagnostics;
@@ -199,8 +205,8 @@ function caixaPulada(dados) {
   if (dados.reason === "not_requested") {
     return h("div", { class: "caixa pulado" }, h("strong", {}, "Fase não solicitada"),
       h("span", {}, REAL
-        ? "A operação analyze não chama o g++. Compilar e executar pelo serviço real entra no WEB-04."
-        : "A operação analyze não chama o g++. Compilar e executar entram com o serviço real (WEB-04); o exemplo EXEC-01 mostra como fica."));
+        ? "A operação analyze não chama o g++. Clique em Compilar e executar para gerar o binário desta compilação e rodá-lo."
+        : "A operação analyze não chama o g++. No modo mock não há compilação; o exemplo EXEC-01 mostra o resultado gravado de uma compilação e execução."));
   }
   const falhou = primeiraFaseComErro();
   return h("div", { class: "caixa pulado" }, h("strong", {}, "Fase não executada"),
@@ -375,32 +381,150 @@ function painelCpp(dados) {
   return [h("p", { class: "estat" }, `${dados.text.split("\n").length - 1} linhas`), blocoCodigo(dados.text)];
 }
 
+// Salva um Blob com o nome dado, pelo próprio navegador.
+function salvarArquivo(blob, nome) {
+  const url = URL.createObjectURL(blob);
+  const a = h("a", { href: url, download: nome, hidden: true });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function nomeDoCabecalho(disposicao) {
+  const m = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disposicao || "");
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+// GET /api/v1/artifacts/<id>/<kind> do artefato desta compilação (§1.7). Artefato inexistente ou
+// expirado (HTTP 404) e id/tipo inválido (HTTP 400) aparecem na linha de andamento.
+async function baixarArtefato(id, tipo) {
+  try {
+    const resposta = await fetch(fonte.urlArtefato(id, tipo), { cache: "no-store" });
+    if (!resposta.ok) {
+      let corpo = null;
+      try { corpo = await resposta.json(); } catch { /* corpo não é JSON */ }
+      throw new Error(corpo?.error ? `HTTP ${resposta.status} ${corpo.error.code}: ${corpo.error.message}` : `HTTP ${resposta.status}`);
+    }
+    const blob = await resposta.blob();
+    const nome = nomeDoCabecalho(resposta.headers.get("Content-Disposition")) || `minipar_${id.slice(0, 8)}`;
+    salvarArquivo(blob, nome);
+    informar(`Baixado ${nome} (${blob.size} bytes), artefato ${tipo} da compilação ${id.slice(0, 8)}.`, "ok");
+  } catch (erro) {
+    informar(`Falha ao baixar o artefato ${tipo} da compilação ${id.slice(0, 8)}: ${erro.message}`, "erro");
+  }
+}
+
+function botoesDownload(analise, gpp) {
+  const ids = { cpp: analise.artifacts.cpp_id, tac: analise.artifacts.tac_id, binary: analise.artifacts.binary_id };
+  return ["cpp", "tac", "binary"].map((tipo) => {
+    const rotulo = `Baixar ${tipo === "binary" ? "binário" : "." + tipo}`;
+    const id = ids[tipo];
+    if (!REAL) return h("button", { type: "button", disabled: true, title: "No modo mock não há artefatos: os downloads vêm do serviço real." }, rotulo);
+    if (!id) {
+      const motivo = tipo === "binary" && gpp.status !== "ok" ? "O g++ não gerou binário nesta compilação." : "Esta compilação não registrou o artefato.";
+      return h("button", { type: "button", disabled: true, title: motivo }, rotulo);
+    }
+    return h("button", { type: "button", title: `Artefato ${tipo} da compilação ${id}`, onclick: () => baixarArtefato(id, tipo) }, rotulo);
+  });
+}
+
+// O envelope traz ok; a página confere com os campos que o definem (§1.6): exit_code 0 e sem timeout.
+function execucaoBemSucedida(run) {
+  return run.exit_code === 0 && run.timed_out === false && !run.error;
+}
+
+function caixaResultadoExecucao(run, pedido) {
+  if (run.error) {
+    return h("div", { class: "caixa erro" }, h("strong", {}, `Execução não realizada: ${run.error.code}`),
+      h("span", {}, run.error.code === "ARTIFACT_NOT_FOUND"
+        ? `${run.error.message}. O binário desta compilação não está mais disponível; compile de novo.`
+        : run.error.message));
+  }
+  const coerente = run.ok === execucaoBemSucedida(run);
+  const aviso = coerente ? null : h("span", {}, `Atenção: o envelope diz ok: ${run.ok}, mas exit_code é ${run.exit_code} e timed_out é ${run.timed_out}.`);
+  if (run.timed_out) {
+    return h("div", { class: "caixa erro" }, h("strong", {}, "Tempo esgotado"),
+      h("span", {}, `O programa passou do tempo limite${pedido ? ` de ${pedido.timeout} s` : ""} e foi encerrado pelo serviço; não há código de saída. A saída abaixo é o que foi produzido até o encerramento.`), aviso);
+  }
+  if (run.exit_code !== 0) {
+    return h("div", { class: "caixa erro" }, h("strong", {}, `O programa terminou com código ${run.exit_code}`),
+      h("span", {}, "Código de saída diferente de 0 indica falha durante a execução. Veja stdout e stderr abaixo."), aviso);
+  }
+  return h("div", { class: run.ok ? "caixa ok" : "caixa erro" }, h("strong", {}, "O programa terminou com código 0"), aviso);
+}
+
+// .arm do Teste 11 recortado do stdout desta execução (§1.7), gerado no navegador. Aparece no
+// exemplo T11 e em qualquer execução cujo stdout tenha o título do Assembly.
+function secaoArm(run) {
+  if (estado.exemplo.id !== "T11" && !run.stdout.includes(SUFIXO_TITULO)) return null;
+  const mensagem = h("p", { class: "nota", role: "status" });
+  const baixar = () => {
+    try {
+      const { texto, nome } = armDaExecucao(run);
+      salvarArquivo(new Blob([new TextEncoder().encode(texto)], { type: "text/plain;charset=utf-8" }), nome);
+      mensagem.textContent = "";
+      informar(`Baixado ${nome}: ${texto.split("\n").length - 2} linhas de Assembly recortadas do stdout desta execução.`, "ok");
+    } catch (erro) {
+      mensagem.textContent = `Não foi possível gerar o .arm: ${erro.message}.`;
+    }
+  };
+  return h("section", {}, h("h4", {}, "Assembly ARMv7 (Teste 11)"),
+    h("p", { class: "explica" }, "Recorta do stdout, sem alterar nada, as linhas entre o título “Assembly ARMv7 (CPUlator):” e a primeira linha vazia, pelas mesmas regras de tests/2026_2/test11/extrair_arm.py. O arquivo é gerado no navegador."),
+    h("div", { class: "acoes" }, h("button", { type: "button", onclick: baixar }, "Baixar .arm")),
+    mensagem);
+}
+
 function painelExecucao(dados) {
   const analise = estado.exemplo.analise;
   const run = estado.exemplo.execucao;
-  const baixar = ["cpp", "tac", "binary"].map((tipo) => h("button", {
-    type: "button", disabled: true, title: "Download pelo serviço real (WEB-04)",
-  }, `Baixar ${tipo === "binary" ? "binário" : "." + tipo}`));
+  const pedido = estado.exemplo.pedidoExecucao;
+  const binario = analise.artifacts.binary_id;
   const partes = [
-    h("section", {}, h("h3", {}, "g++"), h("dl", {},
+    dados.status === "error" ? h("div", { class: "caixa erro" }, h("strong", {}, "O g++ falhou"),
+      h("span", {}, dados.returncode === null
+        ? "O compilador C++ não terminou normalmente (tempo esgotado ou compilador ausente). Não há binário desta compilação."
+        : `O g++ terminou com código ${dados.returncode}. Não há binário desta compilação; a mensagem do g++ está abaixo.`)) : null,
+    dados.status === "error" ? h("div", { class: "cartoes-fase" }, cartoesDaFase("gpp")) : null,
+    h("section", {}, h("h4", {}, "g++"), h("dl", {},
       h("dt", {}, "status"), h("dd", {}, dados.status),
       h("dt", {}, "comando"), h("dd", {}, dados.command.join(" ")),
-      h("dt", {}, "código de saída"), h("dd", {}, dados.returncode),
+      h("dt", {}, "código de retorno"), h("dd", {}, dados.returncode ?? "— (não terminou)"),
       h("dt", {}, "duração"), h("dd", {}, `${dados.duration_ms} ms`),
-      h("dt", {}, "artefatos"), h("dd", {}, analise.artifacts.binary_id ?? "nenhum"))),
-    dados.stderr ? blocoCodigo(dados.stderr) : null,
-    h("div", { class: "acoes" }, baixar),
+      h("dt", {}, "compilação"), h("dd", {}, analise.request_id),
+      h("dt", {}, "binário"), h("dd", {}, binario ?? "nenhum"))),
+    dados.stdout ? [h("h4", {}, "Saída do g++ (stdout)"), blocoCodigo(dados.stdout)] : null,
+    dados.stderr ? [h("h4", {}, "Mensagens do g++ (stderr)"), blocoCodigo(dados.stderr),
+      dados.stderr_truncated ? h("p", { class: "nota" }, "stderr do g++ truncado no limite de 64 KB.") : null] : null,
+    h("div", { class: "acoes" }, botoesDownload(analise, dados)),
   ];
-  if (run) {
-    partes.push(h("section", {}, h("h3", {}, "Execução"), h("dl", {},
-      h("dt", {}, "entrada (stdin)"), h("dd", {}, estado.exemplo.entrada ? JSON.stringify(estado.exemplo.entrada) : "(vazia)"),
-      h("dt", {}, "código de saída"), h("dd", {}, run.exit_code ?? "—"),
-      h("dt", {}, "tempo esgotado"), h("dd", {}, run.timed_out ? "sim" : "não"),
-      h("dt", {}, "duração"), h("dd", {}, `${run.duration_ms} ms`))),
-    h("h3", {}, "Saída (stdout)"), blocoCodigo(run.stdout || "\n"));
-    if (run.stderr) partes.push(h("h3", {}, "Erros (stderr)"), blocoCodigo(run.stderr));
+  if (REAL && binario) {
+    partes.push(h("div", { class: "acoes" }, h("button", {
+      type: "button", disabled: Boolean(estado.ocupado), onclick: executarDeNovo,
+      title: `Executa de novo o binário ${binario.slice(0, 8)} com a entrada e o tempo limite atuais, sem recompilar`,
+    }, estado.ocupado === "executar" ? "Executando…" : "Executar de novo com a entrada atual")));
   }
-  return h("div", { class: "execucao" }, partes);
+  if (run) {
+    const entrada = pedido ? pedido.stdin : estado.exemplo.entrada;
+    partes.push(h("section", {}, h("h4", {}, "Execução"), caixaResultadoExecucao(run, pedido),
+      run.error ? null : h("dl", {},
+        h("dt", {}, "binário"), h("dd", {}, run.artifact_id),
+        h("dt", {}, "entrada (stdin)"), h("dd", {}, entrada ? JSON.stringify(entrada) : "(vazia)"),
+        h("dt", {}, "tempo limite"), h("dd", {}, pedido ? `${pedido.timeout} s` : "—"),
+        h("dt", {}, "código de saída"), h("dd", {}, run.exit_code ?? "— (sem código)"),
+        h("dt", {}, "tempo esgotado"), h("dd", {}, run.timed_out ? "sim" : "não"),
+        h("dt", {}, "duração"), h("dd", {}, `${run.duration_ms} ms`))));
+    if (!run.error) {
+      partes.push(h("section", {}, h("h4", {}, "Saída (stdout)"), blocoCodigo(run.stdout || "\n"),
+        run.stdout_truncated ? h("p", { class: "nota" }, "stdout truncado no limite de 1 MB.") : null));
+      if (run.stderr || run.stderr_truncated) {
+        partes.push(h("section", {}, h("h4", {}, "Erros (stderr)"), blocoCodigo(run.stderr || "\n"),
+          run.stderr_truncated ? h("p", { class: "nota" }, "stderr truncado no limite de 1 MB.") : null));
+      }
+      partes.push(secaoArm(run));
+    }
+  }
+  return h("div", { class: "execucao" }, partes.flat());
 }
 
 const PAINEIS = { lexer: painelTokens, parser: painelAst, semantic: painelSemantico, tac: painelTac, cpp: painelCpp, gpp: painelExecucao };
@@ -431,13 +555,13 @@ function desenharPainel() {
   destacarLinha(null);
   if (!estado.exemplo.analise) {
     painel.append(h("div", { class: "caixa descartado" }, h("strong", {}, "Sem análise"),
-      h("span", {}, estado.analisando ? "Analisando no serviço real…" : "Clique em Analisar para enviar o código ao compilador.")));
+      h("span", {}, estado.ocupado ? "Aguardando o serviço real…" : "Clique em Analisar para enviar o código ao compilador.")));
     return;
   }
   if (estado.descartada) {
     painel.append(h("div", { class: "caixa descartado" }, h("strong", {}, "Resposta descartada"),
       h("span", {}, REAL
-        ? "O código no editor não é mais o que foi analisado (o source_hash mudou). Clique em Analisar (Ctrl+Enter) para analisar o código atual."
+        ? "O código no editor não é mais o que foi analisado (o source_hash mudou). Clique em Analisar (Ctrl+Enter) ou em Compilar e executar para processar o código atual."
         : "O código no editor não é mais o que foi analisado (o source_hash mudou). No modo mock não há reanálise: restaure o código do exemplo.")));
     return;
   }
@@ -475,8 +599,11 @@ function atualizarAcoes() {
   // Restaurar: no mock, só quando a resposta foi descartada; no real, sempre que o editor difere do exemplo.
   $("restaurar").hidden = REAL ? $("codigo").value === estado.exemplo?.codigo : !estado.descartada;
   const analisar = $("analisar");
-  analisar.disabled = !fonte.analisar || estado.analisando || !estado.exemplo;
-  analisar.textContent = estado.analisando ? "Analisando…" : "Analisar";
+  analisar.disabled = !fonte.analisar || Boolean(estado.ocupado) || !estado.exemplo;
+  analisar.textContent = estado.ocupado === "analisar" ? "Analisando…" : "Analisar";
+  const compilar = $("compilar");
+  compilar.disabled = !fonte.compilar || Boolean(estado.ocupado) || !estado.exemplo;
+  compilar.textContent = { compilar: "Compilando…", executar: "Executando…" }[estado.ocupado] || "Compilar e executar";
 }
 
 function informar(texto, tipo = "") {
@@ -499,40 +626,148 @@ let sequencia = 0;
 
 // Envia o código atual do editor ao serviço real. A resposta só é aplicada se o source_hash dela
 // for o hash do código que está no editor quando ela chega (C-WEB-v1 §1.3); senão é descartada.
+// true se a resposta é do código que está no editor agora; false se o código mudou (a resposta é
+// descartada); null se outra ação começou enquanto o hash era calculado.
+async function confereHash(resposta, enviado, minha) {
+  const atual = $("codigo").value;
+  const hashAtual = await sha256(atual);
+  if (minha !== sequencia) return null;
+  return hashAtual === null ? atual === enviado : resposta.source_hash === hashAtual;
+}
+
+function aplicarEnvelope(resposta, enviado) {
+  estado.exemplo.analise = resposta;
+  estado.exemplo.codigoAnalisado = enviado;
+  estado.exemplo.execucao = null;
+  estado.exemplo.pedidoExecucao = null;
+  estado.descartada = false;
+  estado.arvore = null;
+}
+
+function falhaDeConexao(acao, erro) {
+  informar(`Falha ao ${acao}: ${erro.message} Inicie o servidor com web_didatica/server.py (veja web_didatica/README.md) ou abra com ?fonte=mock.`, "erro");
+}
+
 async function analisarCodigo() {
-  if (!fonte.analisar || estado.analisando) return;
+  if (!fonte.analisar || estado.ocupado) return;
   const minha = ++sequencia;
   const enviado = $("codigo").value;
-  estado.analisando = true;
+  estado.ocupado = "analisar";
   atualizarAcoes();
   if (!estado.exemplo.analise) desenharPainel();
   informar("Analisando no serviço real…");
   try {
     const resposta = await fonte.analisar(enviado);
     if (minha !== sequencia) return;
-    const atual = $("codigo").value;
-    const hashAtual = await sha256(atual);
-    if (minha !== sequencia) return;
-    const confere = hashAtual === null ? atual === enviado : resposta.source_hash === hashAtual;
+    const confere = await confereHash(resposta, enviado, minha);
+    if (confere === null) return;
     if (!confere) {
       informar(`Resposta ${resposta.request_id.slice(0, 8)} descartada: o código mudou durante a análise (source_hash diferente). Clique em Analisar de novo.`, "aviso");
       return;
     }
-    estado.exemplo.analise = resposta;
-    estado.exemplo.codigoAnalisado = enviado;
-    estado.exemplo.execucao = null;
-    estado.descartada = false;
-    estado.arvore = null;
+    aplicarEnvelope(resposta, enviado);
     const erros = resposta.diagnostics.filter((d) => d.severity === "error").length;
     informar(resposta.ok
       ? `Análise concluída em ${resposta.duration_ms} ms, sem erros.`
       : `Análise concluída em ${resposta.duration_ms} ms com ${erros} erro(s).`, resposta.ok ? "ok" : "erro");
   } catch (erro) {
     if (minha !== sequencia) return;
-    informar(`Falha ao analisar: ${erro.message} Inicie o servidor com web_didatica/server.py (veja web_didatica/README.md) ou abra com ?fonte=mock.`, "erro");
+    falhaDeConexao("analisar", erro);
   } finally {
     if (minha === sequencia) {
-      estado.analisando = false;
+      estado.ocupado = null;
+      desenharTudo();
+    }
+  }
+}
+
+// Entrada e tempo limite da execução, conferidos antes de enviar (o servidor também confere, §1.8).
+function lerPedidoExecucao() {
+  const campo = $("tempo-limite");
+  const timeout = Number(campo.value);
+  if (campo.value.trim() === "" || !Number.isInteger(timeout) || timeout < 1 || timeout > 30) {
+    informar("Tempo limite inválido: use um número inteiro de 1 a 30 segundos (C-WEB-v1 §1.6).", "erro");
+    campo.focus();
+    return null;
+  }
+  return { stdin: $("entrada").value, timeout };
+}
+
+function resumoExecucao(run, pedido) {
+  if (run.error) return [`Execução não realizada: ${run.error.code} (${run.error.message}).`, "erro"];
+  if (run.timed_out) return [`Tempo esgotado: o programa passou de ${pedido.timeout} s e foi encerrado.`, "erro"];
+  if (run.exit_code !== 0) return [`O programa terminou com código ${run.exit_code} em ${run.duration_ms} ms.`, "erro"];
+  return [`Executado em ${run.duration_ms} ms, código de saída 0.`, run.ok && execucaoBemSucedida(run) ? "ok" : "erro"];
+}
+
+// Executa o binário da compilação exibida (artifacts.binary_id desta aba) e guarda o resultado
+// se a compilação exibida ainda for a mesma quando a resposta chegar.
+async function executarBinario(analise, pedido, minha) {
+  estado.ocupado = "executar";
+  atualizarAcoes();
+  if (estado.fase === "gpp") desenharPainel();
+  informar(`Executando o binário ${analise.artifacts.binary_id.slice(0, 8)} (tempo limite ${pedido.timeout} s)…`);
+  const run = await fonte.executar(analise.artifacts.binary_id, pedido.stdin, pedido.timeout);
+  if (minha !== sequencia || estado.exemplo.analise !== analise) return;
+  estado.exemplo.execucao = run;
+  estado.exemplo.pedidoExecucao = pedido;
+  informar(...resumoExecucao(run, pedido));
+}
+
+async function compilarExecutar() {
+  if (!fonte.compilar || estado.ocupado) return;
+  const pedido = lerPedidoExecucao();
+  if (!pedido) return;
+  const minha = ++sequencia;
+  const enviado = $("codigo").value;
+  estado.ocupado = "compilar";
+  atualizarAcoes();
+  informar("Compilando no serviço real (Lexer até g++)…");
+  try {
+    const resposta = await fonte.compilar(enviado);
+    if (minha !== sequencia) return;
+    const confere = await confereHash(resposta, enviado, minha);
+    if (confere === null) return;
+    if (!confere) {
+      informar(`Compilação ${resposta.request_id.slice(0, 8)} descartada: o código mudou enquanto compilava (source_hash diferente). Nada foi executado.`, "aviso");
+      return;
+    }
+    aplicarEnvelope(resposta, enviado);
+    const falhou = FASES.find((f) => resposta.phases[f.chave].status === "error");
+    estado.fase = falhou ? falhou.chave : "gpp";
+    history.replaceState(null, "", "#" + FASES.find((f) => f.chave === estado.fase).ancora);
+    if (!resposta.ok || !resposta.artifacts.binary_id) {
+      informar(`Compilação ${resposta.request_id.slice(0, 8)} falhou na fase ${NOME_FASE[falhou?.chave ?? "gpp"]} em ${resposta.duration_ms} ms; nada foi executado.`, "erro");
+      return;
+    }
+    desenharTudo();
+    await executarBinario(resposta, pedido, minha);
+  } catch (erro) {
+    if (minha !== sequencia) return;
+    falhaDeConexao(estado.ocupado === "executar" ? "executar" : "compilar", erro);
+  } finally {
+    if (minha === sequencia) {
+      estado.ocupado = null;
+      desenharTudo();
+    }
+  }
+}
+
+// Executa de novo o binário exibido, com a entrada e o tempo limite atuais, sem recompilar.
+async function executarDeNovo() {
+  const analise = estado.exemplo?.analise;
+  if (!fonte.executar || estado.ocupado || !analise?.artifacts.binary_id || estado.descartada) return;
+  const pedido = lerPedidoExecucao();
+  if (!pedido) return;
+  const minha = ++sequencia;
+  try {
+    await executarBinario(analise, pedido, minha);
+  } catch (erro) {
+    if (minha !== sequencia) return;
+    falhaDeConexao("executar", erro);
+  } finally {
+    if (minha === sequencia) {
+      estado.ocupado = null;
       desenharTudo();
     }
   }
@@ -545,10 +780,12 @@ async function abrirExemplo(arquivo) {
   estado.exemplo = exemplo;
   estado.exemplo.codigoAnalisado = exemplo.codigo;
   estado.descartada = false;
-  estado.analisando = false;
+  estado.ocupado = null;
   estado.arvore = null;
   estado.filtroSimbolos = "";
   $("codigo").value = estado.exemplo.codigo;
+  $("entrada").value = estado.exemplo.entrada;
+  prepararCasosT11();
   $("aviso-mock").title = estado.exemplo.notas.join("\n");
   atualizarNumeros();
   informar("");
@@ -584,6 +821,16 @@ $("restaurar").addEventListener("click", () => {
   $("codigo").dispatchEvent(new Event("input"));
 });
 $("analisar").addEventListener("click", analisarCodigo);
+$("compilar").addEventListener("click", compilarExecutar);
+
+// Atalhos para a entrada dos três casos do Teste 11, só no exemplo T11.
+function prepararCasosT11() {
+  const local = $("casos-t11");
+  local.hidden = estado.exemplo.id !== "T11";
+  local.replaceChildren("Entrada do Teste 11:", ...CASOS_T11.map(([nome, expressao]) => h("button", {
+    type: "button", title: expressao, onclick: () => { $("entrada").value = expressao + "\n"; },
+  }, nome)));
+}
 $("fixture").addEventListener("change", (e) => abrirExemplo(e.target.value).catch(mostrarFalha));
 
 function mostrarFalha(erro) {
@@ -594,11 +841,16 @@ function mostrarFalha(erro) {
 function prepararModo() {
   const aviso = $("aviso-mock");
   if (REAL) {
-    aviso.textContent = "SERVIÇO REAL · src/service.py via POST /api/v1/analyze";
+    aviso.textContent = "SERVIÇO REAL · src/service.py via /api/v1 (analyze, compile, execute, artifacts)";
     aviso.classList.add("real");
     $("analisar").title = "Envia o código do editor ao compilador real (Ctrl+Enter)";
+    $("compilar").title = "Compila o código do editor com o g++ e executa o binário desta compilação com a entrada abaixo";
   } else {
     $("analisar").title = "Indisponível no modo mock: abra sem ?fonte=mock, com o servidor web_didatica/server.py";
+    $("compilar").title = "Indisponível no modo mock: abra sem ?fonte=mock, com o servidor web_didatica/server.py";
+    // No mock a entrada mostra o stdin gravado na fixture, sem execução.
+    $("entrada").readOnly = true;
+    $("tempo-limite").disabled = true;
   }
 }
 

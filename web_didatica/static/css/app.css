@@ -48,7 +48,7 @@ button, select, textarea { font: inherit; color: inherit; }
 .seletor select { padding: 6px 8px; border: 1px solid var(--linha); border-radius: 6px; background: var(--superficie); max-width: 70vw; }
 
 .bancada { display: grid; grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.6fr); min-height: 0; }
-.editor { display: grid; grid-template-rows: auto minmax(160px, 1fr) auto auto auto auto; gap: 10px; padding: 16px;
+.editor { display: grid; grid-template-rows: auto minmax(160px, 1fr) auto auto auto auto auto; gap: 10px; padding: 16px;
   border-right: 1px solid var(--linha); min-height: 0; min-width: 0; }
 .cabecalho-painel { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .cabecalho-painel h2 { font-size: 0.95rem; }
@@ -183,6 +183,22 @@ pre.codigo span::before { counter-increment: linha; content: counter(linha); dis
 .execucao dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0; font-size: 0.88rem; }
 .execucao dt { color: var(--suave); }
 .execucao dd { margin: 0; font-family: var(--mono); overflow-wrap: anywhere; }
+.execucao h4 { margin: 0 0 6px; font: 600 0.72rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--suave); }
+.execucao .nota { margin: 4px 0 0; color: var(--pulado); font-size: 0.82rem; }
+.caixa.ok { border: 1px solid var(--ok); background: var(--ok-fundo); }
+
+.entrada-execucao { display: grid; gap: 6px; }
+.rotulo-entrada { font-size: 0.85rem; }
+.rotulo-entrada small { color: var(--suave); }
+.rotulo-entrada code { font-family: var(--mono); }
+#entrada { width: 100%; resize: vertical; padding: 6px 10px; border: 1px solid var(--linha); border-radius: 6px;
+  background: var(--superficie); font: 13px/1.5 var(--mono); white-space: pre; }
+#entrada:focus-visible { outline: none; border-color: var(--destaque); }
+.linha-entrada { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 0.85rem; }
+#tempo-limite { width: 4.5em; padding: 3px 6px; border: 1px solid var(--linha); border-radius: 6px; background: var(--superficie); font: inherit; color: inherit; }
+.casos-t11 { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--suave); }
+.casos-t11[hidden] { display: none; }
+.casos-t11 button { font-size: 0.8rem; padding: 3px 9px; }
 
 .rodape { padding: 8px 20px; border-top: 1px solid var(--linha); background: var(--superficie); font: 0.75rem/1.5 var(--mono);
   color: var(--suave); display: flex; flex-wrap: wrap; gap: 4px 18px; }
@@ -191,5 +207,5 @@ pre.codigo span::before { counter-increment: linha; content: counter(linha); dis
 @media (max-width: 820px) {
   body { height: auto; }
   .bancada { grid-template-columns: 1fr; }
-  .editor { border-right: 0; border-bottom: 1px solid var(--linha); grid-template-rows: auto 240px auto auto auto; }
+  .editor { border-right: 0; border-bottom: 1px solid var(--linha); grid-template-rows: auto 240px auto auto auto auto auto; }
 }
