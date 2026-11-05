@@ -1,0 +1,1087 @@
+{
+  "card": "CORE-06",
+  "record_structure": "Historical initial_execution preserved verbatim as data; later publication and review kept separately",
+  "initial_execution": {
+    "card": "CORE-06",
+    "observed_date": "2026-10-29",
+    "branch": "eixo-a/CORE-06-tac-fork-join-par",
+    "base_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+    "head_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+    "origin_dev_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+    "staged_files": [],
+    "new_commits": 0,
+    "publication": "No git add, commit, push, PR or merge performed",
+    "contract": "C-FJ-v1 proposed revision 2, pending ratifications; not FROZEN",
+    "card_state": "BACKLOG; ready=false preserved; local prompt authorization recorded",
+    "environment": {
+      "python": "3.12.4",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+    },
+    "checks": [
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v",
+        "status": "PASS",
+        "tests": 5,
+        "pass_count": 5,
+        "fail_count": 0,
+        "returncode": 0,
+        "log": "output/core06/core02.log"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests/2026_2/core06 -p \"test_*.py\" -v",
+        "status": "PASS",
+        "tests": 38,
+        "pass_count": 38,
+        "fail_count": 0,
+        "returncode": 0,
+        "log": "output/core06/core06.log"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/validate_core02_native.py",
+        "status": "PASS",
+        "returncode": 0,
+        "evidence": "output/core02/run-20261029-114637-022440/validation.json",
+        "builds": [
+          {
+            "build": "native",
+            "pass_count": 17,
+            "fail_count": 0,
+            "status": "PASS"
+          },
+          {
+            "build": "assertions",
+            "pass_count": 17,
+            "fail_count": 0,
+            "status": "PASS"
+          }
+        ]
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core03/verify_core03.py",
+        "status": "PASS_WITH_KNOWN_FAIL",
+        "counts": {
+          "PASS": 78,
+          "KNOWN_FAIL": 1
+        },
+        "fail_count": 0,
+        "returncode": 0,
+        "evidence": "output/core03/run-lnld_pil/summary.json",
+        "known_fail": [
+          "HERDADO-RETORNO-NUMERICO"
+        ]
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core0405/verify_core0405.py",
+        "status": "PASS",
+        "tests": 126,
+        "pass_count": 126,
+        "fail_count": 0,
+        "returncode": 0,
+        "evidence": "output/core0405/run-tu45obo4/summary.json",
+        "includes_review_tests": 26,
+        "includes_final_review_tests": 10,
+        "boundary_records": [
+          {
+            "test": "__main__.BackendBoundaryTests.test_cli_refuses_before_artifacts",
+            "status": "PASS"
+          },
+          {
+            "test": "__main__.BackendBoundaryTests.test_legacy_native_smoke",
+            "status": "PASS"
+          },
+          {
+            "test": "__main__.BackendBoundaryTests.test_tac_translates_nested_fork_cpp_stays_blocked",
+            "status": "PASS"
+          }
+        ]
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B scripts/baseline_t01_t07.py --only T06",
+        "status": "PASS",
+        "returncode": 0,
+        "evidence": "output/core01/run-20261029-114636/baseline.json",
+        "observed": "T06: PASS — vetor 10 -3 -40 80 70 -100 ordenado como [-100, -40, -3, 10, 70, 80]\n\nEvidência: output\\core01\\run-20261029-114636\\baseline.json\nFerramentas: {'python': '3.12.4', 'platform': 'Windows-11-10.0.26200-SP0', 'cxx': 'C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', 'cxx_version': 'g++.exe (Rev6, Built by MSYS2 project) 16.2.0'}"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B scripts/baseline_t01_t07.py --only T07",
+        "status": "PASS",
+        "returncode": 0,
+        "evidence": "output/core01/run-20261029-114657/baseline.json",
+        "observed": "T07: PASS — array [33, 12, 98, 5, 61] ordenado como [5, 12, 33, 61, 98] (somente a ordenação; TAC avaliado à parte)\nT07-TAC-igual-ao-esperado: INFO — TAC gerado diferente ao .expected.tac\nT07-TAC-mutacao: PASS — TAC do programa mutado difere do TAC fixo\nT07-limites: PASS — C++ gerado roda sem violação com -D_GLIBCXX_ASSERTIONS\n\nEvidência: output\\core01\\run-20261029-114657\\baseline.json\nFerramentas: {'python': '3.12.4', 'platform': 'Windows-11-10.0.26200-SP0', 'cxx': 'C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', 'cxx_version': 'g++.exe (Rev6, Built by MSYS2 project) 16.2.0'}"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B scripts/validar_planejamento.py",
+        "status": "PASS",
+        "cards": 43,
+        "returncode": 0,
+        "log": "output/core06/planning.log"
+      },
+      {
+        "command": "git -c safe.directory=<repo> diff --check",
+        "status": "PASS",
+        "returncode": 0
+      }
+    ],
+    "hash_normalization": "UTF-8 text with LF",
+    "hashes": {
+      "src/tac.py": "ca0a4f70545207318e2424fc14fd858fbe090a4a8e007e835b7fe0cd542ebee3",
+      "tests/2026_2/core06/test_tac_fork_join.py": "371ab46e65e9db6e2afb69898f19b306e6168ba365b1a4a9a414729e1ac34d5f",
+      "tests/2026_2/core0405/verify_core0405.py": "f5de9dd77a1c125be68a8908bc6d8ac0e1f4becba6b57846d4ba5d3654e0c90b",
+      "tests/2026_2/core06/examples/capture.minipar": "1b65839140460467fe45ec2ca9cbbe0b303bbf4a3ec3d124d133e73344640ad5",
+      "tests/2026_2/core06/examples/handles.minipar": "5ad6dd0c5739f70f1a4f6733a588ea065596a12d405d7e358eda0fae03e39be2",
+      "tests/2026_2/core06/examples/par.minipar": "bd9bb369576b88ca01175f94e089d88c7338dd83e3b11c55476179a7affa5e5e"
+    },
+    "examples": [
+      {
+        "source_path": "tests/2026_2/core06/examples/capture.minipar",
+        "source": "func dobro(x) { return x * 2; }\nvar x = 10;\nvar h = fork dobro(x);\nx = 99;\nprint(join(h, 30000));\n",
+        "tac_path": "output/core06/capture.tac",
+        "tac": "func dobro:\nt0 = x * 2\nreturn t0\nendfunc dobro\nx = 10\nt1 = capture x\nt2 = fork dobro(t1) on \"local\"\nh = t2\nx = 99\nt3 = h\nt4 = join t3, timeout 30000\nprint t4\n",
+        "semantic_ok": true
+      },
+      {
+        "source_path": "tests/2026_2/core06/examples/handles.minipar",
+        "source": "func f() { return 7; }\nvar hs = [fork f(), fork f()];\nfor (var h in hs) { join(h); }\n",
+        "tac_path": "output/core06/handles.tac",
+        "tac": "func f:\nreturn 7\nendfunc f\nt1 = fork f() on \"local\"\nt2 = fork f() on \"local\"\nt0 = [t1, t2]\nhs = t0\nt3 = iter_begin hs\nFOR_IN_0:\nt4 = iter_has_next t3\nifFalse t4 goto ENDFOR_2\nt5 = iter_value t3\nh = t5\njoin h\nFOR_STEP_1:\niter_next t3\ngoto FOR_IN_0\nENDFOR_2:\n",
+        "semantic_ok": true
+      },
+      {
+        "source_path": "tests/2026_2/core06/examples/par.minipar",
+        "source": "seq {\n    print(0);\n    par { print(1); print(2); }\n    print(3);\n}\n",
+        "tac_path": "output/core06/par.tac",
+        "tac": "print 0\npar_begin PAR_0, 2\npar_spawn PAR_0, 0, PAR_BRANCH_2\npar_spawn PAR_0, 1, PAR_BRANCH_3\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\nprint 1\npar_end_branch PAR_0, 0\nPAR_BRANCH_3:\npar_branch PAR_0, 1\nprint 2\npar_end_branch PAR_0, 1\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint 3\n",
+        "semantic_ok": true
+      }
+    ],
+    "limitations": [
+      "Textual TAC only, no interpreter and no FJ execution",
+      "CLI and C++ guards preserved",
+      "Constructor arguments explicitly unsupported",
+      "Effectful class field initializers conservatively rejected in FJ programs, including calls that may hide FJ",
+      "Cross-branch break/continue explicitly rejected",
+      "Inherited semantic unknown types, implicit none and handle lifetime limits remain",
+      "T01/T02 intermittent known issues not rerun; T04 historical partial state not rerun",
+      "C-FJ ratifications and FJ-SEM-07/08 human decisions pending",
+      "Initial T06/T07 parallel reports collided by timestamp; final runs repeated separately"
+    ],
+    "ready_for_local_review": true
+  },
+  "subsequent_publication": {
+    "observed_date": "2026-10-29",
+    "published_sha": "2fada7ce1fbc70249c42d501566a3aa07188bf90",
+    "remote_head_sha": "2fada7ce1fbc70249c42d501566a3aa07188bf90",
+    "dev_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+    "commits_ahead_of_dev": 1,
+    "confirmation": "git ls-remote origin refs/heads/dev refs/heads/eixo-a/CORE-06-tac-fork-join-par",
+    "push_actor": "Coordinator according to user report; remote presence independently verified; Git refs alone do not identify pusher",
+    "pr_lookup": {
+      "provider": "GitHub connector search_prs",
+      "repository": "VictorBrasileiroo/minipar-2026-2",
+      "query": "head:eixo-a/CORE-06-tac-fork-join-par",
+      "state": "all",
+      "results": 0
+    }
+  },
+  "corrective_review": {
+    "observed_date": "2026-10-29",
+    "head_sha": "2fada7ce1fbc70249c42d501566a3aa07188bf90",
+    "initial_worktree": "clean",
+    "phase": "review completed locally; no publication",
+    "publication": "This review remains local, no commit/stage/push/PR",
+    "findings": {
+      "A": {
+        "verdict": "DOCUMENTAL",
+        "native_probes_passed": 7,
+        "decision": "Keep implementation; clarify return as alternative branch completion"
+      },
+      "B": {
+        "verdict": "CONFIRMADO",
+        "decision": "Preserve arguments with existing _arguments and explicit new C(values); keep no-args spelling",
+        "supported_native_probes_passed": 5,
+        "empty_class_with_arg": "frontend accepts, backend rejects; not a new constructor capability"
+      },
+      "C": {
+        "verdict": "DOCUMENTAL",
+        "decision": "Separate initial execution and subsequent publication"
+      },
+      "D": {
+        "verdict": "CONFIRMADO",
+        "decision": "Expanded coverage; do not correct inherited backend/channel bugs"
+      }
+    },
+    "investigation_evidence": "output/core06_review/investigation-x0ztzjnv/investigation.json",
+    "baseline_evidence": "output/core01/run-20261029-122423/baseline.json",
+    "baseline_overall": {
+      "T01": "BLOCKED original (INADDR_ANY); partial constrained loopback probe 2 PASS / 1 FAIL timeout",
+      "T02": "FAIL intermittent: 5 PASS / 5 FAIL",
+      "T03": "PASS",
+      "T04": "PARTIAL",
+      "T05": "PASS",
+      "T06": "PASS",
+      "T07": "PASS"
+    },
+    "red_test_evidence": {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests/2026_2/core06 -p test_review_core06.py -v",
+      "log": "output/core06_review/before_fix.log",
+      "tests": 10,
+      "pass_count": 3,
+      "error_count": 7,
+      "returncode": 1,
+      "cause": "Published TAC rejects constructor arguments"
+    },
+    "checks_after_fix": [
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v",
+        "status": "PASS",
+        "tests": 5,
+        "pass_count": 5,
+        "fail_count": 0,
+        "returncode": 0,
+        "log": "output/core06_review/core02.log"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests/2026_2/core06 -p \"test_*.py\" -v",
+        "status": "PASS",
+        "tests": 48,
+        "pass_count": 48,
+        "fail_count": 0,
+        "returncode": 0,
+        "log": "output/core06_review/core06.log"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core0405/verify_core0405.py",
+        "status": "PASS",
+        "tests": 126,
+        "pass_count": 126,
+        "fail_count": 0,
+        "returncode": 0,
+        "log": "output/core06_review/core0405.log",
+        "evidence": "output/core0405/run-c5nrjgsq/summary.json",
+        "backend_guard_records": [
+          {
+            "test": "__main__.BackendBoundaryTests.test_cli_refuses_before_artifacts",
+            "status": "PASS"
+          },
+          {
+            "test": "__main__.BackendBoundaryTests.test_legacy_native_smoke",
+            "status": "PASS"
+          },
+          {
+            "test": "__main__.BackendBoundaryTests.test_tac_translates_nested_fork_cpp_stays_blocked",
+            "status": "PASS"
+          }
+        ]
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/validate_core02_native.py",
+        "status": "PASS",
+        "returncode": 0,
+        "evidence": "output/core02/run-20261029-123141-643944/validation.json",
+        "builds": [
+          {
+            "build": "native",
+            "cases": 17,
+            "status": "PASS"
+          },
+          {
+            "build": "assertions",
+            "cases": 17,
+            "status": "PASS"
+          }
+        ]
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B tests/2026_2/core03/verify_core03.py",
+        "status": "PASS_WITH_KNOWN_FAIL",
+        "returncode": 0,
+        "counts": {
+          "PASS": 78,
+          "KNOWN_FAIL": 1
+        },
+        "fail_count": 0,
+        "evidence": "output/core03/run-sanu1eyg/summary.json",
+        "known_fail": "HERDADO-RETORNO-NUMERICO"
+      },
+      {
+        "command": ".\\.venv\\Scripts\\python.exe -B scripts/validar_planejamento.py",
+        "status": "PASS",
+        "cards": 43,
+        "returncode": 0,
+        "log": "output/core06_review/planning.log"
+      },
+      {
+        "command": "git -c safe.directory=<repo> diff --check",
+        "status": "PASS",
+        "returncode": 0
+      }
+    ],
+    "environment": {
+      "python": "3.12.4",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+    },
+    "investigation_probes": [
+      {
+        "finding": "A",
+        "name": "direct",
+        "source": "var a=0;par{seq{a=1;return;a=99;}}print(a);",
+        "semantic_ok": true,
+        "expected_stdout": "1\n",
+        "before_core06": {
+          "tac": "a = 0\na = 1\nreturn\na = 99\nprint a\n"
+        },
+        "published_core06": {
+          "tac": "a = 0\npar_begin PAR_0, 1\npar_spawn PAR_0, 0, PAR_BRANCH_2\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\na = 1\nreturn\na = 99\npar_end_branch PAR_0, 0\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint a\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "1\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "A",
+        "name": "conditional",
+        "source": "var a=0;var b=0;par{seq{a=1;if(true){return;}a=99;}seq{b=2;if(false){return;}b=3;}}print(a,b);",
+        "semantic_ok": true,
+        "expected_stdout": "1 3\n",
+        "before_core06": {
+          "tac": "a = 0\nb = 0\na = 1\nifFalse true goto ENDIF_0\nreturn\nENDIF_0:\na = 99\nb = 2\nifFalse false goto ENDIF_1\nreturn\nENDIF_1:\nb = 3\nprint a\nprint b\n"
+        },
+        "published_core06": {
+          "tac": "a = 0\nb = 0\npar_begin PAR_0, 2\npar_spawn PAR_0, 0, PAR_BRANCH_2\npar_spawn PAR_0, 1, PAR_BRANCH_3\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\na = 1\nifFalse true goto ENDIF_4\nreturn\nENDIF_4:\na = 99\npar_end_branch PAR_0, 0\nPAR_BRANCH_3:\npar_branch PAR_0, 1\nb = 2\nifFalse false goto ENDIF_5\nreturn\nENDIF_5:\nb = 3\npar_end_branch PAR_0, 1\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint a\nprint b\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "1 3\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "A",
+        "name": "nested",
+        "source": "var a=0;var b=0;par{seq{par{seq{a=1;return;a=99;}}b=2;return;b=99;}}print(a,b);",
+        "semantic_ok": true,
+        "expected_stdout": "1 2\n",
+        "before_core06": {
+          "tac": "a = 0\nb = 0\na = 1\nreturn\na = 99\nb = 2\nreturn\nb = 99\nprint a\nprint b\n"
+        },
+        "published_core06": {
+          "tac": "a = 0\nb = 0\npar_begin PAR_0, 1\npar_spawn PAR_0, 0, PAR_BRANCH_2\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\npar_begin PAR_3, 1\npar_spawn PAR_3, 0, PAR_BRANCH_5\ngoto PAR_WAIT_4\nPAR_BRANCH_5:\npar_branch PAR_3, 0\na = 1\nreturn\na = 99\npar_end_branch PAR_3, 0\nPAR_WAIT_4:\npar_barrier PAR_3\npar_end PAR_3\nb = 2\nreturn\nb = 99\npar_end_branch PAR_0, 0\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint a\nprint b\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "1 2\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "A",
+        "name": "control",
+        "source": "var a=0;var b=0;par{a=1;b=2;}print(a,b);",
+        "semantic_ok": true,
+        "expected_stdout": "1 2\n",
+        "before_core06": {
+          "tac": "a = 0\nb = 0\na = 1\nb = 2\nprint a\nprint b\n"
+        },
+        "published_core06": {
+          "tac": "a = 0\nb = 0\npar_begin PAR_0, 2\npar_spawn PAR_0, 0, PAR_BRANCH_2\npar_spawn PAR_0, 1, PAR_BRANCH_3\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\na = 1\npar_end_branch PAR_0, 0\nPAR_BRANCH_3:\npar_branch PAR_0, 1\nb = 2\npar_end_branch PAR_0, 1\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint a\nprint b\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "1 2\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "A",
+        "name": "seq_function",
+        "source": "func f(){seq{return 7;}return 99;}print(f());",
+        "semantic_ok": true,
+        "expected_stdout": "7\n",
+        "before_core06": {
+          "tac": "func f:\nreturn 7\nreturn 99\nendfunc f\nt0 = call f, 0\nprint t0\n"
+        },
+        "published_core06": {
+          "tac": "func f:\nreturn 7\nreturn 99\nendfunc f\nt0 = call f, 0\nprint t0\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "7\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "A",
+        "name": "par_function",
+        "source": "func f(){var a=0;par{seq{a=1;return;}}return a+6;}print(f());",
+        "semantic_ok": true,
+        "expected_stdout": "7\n",
+        "before_core06": {
+          "tac": "func f:\na = 0\na = 1\nreturn\nt0 = a + 6\nreturn t0\nendfunc f\nt1 = call f, 0\nprint t1\n"
+        },
+        "published_core06": {
+          "tac": "func f:\na = 0\npar_begin PAR_0, 1\npar_spawn PAR_0, 0, PAR_BRANCH_2\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\na = 1\nreturn\npar_end_branch PAR_0, 0\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nt0 = a + 6\nreturn t0\nendfunc f\nt1 = call f, 0\nprint t1\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "7\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "A",
+        "name": "value_return",
+        "source": "var a=0;par{seq{a=1;return 7;a=99;}}print(a);",
+        "semantic_ok": true,
+        "expected_stdout": "1\n",
+        "before_core06": {
+          "tac": "a = 0\na = 1\nreturn 7\na = 99\nprint a\n"
+        },
+        "published_core06": {
+          "tac": "a = 0\npar_begin PAR_0, 1\npar_spawn PAR_0, 0, PAR_BRANCH_2\ngoto PAR_WAIT_1\nPAR_BRANCH_2:\npar_branch PAR_0, 0\na = 1\nreturn 7\na = 99\npar_end_branch PAR_0, 0\nPAR_WAIT_1:\npar_barrier PAR_0\npar_end PAR_0\nprint a\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "1\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "B",
+        "name": "empty",
+        "source": "class C{var a=0;var b=0;}var c=new C();print(c.a,c.b);",
+        "semantic_ok": true,
+        "expected_stdout": "0 0\n",
+        "before_core06": {
+          "tac": "# class C\nt0 = new C\nc = t0\nt1 = c.a\nprint t1\nt2 = c.b\nprint t2\n"
+        },
+        "published_core06": {
+          "tac": "# class C\nt0 = new C\nc = t0\nt1 = c.a\nprint t1\nt2 = c.b\nprint t2\n"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "0 0\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "B",
+        "name": "literal",
+        "source": "class C{var a=0;}var c=new C(1);print(c.a);",
+        "semantic_ok": true,
+        "expected_stdout": "1\n",
+        "before_core06": {
+          "tac": "# class C\nt0 = new C\nc = t0\nt1 = c.a\nprint t1\n"
+        },
+        "published_core06": {
+          "error": "NotImplementedError",
+          "message": "TAC: argumentos de construtor ainda nao representados"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "1\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "B",
+        "name": "variables",
+        "source": "class C{var a=0;var b=0;}var x=2;var y=3;var c=new C(x,y);print(c.a,c.b);",
+        "semantic_ok": true,
+        "expected_stdout": "2 3\n",
+        "before_core06": {
+          "tac": "# class C\nx = 2\ny = 3\nt0 = new C\nc = t0\nt1 = c.a\nprint t1\nt2 = c.b\nprint t2\n"
+        },
+        "published_core06": {
+          "error": "NotImplementedError",
+          "message": "TAC: argumentos de construtor ainda nao representados"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "2 3\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "B",
+        "name": "calls",
+        "source": "func inc(x){return x+1;}class C{var a=0;var b=0;}var c=new C(inc(2),inc(4));print(c.a,c.b);",
+        "semantic_ok": true,
+        "expected_stdout": "3 5\n",
+        "before_core06": {
+          "tac": "func inc:\nt0 = x + 1\nreturn t0\nendfunc inc\n# class C\nt1 = new C\nc = t1\nt2 = c.a\nprint t2\nt3 = c.b\nprint t3\n"
+        },
+        "published_core06": {
+          "error": "NotImplementedError",
+          "message": "TAC: argumentos de construtor ainda nao representados"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "3 5\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "B",
+        "name": "effect",
+        "source": "class C{var a=0;var b=0;}var xs=[1,2];var c=new C(xs.pop(),9);print(c.a,c.b,len(xs));",
+        "semantic_ok": true,
+        "expected_stdout": "2 9 1\n",
+        "before_core06": {
+          "tac": "# class C\nt0 = [1, 2]\nxs = t0\nt1 = new C\nc = t1\nt2 = c.a\nprint t2\nt3 = c.b\nprint t3\nparam xs\nt4 = call len, 1\nprint t4\n"
+        },
+        "published_core06": {
+          "error": "NotImplementedError",
+          "message": "TAC: argumentos de construtor ainda nao representados"
+        },
+        "oracle": "PASS",
+        "direct_cpp_ok": true,
+        "observed": {
+          "stdout": "2 9 1\n",
+          "stderr": "",
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      {
+        "finding": "B",
+        "name": "empty_class_arg",
+        "source": "class C{}var c=new C(1);",
+        "semantic_ok": true,
+        "expected_stdout": null,
+        "before_core06": {
+          "tac": "# class C\nt0 = new C\nc = t0\n"
+        },
+        "published_core06": {
+          "error": "NotImplementedError",
+          "message": "TAC: argumentos de construtor ainda nao representados"
+        },
+        "oracle": "EXPECTED_BACKEND_REJECTION",
+        "direct_cpp_ok": false,
+        "backend_stderr_excerpt": "In file included from C:/msys64/ucrt64/include/c++/16.2.0/bits/char_traits.h:59,\n                 from C:/msys64/ucrt64/include/c++/16.2.0/ios:44,\n                 from C:/msys64/ucrt64/include/c++/16.2.0/bits/ostream.h:43,\n                 from C:/msys64/ucrt64/include/c++/16.2.0/ostream:42,\n                 from C:/msys64/ucrt64/include/c++/16.2.0/iostream:43,\n                 from output\\probe.cpp:1:\nC:/msys64/ucrt64/include/c++/16.2.0/bits/stl_construct.h: In instantiation of 'constexpr void std::_Construct(_Tp*, _Args&& ...) [with _Tp = C; _Args = {int}]':\nC:/msys64/ucrt64/include/c++/16.2.0/bits/alloc_traits.h:845:19:   required from 'static constexpr void std::allocator_traits<std::allocator<void> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = C; _Args = {int}; allocator_type = std::allocator<void>]'\n  845 |         { std::_Construct(__p, std::forward<_Args>(__args)...); }\n      |           ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nC:/msys64/ucrt64/inclu"
+      }
+    ],
+    "T01": {
+      "original_execution_status": "BLOCKED",
+      "reason": "receiveData binds INADDR_ANY; public/interface-wide listener prohibited by review scope",
+      "original_compile": {
+        "cmd": [
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+          "-B",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\tests\\teste1_calculadora_cliente_servidor.minipar",
+          "t01"
+        ],
+        "stdin": null,
+        "returncode": 0,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\tests\\teste1_calculadora_cliente_servidor.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\t01.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'output\\\\t01.cpp', '-o', 'output\\\\t01.exe', '-pthread', '-lws2_32']\n[SUCESSO] Executavel: output\\t01.exe\n=== Processo Finalizado ===\n",
+        "stderr": "",
+        "timed_out": false,
+        "duration_s": 3.471,
+        "exe": "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\investigation-x0ztzjnv\\D_T01_loopback_only\\output\\t01.exe",
+        "exe_sha256": "75db1af3d9b02901c5bbfa9f699b7cd8fdd165b2323dbebef67a5d8afd604291",
+        "tac_sha256": "2a6b5f5eecdca96ec8b14ed1b6404135d585d59308b79ed63b455c3ff5847d94"
+      },
+      "instrumentation": "Only generated copy: INADDR_ANY -> htonl(INADDR_LOOPBACK); original binary never executed",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "PASS",
+          "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+          "run": {
+            "cmd": [
+              "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\investigation-x0ztzjnv\\D_T01_loopback_only\\output\\t01_loopback.exe"
+            ],
+            "stdin": "+\n2\n3\n",
+            "returncode": 0,
+            "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+            "stderr": "",
+            "timed_out": false,
+            "duration_s": 0.607
+          }
+        },
+        {
+          "attempt": 2,
+          "status": "FAIL",
+          "reason": "30s timeout in constrained loopback execution",
+          "run": {
+            "cmd": [
+              "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\investigation-x0ztzjnv\\D_T01_loopback_only\\output\\t01_loopback.exe"
+            ],
+            "stdin": "+\n2\n3\n",
+            "returncode": null,
+            "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: ",
+            "stderr": "",
+            "timed_out": true,
+            "duration_s": 30.027
+          }
+        },
+        {
+          "attempt": 3,
+          "status": "PASS",
+          "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+          "run": {
+            "cmd": [
+              "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\investigation-x0ztzjnv\\D_T01_loopback_only\\output\\t01_loopback.exe"
+            ],
+            "stdin": "+\n2\n3\n",
+            "returncode": 0,
+            "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+            "stderr": "",
+            "timed_out": false,
+            "duration_s": 0.552
+          }
+        }
+      ],
+      "constrained_compile": {
+        "cmd": [
+          "C:\\msys64\\ucrt64\\bin\\g++.exe",
+          "-std=c++20",
+          "-O3",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\investigation-x0ztzjnv\\D_T01_loopback_only\\output\\t01_loopback.cpp",
+          "-o",
+          "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\investigation-x0ztzjnv\\D_T01_loopback_only\\output\\t01_loopback.exe",
+          "-pthread",
+          "-lws2_32"
+        ],
+        "stdin": null,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "timed_out": false,
+        "duration_s": 2.689
+      },
+      "reported_status": "BLOCKED for original executable; constrained probe PARTIAL, 2 PASS / 1 FAIL; not remote execution proof"
+    },
+    "baseline_final": {
+      "command": ".\\.venv\\Scripts\\python.exe -B scripts/baseline_t01_t07.py --only T02,T03,T04,T05,T06,T07 --repeat 10",
+      "returncode": 1,
+      "evidence": "output/core01/run-20261029-123255/baseline.json",
+      "overall": {
+        "T02": "FAIL",
+        "T03": "PASS",
+        "T04": "PARTIAL",
+        "T05": "PASS",
+        "T06": "PASS",
+        "T07": "PASS"
+      },
+      "results": [
+        {
+          "id": "T02",
+          "attempt": 1,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5: 120\nFibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 2,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5: 120\nFibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 3,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5: 120\nFibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 4,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fibonacci:Fatorial de 5: \n120\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 5,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13 (saídas das duas tarefas intercaladas: print não atômico entre threads)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5:Fibonacci: \n120\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 6,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "FAIL",
+          "reason": "saída corrompida: o 120 do fatorial foi impresso colado a um número do Fibonacci (print não atômico entre threads do par); números lidos: [1200, 1, 1, 2, 3, 5, 8, 13]",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5:Fibonacci: \n1200\n\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 7,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13 (saídas das duas tarefas intercaladas: print não atômico entre threads)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5:Fibonacci: \n120\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 8,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13 (saídas das duas tarefas intercaladas: print não atômico entre threads)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5: Fibonacci:\n120\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 9,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13 (saídas das duas tarefas intercaladas: print não atômico entre threads)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5: Fibonacci:\n120\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T02",
+          "attempt": 10,
+          "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+          "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+          "status": "PASS",
+          "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Fatorial de 5: 120\nFibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\n"
+        },
+        {
+          "id": "T03",
+          "attempt": 0,
+          "source": "tests\\teste3_neuronio.minipar",
+          "source_sha256": "646d48202307445e156d736afb4720e1b206e851346fed0f3b74295cfddc7d9f",
+          "status": "PASS",
+          "reason": "iterações 1, 50 e 51 com saída/erro/pesos iguais ao esperado (4 casas), convergência na 51 e valor desejado 0; formato textual difere do .expected.txt da referência Python",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "observed_iterations": {
+            "1": {
+              "Saida": 1.0,
+              "Erro": -1.0,
+              "Peso entrada": 0.5,
+              "Peso bias": 0.5
+            },
+            "50": {
+              "Saida": 1.0,
+              "Erro": -1.0,
+              "Peso entrada": 0.01,
+              "Peso bias": 0.01
+            },
+            "51": {
+              "Saida": 0.0,
+              "Erro": 0.0,
+              "Peso entrada": -3.08781e-16,
+              "Peso bias": -3.08781e-16
+            }
+          }
+        },
+        {
+          "id": "T04",
+          "attempt": 0,
+          "source": "tests\\teste4_rede_neural_xor.minipar",
+          "source_sha256": "4cf9d0ccde4ba1ff47224a8bace770b239bf445b3e9a3defe98db2ddfa5ce867",
+          "status": "PARTIAL",
+          "reason": "classificação XOR correta nas 4 entradas; valores numéricos divergem da referência e não há tolerância acordada (doc 05 §2, T04): 00: 0.0068 (ref 0.0089, |d|=0.0021); 01: 0.9865 (ref 0.9769, |d|=0.0096); 10: 0.9892 (ref 0.9758, |d|=0.0134); 11: 0.0140 (ref 0.0291, |d|=0.0151)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "==== Teste 4: rede neural XOR com backpropagation ====\nInput: [0, 0], Predicted Output: 0.00684395\nInput: [0, 1], Predicted Output: 0.986493\nInput: [1, 0], Predicted Output: 0.98925\nInput: [1, 1], Predicted Output: 0.0140296\n"
+        },
+        {
+          "id": "T05",
+          "attempt": 0,
+          "source": "tests\\teste5_recomendacao.minipar",
+          "source_sha256": "a6182635e0d0933b0abe82c7a3d15c34683e58df8528bded76fee90b004d7c32",
+          "status": "PASS",
+          "reason": "12 produtos recomendados iguais ao esperado (comparação sem acento), probabilidades em (0.55, 1]; entrada derivada (ver relatório)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "==== Teste 5: recomendacao e-commerce com rede neural ====\nInforme o historico de compras (1 = comprou, 0 = nao comprou):\nSmartphone - comprou? (0/1):\nLaptop - comprou? (0/1):\nTablet - comprou? (0/1):\nFones de ouvido - comprou? (0/1):\nCamisa - comprou? (0/1):\nJeans - comprou? (0/1):\nJaqueta - comprou? (0/1):\nSapatos - comprou? (0/1):\nGeladeira - comprou? (0/1):\nMicro-ondas - comprou? (0/1):\nMaquina de lavar - comprou? (0/1):\nAr condicionado - comprou? (0/1):\nFiccao - comprou? (0/1):\nNao-ficcao - comprou? (0/1):\nFiccao cientifica - comprou? (0/1):\nFantasia - comprou? (0/1):\nProdutos recomendados para voce:\nLaptop probabilidade: 0.723522\nTablet probabilidade: 0.711771\nFones de ouvido probabilidade: 0.716263\nCamisa probabilidade: 0.564145\nJaqueta probabilidade: 0.723522\nSapatos probabilidade: 0.711771\nGeladeira probabilidade: 0.716263\nMaquina de lavar probabilidade: 0.7191\nAr condicionado probabilidade: 0.723522\nNao-ficcao probabilidade: 0.716263\nFiccao cientifica probabilidade: 0.564145\nFantasia probabilidade: 0.7191\n"
+        },
+        {
+          "id": "T06",
+          "attempt": 0,
+          "source": "tests\\teste6_quicksort_classes.minipar",
+          "source_sha256": "76ae29ffa7445af7d50b2093fd3d212c75929f7432cd2127b7c7153e84287f66",
+          "status": "PASS",
+          "reason": "vetor 10 -3 -40 80 70 -100 ordenado como [-100, -40, -3, 10, 70, 80]",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "==== Ordenacao com Quicksort ====\nInsira os elementos do vetor separados por espaco:\nVetor original: [10, -3, -40, 80, 70, -100]\nVetor ordenado: [-100, -40, -3, 10, 70, 80]\n"
+        },
+        {
+          "id": "T07",
+          "attempt": 0,
+          "source": "tests\\teste7_quicksort_iterativo_tac.minipar",
+          "source_sha256": "ac42dd61618155b4056e585d636fae7652be9e8082a199350ae07a57895fb42d",
+          "status": "PASS",
+          "reason": "array [33, 12, 98, 5, 61] ordenado como [5, 12, 33, 61, 98] (somente a ordenação; TAC avaliado à parte)",
+          "compile_returncode": 0,
+          "run_returncode": 0,
+          "run_timed_out": false,
+          "stdout": "Array ordenado: [5, 12, 33, 61, 98]\n"
+        }
+      ],
+      "extra_checks": [
+        {
+          "check": "T07-TAC-igual-ao-esperado",
+          "status": "INFO",
+          "reason": "TAC gerado diferente ao .expected.tac"
+        },
+        {
+          "check": "T07-TAC-mutacao",
+          "status": "PASS",
+          "compile_exit": 0,
+          "reason": "TAC do programa mutado difere do TAC fixo"
+        },
+        {
+          "check": "T07-limites",
+          "status": "PASS",
+          "reason": "C++ gerado roda sem violação com -D_GLIBCXX_ASSERTIONS"
+        }
+      ]
+    },
+    "baseline_T02_repetitions": {
+      "before_fix": {
+        "FAIL": 5,
+        "PASS": 5
+      },
+      "after_fix": {
+        "PASS": 9,
+        "FAIL": 1
+      }
+    },
+    "T02_cpp_unchanged_by_fix": {
+      "equal": true,
+      "sha256": "b4e507a831f643a892b0a072b90523866304311d62175fb30e4f14e8f3a888ec",
+      "meaning": "Same generated C++ before/after NewExpr correction; inherited print race remains"
+    },
+    "additional_native_checks": {
+      "direct": {
+        "evidence": "output/core06_review/native-direct-ufvxonhz/result.json",
+        "source": "var a=0;par{seq{a=1;return;a=99;}}print(a);",
+        "expected_stdout": "1\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-direct-ufvxonhz\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "1\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "conditional": {
+        "evidence": "output/core06_review/native-conditional-rhvo_3qj/result.json",
+        "source": "var a=0;var b=0;par{seq{a=1;if(true){return;}a=99;}seq{b=2;if(false){return;}b=3;}}print(a,b);",
+        "expected_stdout": "1 3\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-conditional-rhvo_3qj\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "1 3\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "nested": {
+        "evidence": "output/core06_review/native-nested-4cindwxe/result.json",
+        "source": "var a=0;var b=0;par{seq{par{seq{a=1;return;a=99;}}b=2;return;b=99;}}print(a,b);",
+        "expected_stdout": "1 2\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-nested-4cindwxe\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "1 2\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "control": {
+        "evidence": "output/core06_review/native-control-49j4of7v/result.json",
+        "source": "var a=0;var b=0;par{a=1;b=2;}print(a,b);",
+        "expected_stdout": "1 2\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-control-49j4of7v\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "1 2\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "seq_function": {
+        "evidence": "output/core06_review/native-seq_function-w8xmios1/result.json",
+        "source": "func f(){seq{return 7;}return 99;}print(f());",
+        "expected_stdout": "7\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-seq_function-w8xmios1\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "7\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "par_function": {
+        "evidence": "output/core06_review/native-par_function-4yu5arm_/result.json",
+        "source": "func f(){var a=0;par{seq{a=1;return;}}return a+6;}print(f());",
+        "expected_stdout": "7\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-par_function-4yu5arm_\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "7\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "value_return": {
+        "evidence": "output/core06_review/native-value_return-kwsd1lcx/result.json",
+        "source": "var a=0;par{seq{a=1;return 7;a=99;}}print(a);",
+        "expected_stdout": "1\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-value_return-kwsd1lcx\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "1\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      },
+      "constructors": {
+        "evidence": "output/core06_review/native-constructors-bm62fvtt/result.json",
+        "source": "\nfunc inc(x){return x+1;}\nclass Pair{var a=0;var b=0;}\nclass Single{var a=0;}\nvar empty=new Pair();print(empty.a,empty.b);\nvar single=new Single(1);print(single.a);\nvar x=2;var y=3;var vars=new Pair(x,y);print(vars.a,vars.b);\nvar calls=new Pair(inc(2),inc(4));print(calls.a,calls.b);\nvar xs=[1,2];var effect=new Pair(xs.pop(),9);print(effect.a,effect.b,len(xs));\n",
+        "expected_stdout": "0 0\n1\n2 3\n3 5\n2 9 1\n",
+        "observed": {
+          "command": [
+            "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\output\\core06_review\\native-constructors-bm62fvtt\\output\\probe.exe"
+          ],
+          "returncode": 0,
+          "stdout": "0 0\n1\n2 3\n3 5\n2 9 1\n",
+          "stderr": ""
+        },
+        "oracle_pass": true
+      }
+    },
+    "change_summary": "Only NewExpr production branch changed: preserve evaluated arguments in new C(values); empty form unchanged. par/return implementation unchanged; documentation clarifies alternate branch completion.",
+    "hashes": {
+      "src/tac.py": "d89a3eb9beb67c5137c5c501f413a906cb074cb51bbd09f03392e90eddb5d942",
+      "tests/2026_2/core06/test_tac_fork_join.py": "46646be0b7babc652d2d1ead3ddfe2f23e80ae5ecc5a05a1b564f392bee7f89b",
+      "tests/2026_2/core06/test_review_core06.py": "6f784d7a0a63800f07e2bc83b6489765ebf379e9819d0cadae480aadf3dd569b"
+    },
+    "final_git": {
+      "branch": "eixo-a/CORE-06-tac-fork-join-par",
+      "head_sha": "2fada7ce1fbc70249c42d501566a3aa07188bf90",
+      "origin_dev_sha": "29cff941e4e4a2b7f37b08bf3fc0d24e98c40ce1",
+      "new_commits": 0,
+      "staged_files": [],
+      "protected_paths_unchanged": [
+        "main.py",
+        "src/codegen.py",
+        "src/cpp_template.py",
+        "src/parser.py",
+        "src/semantic.py",
+        "src/ast_nodes.py",
+        "runtime",
+        "web_didatica",
+        "tests/2026_2/test11",
+        "legacy",
+        "AGENTS.md",
+        "MEMORY.md",
+        "docs/02_CONTRATOS_TECNICOS.md",
+        "docs/CR-CORE05-FJ-DECISOES.md"
+      ],
+      "publication": "No add/commit/push/PR/merge/rebase in this review"
+    },
+    "verdict": "COM RESSALVAS: CORE-06 suites pass and confirmed regression fixed; original T01 blocked, inherited T02 intermittent and T04 partial; contractual ratifications pending"
+  }
+}
