@@ -15,7 +15,7 @@
 
 ## 1. C-WEB-v1 — Serviço de inspeção/compilação do MiniPar
 
-**Estado:** `v1 FROZEN` desde 22/10/2026, quando A aprovou o PR #3 do card `CON-02` (quadro em 1.11). Proposta redigida pelo B em 19/10/2026. Nomes e campos abaixo são definitivos; mudanças só por CR (seção 4).
+**Estado:** `v1 FROZEN` desde 22/10/2026, quando A aprovou o PR #3 do card `CON-02` (quadro em 1.11). Proposta redigida pelo B em 19/10/2026. Nomes e campos abaixo são definitivos; mudanças só por CR (seção 4). Os itens marcados **v1.1** pertencem à revisão aditiva da CR-CORE08-DIAGNOSTICOS (1.12) e só valem depois das aprovações registradas lá.
 
 **Revisão 2 (19/10/2026):** incorpora a revisão do coordenador no PR do `CON-02`: `\n` final explícito nas fixtures, regra única para fases ignoradas, tipos e escopos da tabela de símbolos, algoritmo de truncamento da AST, testes de isolamento/timeout/artefatos e entrega do `.arm` do Teste 11 pela Web. Ajuste de 22/10/2026: a extração do `.arm` (1.7) segue todos os erros de C-T11-v1 §3.6 item 2 e normaliza CRLF, conferida na integração com o PR do `CON-03`.
 
@@ -138,6 +138,8 @@ O nome `compile_program` evita sombrear o `compile` nativo do Python. Os retorno
 
 **Tipos de nó v1** (os 35 dataclasses atuais): `NumberExpr`, `StringExpr`, `BoolExpr`, `IdentifierExpr`, `BinaryExpr`, `UnaryExpr`, `VarDecl`, `Assignment`, `PrintStmt`, `SeqBlock`, `ParBlock`, `IfStmt`, `WhileStmt`, `DoWhileStmt`, `ForStmt`, `BreakStmt`, `ContinueStmt`, `ClassDecl`, `FuncDecl`, `ReturnStmt`, `MethodCall`, `FuncCallExpr`, `PropertyAccess`, `PropertyAssign`, `NewExpr`, `ThisExpr`, `CChannelExpr`, `SendStmt`, `ReceiveExpr`, `InputExpr`, `ListLiteral`, `MatrixCreateExpr`, `IndexExpr`, `IndexAssign`, `Program`. Nós novos (ex.: Fork/Join do `CORE-04`) entram como `v1.1` aditiva e seguem as mesmas regras; a Web desenha qualquer `kind` desconhecido de forma genérica.
 
+**Tipos de nó v1.1** (CR-CORE08-DIAGNOSTICOS, 1.12): `ForkExpr` e `JoinExpr`, publicados pelas mesmas regras de campo, label e truncamento. A Web os desenha de forma genérica.
+
 **Limites e truncamento.** `MAX_NODES = 5000` nós reais e `MAX_DEPTH = 200` (a raiz tem profundidade 1). A serialização percorre a AST em pré-ordem:
 1. **Profundidade:** um filho que ficaria com profundidade maior que 200 não é emitido. No lugar dele entra um marcador com `reason: "max_depth"` e `omitted_nodes` igual ao tamanho da subárvore omitida.
 2. **Quantidade:** quando 5000 nós reais já foram emitidos, nenhum outro nó real é emitido. Cada nó já emitido que ainda tinha filhos por emitir recebe, como **último** filho, **um único** marcador com `reason: "max_nodes"` e `omitted_nodes` igual à soma dos tamanhos de todas as subárvores dele que ficaram de fora.
@@ -179,6 +181,7 @@ Lista de todos os escopos abertos pelo semântico, na ordem em que são abertos.
 | `"number"`, `"string"`, `"bool"`, `"list"`, `"matrix"`, `"c_channel"` | tipo inferido do inicializador em `var x = ...` |
 | nome de uma classe declarada | inferido de `new Classe(...)` ou de `this` |
 | `"var"` | sem tipo conhecido: parâmetros, iterador de `for in` e `var x = ...` cujo inicializador não tem tipo inferível (ex.: chamada de função) |
+| `"task"` (**v1.1**) | handle inferido de `var h = fork f(...)` (C-FJ-v1 §2.2) |
 
 `"unknown"` nunca aparece em `symbols`: o semântico usa `"var"` nesse caso. Um `var` inicializado com o nome de uma função ou classe herda hoje `"FUNC"`/`"CLASS"` no semântico; o serviço o publica como `"var"`. Tipos novos entram como `v1.1`.
 
@@ -230,6 +233,25 @@ Lista de todos os escopos abertos pelo semântico, na ordem em que são abertos.
 | gpp | `GPP_TIMEOUT` | compilação acima de 120 s |
 | gpp | `GPP_NOT_FOUND` | compilador ausente |
 | internal | `INTERNAL_ERROR` | exceção inesperada no serviço |
+
+**Catálogo de códigos v1.1** (aditivo, CR-CORE08-DIAGNOSTICOS, 1.12). Recusas esperadas que a v1 não cobria. Sem eles, a fase terminava em `error` com `diagnostics` vazio. A mensagem continua sendo o texto do compilador, inclusive o prefixo `FJ-SEM-NN:` das regras de Fork/Join.
+
+| Fase | Código | Origem no código atual |
+|---|---|---|
+| semantic | `SEM_RESERVED_NAME` | `Nome nativo reservado: '...'.` (`func` com nome de função nativa) |
+| semantic | `SEM_INHERITANCE_CYCLE` | `Heranca ciclica em '...'.` |
+| semantic | `SEM_UNSUPPORTED_FEATURE` | recurso ainda não suportado: `Listas de strings ainda nao suportadas ...` e `Indexacao de string nao suportada; use substr(s, i, 1).` |
+| semantic | `SEM_FJ_01` | FJ-SEM-01 (C-FJ-v1 §2.2.2): `fork` de nome que não é `func` global |
+| semantic | `SEM_FJ_03` | FJ-SEM-03: `join` em expressão cujo tipo conhecido não é `task` |
+| semantic | `SEM_FJ_04` | FJ-SEM-04: destino de `fork` não string ou `timeout` de `join` não numérico |
+| semantic | `SEM_FJ_05` | FJ-SEM-05: tarefa que acessa global mutável, `send`/`receive`/`c_channel`/`input`/`this` ou chamada não isolada (C-FJ-v1 §2.2.5) |
+| semantic | `SEM_FJ_06` | FJ-SEM-06: argumento ou retorno que não cruza tarefas, ou aritmética com objeto, canal ou handle |
+| semantic | `SEM_FJ_07` | FJ-SEM-07: handle de `fork` descartado |
+| semantic | `SEM_FJ_08` | FJ-SEM-08: `join` de resultado `none` fora de comando isolado |
+| tac | `TAC_UNSUPPORTED_FEATURE` | `NotImplementedError` do gerador TAC: recusas reais que restaram após o `CORE-06` (PR #17), como `join` sem handle, `fork` descartado e inicializador Fork/Join de atributo. `line` vem do prefixo `Linha N:` da exceção, ou `null` sem ele |
+| cpp | `CPP_UNSUPPORTED_FEATURE` | `NotImplementedError` ou `CppProofError` do gerador C++ após o `CORE-07` (PR #18): representação ou retorno não comprovados. `line` vem do prefixo `CORE-07 linha N:`, ou `null` sem ele |
+
+FJ-SEM-02 (aridade de `fork`) continua publicado como `SEM_ARITY`, código v1. `SEM_FJ_02` não é emitido.
 
 **Mudança de comportamento pedida ao A:** hoje o lexer não acusa nada. `var x = 2 @ 3;` vira token `UNKNOWN` e o erro aparece como sintático enganoso (`Esperado ';' apos declaracao de variavel (Encontrado: '@')`). Uma string sem aspas de fechamento engole o resto do arquivo e o erro aponta a linha seguinte. Na v1, os dois casos são erro da fase `lexer`. Código novo só pode ser acrescentado por versão `v1.1` (seção 4).
 
@@ -510,6 +532,18 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 | B — consumidor | José Riquelme | Proposta apresentada | 19/10/2026 |
 | A — fornecedor | Coordenador (Victor) | Pediu ajustes no PR #3 | 19/10/2026 |
 | A — fornecedor | Coordenador (Victor) | Aprovou o PR #3 após o último commit; merge no `dev` em 22/10/2026 → `v1 FROZEN` | 22/10/2026 |
+
+### 1.12 Revisão v1.1 — CR-CORE08-DIAGNOSTICOS
+
+Mudança aditiva e compatível: envelopes, funções e regras de fase não mudam. Acrescenta os códigos do catálogo v1.1 (1.5), o tipo `"task"` em `semantic.symbols` e os nós `ForkExpr`/`JoinExpr` (1.4). A proposta, o motivo e a evidência estão em `docs/CR-CORE08-DIAGNOSTICOS.md`. A implementação entrou no `dev` com o PR #19 (`CORE-08`, commit `c485819`). Depois do `CORE-06` (PR #17) e do `CORE-07` (PR #18), `TAC_UNSUPPORTED_FEATURE` e `CPP_UNSUPPORTED_FEATURE` deixaram de recusar todo Fork/Join e passaram a cobrir só as recusas reais descritas em 1.5. O `CPP_UNSUPPORTED_FEATURE` também passou a cobrir o `CppProofError` (`docs/auditorias/CORE-07_INTEGRACAO_DEV.md`).
+
+A v1.1 só vale depois das três decisões abaixo. Até lá, o serviço já emite esses códigos, mas eles não fazem parte do contrato.
+
+| Parte | Responsável | Decisão | Data |
+|---|---|---|---|
+| B — consumidor | José Riquelme | Ratificou neste PR, depois de conferir no commit `c485819` que os casos da revisão do PR #19 trazem diagnóstico | 03/11/2026 |
+| A — fornecedor | Coordenador | *pendente* | |
+| C — consulta sobre FJ-SEM | Eixo C | *pendente* | |
 
 ---
 
