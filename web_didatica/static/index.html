@@ -10,7 +10,7 @@
   <header class="topo">
     <div class="marca">
       <h1>MiniPar <span>· Web didática</span></h1>
-      <p class="aviso-mock" role="status" id="aviso-mock">MOCK · dados de fixtures do contrato C-WEB-v1, sem compilador real</p>
+      <p class="aviso-mock" id="aviso-mock">MOCK · dados de fixtures do contrato C-WEB-v1, sem compilador real</p>
     </div>
     <label class="seletor">
       <span>Exemplo</span>
@@ -30,9 +30,10 @@
         <textarea id="codigo" spellcheck="false" autocomplete="off" aria-label="Código MiniPar"></textarea>
       </div>
       <div class="acoes">
-        <button type="button" id="analisar" disabled title="Disponível na integração com o serviço real (WEB-03)">Analisar</button>
-        <button type="button" id="compilar" disabled title="Disponível na integração com o serviço real (WEB-04)">Compilar e executar</button>
+        <button type="button" id="analisar" disabled>Analisar</button>
+        <button type="button" id="compilar" disabled title="Disponível com as rotas de compilação e execução (WEB-04)">Compilar e executar</button>
       </div>
+      <p class="situacao" id="situacao" role="status" aria-live="polite"></p>
       <h3 class="subtitulo">Diagnósticos</h3>
       <ul class="diagnosticos" id="diagnosticos"></ul>
     </section>

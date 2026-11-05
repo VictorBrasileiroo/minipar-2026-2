@@ -42,12 +42,13 @@ button, select, textarea { font: inherit; color: inherit; }
 .marca h1 span { font-weight: 400; color: var(--suave); }
 .aviso-mock { margin: 0; justify-self: start; font: 600 0.75rem/1 var(--mono); letter-spacing: 0.04em;
   padding: 5px 8px; border-radius: 4px; background: var(--pulado-fundo); color: var(--pulado); border: 1px solid var(--pulado); }
+.aviso-mock.real { background: var(--ok-fundo); color: var(--ok); border-color: var(--ok); }
 .seletor { display: flex; gap: 8px; align-items: center; }
 .seletor span { color: var(--suave); font-size: 0.85rem; }
 .seletor select { padding: 6px 8px; border: 1px solid var(--linha); border-radius: 6px; background: var(--superficie); max-width: 70vw; }
 
 .bancada { display: grid; grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.6fr); min-height: 0; }
-.editor { display: grid; grid-template-rows: auto minmax(160px, 1fr) auto auto auto; gap: 10px; padding: 16px;
+.editor { display: grid; grid-template-rows: auto minmax(160px, 1fr) auto auto auto auto; gap: 10px; padding: 16px;
   border-right: 1px solid var(--linha); min-height: 0; min-width: 0; }
 .cabecalho-painel { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .cabecalho-painel h2 { font-size: 0.95rem; }
@@ -66,6 +67,10 @@ button, select, textarea { font: inherit; color: inherit; }
 .area-codigo:focus-within { border-color: var(--destaque); }
 
 .acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.situacao { margin: 0; min-height: 1.5em; font-size: 0.85rem; color: var(--suave); }
+.situacao.ok { color: var(--ok); }
+.situacao.erro { color: var(--erro); }
+.situacao.aviso { color: var(--pulado); }
 button { cursor: pointer; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--linha); background: var(--superficie); }
 button:disabled { cursor: not-allowed; opacity: 0.55; }
 #restaurar { font-size: 0.85rem; border-color: var(--pulado); color: var(--pulado); }

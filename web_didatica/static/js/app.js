@@ -1,5 +1,7 @@
-// Web didática — wireframe navegável (WEB-01). Desenha as fases a partir do envelope C-WEB-v1.
-import * as fonte from "./fonte_mock.js";
+// Web didática. Desenha as fases a partir do envelope C-WEB-v1. Por padrão os dados vêm do serviço
+// real (fonte_real.js → server.py → src/service.py, WEB-03); com ?fonte=mock, das fixtures (WEB-01).
+import * as fonteMock from "./fonte_mock.js";
+import * as fonteReal from "./fonte_real.js";
 import { criarArvoreAst } from "./arvore_ast.js";
 import { contextoErros, criarCartaoErro } from "./erros.js";
 
@@ -23,9 +25,14 @@ const EXPLICA = {
   gpp: "Compila o C++ com o g++ e executa o binário desta compilação.",
 };
 
+const fonte = new URLSearchParams(location.search).get("fonte") === "mock" ? fonteMock : fonteReal;
+const REAL = fonte.modo === "real";
+
 const $ = (id) => document.getElementById(id);
+// exemplo.codigo: código original do exemplo (Restaurar). exemplo.codigoAnalisado: código que gerou
+// exemplo.analise; é dele que saem os trechos dos diagnósticos.
 const estado = { exemplos: [], exemplo: null, fase: "lexer", descartada: false, arvore: null, linhaDestacada: null,
-  filtroSimbolos: "" };
+  filtroSimbolos: "", analisando: false };
 
 function h(tag, atributos = {}, ...filhos) {
   const el = document.createElement(tag);
@@ -55,7 +62,7 @@ function dadosFase(chave) {
 }
 
 function statusFase(chave) {
-  if (estado.descartada) return "stale";
+  if (estado.descartada || !estado.exemplo.analise) return "stale";
   if (chave === "gpp" && estado.exemplo.execucao && dadosFase("gpp").status === "ok") {
     return estado.exemplo.execucao.ok ? "ok" : "error";
   }
@@ -121,6 +128,10 @@ function desenharDiagnosticos() {
     lista.append(h("li", { class: "caixa descartado" }, "Diagnósticos ocultos: a resposta foi descartada porque o código mudou."));
     return;
   }
+  if (!estado.exemplo.analise) {
+    lista.append(h("li", { class: "diag-vazio" }, estado.analisando ? "Aguardando o serviço…" : "Sem análise."));
+    return;
+  }
   const diagnosticos = estado.exemplo.analise.diagnostics;
   if (!diagnosticos.length) {
     lista.append(h("li", { class: "diag-vazio" }, "Nenhum diagnóstico."));
@@ -131,7 +142,7 @@ function desenharDiagnosticos() {
 }
 
 function contextoDosErros() {
-  return contextoErros(estado.exemplo.codigo, dadosFase("lexer").tokens || []);
+  return contextoErros(estado.exemplo.codigoAnalisado, dadosFase("lexer").tokens || []);
 }
 
 function abrirDiagnostico(d) {
@@ -187,7 +198,9 @@ $("trilha").addEventListener("keydown", (evento) => {
 function caixaPulada(dados) {
   if (dados.reason === "not_requested") {
     return h("div", { class: "caixa pulado" }, h("strong", {}, "Fase não solicitada"),
-      h("span", {}, "A operação analyze não chama o g++. Compilar e executar entram com o serviço real (WEB-04); o exemplo EXEC-01 mostra como fica."));
+      h("span", {}, REAL
+        ? "A operação analyze não chama o g++. Compilar e executar pelo serviço real entra no WEB-04."
+        : "A operação analyze não chama o g++. Compilar e executar entram com o serviço real (WEB-04); o exemplo EXEC-01 mostra como fica."));
   }
   const falhou = primeiraFaseComErro();
   return h("div", { class: "caixa pulado" }, h("strong", {}, "Fase não executada"),
@@ -392,19 +405,45 @@ function painelExecucao(dados) {
 
 const PAINEIS = { lexer: painelTokens, parser: painelAst, semantic: painelSemantico, tac: painelTac, cpp: painelCpp, gpp: painelExecucao };
 
+// Campo sem o qual o painel da fase não tem o que desenhar. O parser sem AST já tem painel próprio.
+const PAYLOAD = { lexer: "tokens", semantic: "scopes", tac: "text", cpp: "text", gpp: "command" };
+
+// Fase com erro que não trouxe resultado parcial (§1.3). Mostra os diagnósticos da fase e os
+// internos; sem nenhum, uma falha genérica, sem inventar mensagem (handoff do CORE-08).
+function painelErroSemResultado(chave) {
+  const ctx = contextoDosErros();
+  const cartoes = estado.exemplo.analise.diagnostics.filter((d) => d.phase === chave || d.phase === "internal")
+    .map((d) => criarCartaoErro(d, ctx, { aoAbrir: (x) => x.line && destacarLinha(x.line) }));
+  return [
+    h("div", { class: "caixa erro" }, h("strong", {}, `A fase ${NOME_FASE[chave]} terminou com erro`),
+      h("span", {}, cartoes.length
+        ? "O serviço não devolveu resultado parcial desta fase. O diagnóstico abaixo explica o motivo."
+        : "O serviço não devolveu resultado nem diagnóstico para esta fase, então não há detalhe a mostrar.")),
+    cartoes.length ? h("div", { class: "cartoes-fase" }, cartoes) : null,
+  ];
+}
+
 function desenharPainel() {
   const painel = $("painel");
   const f = FASES.find((x) => x.chave === estado.fase);
   painel.setAttribute("aria-labelledby", `aba-${f.ancora}`);
   painel.replaceChildren(h("h3", {}, f.nome), h("p", { class: "explica" }, EXPLICA[f.chave]));
   destacarLinha(null);
+  if (!estado.exemplo.analise) {
+    painel.append(h("div", { class: "caixa descartado" }, h("strong", {}, "Sem análise"),
+      h("span", {}, estado.analisando ? "Analisando no serviço real…" : "Clique em Analisar para enviar o código ao compilador.")));
+    return;
+  }
   if (estado.descartada) {
     painel.append(h("div", { class: "caixa descartado" }, h("strong", {}, "Resposta descartada"),
-      h("span", {}, "O código no editor não é mais o que foi analisado (o source_hash mudou). No modo mock não há reanálise: restaure o código do exemplo ou, na integração, use Analisar.")));
+      h("span", {}, REAL
+        ? "O código no editor não é mais o que foi analisado (o source_hash mudou). Clique em Analisar (Ctrl+Enter) para analisar o código atual."
+        : "O código no editor não é mais o que foi analisado (o source_hash mudou). No modo mock não há reanálise: restaure o código do exemplo.")));
     return;
   }
   const dados = dadosFase(f.chave);
   if (dados.status === "skipped") painel.append(caixaPulada(dados));
+  else if (dados.status === "error" && PAYLOAD[f.chave] && dados[PAYLOAD[f.chave]] === undefined) painel.append(...painelErroSemResultado(f.chave).filter(Boolean));
   else painel.append(...[PAINEIS[f.chave](dados)].flat().filter(Boolean));
   painel.scrollTop = 0;
   if (f.chave === "parser" && dados.ast) estado.arvore.anunciar(); // reaplica a linha do nó selecionado
@@ -419,44 +458,121 @@ function desenharPainel() {
 function desenharRodape() {
   const a = estado.exemplo.analise;
   const item = (rotulo, valor) => h("span", {}, `${rotulo} `, h("b", {}, valor));
-  $("rodape").replaceChildren(
-    item("fonte", fonte.modo),
-    item("exemplo", estado.exemplo.id),
-    item("operação", a.operation),
-    item("ok", estado.descartada ? "descartado" : String(a.ok)),
-    item("request_id", a.request_id),
-    item("source_hash", a.source_hash.slice(0, 19) + "…"),
-  );
+  const itens = [item("fonte", fonte.modo), item("exemplo", estado.exemplo.id)];
+  if (a) {
+    itens.push(
+      item("operação", a.operation),
+      item("ok", estado.descartada ? "descartado" : String(a.ok)),
+      item("request_id", a.request_id),
+      item("source_hash", a.source_hash.slice(0, 19) + "…"),
+      item("duração", `${a.duration_ms} ms`),
+    );
+  }
+  $("rodape").replaceChildren(...itens);
+}
+
+function atualizarAcoes() {
+  // Restaurar: no mock, só quando a resposta foi descartada; no real, sempre que o editor difere do exemplo.
+  $("restaurar").hidden = REAL ? $("codigo").value === estado.exemplo?.codigo : !estado.descartada;
+  const analisar = $("analisar");
+  analisar.disabled = !fonte.analisar || estado.analisando || !estado.exemplo;
+  analisar.textContent = estado.analisando ? "Analisando…" : "Analisar";
+}
+
+function informar(texto, tipo = "") {
+  const linha = $("situacao");
+  linha.textContent = texto;
+  linha.className = `situacao ${tipo}`.trim();
 }
 
 function desenharTudo() {
-  $("restaurar").hidden = !estado.descartada;
+  atualizarAcoes();
   desenharTrilha();
   desenharPainel();
   desenharDiagnosticos();
   desenharRodape();
 }
 
+// Cada análise e cada troca de exemplo recebe um número; uma resposta que chega depois de outra
+// análise ou de outro exemplo ter começado é ignorada.
+let sequencia = 0;
+
+// Envia o código atual do editor ao serviço real. A resposta só é aplicada se o source_hash dela
+// for o hash do código que está no editor quando ela chega (C-WEB-v1 §1.3); senão é descartada.
+async function analisarCodigo() {
+  if (!fonte.analisar || estado.analisando) return;
+  const minha = ++sequencia;
+  const enviado = $("codigo").value;
+  estado.analisando = true;
+  atualizarAcoes();
+  if (!estado.exemplo.analise) desenharPainel();
+  informar("Analisando no serviço real…");
+  try {
+    const resposta = await fonte.analisar(enviado);
+    if (minha !== sequencia) return;
+    const atual = $("codigo").value;
+    const hashAtual = await sha256(atual);
+    if (minha !== sequencia) return;
+    const confere = hashAtual === null ? atual === enviado : resposta.source_hash === hashAtual;
+    if (!confere) {
+      informar(`Resposta ${resposta.request_id.slice(0, 8)} descartada: o código mudou durante a análise (source_hash diferente). Clique em Analisar de novo.`, "aviso");
+      return;
+    }
+    estado.exemplo.analise = resposta;
+    estado.exemplo.codigoAnalisado = enviado;
+    estado.exemplo.execucao = null;
+    estado.descartada = false;
+    estado.arvore = null;
+    const erros = resposta.diagnostics.filter((d) => d.severity === "error").length;
+    informar(resposta.ok
+      ? `Análise concluída em ${resposta.duration_ms} ms, sem erros.`
+      : `Análise concluída em ${resposta.duration_ms} ms com ${erros} erro(s).`, resposta.ok ? "ok" : "erro");
+  } catch (erro) {
+    if (minha !== sequencia) return;
+    informar(`Falha ao analisar: ${erro.message} Inicie o servidor com web_didatica/server.py (veja web_didatica/README.md) ou abra com ?fonte=mock.`, "erro");
+  } finally {
+    if (minha === sequencia) {
+      estado.analisando = false;
+      desenharTudo();
+    }
+  }
+}
+
 async function abrirExemplo(arquivo) {
-  estado.exemplo = await fonte.carregarExemplo(arquivo);
+  const minha = ++sequencia;
+  const exemplo = await fonte.carregarExemplo(arquivo);
+  if (minha !== sequencia) return;
+  estado.exemplo = exemplo;
+  estado.exemplo.codigoAnalisado = exemplo.codigo;
   estado.descartada = false;
+  estado.analisando = false;
   estado.arvore = null;
   estado.filtroSimbolos = "";
   $("codigo").value = estado.exemplo.codigo;
   $("aviso-mock").title = estado.exemplo.notas.join("\n");
   atualizarNumeros();
+  informar("");
   desenharTudo();
+  if (REAL) await analisarCodigo();
 }
 
 $("codigo").addEventListener("input", async () => {
   atualizarNumeros();
+  atualizarAcoes();
+  if (!estado.exemplo?.analise) return;
   const atual = $("codigo").value;
   const hash = await sha256(atual);
-  if ($("codigo").value !== atual) return; // outra digitação já chegou
-  const descartada = hash === null ? atual !== estado.exemplo.codigo : hash !== estado.exemplo.analise.source_hash;
+  if ($("codigo").value !== atual || !estado.exemplo.analise) return; // outra digitação já chegou
+  const descartada = hash === null ? atual !== estado.exemplo.codigoAnalisado : hash !== estado.exemplo.analise.source_hash;
   if (descartada !== estado.descartada) {
     estado.descartada = descartada;
     desenharTudo();
+  }
+});
+$("codigo").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    analisarCodigo();
   }
 });
 $("codigo").addEventListener("scroll", () => {
@@ -467,6 +583,7 @@ $("restaurar").addEventListener("click", () => {
   $("codigo").value = estado.exemplo.codigo;
   $("codigo").dispatchEvent(new Event("input"));
 });
+$("analisar").addEventListener("click", analisarCodigo);
 $("fixture").addEventListener("change", (e) => abrirExemplo(e.target.value).catch(mostrarFalha));
 
 function mostrarFalha(erro) {
@@ -474,7 +591,19 @@ function mostrarFalha(erro) {
     h("span", {}, `${erro.message} Sirva a pasta web_didatica por HTTP (veja web_didatica/README.md); abrir o arquivo direto no navegador não funciona.`)));
 }
 
+function prepararModo() {
+  const aviso = $("aviso-mock");
+  if (REAL) {
+    aviso.textContent = "SERVIÇO REAL · src/service.py via POST /api/v1/analyze";
+    aviso.classList.add("real");
+    $("analisar").title = "Envia o código do editor ao compilador real (Ctrl+Enter)";
+  } else {
+    $("analisar").title = "Indisponível no modo mock: abra sem ?fonte=mock, com o servidor web_didatica/server.py";
+  }
+}
+
 async function iniciar() {
+  prepararModo();
   estado.exemplos = await fonte.listarExemplos();
   $("fixture").replaceChildren(...estado.exemplos.map((e) => h("option", { value: e.file }, `${e.fixture} · ${e.title}`)));
   const inicial = FASES.find((f) => "#" + f.ancora === location.hash);
