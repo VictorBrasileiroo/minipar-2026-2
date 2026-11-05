@@ -1,0 +1,436 @@
+{
+  "card": "RUN-05",
+  "inicio": "2026-11-05T15:59:12-03:00",
+  "carga": 5000000,
+  "reps": 7,
+  "reps_falhas": 5,
+  "workers": 4,
+  "ambiente": {
+    "python": "3.14.7",
+    "plataforma": "Windows-11-10.0.26300-SP0",
+    "cpu": {
+      "modelo": "Intel(R) Core(TM) Ultra 5 135U",
+      "nucleos_fisicos": 12,
+      "threads_logicas": 14,
+      "plano_energia": "Equilibrado"
+    },
+    "gxx": "g++ (Rev3, Built by MSYS2 project) 16.2.0",
+    "flags": "-std=c++20 -O3 -pthread -I runtime/include -lws2_32 (src/codegen.py)",
+    "git_head": "59ea77d093deb35877243da3383bcd7036e16448"
+  },
+  "oraculo_soma_notas": 7557,
+  "checks": [
+    {
+      "nome": "oraculo do T08: forma fechada == laco ingenuo",
+      "status": "PASS",
+      "detalhe": "forma fechada == laco ingenuo para cargas 1,2,3,7,50,997 x 160 ids"
+    },
+    {
+      "nome": "compilacao do T08 via CLI oficial",
+      "status": "PASS",
+      "detalhe": "C:\\Python314\\python.exe main.py tests/2026_2/test08/teste8_avaliadores.minipar bench_t08 (14.126 s)"
+    },
+    {
+      "nome": "seq: 7 rodadas iguais ao oraculo (160 ids, notas e SOMA_NOTAS)",
+      "status": "PASS",
+      "detalhe": ""
+    },
+    {
+      "nome": "par_local: 7 rodadas iguais ao oraculo (160 ids, notas e SOMA_NOTAS)",
+      "status": "PASS",
+      "detalhe": ""
+    },
+    {
+      "nome": "par_loopback: 7 rodadas iguais ao oraculo (160 ids, notas e SOMA_NOTAS)",
+      "status": "PASS",
+      "detalhe": ""
+    },
+    {
+      "nome": "par_loopback: cada worker recebeu 1 TASK por rodada (+ aquecimento)",
+      "status": "PASS",
+      "detalhe": "TASK por worker=[8, 8, 8, 8] esperado=8"
+    },
+    {
+      "nome": "tempos (mediana) e speedup = Tseq/Tpar",
+      "status": "INFO",
+      "detalhe": "{\"par_local\": {\"speedup\": 3.48, \"reducao_pct\": 71.3}, \"par_loopback\": {\"speedup\": 2.19, \"reducao_pct\": 54.4}}"
+    },
+    {
+      "nome": "F1_indisponivel: destino sem worker -> WORKER_UNAVAILABLE, exit 1, < 30 s (5x)",
+      "status": "PASS",
+      "detalhe": ""
+    },
+    {
+      "nome": "F2_worker_morto: worker 0 morto depois do TASK -> WORKER_LOST, exit 1, sem travar (5x)",
+      "status": "PASS",
+      "detalhe": ""
+    },
+    {
+      "nome": "F3_silencioso: worker que nunca responde -> TIMEOUT (3000 ms), exit 1 (5x)",
+      "status": "PASS",
+      "detalhe": ""
+    }
+  ],
+  "exe_sha256": "cb3cdad61dafe0ee3d6f3bb97a2ec39caeafa924c30ca9df51d2ea020d4c1e2f",
+  "cenarios": {
+    "seq": {
+      "modo": "seq",
+      "destinos": [
+        "local",
+        "local",
+        "local",
+        "local"
+      ]
+    },
+    "par_local": {
+      "modo": "par",
+      "destinos": [
+        "local",
+        "local",
+        "local",
+        "local"
+      ]
+    },
+    "par_loopback": {
+      "modo": "par",
+      "destinos": [
+        "127.0.0.1:7501",
+        "127.0.0.1:7502",
+        "127.0.0.1:7503",
+        "127.0.0.1:7504"
+      ]
+    }
+  },
+  "execucoes": {
+    "seq": [
+      {
+        "rodada": 1,
+        "ok": true,
+        "wall_s": 2.489,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 2,
+        "ok": true,
+        "wall_s": 2.495,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 3,
+        "ok": true,
+        "wall_s": 2.507,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 4,
+        "ok": true,
+        "wall_s": 2.52,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 5,
+        "ok": true,
+        "wall_s": 2.494,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 6,
+        "ok": true,
+        "wall_s": 2.553,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 7,
+        "ok": true,
+        "wall_s": 2.512,
+        "exit": 0,
+        "detalhe": "modo=seq itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      }
+    ],
+    "par_local": [
+      {
+        "rodada": 1,
+        "ok": true,
+        "wall_s": 0.707,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 2,
+        "ok": true,
+        "wall_s": 0.743,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 3,
+        "ok": true,
+        "wall_s": 0.713,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 4,
+        "ok": true,
+        "wall_s": 0.72,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 5,
+        "ok": true,
+        "wall_s": 0.739,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 6,
+        "ok": true,
+        "wall_s": 0.703,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 7,
+        "ok": true,
+        "wall_s": 0.739,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      }
+    ],
+    "par_loopback": [
+      {
+        "rodada": 1,
+        "ok": true,
+        "wall_s": 1.005,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 2,
+        "ok": true,
+        "wall_s": 1.226,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 3,
+        "ok": true,
+        "wall_s": 1.549,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 4,
+        "ok": true,
+        "wall_s": 1.144,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 5,
+        "ok": true,
+        "wall_s": 1.471,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 6,
+        "ok": true,
+        "wall_s": 1.069,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      },
+      {
+        "rodada": 7,
+        "ok": true,
+        "wall_s": 1.076,
+        "exit": 0,
+        "detalhe": "modo=par itens=160 notas_erradas=0 agregado={'TOTAL': 160, 'UNICOS': 160, 'DUPLICADOS': 0, 'PERDIDOS': 0, 'SOMA_NOTAS': 7557}",
+        "stderr": ""
+      }
+    ]
+  },
+  "tempos_s": {
+    "seq": {
+      "n": 7,
+      "mediana": 2.507,
+      "media": 2.51,
+      "desvio": 0.022,
+      "min": 2.489,
+      "max": 2.553
+    },
+    "par_local": {
+      "n": 7,
+      "mediana": 0.72,
+      "media": 0.723,
+      "desvio": 0.017,
+      "min": 0.703,
+      "max": 0.743
+    },
+    "par_loopback": {
+      "n": 7,
+      "mediana": 1.144,
+      "media": 1.22,
+      "desvio": 0.211,
+      "min": 1.005,
+      "max": 1.549
+    }
+  },
+  "comparacao_com_seq": {
+    "par_local": {
+      "speedup": 3.48,
+      "reducao_pct": 71.3
+    },
+    "par_loopback": {
+      "speedup": 2.19,
+      "reducao_pct": 54.4
+    }
+  },
+  "falhas": {
+    "F1_indisponivel": [
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 2.096,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7505 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 2.082,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7505 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 2.077,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7505 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 2.081,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7505 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 2.076,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7505 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\r\n"
+      }
+    ],
+    "F2_worker_morto": [
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "s_ate_sair_apos_kill": 0.009,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_LOST: conexao com o worker <host>:15792 (127.0.0.1:7509) perdida: conexao encerrada\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "s_ate_sair_apos_kill": 0.008,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_LOST: conexao com o worker <host>:2596 (127.0.0.1:7509) perdida: conexao encerrada\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "s_ate_sair_apos_kill": 0.008,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_LOST: conexao com o worker <host>:26888 (127.0.0.1:7509) perdida: conexao encerrada\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "s_ate_sair_apos_kill": 0.009,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_LOST: conexao com o worker <host>:34288 (127.0.0.1:7509) perdida: conexao encerrada\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "s_ate_sair_apos_kill": 0.008,
+        "stderr": "[minipar_rt] join task-1 falhou: WORKER_LOST: conexao com o worker <host>:4688 (127.0.0.1:7509) perdida: conexao encerrada\r\n"
+      }
+    ],
+    "F3_silencioso": [
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 3.056,
+        "tasks_recebidas": 4,
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 3000 ms\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 3.062,
+        "tasks_recebidas": 4,
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 3000 ms\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 3.055,
+        "tasks_recebidas": 4,
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 3000 ms\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 3.053,
+        "tasks_recebidas": 4,
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 3000 ms\r\n"
+      },
+      {
+        "ok": true,
+        "exit": 1,
+        "travou": false,
+        "duracao_s": 3.062,
+        "tasks_recebidas": 4,
+        "stderr": "[minipar_rt] join task-1 falhou: TIMEOUT: tarefa nao concluiu em 3000 ms\r\n"
+      }
+    ]
+  },
+  "fim": "2026-11-05T16:00:31-03:00",
+  "exit_code": 0
+}
