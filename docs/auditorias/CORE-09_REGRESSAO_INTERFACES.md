@@ -64,7 +64,7 @@ a execução comprovada desta auditoria é Windows. Entradas Web inválidas reto
 400 em vez de exceção interna. Nenhuma fase foi simulada, nem houve alteração
 de oráculos. A simulação de terminal se restringe às teclas do usuário.
 
-## Matriz executada
+## Matriz da execução inicial
 
 | Prova / oráculo | Resultado |
 |---|---|
@@ -116,8 +116,8 @@ de `legacy/`; a comparação foi de fluxos e comportamento observado na raiz ati
 Executar da raiz com porta 5000 livre para o smoke HTTP:
 
 ```powershell
-$env:CXX='C:\msys64\ucrt64\bin\g++.exe'
-$env:PATH='C:\msys64\ucrt64\bin;'+$env:PATH
+# Configure CXX com o executável C++20 local antes destes comandos.
+$env:PATH=(Split-Path -Parent $env:CXX)+';'+$env:PATH
 $env:PYTHONIOENCODING='utf-8'
 .\.venv\Scripts\python.exe -B tests/2026_2/core09/probe_baseline.py 59ea77d
 .\.venv\Scripts\python.exe -B tests/2026_2/core09/test_interfaces.py
@@ -179,3 +179,73 @@ Próximo consumidor: revisor independente do Eixo A e usuário das interfaces;
 coordenação acompanha as limitações de núcleo/QA. PR único contra `dev`, sem
 merge automático. Exigir revisão humana de diff, logs, demonstração visual e
 ao menos uma aprovação de pessoa diferente do autor antes de integrar.
+
+## Ajustes finais do PR #35 — 05/11/2026
+
+Pedido da coordenação: correção delimitada de nomes de arquivo, anonimização das
+evidências, nova tentativa visual e regressão CORE-09. Branch mantida em
+`eixo-a/CORE-09-regressao-interfaces`, inicialmente limpa no commit `01e6976`.
+Nenhuma alteração de contrato, outro card, runtime, núcleo ou Web didática.
+
+### Segurança e compatibilidade
+
+`/api/get_test` e `/api/session/create` combinavam o nome recebido diretamente
+com o diretório, permitindo acesso externo. `/api/test_spec` reduzia nomes com
+`basename` internamente, mas ainda aceitava caminhos indevidos e falhava para
+tipos inválidos. Os três agora validam o JSON e exigem um basename `.minipar`,
+sem `/`, `\`, `:`, caracteres de controle ou caminho externo após `realpath`.
+Requisições inválidas recebem 400 sem conteúdo de arquivos nem criação de sessão.
+Arquivo legítimo, arquivo ausente e sessões saudáveis mantêm o comportamento
+anterior. Symlink que resolva fora do diretório também é recusado pela validação
+de contenção; esse caso específico não foi executado nesta rodada.
+
+O teste negativo foi executado antes da correção e registrou FAIL (59 subcasos
+divergentes). Depois da correção, a suíte completa executou **14 testes PASS,
+zero falhas e zero erros**, incluindo 69 requisições negativas nos três endpoints,
+leitura e especificação legítimas, criação/join/ready/clear de sessão, compilação
+e execução reais, concorrência e timeout. Log local:
+`output/core09-review-tests.log`; falhas anteriores:
+`output/core09-security-before.log`.
+
+```powershell
+# Com CXX e PATH configurados localmente conforme a seção Reprodução.
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests/2026_2/core09 -p test_interfaces.py -k unsafe_filenames -v
+.\.venv\Scripts\python.exe -B tests/2026_2/core09/test_interfaces.py
+.\.venv\Scripts\python.exe -B tests/2026_2/core09/record_results.py
+git diff --check
+```
+
+### Privacidade e evidência
+
+O JSON selecionado foi regenerado com as 14 verificações atuais. O coletor
+anonimiza também as evidências históricas retidas: `<REPO>` substitui a raiz
+local, `<TOOLCHAIN>` a pasta do compilador e `<LOCAL>/<basename>` outros caminhos
+locais em diagnósticos. Fontes, entradas, resultados, oráculos, flags e hashes
+permanecem. Não foram modificados logs brutos locais ignorados nem o histórico
+Git. Os exemplos desta auditoria e a seção CORE-09 do README não fixam caminhos
+absolutos de uma instalação. Os resultados anteriores de CORE-02/06/07/08,
+baseline e HTTP são históricos, **não reexecutados neste ajuste**; isso também
+está explícito no JSON.
+
+Verificação local da anonimização: PASS, sem caminhos absolutos ou identificação
+pessoal nas evidências selecionadas e nos exemplos CORE-09; comparação com o
+JSON bruto confirmou preservação dos registros de teste, fontes, entradas,
+oráculos, hashes dos artefatos e flags C++20. `git diff --check`: PASS.
+
+Nova tentativa visual: `readPage`/`openBrowserPage` falharam e CUA retornou
+`The browser access host is unavailable`. **BLOCKED permanece** para compilação
+válida, erro e limpeza dos painéis em navegador. Os testes backend correspondentes
+passaram; não substituem validação visual humana.
+
+### Revisão documental e entrega
+
+Auditoria, JSON e instrução de nomes válidos no README atualizados. Verificados
+AGENTS/MEMORY e documentos 01/02/04/05; **AGENTS.md não precisa mudar**, pois este
+ajuste não altera ownership, arquitetura, convenções ou fluxo. MEMORY e os
+demais documentos normativos também dispensam alteração por esse motivo.
+Contratos e estados dos cards permanecem intactos.
+
+Próximo consumidor: revisor independente do PR #35. Permanecem as pendências
+humanas visuais e de aprovação antes do merge; as limitações históricas acima
+não foram promovidas a PASS nem assumidas por esta revisão. Atualizar somente
+o PR existente por commit/push, sem novo PR ou merge.

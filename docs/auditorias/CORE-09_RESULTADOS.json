@@ -1,10 +1,10 @@
 {
   "base_commit": "59ea77d093deb35877243da3383bcd7036e16448",
   "interfaces": {
-    "timestamp": "2026-11-05T16:10:45",
+    "timestamp": "2026-11-05T16:33:00",
     "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-    "compiler": "C:\\msys64\\ucrt64\\bin\\g++.exe",
-    "tests": 13,
+    "compiler": "<TOOLCHAIN>\\g++.exe",
+    "tests": 14,
     "failures": 0,
     "errors": 0,
     "records": [
@@ -41,6 +41,10 @@
         "status": "PASS"
       },
       {
+        "test": "__main__.Interfaces.test_test_endpoints_reject_unsafe_filenames",
+        "status": "PASS"
+      },
+      {
         "test": "__main__.Interfaces.test_web_input_and_changed_source",
         "status": "PASS"
       },
@@ -73,7 +77,7 @@
         "source": "print(6 * 7);",
         "inputs": [],
         "response": {
-          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_cb04a70f0df4479bb882ff983d4a6ea3.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_cb04a70f0df4479bb882ff983d4a6ea3.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpgx5d9fiw\\\\absent-g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpgx5d9fiw\\\\output\\\\ide_cb04a70f0df4479bb882ff983d4a6ea3.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpgx5d9fiw\\\\output\\\\ide_cb04a70f0df4479bb882ff983d4a6ea3.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n\n[ERRO] GPP_NOT_FOUND: falha na compilacao C++.\n",
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<REPO>\\\\output\\\\tmp02tk63ou\\\\absent-g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmp02tk63ou\\\\output\\\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.cpp', '-o', '<REPO>\\\\output\\\\tmp02tk63ou\\\\output\\\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n\n[ERRO] GPP_NOT_FOUND: falha na compilacao C++.\n",
           "stdout": "",
           "success": false
         },
@@ -93,7 +97,7 @@
         "inputs": [],
         "response": {
           "stderr": "",
-          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_ed5c6e6d8e3f4d2997993906626b902f.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_ed5c6e6d8e3f4d2997993906626b902f.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpphdkej09\\\\output\\\\ide_ed5c6e6d8e3f4d2997993906626b902f.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpphdkej09\\\\output\\\\ide_ed5c6e6d8e3f4d2997993906626b902f.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_ed5c6e6d8e3f4d2997993906626b902f.exe\n=== Processo Finalizado ===\n\n--- Executando ide_ed5c6e6d8e3f4d2997993906626b902f ---\nArray ordenado: [5, 12, 33, 61, 98]\n\n----------------------------------------",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.cpp', '-o', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.exe\n=== Processo Finalizado ===\n\n--- Executando ide_dc02a9d6e67d4b99b9a9988ac06035f1 ---\nArray ordenado: [5, 12, 33, 61, 98]\n\n----------------------------------------",
           "success": true
         },
         "artifacts": {
@@ -109,7 +113,7 @@
       },
       {
         "kind": "legacy T07 menu",
-        "stdout": "\n  Programa: teste7_quicksort_iterativo_tac\n\n=== Compilando: tests\\teste7_quicksort_iterativo_tac.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\teste7_quicksort_iterativo_tac.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpphdkej09\\\\output\\\\teste7_quicksort_iterativo_tac.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpphdkej09\\\\output\\\\teste7_quicksort_iterativo_tac.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\teste7_quicksort_iterativo_tac.exe\n\n--- Executando teste7_quicksort_iterativo_tac ---\nArray ordenado: [5, 12, 33, 61, 98]\n\n----------------------------------------\n",
+        "stdout": "\n  Programa: teste7_quicksort_iterativo_tac\n\n=== Compilando: tests\\teste7_quicksort_iterativo_tac.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\teste7_quicksort_iterativo_tac.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\teste7_quicksort_iterativo_tac.cpp', '-o', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\teste7_quicksort_iterativo_tac.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\teste7_quicksort_iterativo_tac.exe\n\n--- Executando teste7_quicksort_iterativo_tac ---\nArray ordenado: [5, 12, 33, 61, 98]\n\n----------------------------------------\n",
         "oracle": "Array ordenado: [5, 12, 33, 61, 98]"
       },
       {
@@ -119,7 +123,7 @@
         ],
         "response": {
           "stderr": "",
-          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_8589b803766940f580a2a5d36de86e63.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_8589b803766940f580a2a5d36de86e63.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpauhjo4op\\\\output\\\\ide_8589b803766940f580a2a5d36de86e63.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpauhjo4op\\\\output\\\\ide_8589b803766940f580a2a5d36de86e63.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_8589b803766940f580a2a5d36de86e63.exe\n=== Processo Finalizado ===\n\n--- Executando ide_8589b803766940f580a2a5d36de86e63 ---\ncore09\n\n----------------------------------------",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_f7ab27f013174c3192931cdf8630aa13.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_f7ab27f013174c3192931cdf8630aa13.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_f7ab27f013174c3192931cdf8630aa13.cpp', '-o', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_f7ab27f013174c3192931cdf8630aa13.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_f7ab27f013174c3192931cdf8630aa13.exe\n=== Processo Finalizado ===\n\n--- Executando ide_f7ab27f013174c3192931cdf8630aa13 ---\ncore09\n\n----------------------------------------",
           "success": true
         },
         "artifacts": {
@@ -138,7 +142,7 @@
         "inputs": [],
         "response": {
           "stderr": "",
-          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_0ee05cefd7fb42658a7f8c6d502145c9.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_0ee05cefd7fb42658a7f8c6d502145c9.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpauhjo4op\\\\output\\\\ide_0ee05cefd7fb42658a7f8c6d502145c9.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpauhjo4op\\\\output\\\\ide_0ee05cefd7fb42658a7f8c6d502145c9.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_0ee05cefd7fb42658a7f8c6d502145c9.exe\n=== Processo Finalizado ===\n\n--- Executando ide_0ee05cefd7fb42658a7f8c6d502145c9 ---\n12345\n\n----------------------------------------",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.cpp', '-o', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.exe\n=== Processo Finalizado ===\n\n--- Executando ide_71d769bfc4f24c4f8c443c81f4ac8f5d ---\n12345\n\n----------------------------------------",
           "success": true
         },
         "artifacts": {
@@ -157,7 +161,7 @@
         "inputs": [],
         "response": {
           "stderr": "",
-          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_d20b6acb1a0843f3b48047e522e52f8e.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_d20b6acb1a0843f3b48047e522e52f8e.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpm2tdlov6\\\\output\\\\ide_d20b6acb1a0843f3b48047e522e52f8e.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpm2tdlov6\\\\output\\\\ide_d20b6acb1a0843f3b48047e522e52f8e.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_d20b6acb1a0843f3b48047e522e52f8e.exe\n=== Processo Finalizado ===\n\n--- Executando ide_d20b6acb1a0843f3b48047e522e52f8e ---\n9876\n\n----------------------------------------",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_a8e502812a3a4680b1866a2574bf950b.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_a8e502812a3a4680b1866a2574bf950b.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpn1pclmk8\\\\output\\\\ide_a8e502812a3a4680b1866a2574bf950b.cpp', '-o', '<REPO>\\\\output\\\\tmpn1pclmk8\\\\output\\\\ide_a8e502812a3a4680b1866a2574bf950b.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_a8e502812a3a4680b1866a2574bf950b.exe\n=== Processo Finalizado ===\n\n--- Executando ide_a8e502812a3a4680b1866a2574bf950b ---\n9876\n\n----------------------------------------",
           "success": true
         },
         "artifacts": {
@@ -176,7 +180,7 @@
         "inputs": [],
         "response": {
           "stderr": "",
-          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_e9c8a1a4c2ff4e0498dc2b51d7dc6071.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_e9c8a1a4c2ff4e0498dc2b51d7dc6071.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpudx8p7js\\\\output\\\\ide_e9c8a1a4c2ff4e0498dc2b51d7dc6071.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpudx8p7js\\\\output\\\\ide_e9c8a1a4c2ff4e0498dc2b51d7dc6071.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_e9c8a1a4c2ff4e0498dc2b51d7dc6071.exe\n=== Processo Finalizado ===\n\n--- Executando ide_e9c8a1a4c2ff4e0498dc2b51d7dc6071 ---\n42\n\n----------------------------------------",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpxqvjh139\\\\output\\\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.cpp', '-o', '<REPO>\\\\output\\\\tmpxqvjh139\\\\output\\\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.exe\n=== Processo Finalizado ===\n\n--- Executando ide_12cf5d61c2f2479bbcacf2e15e38d56e ---\n42\n\n----------------------------------------",
           "success": true
         },
         "artifacts": {
@@ -194,7 +198,7 @@
         "source": "print(\"broken",
         "inputs": [],
         "response": {
-          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_71d5f76baa084dd8bbc3ed9e0d3e2095.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n\n[ERRO LEXICO] Linha 1: String sem fechamento\n",
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_eb7fdbeb7d4c46be970cabf652fd2f7c.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n\n[ERRO LEXICO] Linha 1: String sem fechamento\n",
           "stdout": "",
           "success": false
         },
@@ -213,7 +217,7 @@
         "source": "print(;",
         "inputs": [],
         "response": {
-          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_348cbad01a254d1b953924f759e571a8.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n\n[ERRO SINTATICO] Linha 1: Expressao esperada\n",
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_1c746bad9bc94807be0c5dec023a3a12.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n\n[ERRO SINTATICO] Linha 1: Expressao esperada\n",
           "stdout": "",
           "success": false
         },
@@ -232,7 +236,7 @@
         "source": "print(missing);",
         "inputs": [],
         "response": {
-          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_27c37a25580d40739006549af9044eb2.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n\n[ERRO SEMANTICO] Linha 1: Variavel 'missing' nao declarada.\n[ERRO] Falha na Analise Semantica. Compilacao abortada.\n",
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_adc7d29d76384cd689db4a0ab794c19c.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n\n[ERRO SEMANTICO] Linha 1: Variavel 'missing' nao declarada.\n[ERRO] Falha na Analise Semantica. Compilacao abortada.\n",
           "stdout": "",
           "success": false
         },
@@ -251,7 +255,7 @@
         "source": "print(\"before failure\"); print(substr(\"abc\", 9, 1));",
         "inputs": [],
         "response": {
-          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_8ecc02a4377f4090a99f3274bff7574e.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_8ecc02a4377f4090a99f3274bff7574e.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpj_epi30_\\\\output\\\\ide_8ecc02a4377f4090a99f3274bff7574e.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmpj_epi30_\\\\output\\\\ide_8ecc02a4377f4090a99f3274bff7574e.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_8ecc02a4377f4090a99f3274bff7574e.exe\n=== Processo Finalizado ===\n\n--- Executando ide_8ecc02a4377f4090a99f3274bff7574e ---\nbefore failure\n\n[ERRO NA EXECUÇÃO]:\nErro de execucao: substr indices invalidos (inicio=9, tamanho=1, len=3)\n\n[ERRO] Programa encerrou com codigo 1.\n----------------------------------------",
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_a141b130cb1a49b1b9af4080f9b189ca.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_a141b130cb1a49b1b9af4080f9b189ca.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpqp9k6m71\\\\output\\\\ide_a141b130cb1a49b1b9af4080f9b189ca.cpp', '-o', '<REPO>\\\\output\\\\tmpqp9k6m71\\\\output\\\\ide_a141b130cb1a49b1b9af4080f9b189ca.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_a141b130cb1a49b1b9af4080f9b189ca.exe\n=== Processo Finalizado ===\n\n--- Executando ide_a141b130cb1a49b1b9af4080f9b189ca ---\nbefore failure\n\n[ERRO NA EXECUÇÃO]:\nErro de execucao: substr indices invalidos (inicio=9, tamanho=1, len=3)\n\n[ERRO] Programa encerrou com codigo 1.\n----------------------------------------",
           "stdout": "",
           "success": false
         },
@@ -270,7 +274,7 @@
         "source": "print(\"before timeout\"); while (true) {}",
         "inputs": [],
         "response": {
-          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_dfc939f79f1f48a984543b627dfa334b.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_dfc939f79f1f48a984543b627dfa334b.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmp8aa8cg87\\\\output\\\\ide_dfc939f79f1f48a984543b627dfa334b.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmp8aa8cg87\\\\output\\\\ide_dfc939f79f1f48a984543b627dfa334b.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_dfc939f79f1f48a984543b627dfa334b.exe\n=== Processo Finalizado ===\n\n--- Executando ide_dfc939f79f1f48a984543b627dfa334b ---\nbefore timeout\n\n[ERRO] Tempo limite de execução excedido (O programa entrou em loop infinito ou aguarda entrada de dados do usuário?).\n----------------------------------------",
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_88b66a206b22401f90332b3961344cd9.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_88b66a206b22401f90332b3961344cd9.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpwsotki0p\\\\output\\\\ide_88b66a206b22401f90332b3961344cd9.cpp', '-o', '<REPO>\\\\output\\\\tmpwsotki0p\\\\output\\\\ide_88b66a206b22401f90332b3961344cd9.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_88b66a206b22401f90332b3961344cd9.exe\n=== Processo Finalizado ===\n\n--- Executando ide_88b66a206b22401f90332b3961344cd9 ---\nbefore timeout\n\n[ERRO] Tempo limite de execução excedido (O programa entrou em loop infinito ou aguarda entrada de dados do usuário?).\n----------------------------------------",
           "stdout": "",
           "success": false
         },
@@ -302,7 +306,7 @@
         "case": "native error reported as success",
         "status": "FAIL reproduced",
         "success": true,
-        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\baseline.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\baseline.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmp7_v8_ckg\\\\output\\\\baseline.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmp7_v8_ckg\\\\output\\\\baseline.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\baseline.exe\n=== Processo Finalizado ===\n\n--- Executando baseline ---\nbefore failure\n\n[ERRO NA EXECUÇÃO]:\nErro de execucao: substr indices invalidos (inicio=9, tamanho=1, len=3)\n\n----------------------------------------",
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\baseline.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\baseline.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmp7_v8_ckg\\\\output\\\\baseline.cpp', '-o', '<REPO>\\\\output\\\\tmp7_v8_ckg\\\\output\\\\baseline.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\baseline.exe\n=== Processo Finalizado ===\n\n--- Executando baseline ---\nbefore failure\n\n[ERRO NA EXECUÇÃO]:\nErro de execucao: substr indices invalidos (inicio=9, tamanho=1, len=3)\n\n----------------------------------------",
         "stderr": ""
       }
     ]
@@ -310,16 +314,16 @@
   "http": {
     "status": "PASS",
     "command": [
-      "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\.venv\\Scripts\\python.exe",
+      "<REPO>\\.venv\\Scripts\\python.exe",
       "-B",
-      "C:\\Users\\victo\\Desktop\\FACULDADE\\Compiladores\\minipar-2026-2\\main.py"
+      "<REPO>\\main.py"
     ],
     "stdin": "2\n",
     "bind": "127.0.0.1:5000",
     "source": "print(42);",
     "response": {
       "stderr": "",
-      "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_95ad643f2f85452bade3935ebbc53a38.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_95ad643f2f85452bade3935ebbc53a38.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmp1d_hhbjz\\\\output\\\\ide_95ad643f2f85452bade3935ebbc53a38.cpp', '-o', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\output\\\\tmp1d_hhbjz\\\\output\\\\ide_95ad643f2f85452bade3935ebbc53a38.exe', '-pthread', '-I', 'C:\\\\Users\\\\victo\\\\Desktop\\\\FACULDADE\\\\Compiladores\\\\minipar-2026-2\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_95ad643f2f85452bade3935ebbc53a38.exe\n=== Processo Finalizado ===\n\n--- Executando ide_95ad643f2f85452bade3935ebbc53a38 ---\n42\n\n----------------------------------------",
+      "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_95ad643f2f85452bade3935ebbc53a38.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_95ad643f2f85452bade3935ebbc53a38.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmp1d_hhbjz\\\\output\\\\ide_95ad643f2f85452bade3935ebbc53a38.cpp', '-o', '<REPO>\\\\output\\\\tmp1d_hhbjz\\\\output\\\\ide_95ad643f2f85452bade3935ebbc53a38.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_95ad643f2f85452bade3935ebbc53a38.exe\n=== Processo Finalizado ===\n\n--- Executando ide_95ad643f2f85452bade3935ebbc53a38 ---\n42\n\n----------------------------------------",
       "success": true
     }
   },
@@ -497,7 +501,7 @@
       }
     ],
     "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-    "compiler": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+    "compiler": "<TOOLCHAIN>\\g++.exe",
     "timestamp": "2026-11-05T16:01:43"
   },
   "legacy_smoke": "PASS",
@@ -505,7 +509,7 @@
     "tools": {
       "python": "3.12.4",
       "platform": "Windows-11-10.0.26200-SP0",
-      "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "cxx": "<TOOLCHAIN>\\g++.exe",
       "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
     },
     "overall": {
@@ -528,12 +532,22 @@
   },
   "hashes": {
     "main.py": "a27ed2d907dcabe4b6afb9b441f3ac5e8350a153ae824854e97ca5a175c2ccfe",
-    "app.py": "4eca3c9514969791d23baa61a88b66f5bf1f39002d6192f51a24ed4f1ecd42c8",
+    "app.py": "b4f04100aadef8f726af783f408a25073ef933c22fdeceedcfa118da087db899",
     "menu.py": "2466ad5ddfd13f4750928c0fe00e6c25b251557dee4082d9c956ee3f2488a8b0",
     "static/js/script.js": "a111ac8a676f63c2326781fe145725302e1de8e30d82284d4f5befe958f97055",
     "tests/2026_2/core09/probe_baseline.py": "c7e4c90aad9141e39ba27c62a16c971e1784db2029a013e4aff2061494a54010",
-    "tests/2026_2/core09/record_results.py": "045e9560424b4b8407247153deb9a02cea7e9d3d9b3e3747691858faff0f0153",
+    "tests/2026_2/core09/record_results.py": "eb04db7273e9bb8f6e1fcca407f43652da3c9acd211a9c0d9aae36693bcb8f62",
     "tests/2026_2/core09/smoke_http.py": "ff2f7b3067aa8a43e6f016e5372aaf266a66191514969a66e38f706ca2f21b73",
-    "tests/2026_2/core09/test_interfaces.py": "26f206d41f6e3dc282ef472223aa6a9f1f2ea948719dca3f6f6e6e0626090148"
+    "tests/2026_2/core09/test_interfaces.py": "e7d11fc4babf54e2c4e7abbb779206daa0f9cf40fc609aa55c563df5a9161f7c"
+  },
+  "validation_scope": {
+    "current": "CORE-09: 14 tests; filename validation and legitimate endpoints",
+    "historical": "CORE-02/06/07/08, baseline, HTTP and legacy smoke retained from the initial execution; not rerun in this review"
+  },
+  "privacy": {
+    "repo": "<REPO>",
+    "toolchain": "<TOOLCHAIN>",
+    "other_local_paths": "<LOCAL>/<basename>",
+    "note": "Local prefixes anonymized; sources, flags, output, oracles and hashes retained."
   }
 }

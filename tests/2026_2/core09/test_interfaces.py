@@ -129,7 +129,9 @@ class Interfaces(unittest.TestCase):
         self.assertEqual(self.client.get('/api/tests').json['tests'], ['basic.minipar'])
         self.assertEqual(self.client.post('/api/get_test', json={'filename':'basic.minipar'}).json['code'], 'print(6 * 7);')
         self.assertEqual(self.client.post('/api/get_test', json={'filename':'absent.minipar'}).status_code, 404)
+        self.assertEqual(self.client.post('/api/test_spec', json={'filename':'basic.minipar'}).json['requires_input'], False)
         self.assertFalse(self.client.get('/api/session').json['active'])
+
         self.assertEqual(self.client.post('/api/session/join').status_code, 404)
         # Session metadata uses the original program analyzer and file protocol.
         candidates = [p for p in (ROOT/'tests').glob('*.minipar') if sessions.get_program_spec(str(p)).get('multi_computer')]
@@ -142,6 +144,26 @@ class Interfaces(unittest.TestCase):
         self.assertTrue(self.client.post('/api/session/ready').json['success'])
         self.assertTrue(self.client.post('/api/session/clear').json['success'])
         self.assertFalse(self.client.get('/api/session').json['active'])
+
+    def test_test_endpoints_reject_unsafe_filenames(self):
+        Path('outside.minipar').write_text('print("PRIVATE_SENTINEL");', encoding='utf-8')
+        bad_names = ['../outside.minipar', '..\\outside.minipar',
+                     str(Path('outside.minipar').absolute()), '/outside.minipar',
+                     'C:\\outside.minipar', 'C:outside.minipar',
+                     '\\\\server\\share\\outside.minipar', 'sub/basic.minipar',
+                     'sub\\basic.minipar', 'basic.minipar:stream.minipar',
+                     'bad\x00.minipar', '', '.', '..', 'file.txt', None, 7, [], {}]
+        for endpoint in ('/api/get_test', '/api/test_spec', '/api/session/create'):
+            for filename in bad_names:
+                with self.subTest(endpoint=endpoint, filename=filename):
+                    response = self.client.post(endpoint, json={'filename':filename})
+                    self.assertEqual(response.status_code, 400, response.get_json())
+                    self.assertNotIn('PRIVATE_SENTINEL', response.get_data(as_text=True))
+                    self.assertFalse(Path(sessions.SESSION_FILE).exists())
+            for payload in ({}, [], 'invalid'):
+                with self.subTest(endpoint=endpoint, payload=payload):
+                    self.assertEqual(self.client.post(endpoint, json=payload).status_code, 400)
+            self.assertEqual(self.client.post(endpoint, data='invalid', content_type='application/json').status_code, 400)
 
     def test_terminal_menu_and_syntax_error(self):
         stream = io.StringIO()

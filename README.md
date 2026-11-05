@@ -82,8 +82,8 @@ Na raiz do repositório, use o Python do ambiente e configure a toolchain soment
 no processo atual:
 
 ```powershell
-$env:CXX = 'C:\msys64\ucrt64\bin\g++.exe'
-$env:PATH = 'C:\msys64\ucrt64\bin;' + $env:PATH
+# Configure CXX com o executável C++20 local antes destes comandos.
+$env:PATH = (Split-Path -Parent $env:CXX) + ';' + $env:PATH
 $env:PYTHONIOENCODING = 'utf-8'
 .\.venv\Scripts\python.exe -B main.py
 ```
@@ -102,6 +102,10 @@ externo de compilação é 130 s, compatível com os 120 s do backend; execuçã
 mantém 30 s. Artefatos Web ficam em `output/ide_<uuid>.*`, sem limpeza automática;
 o fonte temporário é removido após a requisição. A IDE limpa os painéis ao
 iniciar outra compilação, inclusive em falha de conexão.
+
+As rotas de carregar teste, consultar requisitos e criar sessão aceitam somente
+o nome de um arquivo `.minipar` diretamente em `tests/`; caminhos externos,
+subdiretórios e nomes inválidos retornam HTTP 400.
 
 Validação reproduzível: `tests/2026_2/core09/test_interfaces.py`,
 `tests/2026_2/core09/smoke_http.py` (porta 5000 livre) e

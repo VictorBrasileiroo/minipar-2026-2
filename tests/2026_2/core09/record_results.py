@@ -17,7 +17,7 @@ def log(path):
 
 
 interfaces = load('output/core09/interfaces.json')
-assert interfaces['tests'] == 13 and interfaces['failures'] == interfaces['errors'] == 0
+assert interfaces['tests'] == 14 and interfaces['failures'] == interfaces['errors'] == 0
 service = load('output/core08/tests-final.json')
 assert service['tests'] == 36 and service['failures'] == service['errors'] == 0
 checks = []
@@ -36,7 +36,29 @@ report = dict(base_commit='59ea77d093deb35877243da3383bcd7036e16448', interfaces
     visual=dict(status='BLOCKED', reason='openBrowserPage failed; CUA: The browser access host is unavailable'),
     initial_run=dict(status='FAIL reproduced', log='output/core09-before-detail.log', summary='7 tests: 2 failures, 1 error; stale cpp/tac, menu SystemExit; initial runtime bounds probe exposed inherited core behavior and was replaced with controlled substr failure. See baseline_probes for actual native returncode defect.'),
     hashes={})
+report['validation_scope'] = dict(current='CORE-09: 14 tests; filename validation and legitimate endpoints',
+    historical='CORE-02/06/07/08, baseline, HTTP and legacy smoke retained from the initial execution; not rerun in this review')
+report['privacy'] = dict(repo='<REPO>', toolchain='<TOOLCHAIN>', other_local_paths='<LOCAL>/<basename>',
+    note='Local prefixes anonymized; sources, flags, output, oracles and hashes retained.')
 for path in ['main.py', 'app.py', 'menu.py', 'static/js/script.js'] + [str(p.relative_to(ROOT)).replace('\\','/') for p in Path(__file__).parent.glob('*.py')]:
     report['hashes'][path] = hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
-(ROOT/'docs/auditorias/CORE-09_RESULTADOS.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+
+def anonymize(value):
+    if isinstance(value, dict):
+        return {key: anonymize(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [anonymize(item) for item in value]
+    if not isinstance(value, str):
+        return value
+    for prefix, replacement in [(str(ROOT), '<REPO>'), (str(Path(interfaces['compiler']).parent), '<TOOLCHAIN>')]:
+        for variant in sorted({prefix, prefix.replace('\\', '/'), prefix.replace('\\', '\\\\')}, key=len, reverse=True):
+            value = re.sub(re.escape(variant), lambda _: replacement, value, flags=re.I)
+    # Also redact any external local path that appears in a diagnostic.
+    return re.sub(r'''[A-Za-z]:[\\/]+[^\s'"<>,;\]\)]+''',
+                  lambda match: '<LOCAL>/' + re.split(r'[\\/]+', match.group())[-1], value)
+
+
+serialized = json.dumps(anonymize(report), ensure_ascii=False, indent=2)+'\n'
+assert not re.search(r'(?<![A-Za-z])[A-Za-z]:[\\/]', serialized), 'Unredacted absolute path'
+(ROOT/'docs/auditorias/CORE-09_RESULTADOS.json').write_text(serialized, encoding='utf-8')
 print('CORE-09 evidence recorded from verified logs.')

@@ -30,6 +30,22 @@ TEMP_DIR = 'temp_code'
 os.makedirs(TEMP_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+
+def _requested_test_path():
+    """Accept one MiniPar basename, contained in the configured tests directory."""
+    data = request.get_json(silent=True)
+    filename = data.get('filename') if isinstance(data, dict) else None
+    if (not isinstance(filename, str) or not filename.endswith('.minipar')
+            or any(char in filename for char in '/\\:')
+            or any(ord(char) < 32 for char in filename)):
+        raise ValueError('Nome de arquivo inválido.')
+    root = os.path.realpath(TESTS_DIR)
+    path = os.path.realpath(os.path.join(root, filename))
+    if os.path.normcase(os.path.dirname(path)) != os.path.normcase(root):
+        raise ValueError('Nome de arquivo inválido.')
+    return filename, path
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -42,9 +58,11 @@ def get_tests():
 
 @app.route('/api/get_test', methods=['POST'])
 def get_test():
-    filename = request.json.get('filename')
-    filepath = os.path.join(TESTS_DIR, filename)
-    if os.path.exists(filepath):
+    try:
+        _, filepath = _requested_test_path()
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    if os.path.isfile(filepath):
         with open(filepath, 'r', encoding='utf-8') as f:
             return jsonify({"code": f.read()})
     return jsonify({"error": "Arquivo não encontrado"}), 404
@@ -52,7 +70,10 @@ def get_test():
 @app.route('/api/test_spec', methods=['POST'])
 def get_test_spec_api():
     """Requisitos detectados automaticamente pelo program_analyzer."""
-    filename = request.json.get('filename')
+    try:
+        filename, _ = _requested_test_path()
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
     spec = get_spec_summary(filename)
     if spec:
         return jsonify(spec)
@@ -83,9 +104,11 @@ def session_join():
 
 @app.route('/api/session/create', methods=['POST'])
 def session_create():
-    filename = request.json.get('filename')
-    path = os.path.join(TESTS_DIR, filename)
-    if not os.path.exists(path):
+    try:
+        _, path = _requested_test_path()
+    except ValueError as exc:
+        return jsonify({"success": False, "error": str(exc)}), 400
+    if not os.path.isfile(path):
         return jsonify({"success": False, "error": "Arquivo não encontrado"}), 404
     from program_analyzer import get_program_spec
     spec = get_program_spec(path)
