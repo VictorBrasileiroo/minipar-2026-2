@@ -1,9 +1,12 @@
 # HANDOFF — CORE-07 — backend integrado ao runtime
 
-> Atualização de 05/11/2026: CORE-06 já está em `origin/dev`; integração local
-> CLI/CORE-08 e novas provas em [CORE-07_INTEGRACAO_DEV.md](CORE-07_INTEGRACAO_DEV.md).
-> O bloqueio CLI descrito nas rodadas abaixo é histórico. O merge local fica
-> sem commit/push para revisão; ratificações e aceite humano permanecem pendentes.
+> Atualização de 05/11/2026 (após o merge): o PR #18 foi aprovado na review do
+> Eixo C e mergeado em `dev` (`b6e2705`), depois do CORE-06 (#17). Integração
+> CLI/CORE-08 e provas em [CORE-07_INTEGRACAO_DEV.md](CORE-07_INTEGRACAO_DEV.md).
+> O estado PARTIAL, o bloqueio da CLI e as restrições "sem stage, commit, push,
+> PR, merge" descritos abaixo são **históricos** (rodada de 30/10). Card:
+> `IN_REVIEW`; `DONE` depende da validação do dono (A); ratificações contratuais
+> e a prova do código gerado entre dois computadores seguem pendentes.
 
 Responsável: Eixo A/coordenador. Data: 30/10/2026. Branch local:
 `eixo-a/CORE-07-backend-runtime`. **Estado: PARTIAL**, disponível para revisão
