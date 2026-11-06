@@ -1,0 +1,553 @@
+{
+  "base_commit": "59ea77d093deb35877243da3383bcd7036e16448",
+  "interfaces": {
+    "timestamp": "2026-11-05T16:33:00",
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "compiler": "<TOOLCHAIN>\\g++.exe",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "records": [
+      {
+        "test": "__main__.Interfaces.test_cli_fork_join",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_cli_interactive_process",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_compile_request_errors_and_missing_toolchain",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_concurrent_same_filename",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_legacy_t07_both_interfaces",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_pages_listing_and_sessions",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_terminal_menu_and_syntax_error",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_terminal_runtime_failure_and_invalid_start",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_test_endpoints_reject_unsafe_filenames",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_web_input_and_changed_source",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_web_launch_without_cwd_wrapper",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_web_real_success_then_invalid_no_stale",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_web_runtime_failure",
+        "status": "PASS"
+      },
+      {
+        "test": "__main__.Interfaces.test_web_timeout_real",
+        "status": "PASS"
+      }
+    ],
+    "evidence": [
+      {
+        "kind": "CLI Fork/Join",
+        "source": "func twice(x) { return x * 2; } var a = fork twice(21) on \"local\"; var b = fork twice(7) on \"local\"; print(join(b), join(a));",
+        "stdout": "14 42\n",
+        "stderr": "",
+        "returncode": 0
+      },
+      {
+        "source": "print(6 * 7);",
+        "inputs": [],
+        "response": {
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<REPO>\\\\output\\\\tmp02tk63ou\\\\absent-g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmp02tk63ou\\\\output\\\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.cpp', '-o', '<REPO>\\\\output\\\\tmp02tk63ou\\\\output\\\\ide_1a033a6fabc548ceb5ef1eed88df4ef8.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n\n[ERRO] GPP_NOT_FOUND: falha na compilacao C++.\n",
+          "stdout": "",
+          "success": false
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "612d74a91799746b27e84b3ff228af50998822938a7ed3fac853807f126682a2",
+            "length": 7697
+          },
+          "tac": {
+            "sha256": "1d058a7d045772d2d14a82af4d2b0f5781c61d2f05a3c2fce268b9c694a3f400",
+            "length": 20
+          }
+        }
+      },
+      {
+        "source": "func quicksort_iterativo(arr) {\n    var stack = [];\n    if (len(arr) > 1) {\n        stack.append(0);\n        stack.append(len(arr) - 1);\n    }\n    while (len(stack) > 0) {\n        var fim = stack.pop();\n        var inicio = stack.pop();\n        if (inicio >= fim) {\n            continue;\n        }\n        var pivot = arr[fim];\n        var i = inicio - 1;\n        var j = inicio;\n        while (j < fim) {\n            if (arr[j] <= pivot) {\n                i = i + 1;\n                var tmp = arr[i];\n                arr[i] = arr[j];\n                arr[j] = tmp;\n            }\n            j = j + 1;\n        }\n        i = i + 1;\n        var tmp2 = arr[i];\n        arr[i] = arr[fim];\n        arr[fim] = tmp2;\n        stack.append(inicio);\n        stack.append(i - 1);\n        stack.append(i + 1);\n        stack.append(fim);\n    }\n    return arr;\n}\n\nseq {\n    var array = [33, 12, 98, 5, 61];\n    var ordenado = quicksort_iterativo(array);\n    print(\"Array ordenado:\", ordenado);\n}\n",
+        "inputs": [],
+        "response": {
+          "stderr": "",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.cpp', '-o', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_dc02a9d6e67d4b99b9a9988ac06035f1.exe\n=== Processo Finalizado ===\n\n--- Executando ide_dc02a9d6e67d4b99b9a9988ac06035f1 ---\nArray ordenado: [5, 12, 33, 61, 98]\n\n----------------------------------------",
+          "success": true
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "25eca46d3b465de6dee1c7c485439e498616892929231446abc868c1e22ef1a6",
+            "length": 9109
+          },
+          "tac": {
+            "sha256": "4025f205341da716134394e468e3495b71c0224574f166bcb3d56113adb7fccf",
+            "length": 1210
+          }
+        }
+      },
+      {
+        "kind": "legacy T07 menu",
+        "stdout": "\n  Programa: teste7_quicksort_iterativo_tac\n\n=== Compilando: tests\\teste7_quicksort_iterativo_tac.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\teste7_quicksort_iterativo_tac.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\teste7_quicksort_iterativo_tac.cpp', '-o', '<REPO>\\\\output\\\\tmpk7yka9w5\\\\output\\\\teste7_quicksort_iterativo_tac.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\teste7_quicksort_iterativo_tac.exe\n\n--- Executando teste7_quicksort_iterativo_tac ---\nArray ordenado: [5, 12, 33, 61, 98]\n\n----------------------------------------\n",
+        "oracle": "Array ordenado: [5, 12, 33, 61, 98]"
+      },
+      {
+        "source": "var x = input(); print(x);",
+        "inputs": [
+          "core09"
+        ],
+        "response": {
+          "stderr": "",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_f7ab27f013174c3192931cdf8630aa13.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_f7ab27f013174c3192931cdf8630aa13.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_f7ab27f013174c3192931cdf8630aa13.cpp', '-o', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_f7ab27f013174c3192931cdf8630aa13.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_f7ab27f013174c3192931cdf8630aa13.exe\n=== Processo Finalizado ===\n\n--- Executando ide_f7ab27f013174c3192931cdf8630aa13 ---\ncore09\n\n----------------------------------------",
+          "success": true
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "47d3039dfc785373f9be0698e9b997349f88fe0a6840c7e7f99b0f5839c2fa25",
+            "length": 7713
+          },
+          "tac": {
+            "sha256": "6925d3096104d95fbbf3f43a8a89ce2a6ac8f4d2bfb0f9ef6613de8b86069862",
+            "length": 28
+          }
+        }
+      },
+      {
+        "source": "print(12345);",
+        "inputs": [],
+        "response": {
+          "stderr": "",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.cpp', '-o', '<REPO>\\\\output\\\\tmpuiuog9kd\\\\output\\\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_71d769bfc4f24c4f8c443c81f4ac8f5d.exe\n=== Processo Finalizado ===\n\n--- Executando ide_71d769bfc4f24c4f8c443c81f4ac8f5d ---\n12345\n\n----------------------------------------",
+          "success": true
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "ad71d077aa30ef755d2df3adeadde2773fe0ef95603fbe2182c83bd03aa46016",
+            "length": 7695
+          },
+          "tac": {
+            "sha256": "253e7a4a7c213736c6459e0662c4a5ddefa643f707cd393565f7d634686a3042",
+            "length": 12
+          }
+        }
+      },
+      {
+        "source": "print(9876);",
+        "inputs": [],
+        "response": {
+          "stderr": "",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_a8e502812a3a4680b1866a2574bf950b.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_a8e502812a3a4680b1866a2574bf950b.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpn1pclmk8\\\\output\\\\ide_a8e502812a3a4680b1866a2574bf950b.cpp', '-o', '<REPO>\\\\output\\\\tmpn1pclmk8\\\\output\\\\ide_a8e502812a3a4680b1866a2574bf950b.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_a8e502812a3a4680b1866a2574bf950b.exe\n=== Processo Finalizado ===\n\n--- Executando ide_a8e502812a3a4680b1866a2574bf950b ---\n9876\n\n----------------------------------------",
+          "success": true
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "23e3fb7fcf0746e73dd7c11c98a22fb72df8fc4ea6b474b432d9dcaa1691cec0",
+            "length": 7694
+          },
+          "tac": {
+            "sha256": "3b4b9377692121f1a5eae8245c16f6ad49cd8650c80ed3c0be27a0c92bf22162",
+            "length": 11
+          }
+        }
+      },
+      {
+        "source": "print(6 * 7);",
+        "inputs": [],
+        "response": {
+          "stderr": "",
+          "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpxqvjh139\\\\output\\\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.cpp', '-o', '<REPO>\\\\output\\\\tmpxqvjh139\\\\output\\\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_12cf5d61c2f2479bbcacf2e15e38d56e.exe\n=== Processo Finalizado ===\n\n--- Executando ide_12cf5d61c2f2479bbcacf2e15e38d56e ---\n42\n\n----------------------------------------",
+          "success": true
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "612d74a91799746b27e84b3ff228af50998822938a7ed3fac853807f126682a2",
+            "length": 7697
+          },
+          "tac": {
+            "sha256": "1d058a7d045772d2d14a82af4d2b0f5781c61d2f05a3c2fce268b9c694a3f400",
+            "length": 20
+          }
+        }
+      },
+      {
+        "source": "print(\"broken",
+        "inputs": [],
+        "response": {
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_eb7fdbeb7d4c46be970cabf652fd2f7c.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n\n[ERRO LEXICO] Linha 1: String sem fechamento\n",
+          "stdout": "",
+          "success": false
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "length": 0
+          },
+          "tac": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "length": 0
+          }
+        }
+      },
+      {
+        "source": "print(;",
+        "inputs": [],
+        "response": {
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_1c746bad9bc94807be0c5dec023a3a12.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n\n[ERRO SINTATICO] Linha 1: Expressao esperada\n",
+          "stdout": "",
+          "success": false
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "length": 0
+          },
+          "tac": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "length": 0
+          }
+        }
+      },
+      {
+        "source": "print(missing);",
+        "inputs": [],
+        "response": {
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_adc7d29d76384cd689db4a0ab794c19c.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n\n[ERRO SEMANTICO] Linha 1: Variavel 'missing' nao declarada.\n[ERRO] Falha na Analise Semantica. Compilacao abortada.\n",
+          "stdout": "",
+          "success": false
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "length": 0
+          },
+          "tac": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "length": 0
+          }
+        }
+      },
+      {
+        "source": "print(\"before failure\"); print(substr(\"abc\", 9, 1));",
+        "inputs": [],
+        "response": {
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_a141b130cb1a49b1b9af4080f9b189ca.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_a141b130cb1a49b1b9af4080f9b189ca.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpqp9k6m71\\\\output\\\\ide_a141b130cb1a49b1b9af4080f9b189ca.cpp', '-o', '<REPO>\\\\output\\\\tmpqp9k6m71\\\\output\\\\ide_a141b130cb1a49b1b9af4080f9b189ca.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_a141b130cb1a49b1b9af4080f9b189ca.exe\n=== Processo Finalizado ===\n\n--- Executando ide_a141b130cb1a49b1b9af4080f9b189ca ---\nbefore failure\n\n[ERRO NA EXECUÇÃO]:\nErro de execucao: substr indices invalidos (inicio=9, tamanho=1, len=3)\n\n[ERRO] Programa encerrou com codigo 1.\n----------------------------------------",
+          "stdout": "",
+          "success": false
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "3974709583b97f4129b33e43298755ecc1a55274602c943ba6f36ca1e52cf423",
+            "length": 7793
+          },
+          "tac": {
+            "sha256": "fdd4cd98d4b360993cc2fdd100aab695d99e988510122c13aee9c38d15878535",
+            "length": 80
+          }
+        }
+      },
+      {
+        "source": "print(\"before timeout\"); while (true) {}",
+        "inputs": [],
+        "response": {
+          "stderr": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_88b66a206b22401f90332b3961344cd9.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_88b66a206b22401f90332b3961344cd9.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmpwsotki0p\\\\output\\\\ide_88b66a206b22401f90332b3961344cd9.cpp', '-o', '<REPO>\\\\output\\\\tmpwsotki0p\\\\output\\\\ide_88b66a206b22401f90332b3961344cd9.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_88b66a206b22401f90332b3961344cd9.exe\n=== Processo Finalizado ===\n\n--- Executando ide_88b66a206b22401f90332b3961344cd9 ---\nbefore timeout\n\n[ERRO] Tempo limite de execução excedido (O programa entrou em loop infinito ou aguarda entrada de dados do usuário?).\n----------------------------------------",
+          "stdout": "",
+          "success": false
+        },
+        "artifacts": {
+          "cpp": {
+            "sha256": "1bd1d7605c1912dee96821284e664c1e33543aaaa40509fcd6568b4a3ee7a4b5",
+            "length": 7748
+          },
+          "tac": {
+            "sha256": "265436d937398514487f78ea8ef1bafbfb952931df9d188bd6d2ef40d7fa058b",
+            "length": 86
+          }
+        }
+      }
+    ]
+  },
+  "baseline_probes": {
+    "revision": "59ea77d",
+    "records": [
+      {
+        "case": "stale artifacts",
+        "status": "FAIL reproduced",
+        "source": "print(\"broken",
+        "success": false,
+        "same_cpp": true,
+        "same_tac": true
+      },
+      {
+        "case": "native error reported as success",
+        "status": "FAIL reproduced",
+        "success": true,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\baseline.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\baseline.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmp7_v8_ckg\\\\output\\\\baseline.cpp', '-o', '<REPO>\\\\output\\\\tmp7_v8_ckg\\\\output\\\\baseline.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\baseline.exe\n=== Processo Finalizado ===\n\n--- Executando baseline ---\nbefore failure\n\n[ERRO NA EXECUÇÃO]:\nErro de execucao: substr indices invalidos (inicio=9, tamanho=1, len=3)\n\n----------------------------------------",
+        "stderr": ""
+      }
+    ]
+  },
+  "http": {
+    "status": "PASS",
+    "command": [
+      "<REPO>\\.venv\\Scripts\\python.exe",
+      "-B",
+      "<REPO>\\main.py"
+    ],
+    "stdin": "2\n",
+    "bind": "127.0.0.1:5000",
+    "source": "print(42);",
+    "response": {
+      "stderr": "",
+      "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: temp_code\\ide_95ad643f2f85452bade3935ebbc53a38.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\ide_95ad643f2f85452bade3935ebbc53a38.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['<TOOLCHAIN>\\\\g++.exe', '-std=c++20', '-O3', '<REPO>\\\\output\\\\tmp1d_hhbjz\\\\output\\\\ide_95ad643f2f85452bade3935ebbc53a38.cpp', '-o', '<REPO>\\\\output\\\\tmp1d_hhbjz\\\\output\\\\ide_95ad643f2f85452bade3935ebbc53a38.exe', '-pthread', '-I', '<REPO>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\ide_95ad643f2f85452bade3935ebbc53a38.exe\n=== Processo Finalizado ===\n\n--- Executando ide_95ad643f2f85452bade3935ebbc53a38 ---\n42\n\n----------------------------------------",
+      "success": true
+    }
+  },
+  "core": [
+    {
+      "suite": "CORE-02",
+      "tests": 5,
+      "status": "PASS",
+      "log": "output/core09-core02.log",
+      "excerpt": "Ran 5 tests in 0.018s\r\n\r\nOK"
+    },
+    {
+      "suite": "CORE-06",
+      "tests": 54,
+      "status": "PASS",
+      "log": "output/core09-core06.log",
+      "excerpt": "Ran 54 tests in 38.071s\r\n\r\nOK"
+    },
+    {
+      "suite": "CORE-07",
+      "tests": 17,
+      "status": "PASS",
+      "log": "output/core09-core07.log",
+      "excerpt": "Ran 17 tests in 86.735s\r\n\r\nOK"
+    }
+  ],
+  "service": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "records": [
+      {
+        "test": "core08_tests.ContractTests.test_ace01_fixtures",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_ace09_arguments",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_ace11_ast",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_analyze_no_compiler_or_artifacts",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_expected_unmapped_is_not_internal",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_gpp_missing_failure_no_binary_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_internal_exception",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_lexer_incomplete_strings",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_parser_modes",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_review_p2_function_parameters",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_review_p2_method_parameters",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_scopes_symbols",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_semantic_accumulates_and_ace06",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_specialization_not_duplicated",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ContractTests.test_uuid_hash_phase_order",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_ace02_and_stdin",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_ace04_08_sequential",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_ace05_concurrent_five_rounds",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_ace07_timeout",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_ace10_retention_21_real_builds",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_native_gpp_fail_and_nonzero",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.NativeTests.test_path_redirection_rejected",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProcessTests.test_both_outputs_bounded_and_blocked_stdin",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProcessTests.test_descendants_killed",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProcessTests.test_review_p2_invalid_utf8_expansion_truncates_both_streams",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProcessTests.test_review_p2_invalid_utf8_without_truncation",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProcessTests.test_review_p2_valid_utf8_without_truncation",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_error_invariant_approved_and_internal_safety",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_other_unsupported_and_unknown_location",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_real_cpp_proof_refusal_after_tac",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_real_fork_join_pipeline_and_artifacts",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_real_tac_refusals_include_source_line",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_review_discarded_fork",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_review_reserved_name",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_review_string_index",
+        "status": "PASS"
+      },
+      {
+        "test": "core08_tests.ProposedDiagnosticsTests.test_semantic_order_no_loss_and_next_call",
+        "status": "PASS"
+      }
+    ],
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "compiler": "<TOOLCHAIN>\\g++.exe",
+    "timestamp": "2026-11-05T16:01:43"
+  },
+  "legacy_smoke": "PASS",
+  "inherited_baseline": {
+    "tools": {
+      "python": "3.12.4",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cxx": "<TOOLCHAIN>\\g++.exe",
+      "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+    },
+    "overall": {
+      "T02": "PASS",
+      "T03": "PASS",
+      "T04": "PARTIAL",
+      "T05": "PASS",
+      "T06": "PASS",
+      "T07": "PASS"
+    }
+  },
+  "visual": {
+    "status": "BLOCKED",
+    "reason": "openBrowserPage failed; CUA: The browser access host is unavailable"
+  },
+  "initial_run": {
+    "status": "FAIL reproduced",
+    "log": "output/core09-before-detail.log",
+    "summary": "7 tests: 2 failures, 1 error; stale cpp/tac, menu SystemExit; initial runtime bounds probe exposed inherited core behavior and was replaced with controlled substr failure. See baseline_probes for actual native returncode defect."
+  },
+  "hashes": {
+    "main.py": "a27ed2d907dcabe4b6afb9b441f3ac5e8350a153ae824854e97ca5a175c2ccfe",
+    "app.py": "b4f04100aadef8f726af783f408a25073ef933c22fdeceedcfa118da087db899",
+    "menu.py": "2466ad5ddfd13f4750928c0fe00e6c25b251557dee4082d9c956ee3f2488a8b0",
+    "static/js/script.js": "a111ac8a676f63c2326781fe145725302e1de8e30d82284d4f5befe958f97055",
+    "tests/2026_2/core09/probe_baseline.py": "c7e4c90aad9141e39ba27c62a16c971e1784db2029a013e4aff2061494a54010",
+    "tests/2026_2/core09/record_results.py": "eb04db7273e9bb8f6e1fcca407f43652da3c9acd211a9c0d9aae36693bcb8f62",
+    "tests/2026_2/core09/smoke_http.py": "ff2f7b3067aa8a43e6f016e5372aaf266a66191514969a66e38f706ca2f21b73",
+    "tests/2026_2/core09/test_interfaces.py": "e7d11fc4babf54e2c4e7abbb779206daa0f9cf40fc609aa55c563df5a9161f7c"
+  },
+  "validation_scope": {
+    "current": "CORE-09: 14 tests; filename validation and legitimate endpoints",
+    "historical": "CORE-02/06/07/08, baseline, HTTP and legacy smoke retained from the initial execution; not rerun in this review"
+  },
+  "privacy": {
+    "repo": "<REPO>",
+    "toolchain": "<TOOLCHAIN>",
+    "other_local_paths": "<LOCAL>/<basename>",
+    "note": "Local prefixes anonymized; sources, flags, output, oracles and hashes retained."
+  }
+}
