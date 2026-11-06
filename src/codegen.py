@@ -328,12 +328,19 @@ class CppCodeGenerator:
             return f"{indent}{chan}->sendData(__to_string({msg}));\n"
 
         if isinstance(node, PrintStmt):
+            self._serial += 1
+            buffer = f"{self._prefix}_print_{self._serial}"
             parts = []
             for i, arg in enumerate(node.arguments):
                 if i > 0:
                     parts.append(' << " "')
                 parts.append(f" << {self._translate_expression(arg)}")
-            return f"{indent}std::cout{ ''.join(parts) } << std::endl;\n"
+            return (f"{indent}{{\n"
+                    f"{indent}    std::ostringstream {buffer};\n"
+                    f"{indent}    {buffer}{''.join(parts)};\n"
+                    f"{indent}    {{ std::lock_guard<std::mutex> lock(__minipar_print_mutex); "
+                    f"std::cout << {buffer}.str() << std::endl; }}\n"
+                    f"{indent}}}\n")
         
         if isinstance(node, SeqBlock):
             lines = [f"{indent}{{\n"]

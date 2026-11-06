@@ -2,6 +2,7 @@ _CPP_HEADER = """\
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <mutex>
 #include <vector>
 #include <thread>
 #include <memory>
@@ -17,6 +18,8 @@ _CPP_HEADER = """\
 #include <algorithm>
 #include <locale>
 #include <stdexcept>
+
+inline std::mutex __minipar_print_mutex;
 
 // Ativo apenas durante wrappers de tarefa e suas branches par.
 inline thread_local bool __fj_in_task = false;
