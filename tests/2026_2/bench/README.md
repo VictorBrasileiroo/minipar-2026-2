@@ -27,7 +27,7 @@ Uma execução só entra na estatística se a saída bater com o oráculo Python
 
 ## 3. Falhas repetíveis
 
-Cada falha roda `--reps-falhas` vezes com processos novos:
+Cada falha roda `--reps-falhas` vezes (mínimo 1) com processos novos. `--reps-falhas 0` é recusado (exit 2), para que uma falha nunca vire PASS sem ter rodado; quem quer só os tempos usa `--sem-falhas`.
 
 | ID | Montagem | Esperado |
 |---|---|---|
@@ -56,13 +56,24 @@ Portas: `port-base+1` a `port-base+13` em `127.0.0.1` (padrão 7501–7513). Se 
    `output/bench_t08.exe --minipar-worker 7501 --bind <IP-de-B>` (e 7502, 7503, 7504).
 3. Na máquina A:
    `python tests/2026_2/bench/run_bench.py --carga 5000000 --reps 7 --destinos-rede <IP-de-B>:7501,<IP-de-B>:7502,<IP-de-B>:7503,<IP-de-B>:7504`
-4. Guarde os logs dos workers de B. No relatório, os IPs aparecem mascarados (`192.168.x.N`).
+4. Guarde os logs dos workers de B e mascare-os antes de anexar (`runtime/tools/mascarar_log.py`, RUN-06). O `bench.json` e o `resumo.md` de A já saem anonimizados (seção 5).
 
 ## 5. Saída
 
 - Linhas `[PASS]`, `[FAIL]`, `[BLOCKED]` e `[INFO]` no terminal.
 - `output/bench/run-<data>/bench.json`: ambiente, cada execução (rodada, ok, tempo, exit), estatística, speedup e cada repetição de falha.
 - `output/bench/run-<data>/resumo.md`: as tabelas usadas na evidência.
-- Exit 0 se tudo PASS, 1 se algum FAIL, 2 se algum BLOCKED.
+- Exit 0 se tudo PASS, 1 se algum FAIL, 2 se algum BLOCKED (ou argumento inválido).
+
+**Anonimização** (`sanitizar()`, aplicada a todo o texto do `bench.json` e do `resumo.md`, inclusive `stderr` e detalhes de erro):
+
+| Dado | Vira |
+|---|---|
+| IPv4 que não é loopback, em qualquer campo (destinos do `par_rede`, mensagens `WORKER_UNAVAILABLE`/`WORKER_LOST` etc.) | `a.b.x.d` (ex.: `192.168.x.20`) |
+| Hostname desta máquina | `<host>` |
+| Hostname de worker remoto no `worker_id` das mensagens do runtime (`worker DESKTOP-B:4321`) | `worker <host-remoto>:4321` |
+| Caminho do repositório (contém o nome do usuário) | `<repo>` |
+
+`127.0.0.1` e números que não são IP (versões como `10.0.26300`) ficam como estão. A saída do **terminal** não é anonimizada: não a cole como evidência.
 
 `output/` é ignorado pelo Git. A cópia publicada fica em `docs/evidencias/RUN-05/`.
