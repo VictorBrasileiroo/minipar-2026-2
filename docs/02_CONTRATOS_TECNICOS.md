@@ -790,7 +790,7 @@ O mapeamento de cada critério para o teste automatizado que o cobre está em `r
 
 ### 2.8 Compatibilidade com runtime antigo
 
-`MiniParChannel` atual usa TCP básico com listener a cada mensagem e `send`/`recv` únicos. O baseline do `CORE-01` mostrou que isso trava o T01 de forma intermitente (DEF-01 em `docs/auditorias/CORE-01_BASELINE_T01_T07.md`). **Decisão proposta:** o runtime de Fork/Join é um componente **novo** (`runtime/`) e não altera `c_channel`/`send`/`receive`; a correção do canal herdado é card de A. Se A quiser, pode reaproveitar `minipar_rt/net.hpp` (`send_all`, `recv_exact`, frames) nessa correção, sem mudar a interface MiniPar do canal. Regressão do Teste 1 é obrigatória em qualquer mudança.
+O `MiniParChannel` herdado usa TCP com listener por mensagem, separado do runtime novo de Fork/Join (`runtime/`). O `CORE-01` e o `CORE-10` registraram travamentos intermitentes do T01 (DEF-01). A correção DEF-01 em `docs/auditorias/DEF-01_CORRECAO_T01.md` preserva `c_channel`/`send`/`receive`: cada tentativa de conexão cria um socket, o envio e a leitura são completos e o receptor confirma a mensagem depois de fechar o listener anterior. Falhas e esperas excedidas são explícitas. Isso é um detalhe do transporte herdado, sem alteração da interface MiniPar ou do protocolo de Fork/Join.
 
 ### 2.9 Pendências registradas
 
