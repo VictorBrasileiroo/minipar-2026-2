@@ -304,14 +304,8 @@ public:
             CLOSE_SOCK(server_fd);
             throw std::runtime_error("c_channel: listen falhou");
         }
-        fd_set ready;
-        FD_ZERO(&ready);
-        FD_SET(server_fd, &ready);
-        timeval wait{5, 0};
-        if (select(static_cast<int>(server_fd + 1), &ready, nullptr, nullptr, &wait) <= 0) {
-            CLOSE_SOCK(server_fd);
-            throw std::runtime_error("c_channel: timeout ou falha ao aguardar conexao");
-        }
+        // receive() espera ate o usuario fornecer dados ao emissor.
+        // O timeout de I/O so comeca depois de accept().
         MiniParSocket new_socket = accept(server_fd, nullptr, nullptr);
         if (new_socket == MINIPAR_INVALID_SOCKET) {
             CLOSE_SOCK(server_fd);

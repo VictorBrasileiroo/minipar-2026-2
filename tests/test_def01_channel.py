@@ -2,15 +2,45 @@
 
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
+import sys
 import tempfile
+import time
 import unittest
 
 from src.cpp_template import _CPP_HEADER
 
 
 class ChannelTransportTest(unittest.TestCase):
+    def test_t01_waits_for_interactive_input(self):
+        """O listener deve continuar esperando enquanto o usuário digita."""
+        root = Path(__file__).resolve().parents[1]
+        default_gpp = Path("C:/msys64/ucrt64/bin/g++.exe")
+        cxx = os.environ.get("CXX") or (str(default_gpp) if default_gpp.is_file() else shutil.which("g++"))
+        if not cxx:
+            self.skipTest("G++ indisponível")
+        env = dict(os.environ)
+        env["CXX"] = cxx
+        env["PATH"] = str(Path(cxx).parent) + os.pathsep + env.get("PATH", "")
+        with tempfile.TemporaryDirectory() as folder:
+            compile_result = subprocess.run(
+                [sys.executable, "-B", str(root / "main.py"),
+                 str(root / "tests/teste1_calculadora_cliente_servidor.minipar"), "t01_delayed"],
+                cwd=folder, env=env, capture_output=True, text=True, timeout=60,
+            )
+            self.assertEqual(compile_result.returncode, 0, compile_result.stderr)
+            exe = Path(folder) / "output" / ("t01_delayed.exe" if os.name == "nt" else "t01_delayed")
+            with subprocess.Popen([str(exe)], cwd=folder, env=env,
+                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE, text=True) as process:
+                time.sleep(7)
+                out, err = process.communicate(input="+\n2\n3\n", timeout=15)
+            self.assertEqual(process.returncode, 0, err)
+            self.assertIn("Servidor recebeu: + 2 3", out)
+            self.assertRegex(out, r"Resultado:\s*5(?:\.0+)?\b")
+
     def test_delayed_listener_and_large_message(self):
         default_gpp = Path("C:/msys64/ucrt64/bin/g++.exe")
         cxx = os.environ.get("CXX") or (str(default_gpp) if default_gpp.is_file() else shutil.which("g++"))

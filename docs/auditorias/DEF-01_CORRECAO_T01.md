@@ -6,11 +6,11 @@
 
 ## Causa e correção
 
-O T01 faz três envios consecutivos para a porta 5101, com um `receive` que abre e fecha um listener para cada mensagem. O emissor anterior repetia `connect()` no mesmo socket após falha; no Winsock, ele não podia ser reutilizado. Também descartava falhas de envio, ignorava o número de bytes transferidos e podia iniciar a mensagem seguinte enquanto o listener da anterior ainda fechava. O receptor podia ficar bloqueado em `accept()` sem limite.
+O T01 faz três envios consecutivos para a porta 5101, com um `receive` que abre e fecha um listener para cada mensagem. O emissor anterior repetia `connect()` no mesmo socket após falha; no Winsock, ele não podia ser reutilizado. Também descartava falhas de envio, ignorava o número de bytes transferidos e podia iniciar a mensagem seguinte enquanto o listener da anterior ainda fechava. Quando uma mensagem se perdia, o receptor permanecia em `accept()` sem que o emissor sinalizasse a falha.
 
 Reprodução antes da mudança: `python -B scripts/baseline_t01_t07.py --only T01 --repeat 5` → **3/5 PASS, 2 timeouts de 30 s**. Evidência local: `output/core01/run-20261106-153926/baseline.json`. Nas falhas, a saída parou após os prompts, sem `Servidor recebeu`.
 
-A primeira correção, só com novo socket por tentativa, envio completo e espera limitada, deu **17/20 PASS**, sem timeout; três execuções terminaram com falha explícita de envio/recebimento. Evidência local: `output/core01/run-20261106-154225/baseline.json`. Isso confirmou uma segunda janela: a conexão podia alcançar o listener anterior durante a troca entre mensagens. A correção final inclui confirmação de recebimento: o emissor encerra a escrita e aguarda um byte de confirmação; o receptor lê até EOF, fecha o listener, então confirma. O próximo `send` só começa depois desse ponto. O tipo de socket agora é `SOCKET` no Windows e `int` no POSIX; as operações verificam erros, os envios/leitura cobrem todos os bytes, a conexão tem prazo total de 5 s e as esperas do receptor e da confirmação têm limite de 5 s. A API MiniPar e as assinaturas públicas não mudaram. Falhas não são tratadas como sucesso.
+A primeira correção, só com novo socket por tentativa, envio completo e espera limitada, deu **17/20 PASS**, sem timeout; três execuções terminaram com falha explícita de envio/recebimento. Evidência local: `output/core01/run-20261106-154225/baseline.json`. Isso confirmou uma segunda janela: a conexão podia alcançar o listener anterior durante a troca entre mensagens. A correção inclui confirmação de recebimento: o emissor encerra a escrita e aguarda um byte de confirmação; o receptor lê até EOF, fecha o listener, então confirma. O próximo `send` só começa depois desse ponto. O tipo de socket é `SOCKET` no Windows e `int` no POSIX; as operações verificam erros, os envios/leitura cobrem todos os bytes, a conexão tem prazo total de 5 s e o I/O após `accept()` tem limites de 5 s. A API MiniPar e as assinaturas públicas não mudaram. Falhas não são tratadas como sucesso.
 
 ## Validação executada
 
@@ -25,6 +25,14 @@ Ambiente: Windows 11, Python 3.12.4 da `.venv`, G++ UCRT64 16.2.0. Os comandos a
 | `python -B tests/2026_2/core08/smoke_legacy.py` | **PASS**: CLI e Web antiga. |
 
 JSONs locais: `output/core01/run-20261106-155020/baseline.json` (T01), `output/core01/run-20261106-154818/baseline.json` (T07), `output/core07/integration/e2e.json` e `output/core08/legacy/smoke.json`. O diretório `output/` é ignorado pelo Git; os resultados observados estão registrados aqui. Uma rodada anterior, antes de limitar o `connect()`, também deu 20/20 (`run-20261106-154558`).
+
+## Ajuste após revisão do PR #40
+
+A revisão identificou uma regressão introduzida pelo DEF-01: um `select()` de 5 s antes de `accept()` encerrava o listener enquanto o usuário ainda digitava a entrada do T01. Essa espera pertence à semântica bloqueante de `receive()`. Foi removido apenas o `select()` inicial; `accept()` volta a aguardar a conexão sem prazo. O prazo de conexão do emissor, o envio completo, o ACK, os limites de I/O após a conexão e as falhas explícitas permanecem.
+
+Nova validação no Windows 11 com o mesmo Python e G++: `python -B -m unittest tests/test_def01_channel.py` → **2 testes PASS**, incluindo execução real do T01 com o processo iniciado e `stdin` enviado somente após **7 s**; exit 0, servidor recebeu `+ 2 3` e cliente mostrou `Resultado: 5`. O teste nativo anterior de listener atrasado, três mensagens, payload de 10000 bytes e falha sem listener também passou. `python -B scripts/baseline_t01_t07.py --only T01 --repeat 20` → **20/20 PASS**, sem timeout e com resultado 5 em todas. Evidência local da nova rodada: `output/core01/run-20261106-161943/baseline.json` (ignorado pelo Git). Nenhum oráculo ou timeout do script foi alterado.
+
+Neste ajuste foram alterados somente `src/cpp_template.py`, `tests/test_def01_channel.py` e este relatório. Revisados `README.md`, `docs/02_CONTRATOS_TECNICOS.md`, `docs/05_VALIDACAO_E_ACEITE.md` e `AGENTS.md`: não exigem edição adicional, pois a interface, o protocolo documentado, os oráculos, as regras e o fluxo permanecem iguais. As sugestões opcionais da revisão ficaram fora do escopo.
 
 ## Escopo, limites e handoff
 
