@@ -1,0 +1,5119 @@
+{
+ "card": "DOC-02",
+ "passed": 852,
+ "total": 852,
+ "results": [
+  {
+   "group": "documento",
+   "case": "blocos classDiagram",
+   "status": "PASS",
+   "detail": "13 blocos"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 3: TokenType",
+   "status": "PASS",
+   "detail": "src/lexer.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.IDENTIFIER",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.NUMBER",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.STRING_LITERAL",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.BOOL_LITERAL",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.CLASS",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.FUNC",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.VAR",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.SEQ",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.PAR",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.FORK",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.JOIN",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.ON",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.C_CHANNEL",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.SEND",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.RECEIVE",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.TYPE",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.END_OF_FILE",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: TokenType.UNKNOWN",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 3: Token",
+   "status": "PASS",
+   "detail": "src/lexer.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Token.type",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Token.lexeme",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Token.line",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Token.col",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 3: Lexer",
+   "status": "PASS",
+   "detail": "src/lexer.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer.diagnostics",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._source",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._pos",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._line",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._col",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer.tokenize",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._peek",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._advance",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._skip_whitespace_and_comments",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 3: Lexer._make_token",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 3: Lexer ..> Token : cria",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 3: Token --> TokenType",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: ASTNode",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ASTNode.line",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: Program",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: Program.statements",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: NumberExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: NumberExpr.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: StringExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: StringExpr.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: BoolExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: BoolExpr.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: IdentifierExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: IdentifierExpr.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: BinaryExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: BinaryExpr.op",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: BinaryExpr.left",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: BinaryExpr.right",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: UnaryExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: UnaryExpr.op",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: UnaryExpr.operand",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: FuncCallExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: FuncCallExpr.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: FuncCallExpr.arguments",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: MethodCall",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: MethodCall.object",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: MethodCall.method_name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: MethodCall.arguments",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: PropertyAccess",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: PropertyAccess.object",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: PropertyAccess.property_name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: NewExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: NewExpr.class_name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: NewExpr.arguments",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: ThisExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: ListLiteral",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ListLiteral.elements",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: MatrixCreateExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: MatrixCreateExpr.rows",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: MatrixCreateExpr.cols",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: MatrixCreateExpr.init_value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: IndexExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: IndexExpr.object",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: IndexExpr.index",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: InputExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: InputExpr.prompt",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: CChannelExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: CChannelExpr.ip",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: CChannelExpr.port",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: ReceiveExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ReceiveExpr.channel",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: ForkExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ForkExpr.function_name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ForkExpr.arguments",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ForkExpr.destination",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: ForkExpr.column",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 4: JoinExpr",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: JoinExpr.handle",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: JoinExpr.timeout",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 4: JoinExpr.column",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- Program",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- Program",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- NumberExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- NumberExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- StringExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- StringExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- BoolExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- BoolExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- IdentifierExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- IdentifierExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- BinaryExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- BinaryExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- UnaryExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- UnaryExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- FuncCallExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- FuncCallExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- MethodCall",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- MethodCall",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- PropertyAccess",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- PropertyAccess",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- NewExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- NewExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- ThisExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- ThisExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- ListLiteral",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- ListLiteral",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- MatrixCreateExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- MatrixCreateExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- IndexExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- IndexExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- InputExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- InputExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- CChannelExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- CChannelExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- ReceiveExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- ReceiveExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- ForkExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- ForkExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: ASTNode <|-- JoinExpr",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 4: ASTNode <|-- JoinExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 4: Program *-- ASTNode : statements",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: ASTNode",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ASTNode.line",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: VarDecl",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: VarDecl.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: VarDecl.init_value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: VarDecl.type",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: Assignment",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: Assignment.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: Assignment.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: PropertyAssign",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: PropertyAssign.object",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: PropertyAssign.property_name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: PropertyAssign.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: IndexAssign",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: IndexAssign.target",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: IndexAssign.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: PrintStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: PrintStmt.arguments",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: SendStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: SendStmt.channel",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: SendStmt.message",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: SeqBlock",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: SeqBlock.statements",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: ParBlock",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ParBlock.statements",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: IfStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: IfStmt.condition",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: IfStmt.then_branch",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: IfStmt.else_branch",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: WhileStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: WhileStmt.condition",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: WhileStmt.body",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: DoWhileStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: DoWhileStmt.body",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: DoWhileStmt.condition",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: ForStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ForStmt.initializer",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ForStmt.condition",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ForStmt.increment",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ForStmt.body",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ForStmt.iterator_name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ForStmt.iterable",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: BreakStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: ContinueStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: ReturnStmt",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ReturnStmt.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: FuncDecl",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: FuncDecl.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: FuncDecl.params",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: FuncDecl.body",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 5: ClassDecl",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ClassDecl.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ClassDecl.superclass",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ClassDecl.attributes",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 5: ClassDecl.methods",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- VarDecl",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- VarDecl",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- Assignment",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- Assignment",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- PropertyAssign",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- PropertyAssign",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- IndexAssign",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- IndexAssign",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- PrintStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- PrintStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- SendStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- SendStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- SeqBlock",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- SeqBlock",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- ParBlock",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- ParBlock",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- IfStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- IfStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- WhileStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- WhileStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- DoWhileStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- DoWhileStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- ForStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- ForStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- BreakStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- BreakStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- ContinueStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- ContinueStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- ReturnStmt",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- ReturnStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- FuncDecl",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- FuncDecl",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ASTNode <|-- ClassDecl",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 5: ASTNode <|-- ClassDecl",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ClassDecl *-- VarDecl : attributes",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 5: ClassDecl *-- FuncDecl : methods",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 6: ParseError",
+   "status": "PASS",
+   "detail": "src/parser.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: ParseError.diagnostic",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: ParseError.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 6: Parser",
+   "status": "PASS",
+   "detail": "src/parser.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser.exit_on_error",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser.diagnostics",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._tokens",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._pos",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser.parse",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._peek",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._advance",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._match",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._consume",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._fail",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_statement",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_var_decl",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_class_decl",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_func_decl",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_par_block",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_expression",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_or",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_and",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_comparison",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_term",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_factor",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_unary",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 6: Parser._parse_primary",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 6: Lexer",
+   "status": "PASS",
+   "detail": "src/lexer.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 6: Program",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 6: Exception <|-- ParseError",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 6: Exception <|-- ParseError",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 6: Parser ..> Lexer : consome tokens de",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 6: Parser ..> Program : cria",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 6: Parser ..> ParseError : lança",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 7: SemanticAnalyzer",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.emit_diagnostics",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.diagnostics",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.scopes",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.symbols",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.expression_types",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.fork_signatures",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.function_contexts",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.analyzed_program",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._scopes",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._scope_ids",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._classes",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._superclasses",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._functions",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._fj_functions",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._current_function",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._current_class",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._loop_depth",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.analyze",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer.validate_node",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._enter_scope",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._exit_scope",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._define_symbol",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._lookup",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._report",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._infer_type",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._types_compatible",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._collect_declarations",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._collect_fj_functions",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._check_function",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._check_transport",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._check_global_access",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._validate_fork",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._validate_join",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: SemanticAnalyzer._validate_node",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 7: Symbol",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: Symbol.name",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: Symbol.type",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: Symbol.params",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: Symbol.attributes",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: Symbol.methods",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: Symbol.value_type",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 7: ValueType",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: ValueType.kind",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: ValueType.elements",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 7: ValueType.result",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 7: Program",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 7: SemanticAnalyzer \"1\" *-- \"0..*\" Symbol : _scopes (pilha de dict nome→Symbol)",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 7: Symbol --> ValueType",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 7: SemanticAnalyzer ..> ValueType : infere",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 7: SemanticAnalyzer ..> Program : percorre",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 8: TACGenerator",
+   "status": "PASS",
+   "detail": "src/tac.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.lines",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.temp_count",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.label_count",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.break_stack",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.continue_stack",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.reserved",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.has_fork_join",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.branch_context",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.generate_text",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator.generate",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._unsupported",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._temp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._label",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._emit",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._save",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._arguments",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._join",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._par",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._expr",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 8: TACGenerator._stmt",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 8: Program",
+   "status": "PASS",
+   "detail": "src/ast_nodes.py"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 8: TACGenerator ..> Program : percorre",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: CppCodeGenerator",
+   "status": "PASS",
+   "detail": "src/codegen.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.fj",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.context",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.function_names",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._serial",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._prefix",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.generate_text",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.generate",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator.compile_cpp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._validate_output_name",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._escape_string",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._fj_program",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._fj_expression",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._fj_index",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._ordered",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._translate_expression",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._translate_statement",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._translate_for_part",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._return_type",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._uses_float_return",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppCodeGenerator._has_value_return",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: CppTaskContext",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.functions",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.contexts",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.forks",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.active",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.float_return",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.main",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.__init__",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.new_context",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.fail",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.lookup",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.bind",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.unify",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.finish",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.function",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.expr",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppTaskContext.stmt",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: CppType",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppType.kind",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppType.item",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppType.cpp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: CppType.transportable",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: CppProofError",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: SemanticAnalyzer",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: cpp_template",
+   "status": "PASS",
+   "detail": "src/cpp_template.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: cpp_template._CPP_HEADER",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: cpp_template._FJ_HEADER",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 9: service_process",
+   "status": "PASS",
+   "detail": "src/service_process.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: service_process.run_bounded",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 9: service_process._windows_job",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: ValueError <|-- CppProofError",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 9: ValueError <|-- CppProofError",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: CppCodeGenerator --> CppTaskContext : fj",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: CppTaskContext ..> SemanticAnalyzer : lê tipos de",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: CppTaskContext ..> CppType : infere",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: CppTaskContext ..> CppProofError : lança",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: CppCodeGenerator ..> cpp_template : prólogo do .cpp",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 9: CppCodeGenerator ..> service_process : compile_cpp",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: service",
+   "status": "PASS",
+   "detail": "src/service.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.ROOT",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.ARTIFACT_ROOT",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.PHASES",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._registry",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._execution_env",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._registry_lock",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.analyze",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.compile_program",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.get_artifact",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service.execute",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._pipeline",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._diag",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._unsupported",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._error",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._valid_id",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._safe_directory",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service._register",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: service_ast",
+   "status": "PASS",
+   "detail": "src/service_ast.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service_ast.MAX_NODES",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service_ast.MAX_DEPTH",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service_ast.serialize_ast",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service_ast._node_type",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service_ast._parts",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: service_process",
+   "status": "PASS",
+   "detail": "src/service_process.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 10: service_process.run_bounded",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: Lexer",
+   "status": "PASS",
+   "detail": "src/lexer.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: Parser",
+   "status": "PASS",
+   "detail": "src/parser.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: SemanticAnalyzer",
+   "status": "PASS",
+   "detail": "src/semantic.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: TACGenerator",
+   "status": "PASS",
+   "detail": "src/tac.py"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 10: CppCodeGenerator",
+   "status": "PASS",
+   "detail": "src/codegen.py"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> Lexer",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> Parser",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> SemanticAnalyzer",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> TACGenerator",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> CppCodeGenerator",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> service_ast : AST da fase parser",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 10: service ..> service_process : execute",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 11: main",
+   "status": "PASS",
+   "detail": "main.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: main.BASE_DIR",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: main.compile_file",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: main.start_interactive",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: main.main",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 11: menu",
+   "status": "PASS",
+   "detail": "menu.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: menu.exibir_menu",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: menu.escolher_teste",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: menu.rodar_teste",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: menu.rodar_todos",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: menu.obter_testes",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: menu.executar_binario",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 11: test_orchestrator",
+   "status": "PASS",
+   "detail": "test_orchestrator.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.SESSION_FILE",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.get_terminal_id",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.get_test_spec",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.create_session",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.join_session",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.clear_session",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.check_active_session_for_new_terminal",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.prepare_test_execution",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.finalize_test_execution",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.set_session_phase",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.append_session_log",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.record_execution_output",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: test_orchestrator.run_joiner_progress_monitor",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 11: program_analyzer",
+   "status": "PASS",
+   "detail": "program_analyzer.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: program_analyzer.analyze_program",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: program_analyzer.get_program_spec",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 11: app",
+   "status": "PASS",
+   "detail": "app.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.app",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.index",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.get_tests",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.get_test",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.get_test_spec_api",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.get_session",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.session_join",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.session_create",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.session_ready",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.session_clear",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app.compile_code",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: main ..> menu : opção 1",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: main ..> app : opção 2 (porta 5000)",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: main ..> test_orchestrator",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: menu ..> main : compile_file",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: menu ..> test_orchestrator",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: menu ..> program_analyzer",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: app ..> test_orchestrator",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: app ..> program_analyzer",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: app ..> main : subprocess python main.py",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 11: test_orchestrator ..> program_analyzer",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: server",
+   "status": "PASS",
+   "detail": "web_didatica/server.py"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server.HOST",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server.PORTA",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server.LIMITE_FONTE_BYTES",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server.PROGRAMA_T11",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server.ENTRADA_T11",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server.criar_app",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server._ler_fonte",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server._ler_execucao",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server._ler_corpo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server._erro",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: server._utf8_valido",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: app_js",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/app.js"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.estado",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.iniciar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.analisarCodigo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.compilarExecutar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.executarDeNovo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.abrirExemplo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.baixarArtefato",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.aplicarEnvelope",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.selecionarFase",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.painelTokens",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.painelAst",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.painelSemantico",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.painelTac",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.painelCpp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: app_js.painelExecucao",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: fonte_real",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/fonte_real.js"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.modo",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.listarExemplos",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.carregarExemplo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.analisar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.compilar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.executar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_real.urlArtefato",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: fonte_mock",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/fonte_mock.js"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_mock.modo",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_mock.listarExemplos",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: fonte_mock.carregarExemplo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: arvore_ast",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/arvore_ast.js"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: arvore_ast.criarArvoreAst",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: erros",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/erros.js"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: erros.criarCartaoErro",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: erros.contextoErros",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: erros.CODIGOS_COM_EXPLICACAO",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: arm",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/arm.js"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: arm.SUFIXO_TITULO",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: arm.extrairArm",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 12: arm.armDaExecucao",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: ErroExtracao",
+   "status": "PASS",
+   "detail": "web_didatica/static/js/arm.js"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 12: service",
+   "status": "PASS",
+   "detail": "src/service.py"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: Error <|-- ErroExtracao",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "heranca",
+   "case": "bloco 12: Error <|-- ErroExtracao",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: app_js ..> fonte_real : padrão",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: app_js ..> fonte_mock : ?fonte=mock",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: app_js ..> arvore_ast",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: app_js ..> erros",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: app_js ..> arm",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: arm ..> ErroExtracao : lança",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: fonte_real ..> server : fetch /api/v1/*",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 12: server ..> service : analyze · compile_program · execute · get_artifact",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: Value",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/value.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.data_",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.kind",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.is_none",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.is_int",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.is_float",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.is_bool",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.is_string",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.is_list",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.as_int",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.as_number",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.as_bool",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.as_string",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.as_list",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Value.to_display",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: ValueCast",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/value.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ValueCast.from",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: Json",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/json.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Json.kind",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Json.dump",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Json.parse",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Json.from_value",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Json.to_value",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: JsonError",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/json.hpp"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: ErrorCode",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.NONE",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.TASK_FAILED",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.UNKNOWN_FUNCTION",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.TIMEOUT",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.WORKER_UNAVAILABLE",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.WORKER_LOST",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.INVALID_HANDLE",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.PROTOCOL_ERROR",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.VERSION_MISMATCH",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: ErrorCode.BAD_DESTINATION",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: TaskError",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskError.code",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskError.message",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: TaskHandle",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskHandle.id",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskHandle.task_id",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: TaskResult",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.ok",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.value",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.error",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.task_id",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.executed_by",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.success",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskResult.failure",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: Destination",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.kind",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.host",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.port",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.text",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.problem",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.local",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.remote",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Destination.parse",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: TaskState",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskState.m",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskState.cv",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskState.done",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskState.remote",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskState.result",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: TaskState.task_id",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: Registry",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Registry.m",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Registry.functions",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Registry.tasks",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Registry.next_id",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Registry.build_id",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Registry.get",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: Executor",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Executor.get",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Executor.submit",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Executor.thread_count",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: Executor.loop",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 13: api",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/api.hpp runtime/include/minipar_rt/core.hpp runtime/include/minipar_rt/value.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.start",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.join",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.join_or_exit",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.register_function",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.set_build_id",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.build_id",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.to_value",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.value_cast",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.start_local",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.complete",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.execute",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 13: api.new_task",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: TaskResult *-- Value",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: TaskResult *-- TaskError",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: TaskError --> ErrorCode",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: TaskState *-- TaskResult",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: Registry o-- TaskState : tasks",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: Json ..> Value : converte",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: Json ..> JsonError : lança",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: ValueCast ..> Value",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: api ..> Registry",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: api ..> Executor : tarefa local",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: api ..> Destination",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: api ..> TaskHandle : devolve",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 13: api ..> TaskResult",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: RemoteConnection",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/remote.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.dest_",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.key_",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.pending_",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.queued_",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.worker_id_",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.key",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.begin",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.submit",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.run",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.write_loop",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: RemoteConnection.fail_all",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: ConnectionPool",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/remote.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: ConnectionPool.get",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: ConnectionPool.connection_for",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: ConnectionPool.remove",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: remote",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/remote.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: remote.kProtocolVersion",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: remote.start_remote",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: remote.make_message",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: remote.make_error_message",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: remote.result_from_message",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: remote.same_protocol_version",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: WorkerConnection",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/worker.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: WorkerConnection.sock",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: WorkerConnection.write_m",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: WorkerConnection.peer",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: WorkerConnection.send",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: WorkerConnection.reject",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: worker",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/worker.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: worker.run_worker",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: worker.worker_main_if_requested",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: worker.serve_connection",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: worker.run_task",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: worker.worker_id",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: Socket",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/net.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: Socket.get",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: Socket.valid",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: Socket.shutdown_both",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: Socket.close",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: FrameStatus",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/net.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: FrameStatus.Ok",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: FrameStatus.Closed",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: FrameStatus.Invalid",
+   "status": "PASS",
+   "detail": "enum"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: net",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/net.hpp"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.kMaxFrame",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.connect_tcp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.listen_tcp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.accept_tcp",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.write_frame",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.read_frame",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.send_all",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 14: net.recv_exact",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: TaskState",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: Destination",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/core.hpp"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 14: Json",
+   "status": "PASS",
+   "detail": "runtime/include/minipar_rt/json.hpp"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: ConnectionPool o-- RemoteConnection : uma por destino (host e porta)",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: RemoteConnection o-- TaskState : pending_",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: RemoteConnection --> Destination",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: RemoteConnection ..> net : connect_tcp · frames",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: remote ..> ConnectionPool",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: remote ..> Json",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: worker ..> WorkerConnection : uma por coordenador",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: WorkerConnection *-- Socket",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: worker ..> net : listen_tcp · accept_tcp · frames",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "aresta",
+   "case": "bloco 14: net ..> FrameStatus",
+   "status": "PASS",
+   "detail": "pontas declaradas"
+  },
+  {
+   "group": "classe",
+   "case": "bloco 15: MiniCompilador",
+   "status": "PASS",
+   "detail": "tests/2026_2/test11/minicompilador.minipar"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.e",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.erro",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.tipos",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.inicios",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.tamanhos",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.ntok",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.nesq",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.ndir",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.raiz",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.pos",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.ultimo",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.svals",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.stoks",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.temp",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.reg",
+   "status": "PASS",
+   "detail": "attribute"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.compilar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.analisarLexico",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.analisarSintatico",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.analisarSemantico",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.gerarSaidas",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.parseExpr",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.parseTerm",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.parseFactor",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.novoNo",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.imprimirTokens",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.imprimirAST",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.gerarTAC",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.gerarARM",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.registrarSimbolos",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.imprimirSimbolos",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.avaliar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 15: MiniCompilador.falhar",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/ast_nodes.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/codegen.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/cpp_template.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/lexer.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/parser.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/semantic.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/service.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/service_ast.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/service_process.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "src/tac.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "main.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "menu.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "app.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "test_orchestrator.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "program_analyzer.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/server.py",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/static/js/app.js",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/static/js/arm.js",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/static/js/arvore_ast.js",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/static/js/erros.js",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/static/js/fonte_mock.js",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "web_didatica/static/js/fonte_real.js",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/api.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/core.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/json.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/net.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/remote.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/value.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "runtime/include/minipar_rt/worker.hpp",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-arquivo",
+   "case": "tests/2026_2/test11/minicompilador.minipar",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ASTNode",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: NumberExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: StringExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: BoolExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: IdentifierExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: BinaryExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: UnaryExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: VarDecl",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: Assignment",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: PrintStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: SeqBlock",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ParBlock",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: IfStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: WhileStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: DoWhileStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ForStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: BreakStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ContinueStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ClassDecl",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: FuncDecl",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ReturnStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: MethodCall",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: FuncCallExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ForkExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: JoinExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: PropertyAccess",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: PropertyAssign",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: NewExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ThisExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: CChannelExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: SendStmt",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ReceiveExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: InputExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: ListLiteral",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: MatrixCreateExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: IndexExpr",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: IndexAssign",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/ast_nodes.py: Program",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/codegen.py: CppCodeGenerator",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/lexer.py: TokenType",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/lexer.py: Token",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/lexer.py: Lexer",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/parser.py: ParseError",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/parser.py: Parser",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/semantic.py: ValueType",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/semantic.py: Symbol",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/semantic.py: SemanticAnalyzer",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/semantic.py: CppType",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/semantic.py: CppProofError",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/semantic.py: CppTaskContext",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "src/tac.py: TACGenerator",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: Destination",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: ErrorCode",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: Executor",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: Registry",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: TaskError",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: TaskHandle",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: TaskResult",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/core.hpp: TaskState",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/json.hpp: Json",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/json.hpp: JsonError",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/net.hpp: FrameStatus",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/net.hpp: Socket",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/remote.hpp: ConnectionPool",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/remote.hpp: RemoteConnection",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/value.hpp: Value",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/value.hpp: ValueCast",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "runtime/include/minipar_rt/worker.hpp: WorkerConnection",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "group": "cobertura-classe",
+   "case": "web_didatica/static/js/arm.js: ErroExtracao",
+   "status": "PASS",
+   "detail": ""
+  }
+ ]
+}
