@@ -69,7 +69,9 @@ python tests/2026_2/bench/run_bench.py --carga 5000000 --reps 7 --reps-falhas 5 
 python tests/2026_2/bench/run_bench.py --rapido                                    # smoke (~30 s)
 ```
 
-Cada rodada grava `output/bench/run-<data>/bench.json` e `resumo.md`, sem hostname e sem a pasta do usuário. Para publicar, copie os dois para `docs/evidencias/RUN-05/`. A rodada 1 foi gerada antes de o script ganhar a função `sanitizar()`; a cópia publicada passou pela mesma função.
+Cada rodada grava `output/bench/run-<data>/bench.json` e `resumo.md` já anonimizados: IPs que não são loopback viram `a.b.x.d`, os hostnames viram `<host>`/`<host-remoto>` e a pasta do usuário vira `<repo>` (bench README §5). Para publicar, copie os dois para `docs/evidencias/RUN-05/`. A rodada 1 foi gerada antes de o script ganhar a função `sanitizar()`; a cópia publicada passou pela mesma função. As três rodadas publicadas só têm `127.0.0.1`, conferido de novo em 06/11 após a revisão do #36.
+
+A anonimização do cenário remoto foi conferida em 06/11 com `--destinos-rede` apontando para `192.0.2.1` (endereço de documentação, inalcançável): as execuções falham com `WORKER_UNAVAILABLE`, como esperado, e o `bench.json`/`resumo.md` gerados não têm nenhum `192.0.2.1`, só `192.0.x.1`, inclusive no `stderr`.
 
 Arquivos: [`RUN-05/`](RUN-05/) (3 JSON e 3 resumos).
 

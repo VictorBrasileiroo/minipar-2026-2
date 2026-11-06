@@ -34,6 +34,7 @@ import ipaddress
 import json
 import os
 import platform
+import re
 import socket
 import statistics
 import struct
@@ -116,13 +117,39 @@ def info_cpu() -> dict:
     return info
 
 
+IPV4 = re.compile(r"(?<![\d.])(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})(?![\d.])")
+# worker_id = "<host>:<pid>" nas mensagens do runtime ("conexao com o worker DESKTOP-B:4321 (...)").
+WORKER_ID = re.compile(r"\b(worker )([A-Za-z0-9][A-Za-z0-9._-]*):(\d+)")
+
+
+def _mascarar_ip(m: re.Match) -> str:
+    a, b, _, d = m.groups()
+    if a == "127" or not all(0 <= int(o) <= 255 for o in m.groups()):
+        return m.group(0)
+    return f"{a}.{b}.x.{d}"
+
+
+def _mascarar_worker_id(m: re.Match) -> str:
+    host = m.group(2)
+    if re.fullmatch(r"[\d.x]+", host):  # ja e IP (mascarado ou loopback): fica como esta
+        return m.group(0)
+    return f"{m.group(1)}<host-remoto>:{m.group(3)}"
+
+
 def sanitizar(texto: str, em_json: bool = False) -> str:
-    """Tira da evidencia o caminho do repositorio (traz o usuario) e o hostname (aparece no worker_id)."""
+    """Tira da evidencia dados da rede e das maquinas.
+
+    - caminho do repositorio (traz o nome do usuario) -> <repo>
+    - hostname desta maquina -> <host>
+    - hostname de worker remoto no worker_id das mensagens de erro -> <host-remoto>
+    - IPv4 que nao e loopback, em qualquer campo (destinos, stderr, detalhes) -> a.b.x.d
+    """
     trocas = [(str(ROOT), "<repo>"), (socket.gethostname(), "<host>")]
     for original, troca in trocas:
         if original:
             texto = texto.replace(json.dumps(original)[1:-1] if em_json else original, troca)
-    return texto
+    texto = IPV4.sub(_mascarar_ip, texto)
+    return WORKER_ID.sub(_mascarar_worker_id, texto)
 
 
 def mascarar(destino: str) -> str:
@@ -412,6 +439,9 @@ def falhas(args, report: dict) -> None:
              "F2_worker_morto": "worker 0 morto depois do TASK -> WORKER_LOST, exit 1, sem travar",
              "F3_silencioso": f"worker que nunca responde -> TIMEOUT ({timeout_ms} ms), exit 1"}
     for k, lista in res.items():
+        if not lista:  # sem repeticao nao ha evidencia: nunca vira PASS
+            check(f"{k}: {descr[k]}", "FAIL", "nenhuma repeticao executada")
+            continue
         if any(r.get("bloqueado") for r in lista):
             check(f"{k}: {descr[k]}", "BLOCKED", "; ".join(r.get("detalhe", "") for r in lista))
             continue
@@ -461,6 +491,8 @@ def main() -> int:
         args.carga, args.reps, args.reps_falhas = 200_000, 2, 1
     if args.carga < 1 or args.reps < 1:
         ap.error("--carga e --reps devem ser >= 1")
+    if args.reps_falhas < 1 and not args.sem_falhas:
+        ap.error("--reps-falhas deve ser >= 1 (para pular as falhas, use --sem-falhas)")
     if args.destinos_rede is not None and len(args.destinos_rede) != WORKERS:
         ap.error(f"--destinos-rede precisa de {WORKERS} destinos")
 
