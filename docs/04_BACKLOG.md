@@ -16,13 +16,13 @@
 
 ## Estado em 05/11/2026
 
-31 `DONE`, 4 `IN_REVIEW`, 1 `IN_PROGRESS`, 7 `BACKLOG`. `DONE` só com PR mergeado e evidência; o PR listado é o principal do card.
+32 `DONE`, 3 `IN_REVIEW`, 1 `IN_PROGRESS`, 7 `BACKLOG` (CORE-09 atualizado em 06/11). `DONE` só com PR mergeado e evidência; o PR listado é o principal do card. Única exceção: o `SET-03`, card de configuração sem artefato no repositório, aceito pelas evidências de [`14_PRODUCT_E_SPRINT_BACKLOGS.md` §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 | Card | Eixo | Estado | PR | Observação |
 |---|---|---|---|---|
 | `SET-01` | A | DONE | #1 |  |
 | `SET-02` | A | DONE | #1 |  |
-| `SET-03` | A | DONE | — | Sem PR: acesso dos três ao repositório confirmado pelos PRs de A, B e C; hosts usados na prova do RUN-03 (04/11). |
+| `SET-03` | A | DONE (exceção sem PR) | — | Card de configuração/coordenação, sem artefato no repositório. Aceite por evidências em `14_PRODUCT_E_SPRINT_BACKLOGS.md` §2.1: acesso de escrita dos três e PRs de cada um; branches e revisão (ADR-019); dois hosts no RUN-03 (04/11). Confirmação de horas sem registro escrito; entregável "repositório privado" diverge (ADR-018). |
 | `CON-01` | A+C | DONE | #7 |  |
 | `CON-02` | A+B | DONE | #3 | PRs complementares: #25. |
 | `CON-03` | A+B | DONE | #2 | PRs complementares: #25. |
@@ -34,7 +34,7 @@
 | `CORE-06` | A | DONE | #17 |  |
 | `CORE-07` | A | DONE | #18 | PRs complementares: #29. |
 | `CORE-08` | A | DONE | #19 | PRs complementares: #34. |
-| `CORE-09` | A | IN_REVIEW | #35 | PR #35 aberto pelo Eixo A em 05/11. DEF-01 (T01) segue aberto (CORE-10). |
+| `CORE-09` | A | DONE | #35 | Mergeado em 06/11. DEF-01 (T01) segue aberto (CORE-10). |
 | `CORE-10` | C | IN_REVIEW | #38 | T03, T05, T06 e T07 PASS; T04 PARTIAL (sem tolerância); T01/T02 FAIL intermitentes (DEF-01/02 abertos, Eixo A). |
 | `WEB-01` | B | DONE | #12 |  |
 | `WEB-02` | B | DONE | #13 |  |

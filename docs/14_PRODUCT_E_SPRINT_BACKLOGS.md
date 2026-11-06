@@ -1,11 +1,12 @@
 # Product Backlog e Sprint Backlogs — MiniPar 2026.2
 
-**Card:** `DOC-03` (Eixo C) · **Estado conferido em:** 05/11/2026, `dev` em `59ea77d` · **Fonte estruturada:** [`planning/cards.json`](../planning/cards.json) v0.2
+**Card:** `DOC-03` (Eixo C) · **Estado conferido em:** 05/11/2026, `dev` em `59ea77d` (CORE-09 atualizado em 06/11) · **Fonte estruturada:** [`planning/cards.json`](../planning/cards.json) v0.2
 **Exigência:** relatório final, itens "Product Backlog" e "Sprint Backlog" (doc 00 §12.1; doc 11).
 
 Regras deste documento:
 
 - O estado de cada card vem do Git: **`DONE` só com PR mergeado em `dev` e evidência**. Recortes parciais ficam escritos ao lado do card.
+- **Exceção única:** um card de configuração/coordenação que não produz artefato no repositório pode ficar `DONE` sem PR próprio, desde que cada critério de aceite tenha evidência verificável registrada na seção 2.1. Hoje isso vale só para o **SET-03**.
 - Uma **Sprint** é um **marco** do planejamento ([`planning/MiniPar_2026_2_Marcos_de_Entrega.md`](../planning/MiniPar_2026_2_Marcos_de_Entrega.md)): prazo único por marco, status e dependências por card.
 - "Entregue em" é a data do merge do último PR do card. Uma data depois do prazo do marco é registrada como atraso, sem ajuste retroativo.
 - A planilha de acompanhamento da equipe é um espelho; em divergência, valem o `cards.json` e o Git (ADR-006).
@@ -26,7 +27,7 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | PB-08 | Desempenho e falhas medidos de forma justa | P0 | RUN-05 | **Em revisão**: medido numa máquina; cenário em dois PCs pendente |
 | PB-09 | Teste 11: MiniCompilador escrito em MiniPar, com ARMv7 validado no CPUlator | P0 | T11-01, T11-02, T11-03 | **Entregue** |
 | PB-10 | Web didática com fases reais (tokens, AST, símbolos, TAC, C++), compilar, executar e baixar | P0 | WEB-01 a WEB-04, CORE-08 | **Entregue** |
-| PB-11 | Interfaces antigas (terminal e Web 2026.1) preservadas | P0 | CORE-09 | **Em revisão** (#35) |
+| PB-11 | Interfaces antigas (terminal e Web 2026.1) preservadas | P0 | CORE-09 | **Entregue** (#35, 06/11) |
 | PB-12 | Regressão: testes herdados T01–T07 e integração dos três eixos | P0 | CORE-01, CORE-10, INT-01, INT-02 | **Parcial**: baseline, regressão final (em revisão) e smoke feitos; regressão integral (INT-02) não iniciada |
 | PB-13 | Documentação: BNF, pseudocódigos, UML, backlogs, relatório | P0 | DOC-01 a DOC-04, WEB-05 | **Parcial**: BNF/pseudocódigos e seções da Web/T11 entregues; UML e relatório não iniciados; backlogs neste card |
 | PB-14 | Release candidata, estudo e entrega final | P0 | REL-01, EST-01, EST-02, ENT-01 | **Não iniciado** |
@@ -49,7 +50,7 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 |---|---|---|---|---|---|
 | SET-01 | A | Estrutura e importação da base 2026.1 | DONE | #1 | 17/10 |
 | SET-02 | A | Python e G++20; smoke | DONE | #1 | 17/10 |
-| SET-03 | A | Permissões Git, responsáveis, acesso a dois PCs | DONE | — | sem PR; hosts usados no RUN-03 |
+| SET-03 | A | Permissões Git, responsáveis, acesso a dois PCs | DONE (exceção sem PR, §2.1) | — | sem data de merge; evidências de 17/10 a 04/11 |
 | CON-01 | A+C | Contrato Fork/Join C-FJ-v1 | DONE | #7 | 26/10 (atraso) |
 | CON-02 | A+B | Contrato do serviço Web C-WEB-v1 | DONE | #3, #25 | 22/10 (`FROZEN` registrado em 05/11) |
 | CON-03 | A+B | Contrato do Teste 11 C-T11-v1 | DONE | #2, #25 | 22/10 (`FROZEN` registrado em 05/11) |
@@ -63,7 +64,22 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | RUN-02 | C | Protocolo TCP e worker | DONE | #9 | 26/10 (atraso) |
 | RUN-03 | C | Prova em dois computadores | DONE | #10 | 04/11 (atraso) |
 
-**Resultado:** 15/15 cards concluídos, 4 dentro do prazo do marco (SET-01, SET-02, CON-02, CON-03). Os PRs do Eixo C (#7–#10) foram abertos em 22/10 e esperaram a revisão do contrato C-FJ-v1 até 26/10; o RUN-03 dependeu de duas máquinas disponíveis ao mesmo tempo (04/11).
+**Resultado:** 15/15 cards concluídos (o SET-03 pela exceção da §2.1), 4 dentro do prazo do marco (SET-01, SET-02, CON-02, CON-03). Os PRs do Eixo C (#7–#10) foram abertos em 22/10 e esperaram a revisão do contrato C-FJ-v1 até 26/10; o RUN-03 dependeu de duas máquinas disponíveis ao mesmo tempo (04/11).
+
+#### 2.1 Exceção: SET-03 aceito sem PR próprio
+
+O SET-03 é de configuração e coordenação: dar acesso ao repositório, nomear os responsáveis, combinar o fluxo de branches e garantir duas máquinas. Nada disso gera arquivo no repositório, então não há PR para mergear. O aceite se apoia nas evidências abaixo, conferidas em 06/11/2026 (revisão do #39):
+
+| Critério de aceite do card | Evidência | Situação |
+|---|---|---|
+| Trio com acesso ao repositório | `gh api .../collaborators`: VictorBrasileiroo (admin), erasmossj (write), JoseRiquelmeTds (write). PRs mergeados por autor: Victor 9, Riquelme 14, Erasmo 12 | **atendido** |
+| Responsáveis B/C nomeados | Eixo B = Riquelme, Eixo C = Erasmo, registrados nos contratos (`02_CONTRATOS_TECNICOS.md`, quadros de aprovação de CON-01/02/03) e na autoria dos PRs de cada eixo | **atendido** |
+| Branches | `dev` como branch padrão e branches `eixo-<a\|b\|c>/<ID>-…` (ADR-019, PR #4, 22/10); os PRs de card seguem o padrão, exceto o #1 (`setup/…`, 17/10, anterior à regra); #4 e #5 são de documentação geral | **atendido** |
+| Proteção de branch "quando viável" | Revisão obrigatória por outra pessoa (ADR-019): desde o #4, os 33 PRs mergeados tiveram aprovação; só #1 e #5 (17 e 19/10, antes da regra) entraram sem. A configuração de proteção no GitHub **não é legível** com permissão de escrita (a API exige admin): fica a cargo do coordenador confirmar | **atendido pela prática**; configuração não conferida pelo Eixo C |
+| Hosts de rede definidos (dois PCs) | Execução real entre duas máquinas no RUN-03 (04/11), com log do worker anexado (`docs/evidencias/RUN-03_DOIS_COMPUTADORES.md`) | **atendido** |
+| Trio confirma horas | Sem registro escrito no repositório | **não documentado**: o coordenador confirma ao aprovar este PR |
+
+Divergência registrada, sem efeito no estado do card: o entregável fala em "repositório **privado**", mas em 06/11 o repositório está público (ver ADR-018 em `03_DECISOES.md`).
 
 ### Sprint 2 — Marco 2 (23/10 a 29/10)
 
@@ -100,13 +116,13 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | RUN-05 | C | Benchmarks e falhas | IN_REVIEW (`par_rede` pendente) | #36 |
 | RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (reprodução pendente) | #37 |
 | DOC-03 | C | Product/Sprint Backlogs e decisões | IN_REVIEW | #39 |
-| CORE-09 | A | Interfaces antigas preservadas | IN_REVIEW | #35 |
+| CORE-09 | A | Interfaces antigas preservadas | DONE | #35 (06/11) |
 | INT-02 | B | Regressão integral e rede real | BACKLOG (depende do CORE-10) | — |
 | DOC-02 | B | UML | BACKLOG | — |
 | DOC-04 | B | Relatório completo | BACKLOG (depende de DOC-02, DOC-03, INT-02, RUN-06) | — |
 | REL-01 | A | Release candidata | BACKLOG (depende do DOC-04) | — |
 
-**Resultado parcial:** 3/12 concluídos e 5 com PR aberto (CORE-09, CORE-10, RUN-05, RUN-06, DOC-03); o marco venceu em 03/11 com 9 cards abertos. Ordem pelas dependências: CORE-10 → INT-02; DOC-02 e RUN-06 → DOC-04 → REL-01.
+**Resultado parcial:** 4/12 concluídos (CORE-09 em 06/11) e 4 com PR aberto (CORE-10, RUN-05, RUN-06, DOC-03); o marco venceu em 03/11 com 9 cards abertos. Ordem pelas dependências: CORE-10 → INT-02; DOC-02 e RUN-06 → DOC-04 → REL-01.
 
 ### Sprint 4 — Estudo e entrega (04/11 a 11/11)
 
@@ -127,4 +143,4 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 1. Alterar `status`, `pr_url`, `evidence` e, se preciso, `status_note` em `planning/cards.json`.
 2. `python scripts/validar_planejamento.py`.
 3. Atualizar as tabelas deste documento e a seção "Estado em …" de `docs/04_BACKLOG.md`.
-4. Nunca marcar `DONE` sem PR mergeado e evidência (04_BACKLOG, "Instrução de atualização").
+4. Nunca marcar `DONE` sem PR mergeado e evidência (04_BACKLOG, "Instrução de atualização"). Uma nova exceção sem PR só entra com a mesma tabela da §2.1, critério por critério, e aprovação do coordenador.

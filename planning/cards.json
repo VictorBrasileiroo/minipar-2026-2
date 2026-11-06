@@ -2,7 +2,7 @@
   "project": "MINIPAR-2026.2",
   "version": "0.2",
   "as_of": "2026-11-05",
-  "note": "Estado conferido em 05/11/2026 contra os PRs mergeados em dev (59ea77d) pelo card DOC-03. DONE só com PR mergeado e evidência; `status_note` registra recortes PARTIAL e pendências. `ready` não foi alterado (autorização do coordenador). Sem Issues criadas.",
+  "note": "Estado conferido em 05/11/2026 contra os PRs mergeados em dev (59ea77d) pelo card DOC-03; CORE-09 atualizado em 06/11 (merge do #35). DONE só com PR mergeado e evidência, exceto card de configuração/coordenação sem artefato no repositório (hoje só SET-03), aceito por evidência registrada em docs/14 §2.1; `status_note` registra exceções, recortes PARTIAL e pendências. `ready` não foi alterado (autorização do coordenador). Sem Issues criadas.",
   "statuses": [
     "BACKLOG",
     "READY",
@@ -79,9 +79,10 @@
       "issue_url": null,
       "pr_url": null,
       "evidence": [
-        "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md"
+        "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md",
+        "docs/14_PRODUCT_E_SPRINT_BACKLOGS.md"
       ],
-      "status_note": "Sem PR: acesso dos três ao repositório confirmado pelos PRs de A, B e C; hosts usados na prova do RUN-03 (04/11)."
+      "status_note": "EXCEÇÃO à regra de DONE com PR: card de configuração/coordenação, sem artefato no repositório. Aceite por evidências em docs/14 §2.1: acesso de escrita dos três e PRs mergeados de cada um; branches/dev/revisão (ADR-019); dois hosts usados no RUN-03 (04/11). Sem registro escrito da confirmação de horas; entregável 'repositório privado' diverge (ADR-018)."
     },
     {
       "id": "CON-01",
@@ -435,12 +436,12 @@
         "static/"
       ],
       "estimate_hours": 3,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/35",
       "evidence": [],
-      "status_note": "PR #35 aberto pelo Eixo A em 05/11. DEF-01 (T01) segue aberto (CORE-10)."
+      "status_note": "Mergeado em 06/11. DEF-01 (T01) segue aberto (CORE-10)."
     },
     {
       "id": "CORE-10",
