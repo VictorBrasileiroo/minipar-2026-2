@@ -51,17 +51,20 @@ MINIPAR_2026_2/
 │   ├── 09_ESTUDO_APRESENTACAO.md
 │   ├── 10_GUIA_SETUP_REPOSITORIO.md
 │   ├── 11_CHECKLIST_DE_ENTREGA.md
-│   └── auditorias/, templates/, fontes/
-├── planning/cards.json                # backlog estruturado; NÃO são GitHub Issues ainda
+│   ├── 12_BNF_MINIPAR_2026_2.md
+│   ├── 13_PSEUDOCODIGOS_NUCLEO.md
+│   ├── 14_PRODUCT_E_SPRINT_BACKLOGS.md  # Product Backlog e Sprint Backlogs (estado real dos cards)
+│   └── auditorias/, evidencias/, relatorio/, templates/, fontes/
+├── planning/cards.json                # backlog estruturado (estado conferido com o Git); NÃO são GitHub Issues ainda
 ├── scripts/
 │   ├── importar_base.py               # importa cópia local da base antiga
 │   └── validar_planejamento.py
 ├── src/, main.py, app.py, menu.py     # compilador e interfaces herdados ativos
 ├── templates/, static/, tests/        # Web anterior, testes e resultados esperados
 ├── legacy/minipar-2026.1/             # referência imutável; 36 arquivos históricos
-├── runtime/                           # código futuro, Eixo C
-├── web_didatica/                      # código futuro, Eixo B
-└── tests/2026_2/                      # subpastas por teste futuramente
+├── runtime/                           # runtime Fork/Join local e remoto, Eixo C (ver runtime/README.md)
+├── web_didatica/                      # Web didática, Eixo B (ver web_didatica/README.md)
+└── tests/2026_2/                      # T08–T11, benchmark e verificações dos cards 2026.2
 ```
 
 Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do SET-01 encontrou **34 dos 36 arquivos históricos idênticos**, diferenças esperadas em `README.md` e `.gitignore`, e nenhum correspondente ausente. Evidências e comandos reproduzíveis em [`docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md`](docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md). Não repetir a importação neste workspace.
