@@ -8,16 +8,17 @@
 
 | Item | Status | Observação |
 |---|---|---|
-| README do runtime com protocolo, topologia, deploy, testes e problemas comuns | **pronto para revisão** | `runtime/README.md` §4–§7. A execução de 09/11 apontou 6 ajustes ainda não aplicados (seção 4) |
+| README do runtime com protocolo, topologia, deploy, testes e problemas comuns | **pronto para revisão** | `runtime/README.md` §4–§7. Os 6 ajustes apontados em 09/11 foram aplicados no §7 (seção 4) |
 | Ferramenta para mascarar logs | **PASS** | `runtime/tools/mascarar_log.py`, conferida com um log sintético (05/11) e usada nos logs reais de 09/11 |
 | Ensaio dos comandos do §7.2, §7.4 e §7.5 no loopback, pelo autor (05/11) | **PASS como ensaio** | Confere a sintaxe do roteiro; **não** prova duas máquinas |
 | **Execução em dois computadores** (09/11) | **PASS** | Coordenador em A (`192.168.x.105`), 4 workers em B (`192.168.x.22`): resultado igual ao `seq` e cada worker com `TASK`/`RESULT ok` vindo do IP de A (seção 3) |
 | Queda de worker em rede → `WORKER_LOST` | **PARTIAL** | O worker 7201 já estava fora do ar quando a queda foi rodada: o `join` deu `WORKER_UNAVAILABLE` em 3 s, sem travar. O `WORKER_LOST` com a tarefa em andamento não foi demonstrado entre computadores (seção 3, item 6) |
 | Logs dos dois lados anexados | **PASS** | Coordenador (A) e os 4 workers (B), mascarados (seção 5). Fecha a lacuna do `RUN-03`, que só anexou o log do worker |
 | `par_rede` do `RUN-05` na mesma sessão | **PASS** | 7 rodadas iguais ao oráculo; ver [`RUN-05_BENCHMARKS.md`](RUN-05_BENCHMARKS.md) §3.1 |
-| Reprodução **seguindo só o README** e por outro integrante | **PENDENTE** | Em 09/11 os comandos usados não foram os do README §7, e sim um roteiro passado à parte (seção 6), que contorna os defeitos da seção 4. Quem operou não foi registrado |
+| Ensaio do novo §7 no loopback, pelo autor (09/11) | **PASS como ensaio** | Blocos do README copiados como estão (só os IPs trocados por `127.0.0.1`), em sequência, no Windows PowerShell 5.1: `par` igual ao `seq`, 4 workers com `conexao ... aceita` e `RESULT ok`, queda com `WORKER_LOST` e exit 1, logs mascarados. **Não** prova duas máquinas |
+| Reprodução **seguindo só o README** e por outro integrante | **PENDENTE** | Em 09/11 os comandos usados foram um roteiro passado à parte (seção 6), que virou o novo §7. Falta uma execução em dois PCs só com o README atualizado. Quem operou não foi registrado |
 
-O card continua `IN_PROGRESS`. A execução entre dois computadores está provada, mas o critério de aceite pede a reprodução **só com o README**, e o README ainda não tem os ajustes da seção 4. Falta também a queda com a tarefa em andamento.
+O card continua `IN_PROGRESS`. A execução entre dois computadores está provada e o README já tem os ajustes da seção 4, mas o critério de aceite pede uma reprodução feita **só com o README**, e a queda com a tarefa em andamento ainda não foi demonstrada entre computadores. Uma nova execução do §7 em dois PCs fecha as duas pendências.
 
 ## 2. Roteiro da reprodução
 
@@ -63,16 +64,16 @@ Isso demonstra entre computadores a falha "worker indisponível" (a mesma do F1 
 
 ## 4. Ajustes no README apontados na reprodução
 
-Problemas encontrados ao preparar e rodar a execução de 09/11. Nenhum foi corrigido no `runtime/README.md` ainda; o contorno usado está na seção 6.
+Problemas encontrados ao preparar e rodar a execução de 09/11. Todos foram corrigidos no `runtime/README.md` §7 em 09/11, mantendo a numeração 7.1–7.8 (a auditoria `INT-02` cita esses números).
 
-| Passo | Problema encontrado | Contorno usado em 09/11 | Correção no README |
+| Passo | Problema encontrado | Contorno usado em 09/11 | Correção no README (09/11) |
 |---|---|---|---|
-| §7.2 em diante | Os comandos falham fora da raiz do repositório (`fatal: not a git repository` nos dois PCs) | `cd` para a pasta do projeto antes do 1º comando | pendente: dizer em que pasta abrir o terminal |
-| §7.5 e §7.6 | **Falso positivo no Windows PowerShell 5.1.** Com o console em UTF-8 (página 65001), o texto passado por `\|` ao `.exe` chega com BOM. O programa lê `\ufeffpar`, não reconhece `par` e roda **sequencial sem erro**: sai `TOTAL 160` e `SOMA_NOTAS` certos sem nenhum worker usado. Reproduzido no ensaio do autor em 09/11 | `$OutputEncoding = [Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)` no início de cada janela; conferir `MODO par` e `conexao ... aceita` nos logs de B | pendente |
-| §7.5, §7.6 e §7.7 | No PowerShell 5.1, `Tee-Object` e `>` gravam UTF-16, e o `mascarar_log.py` lê só UTF-8 | `2>&1 \| ForEach-Object { "$_" } \| Out-File -Encoding utf8 <arquivo>` (também tira o prefixo `NativeCommandError` da linha de erro) | pendente |
-| §7.4 | Quatro terminais, um por worker; um Ctrl+C na janela errada derruba o worker | os 4 workers numa janela só, com `Start-Process -WindowStyle Hidden -RedirectStandardError`, guardando os PIDs | pendente |
-| §7.6 | O Ctrl+C manual na hora certa é uma corrida entre duas máquinas | comando em B que espera um `TASK ... inicio` novo no log e encerra o worker pelo PID. **Precisa ser armado só depois do bench**; em 09/11 isso causou o item 6 PARTIAL | pendente: incluir o comando e o aviso |
-| §7.4 a §7.7 | Logs espalhados em `output\` de cada máquina, difíceis de juntar | tudo em `Downloads\minipar-evidencias\RUN-06\` de cada PC; B mandou a pasta `publicar` zipada para A | pendente (opcional) |
+| §7.2 em diante | Os comandos falham fora da raiz do repositório (`fatal: not a git repository` nos dois PCs) | `cd` para a pasta do projeto antes do 1º comando | aplicada: `cd` no bloco do §7.1 e linha na tabela do §7.8 |
+| §7.5 e §7.6 | **Falso positivo no Windows PowerShell 5.1.** Com o console em UTF-8 (página 65001), o texto passado por `\|` ao `.exe` chega com BOM. O programa lê `\ufeffpar`, não reconhece `par` e roda **sequencial sem erro**: sai `TOTAL 160` e `SOMA_NOTAS` certos sem nenhum worker usado. Reproduzido no ensaio do autor em 09/11 | `$OutputEncoding = [Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)` no início de cada janela; conferir `MODO par` e `conexao ... aceita` nos logs de B | aplicada: linha no bloco do §7.1, conferência em B no §7.5, sintoma no §7.8 |
+| §7.5, §7.6 e §7.7 | No PowerShell 5.1, `Tee-Object` e `>` gravam UTF-16, e o `mascarar_log.py` lê só UTF-8 | `2>&1 \| ForEach-Object { "$_" } \| Out-File -Encoding utf8 <arquivo>` (também tira o prefixo `NativeCommandError` da linha de erro) | aplicada: §7.5 e §7.6; o §7.8 avisa que um arquivo UTF-16 passa pelo `mascarar_log.py` **sem mascarar os IPs** e com exit 0 (conferido em 09/11) |
+| §7.4 | Quatro terminais, um por worker; um Ctrl+C na janela errada derruba o worker | os 4 workers numa janela só, com `Start-Process -WindowStyle Hidden -RedirectStandardError`, guardando os PIDs | aplicada: §7.4 (com a variante Linux) |
+| §7.6 | O Ctrl+C manual na hora certa é uma corrida entre duas máquinas | comando em B que espera um `TASK ... inicio` novo no log e encerra o worker pelo PID. **Precisa ser armado só depois do bench**; em 09/11 isso causou o item 6 PARTIAL | aplicada: §7.6, com o aviso e o sintoma no §7.8 |
+| §7.4 a §7.7 | Logs espalhados em `output\` de cada máquina, difíceis de juntar | tudo em `Downloads\minipar-evidencias\RUN-06\` de cada PC; B mandou a pasta `publicar` zipada para A | aplicada: `$EVID` no §7.1 e passos de junção no §7.7 |
 
 ## 5. Anexos
 
@@ -86,7 +87,7 @@ Todos mascarados com `runtime/tools/mascarar_log.py` (hostnames → `pc-A`/`pc-B
 
 ## 6. Comandos usados em 09/11
 
-Roteiro passado à parte, **não** o do README. Fica registrado para virar a correção da seção 4. PowerShell 5.1 ou 7, na raiz do repositório.
+Roteiro passado à parte, **não** o README da época. Foi a base do novo §7 do `runtime/README.md`, que é a versão a seguir daqui em diante. PowerShell 5.1 ou 7, na raiz do repositório.
 
 Nas duas máquinas, em toda janela nova:
 

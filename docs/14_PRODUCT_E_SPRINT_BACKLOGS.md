@@ -114,7 +114,7 @@ Divergência registrada, sem efeito no estado do card: o entregável fala em "re
 | DOC-01 | B | BNF final e pseudocódigos | DONE | #32 (05/11) |
 | CORE-10 | C | Regressão final T01–T07 | IN_REVIEW | #38 |
 | RUN-05 | C | Benchmarks e falhas | IN_REVIEW (`par_rede` PASS em 09/11) | #36 |
-| RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (dois PCs PASS em 09/11; queda PARTIAL; README com ajustes pendentes) | #37 |
+| RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (dois PCs PASS em 09/11; queda PARTIAL; README §7 corrigido, falta reprodução só com ele) | #37 |
 | DOC-03 | C | Product/Sprint Backlogs e decisões | IN_REVIEW | #39 |
 | CORE-09 | A | Interfaces antigas preservadas | DONE | #35 (06/11) |
 | INT-02 | B | Regressão integral e rede real | BACKLOG (depende do CORE-10) | — |

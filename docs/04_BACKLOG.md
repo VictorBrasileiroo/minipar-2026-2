@@ -52,7 +52,7 @@
 | `T09-01` | C | DONE | #22 | Mergeado como PARTIAL: cenário remoto só no loopback. |
 | `T10-01` | C | DONE | #23 | Mergeado como PARTIAL: cenário remoto só no loopback; ADR-014 (saída do Sierpinski) em aberto. |
 | `RUN-05` | C | IN_REVIEW | #36 | Tempos e falhas F1–F3 PASS nesta máquina; `par_rede` em dois computadores PASS em 09/11 (uma rodada; CPU de B não registrada). |
-| `RUN-06` | C | IN_PROGRESS | #37 | Execução em dois PCs PASS em 09/11 com logs dos dois lados; queda em rede PARTIAL (`WORKER_UNAVAILABLE`, não `WORKER_LOST`); falta reproduzir só com o README, que tem 6 ajustes pendentes. |
+| `RUN-06` | C | IN_PROGRESS | #37 | Execução em dois PCs PASS em 09/11 com logs dos dois lados; queda em rede PARTIAL (`WORKER_UNAVAILABLE`, não `WORKER_LOST`); README §7 corrigido com os 6 ajustes da execução; falta uma reprodução só com o README. |
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
 | `INT-02` | B | IN_REVIEW | #44 | PARTIAL. Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. |
 | `DOC-01` | B | DONE | #32 |  |
