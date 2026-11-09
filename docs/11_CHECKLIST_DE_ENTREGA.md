@@ -1,6 +1,6 @@
 # Checklist acadêmico e técnico para 11/11/2026
 
-> Revisão REL-PRE (09/11/2026), base de execução `8d07433`, sincronizada documentalmente com `a7454bc` (#42): [relatório consolidado](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Itens marcados referem-se ao escopo de evidência indicado, sem declarar a entrega pronta. Rede específica T08–T10, confirmação gráfica, correção RC-01/RC-02 da UML, relatório e reprodução final continuam pendentes. DOC-02 integrado no #42 com aprovação A; revisão C registrada em 09/11 com ressalvas ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)).
+> Revisão REL-PRE (09/11/2026), base de execução `8d07433`, sincronizada documentalmente com `a7454bc` (#42): [relatório consolidado](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Itens marcados referem-se ao escopo de evidência indicado, sem declarar a entrega pronta. Rede específica T08–T10, confirmação gráfica, aprovação de B às correções da UML (#43), relatório e reprodução final continuam pendentes. DOC-02 integrado no #42 com aprovação A; revisão C registrada em 09/11 com ressalvas ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)).
 
 > Checklist não é comprovação. Só marcar `[x]` após verificar arquivo, teste e evidência. Requisitos não concluídos permanecem abertos.
 
@@ -85,7 +85,8 @@ Marcas do núcleo: PRs #14–#19/#29 e regressão REL-PRE; `par`/Fork/Join demon
 - [ ] Coordenador registrar tratamento ADR-018 com evidência de direitos/acesso.
 - [x] DOC-02: ajustes dos casos de uso aprovados por A e PR #42 integrado (09/11, a7454bc).
 - [x] C registrar revisão das seções runtime/runners da UML: [parecer C](auditorias/DOC-02_REVISAO_C_RUNTIME.md), 09/11, APROVADO COM RESSALVAS.
-- [ ] B corrigir RC-01/RC-02 (§5.2 e UC12) na UML e repetir a sonda; C revisar a correção.
+- [x] Corrigir RC-01..RC-06 na UML e repetir a sonda: feito por C no #43 (sonda 862/862, Mermaid 17/17; [§5 do parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md#5-correções-aplicadas-0911-pr-43)).
+- [ ] B (dono do DOC-02) aprovar as correções da UML no #43.
 - [x] B apresentar INT-02 em base integrada com oráculos e três interfaces (#44, 09/11); A aprovou no #44 e C validou o runtime ([validação C](auditorias/INT-02_VALIDACAO_C.md)).
 - [ ] INT-02: rede real em dois computadores (B + C, roteiro do §5 do INT-02 = `runtime/README.md` §7).
 - [ ] C concluir RUN-06 por outro integrante, logs dos dois hosts; tratar RUN-05 par_rede ainda PENDING.

@@ -1,7 +1,7 @@
 # UML do MiniPar 2026.2 — casos de uso, componentes e classes
 
 **Card:** `DOC-02` (Eixo B) · **Base:** `origin/dev` em `8d07433` (09/11/2026) ·
-**Estado de integração (REL-PRE):** DOC-02 integrado pelo PR #42 em 09/11/2026 (`a7454bc`). Victor/A aprovou `4cdae73` após os ajustes dos casos de uso. **Revisão específica C (runtime e runners): APROVADO COM RESSALVAS** em 09/11 ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)): RC-01/RC-02 (§5.2 e UC12) divergem do C++ gerado e aguardam correção por B; aceite técnico conjunto permanece PARTIAL até essa correção. A base de código modelada acima continua `8d07433`; sincronização documental não altera os diagramas.
+**Estado de integração (REL-PRE):** DOC-02 integrado pelo PR #42 em 09/11/2026 (`a7454bc`). Victor/A aprovou `4cdae73` após os ajustes dos casos de uso. **Revisão específica C (runtime e runners): APROVADO COM RESSALVAS** em 09/11 ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)). As correções RC-01..RC-06 foram aplicadas no PR #43 (§2.1, §2.2, §4.6, §4.9b, §5.2): sonda 862/862 e sintaxe Mermaid 17/17 sem erro. O aceite técnico conjunto fecha com a aprovação de B, dono do documento, no #43. A base de código modelada continua `8d07433`.
 
 Este documento modela o sistema **como ele está implementado**. Cada classe, atributo, método,
 rota e mensagem citado aqui existe no código da base acima. Nada foi acrescentado para
@@ -113,6 +113,7 @@ flowchart LR
     UC12 -. «extend»<br/>fork sem destino .-> UC16
     UC13 -. «extend»<br/>fork com on host:porta .-> UC16
     UC15 -. «include» .-> UC01
+    UC15 -. «include»<br/>worker no loopback .-> UC14
 
     UC03 --- gpp
     UC11 --- cpul
@@ -127,7 +128,9 @@ desse binário, incluída por todos os casos que o rodam (`UC04`, `UC06`, `UC09`
 diretamente pelo programador. `UC12`/`UC13` estendem `UC16` porque `fork`/`join` acontecem
 **durante a execução**, no ponto em que o programa chega a um `fork` (sem destino ou com
 `on "host:porta"`). Iniciar o worker (`UC14`) é **pré-condição** de `UC13`, feita antes pelo
-operador em outro processo; por isso não há `«include»` entre eles. O CPUlator (UC11) é usado
+operador em outro processo; por isso não há `«include»` entre eles. Já os runners (`UC15`)
+iniciam eles mesmos o worker no loopback (`--minipar-worker`) antes dos cenários remotos, por
+isso `UC15` inclui `UC14`. O CPUlator (UC11) é usado
 **fora** do sistema: a Web
 didática extrai o `.arm` da saída do binário; a execução no simulador é manual (C-T11-v1 §3.7).
 
@@ -146,10 +149,10 @@ didática extrai o `.arm` da saída do binário; a execução no simulador é ma
 | UC09 | Estudante | `POST /api/v1/compile` → `service.compile_program`; `POST /api/v1/execute` → `service.execute` | Binário da própria requisição executado com stdin e limite de tempo |
 | UC10 | Estudante | `GET /api/v1/artifacts/<id>/<tipo>` → `service.get_artifact` | Download do `.cpp`, `.tac` ou binário |
 | UC11 | Estudante | `GET /exemplos/t11.json`, depois UC09; `arm.js` `armDaExecucao` | Seção ARM extraída da saída; cópia para o CPUlator |
-| UC12 | (extensão de UC16) | `fork f(args)` → `minipar_rt::start(id, args)` | Tarefa em thread do `Executor` |
-| UC13 | (extensão de UC16) | `fork f(args) on "host:porta"` → `minipar_rt::start(id, args, Destination)`. Pré-condição: worker já iniciado (UC14) | Tarefa executada no worker remoto pelo protocolo C-FJ-v1 §2.6 |
-| UC14 | Operador | `<binario> --minipar-worker <porta> [--bind <ip>]` → `worker_main_if_requested` | Processo worker aceitando `HELLO`/`TASK` |
-| UC15 | QA | `tests/2026_2/test08/run_t08.py`, `test09/run_t09.py`, `test10/run_t10.py`, `test11/verificar_t11.py`, `scripts/smoke_int01.py` | Relatórios e oráculos dos testes |
+| UC12 | (extensão de UC16) | `fork f(args)` → `minipar_rt::start(id, args, Destination::parse("local"))` (o código gerado sempre passa o destino) | Tarefa em thread do `Executor` |
+| UC13 | (extensão de UC16) | `fork f(args) on "host:porta"` → `minipar_rt::start(id, args, Destination::parse("host:porta"))`. Pré-condição: worker já iniciado (UC14) | Tarefa executada no worker remoto pelo protocolo C-FJ-v1 §2.6 |
+| UC14 | Operador; incluído por UC15 | `<binario> --minipar-worker <porta> [--bind <ip>]` → `worker_main_if_requested` | Processo worker aceitando `HELLO`/`TASK` |
+| UC15 | QA | `tests/2026_2/test08/run_t08.py`, `test09/run_t09.py`, `test10/run_t10.py`, `test11/verificar_t11.py`, `scripts/smoke_int01.py`; os de T08–T10 e o smoke sobem o worker no loopback (UC14) | Relatórios e oráculos dos testes |
 | UC16 | Programador; incluído por UC04, UC06, UC09, UC15 | `output/<saida>.exe` (terminal), `menu.executar_binario`, `app.compile_code`, `service.execute`, runners | Saída do programa; com `fork`/`join`, tarefas locais (UC12) ou remotas (UC13) |
 
 ---
@@ -823,7 +826,10 @@ Duas rotas de geração convivem em `generate_text`:
   de tarefa (`CppType`; recusa com `CppProofError`) e `_fj_program` gera as funções tipadas, os
   invólucros `__fj_wrap_<f>(const TaskArgs&)`, o `register_function` de cada uma, o
   `set_build_id(sha256 do fonte)` e o `worker_main_if_requested(argc, argv)` no `main`,
-  incluindo o prólogo `_FJ_HEADER` (`#include "minipar_rt/minipar_rt.hpp"`).
+  incluindo o prólogo `_FJ_HEADER` (`#include "minipar_rt/minipar_rt.hpp"`). Cada `fork` vira
+  `start(id, args, Destination::parse(destino ou "local"))`; cada `join` vira `__fj_join`
+  (do `_FJ_HEADER`) seguido de `value_cast` ao tipo esperado. `__fj_join` usa `join_or_exit`
+  no fluxo principal e `join` + exceção dentro de uma tarefa (ver 5.2).
 
 `compile_cpp` chama `g++ -std=c++20 -O3 <cpp> -o <exe> -pthread -I runtime/include`
 (`-lws2_32` no Windows) por `run_bounded`, com limite de 120 s, e devolve
@@ -1237,9 +1243,13 @@ classDiagram
     %% @fonte TaskState runtime/include/minipar_rt/core.hpp
     %% @fonte Destination runtime/include/minipar_rt/core.hpp
     %% @fonte Json runtime/include/minipar_rt/json.hpp
+    %% @fonte Executor runtime/include/minipar_rt/core.hpp
+    %% @fonte api runtime/include/minipar_rt/api.hpp runtime/include/minipar_rt/core.hpp runtime/include/minipar_rt/value.hpp
     class RemoteConnection {
         -dest_: Destination
         -key_: string
+        -state_: State
+        -sock_: Socket
         -pending_: map~string, TaskState~
         -queued_: deque~string~
         -worker_id_: string
@@ -1305,21 +1315,36 @@ classDiagram
     class TaskState
     class Destination
     class Json
+    class Executor
+    class api {
+        <<module>>
+    }
     ConnectionPool o-- RemoteConnection : uma por destino (host e porta)
     RemoteConnection o-- TaskState : pending_
     RemoteConnection --> Destination
+    RemoteConnection *-- Socket : sock_
     RemoteConnection ..> net : connect_tcp · frames
+    RemoteConnection ..> Executor : leitura (run) · escrita (write_loop)
+    RemoteConnection ..> ConnectionPool : remove em fail_all
     remote ..> ConnectionPool
     remote ..> Json
     worker ..> WorkerConnection : uma por coordenador
     WorkerConnection *-- Socket
     worker ..> net : listen_tcp · accept_tcp · frames
+    worker ..> Executor : serve_connection · run_task
+    worker ..> api : execute (funções registradas no binário)
     net ..> FrameStatus
 ```
 
 *Figura 4.9b — execução remota (`remote.hpp`, `worker.hpp`, `net.hpp`).* O mesmo binário é
 coordenador ou worker: `worker_main_if_requested` só assume o processo quando recebe
-`--minipar-worker <porta>`. Detalhes do protocolo e dos códigos de erro em C-FJ-v1 §2.5–2.6.
+`--minipar-worker <porta>`. `Executor` e `api` são os da figura 4.9a: o mesmo `Executor`
+roda as tarefas locais, a leitura e a escrita de cada `RemoteConnection` e, no worker, cada
+conexão e cada `TASK`; o worker só executa (`execute`) funções registradas no próprio binário.
+`state_` vale `Connecting`, `Ready` ou `Dead`: só com `Ready` a escritora envia `TASK`, e um
+`submit` numa conexão `Dead` conclui a tarefa na hora com o erro que derrubou a conexão;
+`fail_all` também tira a conexão do `ConnectionPool`, para o próximo `start` abrir outra.
+Detalhes do protocolo e dos códigos de erro em C-FJ-v1 §2.5–2.6.
 
 ### 4.10 MiniCompilador do Teste 11 (classe escrita em MiniPar)
 
@@ -1448,12 +1473,17 @@ sequenceDiagram
     A-->>M: -1 (não é worker)
 
     Note over M,X: fork f(x) — sem destino
-    M->>A: start("f", args)
+    M->>A: start("f", args, Destination::parse("local"))
     A->>R: new_task(h, remote=false)
-    A->>X: submit(job)
+    A->>R: find_function("f")
+    alt função não registrada
+        A->>A: complete(UNKNOWN_FUNCTION), sem criar thread
+    else registrada
+        A->>X: submit(job)
+    end
     A-->>M: TaskHandle
-    X->>R: find_function("f")
-    X->>X: execute → __fj_wrap_f(args)
+    X->>R: execute → find_function("f")
+    X->>X: __fj_wrap_f(args)
     X->>A: complete(TaskState, TaskResult)
 
     Note over M,W: fork f(x) on "host:porta"
@@ -1463,26 +1493,57 @@ sequenceDiagram
     CP-->>A: RemoteConnection (criada no 1º uso)
     A->>RC: submit(TaskState, TASK JSON)
     A-->>M: TaskHandle
+    Note over RC,W: thread de leitura (Executor), uma vez por conexão
     RC->>W: HELLO {build_id, request_id}
     W-->>RC: HELLO_OK {worker_id, host, pid, build_id}
+    Note over RC,W: só com a conexão Ready a thread escritora envia
     RC->>W: TASK {task_id, function_id, args}
     W->>W: run_task em thread própria → execute
     W-->>RC: RESULT {task_id, status, result | error, worker_id}
     RC->>A: complete(TaskState, TaskResult)
 
     Note over M,A: join h
-    M->>A: join_or_exit(handle, timeout)
+    M->>M: __fj_join(handle, timeout)
+    alt fluxo principal
+        M->>A: join_or_exit(handle, timeout)
+    else dentro de uma tarefa
+        M->>A: join(handle, timeout)
+    end
     A->>R: localiza TaskState
-    A->>A: espera cv até done (ou TIMEOUT)
-    A->>R: remove a tarefa (handle coletado)
-    A-->>M: Value (ou stderr + exit 1 em erro)
+    A->>A: espera cv até done ou timeout
+    alt concluiu
+        A->>R: remove a tarefa (handle coletado)
+        A-->>M: Value ou erro da tarefa
+    else timeout
+        A-->>M: TIMEOUT (handle continua válido)
+    end
+    alt Value
+        M->>M: value_cast ao tipo do join
+    else erro no fluxo principal
+        A->>A: join_or_exit imprime em stderr e encerra com código 1
+    else erro dentro de uma tarefa
+        M->>M: exceção "CODIGO: mensagem" → TASK_FAILED da tarefa mãe
+    end
 ```
 
-A conexão é uma por destino `host:porta` e é reutilizada; o `HELLO` acontece uma vez por
-conexão (no diagrama, antes do primeiro `TASK`). Se `build_id` ou `protocol_version` não
-conferem, todas as tarefas pendentes daquela conexão terminam com `VERSION_MISMATCH`. Perda
-de conexão termina as pendentes com `WORKER_LOST`; worker inacessível, com
-`WORKER_UNAVAILABLE`.
+A conexão é uma por destino `host:porta` e é reutilizada. Ela é criada no primeiro `start`
+para o destino: uma thread do `Executor` conecta e faz o `HELLO`, que acontece uma vez por
+conexão, enquanto o `start` já devolve o handle. Os `TASK` ficam na fila até a conexão estar
+`Ready` e são enviados pela thread escritora, na ordem dos `start`. Falhas:
+
+- `build_id` ou `protocol_version` diferentes: as tarefas pendentes daquela conexão terminam
+  com `VERSION_MISMATCH`.
+- Frame ou mensagem inválidos: `PROTOCOL_ERROR`.
+- Perda de conexão, ou envio parado por mais de `MINIPAR_RT_SEND_TIMEOUT_MS` (padrão 10 s):
+  `WORKER_LOST`.
+- Worker inacessível: `WORKER_UNAVAILABLE`.
+- `join` remoto sem timeout explícito: usa `MINIPAR_RT_REMOTE_TIMEOUT_MS` (padrão 60 s).
+  `TIMEOUT` mantém o handle válido para outro `join`.
+
+O `join` gerado passa por `__fj_join` (prólogo `_FJ_HEADER`). No fluxo principal ele usa
+`join_or_exit`, que encerra o programa com código 1 em erro. Dentro de uma tarefa, inclusive
+no worker, usa `join` e lança uma exceção: a falha vira `TASK_FAILED` da tarefa mãe, sem
+derrubar o processo.
 
 ---
 

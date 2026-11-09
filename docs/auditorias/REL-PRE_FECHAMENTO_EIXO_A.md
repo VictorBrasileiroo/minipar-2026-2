@@ -28,9 +28,9 @@ Lidos AGENTS, MEMORY, planejamento, contratos, backlog, validação e documento 
 | C-FJ-v1 / CON-01 | DONE | APPROVED por Victor em `a0fd60f`, #7; merge 26/10. Corrigido registro FROZEN, sem mudar contrato |
 | C-WEB v1.1 | DONE na ratificação documental | #34: proposta de B e aprovações A/C em `204fe48`; merge 05/11. Registro de aceite corrigido; ressalvas preservadas |
 | DOC-03 | DONE | #39 aprovado e mergeado 06/11; espelhos atualizados conforme fatos posteriores |
-| DOC-02 | DONE de integração / aceite conjunto PARTIAL | #42 aprovado por A em 4cdae73 e mergeado em a7454bc (09/11); ajustes conferidos, 853/853 sondas repetidas; revisão C APROVADO COM RESSALVAS (§11), RC-01/RC-02 a corrigir por B |
+| DOC-02 | DONE de integração / aceite conjunto PARTIAL | #42 aprovado por A em 4cdae73 e mergeado em a7454bc (09/11); ajustes conferidos, 853/853 sondas repetidas; revisão C APROVADO COM RESSALVAS (§11); correções RC-01..RC-06 aplicadas neste PR (§13), aguardam aprovação de B |
 | INT-02 | PARTIAL (integrado) | #44 aprovado por A e mergeado em `249afaa` (09/11, depois desta fotografia): T01–T03/T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real BLOCKED. Validação C do recorte de runtime em §12 |
-| DOC-04 | PENDING | sem relatório completo/PR localizado; DOC-02 já integrado; depende de INT-02 e aceite RUN-06; correção RC-01/RC-02 da UML pendente (revisão C registrada, §11) |
+| DOC-04 | PENDING | sem relatório completo/PR localizado; DOC-02 já integrado; depende de INT-02 e aceite RUN-06; aprovação de B às correções da UML pendente (§13) |
 | RUN-05 | PARTIAL | #36 integrado; `par_rede` PENDING, sem benchmark novo nesta auditoria |
 | RUN-06 | PARTIAL | #37 integrado como documentação; review A explicitamente mantém reprodução por outro integrante e logs A/B PENDING |
 | ADR-018 | PENDING | divergência PUBLIC versus proposta de privacidade; direitos não comprovados (§4) |
@@ -130,7 +130,7 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 8. Dependências externas abertas
 
-- **B/Riquelme:** DOC-02 integrado e aprovado por A; revisão C registrada (§11); corrigir RC-01/RC-02 na UML. INT-02 integrado (#44, §12); falta a rede real com C. Disponibilizar DOC-04 com relatório/capa/links/anexos. Resultados de A/C devem entrar com seus limites.
+- **B/Riquelme:** DOC-02 integrado e aprovado por A; revisão C registrada (§11) e correções da UML aplicadas neste PR (§13): revisar e aprovar como dono do DOC-02. INT-02 integrado (#44, §12); falta a rede real com C. Disponibilizar DOC-04 com relatório/capa/links/anexos. Resultados de A/C devem entrar com seus limites.
 - **C/Erasmo + outro integrante:** RUN-05 `par_rede`; reprodução RUN-06 por não autor com logs dos dois lados, falha e resultados; T09/T10 específicos em dois hosts se exigidos no aceite adotado.
 - **Professor:** confirmar representação visual alternativa da ADR-014; interpretação do despacho remoto explícito (PEND-FJ-05) permanece sem confirmação docente localizada.
 - **Titulares do legado/coordenação:** direitos de uso/redistribuição e origem do snapshot.
@@ -139,7 +139,7 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 9. Checklist para iniciar REL-01 e handoff
 
-O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado e revisão C registrada (§11), B corrigir RC-01/RC-02; INT-02 integrado (#44), concluir sua rede real e as provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
+O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado e revisão C registrada (§11) e UML corrigida (§13), B aprovar; INT-02 integrado (#44), concluir sua rede real e as provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
 
 **Arquivos alterados:** README; contratos (somente registros de estado/aprovação); decisões; backlog; validação/aceite; checklist; Product/Sprint Backlogs; cards; este relatório; sonda documental e JSONs de GitHub/resultados. Não foi atualizado o conteúdo das evidências históricas CORE-01/CORE-10/DEF; na sincronização, apenas os registros de estado/cabeçalho/handoff do DOC-02 foram atualizados, preservando diagramas e resultados do autor.
 
@@ -173,3 +173,13 @@ Documentos de estado atualizados: cards, backlog, Product/Sprint Backlogs, check
   - Só loopback.
 - **Atualizados:** cards (INT-02, DOC-04), backlog (tabela e ficha do INT-02), Product/Sprint Backlogs, checklist (INT-02 entregue e validado; item novo para a rede real) e este relatório (§1, §5, §8, §9).
 - **Não alterados:** código, contratos, testes, o relatório INT-02 do B e os diagramas. `AGENTS.md`/`MEMORY.md` revisados, sem mudança necessária.
+
+## 13. Correções da UML pela revisão C (09/11)
+
+**Responsável:** Erasmo (Eixo C), a pedido do próprio Eixo C. Como a UML é do DOC-02 (Eixo B), a mudança foi feita **neste PR**, cuja revisão foi pedida ao Riquelme, dono do documento. A aprovação dele vale como aceite de B às correções.
+
+- **Arquivo alterado:** `docs/15_UML_MINIPAR_2026_2.md` (§2.1, Nota 2.1, §2.2, §4.6, figura 4.9b e legenda, §5.2 e texto). Detalhe por item no [§5 do parecer C](DOC-02_REVISAO_C_RUNTIME.md#5-correções-aplicadas-0911-pr-43).
+- **RC-01/RC-02** (contrariavam o código gerado): `join` via `__fj_join` (fluxo principal → `join_or_exit`; dentro de tarefa → `join` + exceção → `TASK_FAILED`); `fork` sem destino passa `Destination::parse("local")`.
+- **RC-03..RC-06** (omissões): uso do `Executor` pelo remoto e pelo worker; `state_`/`sock_` de `RemoteConnection`; falhas e timeouts na §5.2; runners incluem UC14.
+- **Verificação:** sonda DOC-02 **862/862 PASS** (eram 853: mais 2 classes, 2 membros e 5 arestas). `mermaid.parse` do `mermaid@11.4.1` (a versão do autor): **17/17 sem erro**; o controle negativo pegou 3/3 blocos quebrados. Não houve renderização visual em navegador; o GitHub renderiza na revisão.
+- **Estado:** RC-01..RC-06 resolvidos. O aceite técnico conjunto do DOC-02 fica completo com a aprovação de B no #43. Nenhum código, contrato ou teste alterado.

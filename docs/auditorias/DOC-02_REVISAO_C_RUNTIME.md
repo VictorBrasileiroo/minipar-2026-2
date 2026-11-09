@@ -6,6 +6,8 @@
 
 **Veredito:** **APROVADO COM RESSALVAS.** A estrutura do runtime está modelada corretamente: classes, membros, enumerações, composição `ConnectionPool`/`RemoteConnection`/`TaskState`, protocolo `HELLO`/`HELLO_OK`/`TASK`/`RESULT`, frames e semântica de `join`. Há **2 imprecisões** que contrariam o código gerado e precisam ser corrigidas pela regra 11 do AGENTS, e **4 omissões menores** recomendadas. Nenhuma exige mudança de código, contrato ou protocolo.
 
+**Atualização (09/11):** as seis foram corrigidas na UML pelo PR #43; ver §5.
+
 ## 1. Imprecisões (corrigir antes do DOC-04)
 
 | ID | Local | O diagrama diz | O código faz | Correção sugerida |
@@ -35,7 +37,27 @@
 
 ## 4. Encaminhamento
 
-- **B (dono do DOC-02):** corrigir RC-01 e RC-02 em `docs/15_UML_MINIPAR_2026_2.md` e, se possível, RC-03..RC-06; repetir a sonda. C revisa a correção.
-- **Estado:** revisão C registrada; aceite técnico conjunto do DOC-02 continua **PARTIAL** até a correção de RC-01/RC-02 ou até a coordenação aceitar a ressalva de forma explícita.
+- **B (dono do DOC-02):** corrigir RC-01 e RC-02 em `docs/15_UML_MINIPAR_2026_2.md` e, se possível, RC-03..RC-06; repetir a sonda. C revisa a correção. *(Superado pelo §5: C aplicou as correções no #43, e B as revisa.)*
+- **Estado:** revisão C registrada; aceite técnico conjunto do DOC-02 continua **PARTIAL** até a correção de RC-01/RC-02 ou até a coordenação aceitar a ressalva de forma explícita. *(Ver §5.)*
 - **Fora do escopo:** renderização Mermaid (UNTESTED nesta revisão), seções sem runtime (aprovadas por A), RUN-05 `par_rede` e reprodução RUN-06 em dois computadores (continuam PENDING).
 - **Impacto de interface:** nenhum. Nenhum código, contrato ou diagrama alterado por esta revisão.
+
+## 5. Correções aplicadas (09/11, PR #43)
+
+A pedido do responsável pelo Eixo C, as correções foram aplicadas por C no próprio #43. A UML é de B (DOC-02); por isso a mudança fica sujeita à aprovação do Riquelme, revisor do #43. Só mudou o texto e os diagramas de `docs/15_UML_MINIPAR_2026_2.md`; nenhum código.
+
+| ID | Onde | O que mudou |
+|---|---|---|
+| RC-01 | §5.2 (bloco "join h"), §4.6 e texto após §5.2 | `main` chama `__fj_join`. `alt` fluxo principal → `join_or_exit` / dentro de tarefa → `join`. Depois, `value_cast` ao tipo do join; no fluxo principal o erro vai para stderr com código 1, dentro de tarefa vira exceção e `TASK_FAILED` da tarefa mãe. `TIMEOUT` mantém o handle |
+| RC-02 | §5.2 (bloco "fork sem destino"), §2.2 UC12/UC13, §4.6 | `start("f", args, Destination::parse("local"))`; UC13 com `Destination::parse("host:porta")` |
+| RC-03 | §4.9b | `Executor` e `api` declarados no bloco; `RemoteConnection ..> Executor` (leitura e escrita), `worker ..> Executor` (conexão e tarefa), `worker ..> api` (`execute`); legenda explica |
+| RC-04 | §4.9b | `RemoteConnection` ganhou `-state_: State` e `-sock_: Socket`, `*-- Socket` e `..> ConnectionPool` (`remove` em `fail_all`); legenda explica `Connecting/Ready/Dead` |
+| RC-05 | §5.2 | `find_function` antes do `submit` (`UNKNOWN_FUNCTION` sem thread); notas de thread de leitura e de escritora; lista de falhas com `PROTOCOL_ERROR`, envio parado (`MINIPAR_RT_SEND_TIMEOUT_MS`, 10 s) e timeout remoto padrão (`MINIPAR_RT_REMOTE_TIMEOUT_MS`, 60 s) |
+| RC-06 | §2.1, Nota 2.1, §2.2 | `UC15 «include» UC14` (worker no loopback); UC14 "incluído por UC15"; UC15 cita os runners que sobem o worker |
+
+**Verificação:**
+- `.venv/Scripts/python.exe -B docs/auditorias/DOC-02_sondas_uml.py` → **862/862 PASS**. Eram 853; entraram 2 classes, 2 membros e 5 arestas, todos conferidos com o código.
+- `mermaid.parse` do `mermaid@11.4.1` (mesma versão do autor), com jsdom e Node 24 numa pasta isolada → **17/17 blocos sem erro de sintaxe**. Controle negativo: 3 blocos quebrados de propósito → 3/3 erros detectados.
+- Não houve renderização visual em navegador: o desenho final das setas não foi inspecionado nesta máquina. Fica para a revisão de B no GitHub, que renderiza Mermaid.
+
+**Estado:** RC-01..RC-06 resolvidos no #43. O aceite técnico conjunto do DOC-02 fica completo quando B aprovar o #43.
