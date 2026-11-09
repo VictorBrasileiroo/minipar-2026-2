@@ -51,17 +51,20 @@ MINIPAR_2026_2/
 │   ├── 09_ESTUDO_APRESENTACAO.md
 │   ├── 10_GUIA_SETUP_REPOSITORIO.md
 │   ├── 11_CHECKLIST_DE_ENTREGA.md
-│   └── auditorias/, templates/, fontes/
-├── planning/cards.json                # backlog estruturado; NÃO são GitHub Issues ainda
+│   ├── 12_BNF_MINIPAR_2026_2.md
+│   ├── 13_PSEUDOCODIGOS_NUCLEO.md
+│   ├── 14_PRODUCT_E_SPRINT_BACKLOGS.md  # Product Backlog e Sprint Backlogs (estado real dos cards)
+│   └── auditorias/, evidencias/, relatorio/, templates/, fontes/
+├── planning/cards.json                # backlog estruturado (estado conferido com o Git); NÃO são GitHub Issues ainda
 ├── scripts/
 │   ├── importar_base.py               # importa cópia local da base antiga
 │   └── validar_planejamento.py
 ├── src/, main.py, app.py, menu.py     # compilador e interfaces herdados ativos
 ├── templates/, static/, tests/        # Web anterior, testes e resultados esperados
 ├── legacy/minipar-2026.1/             # referência imutável; 36 arquivos históricos
-├── runtime/                           # código futuro, Eixo C
-├── web_didatica/                      # código futuro, Eixo B
-└── tests/2026_2/                      # subpastas por teste futuramente
+├── runtime/                           # runtime Fork/Join local e remoto, Eixo C (ver runtime/README.md)
+├── web_didatica/                      # Web didática, Eixo B (ver web_didatica/README.md)
+└── tests/2026_2/                      # T08–T11, benchmark e verificações dos cards 2026.2
 ```
 
 Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do SET-01 encontrou **34 dos 36 arquivos históricos idênticos**, diferenças esperadas em `README.md` e `.gitignore`, e nenhum correspondente ausente. Evidências e comandos reproduzíveis em [`docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md`](docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md). Não repetir a importação neste workspace.
@@ -75,6 +78,43 @@ Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do S
 5. Execute os cards de preparação e gate G0; **depois** crie as GitHub Issues.
 
 **Não declare testes aprovados nem código anterior importado até haver execução e evidências no novo repositório.**
+
+## Terminal e Web original — CORE-09
+
+Na raiz do repositório, use o Python do ambiente e configure a toolchain somente
+no processo atual:
+
+```powershell
+# Configure CXX com o executável C++20 local antes destes comandos.
+$env:PATH = (Split-Path -Parent $env:CXX) + ';' + $env:PATH
+$env:PYTHONIOENCODING = 'utf-8'
+.\.venv\Scripts\python.exe -B main.py
+```
+
+Escolha `1` para o menu de testes ou `2` para a IDE original em
+`http://127.0.0.1:5000`. A CLI direta continua disponível:
+`.\.venv\Scripts\python.exe -B main.py tests/teste7_quicksort_iterativo_tac.minipar t07`,
+seguida de `.\output\t07.exe`. A toolchain atual usa C++20; TAC e C++ são ramos
+da mesma AST. O binário tem sufixo `.exe` em todas as plataformas do backend.
+
+A Web usa o mesmo interpretador do Flask, nomes internos exclusivos por
+compilação e o JSON original (`success`, `stdout`, `stderr`, `cpp`, `tac`).
+Falhas de execução retornam `success=false`; conforme a convenção herdada, os
+logs completos, incluindo stdout parcial, ficam em `stderr` nesse caso. O prazo
+externo de compilação é 130 s, compatível com os 120 s do backend; execução
+mantém 30 s. Artefatos Web ficam em `output/ide_<uuid>.*`, sem limpeza automática;
+o fonte temporário é removido após a requisição. A IDE limpa os painéis ao
+iniciar outra compilação, inclusive em falha de conexão.
+
+As rotas de carregar teste, consultar requisitos e criar sessão aceitam somente
+o nome de um arquivo `.minipar` diretamente em `tests/`; caminhos externos,
+subdiretórios e nomes inválidos retornam HTTP 400.
+
+Validação reproduzível: `tests/2026_2/core09/test_interfaces.py`,
+`tests/2026_2/core09/smoke_http.py` (porta 5000 livre) e
+[evidências CORE-09](docs/auditorias/CORE-09_REGRESSAO_INTERFACES.md).
+Os testes usam compilador e binários reais; o smoke visual ficou bloqueado pela
+indisponibilidade do navegador de automação nesta execução.
 
 ## Validação local do CORE-02
 

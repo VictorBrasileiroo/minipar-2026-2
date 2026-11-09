@@ -8,7 +8,11 @@ Contrato: [`docs/02_CONTRATOS_TECNICOS.md` §2 (C-FJ-v1)](../docs/02_CONTRATOS_T
 | `RUN-01` | Runtime local: registry, `start`/`join`, isolamento, erros, `Value` | implementado e testado |
 | `RUN-02` | Protocolo TCP enquadrado, worker pré-compilado, falhas | implementado e testado **no loopback** (prova de protocolo) |
 | `RUN-03` | Prova em dois computadores reais | programa e roteiro prontos, ensaio no loopback ok; **execução em duas máquinas PASS em 04/11/2026** (log do worker anexado; [roteiro e registro](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)) |
-| `RUN-04` | Handoff da API para o backend `CORE-07` | contrato dos 13 símbolos testado; interop pela CLI PASS em `dev` (com #17/#18 mergeados), no loopback (seção 5) |
+| `RUN-04` | Handoff da API para o backend `CORE-07` | contrato dos 13 símbolos testado; interop pela CLI PASS em `dev` (com #17/#18 mergeados), no loopback (seção 6) |
+| `RUN-05` | Benchmarks e falhas repetíveis | tempos `seq`/`par` com a mesma carga e falhas F1–F3 PASS nesta máquina ([`tests/2026_2/bench/`](../tests/2026_2/bench/README.md)); cenário em dois PCs pendente |
+| `RUN-06` | Protocolo, topologia, deploy e testes | este README (seções 4 a 7) e [`tools/mascarar_log.py`](tools/mascarar_log.py); reprodução por outro integrante pendente ([registro](../docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md)) |
+
+**Por onde começar:** para usar a API, seção 2. Para entender a rede, seções 4 e 5. Para rodar em dois computadores, seção 7.
 
 ## 1. Arquivos
 
@@ -25,6 +29,8 @@ runtime/
 │   └── worker.hpp       # run_worker, worker_main_if_requested
 ├── examples/
 │   └── demo_distribuida.cpp # RUN-03: coordenador/worker para a prova em dois computadores
+├── tools/
+│   └── mascarar_log.py      # RUN-06: mascara IPs, hostnames e pastas de usuário nos logs de evidência
 └── tests/
     ├── run_tests.py         # compila e executa todos os testes
     ├── test_util.hpp        # mini framework (TEST_CASE/CHECK)
@@ -99,16 +105,97 @@ Critérios do card `RUN-02` ("fragmentação, frame inválido, worker indisponí
 
 **Execução local:** cada tarefa roda em uma thread de um executor interno que cresce sob demanda. Tarefas simultâneas ganham threads distintas e rodam de fato em paralelo quando há núcleos livres. O runtime **não usa `std::thread::detach`**: com o MinGW-w64/winpthreads do G++ 16.2 UCRT64, uma thread destacada às vezes nunca executava (cerca de 1 em 2000 num teste com 4000 threads), e o `join` ficava esperando para sempre. O teste `estresse: 2000 tarefas...` protege contra essa regressão.
 
-## 4. Protocolo (resumo de C-FJ-v1 §2.6)
+## 4. Topologia
+
+Um programa MiniPar compilado é **um único executável** com dois papéis. Sem argumentos, ele é o **coordenador**: roda o `main` do programa e, a cada `fork ... on <destino>`, chama `start`. Com `--minipar-worker <porta>`, o mesmo arquivo vira **worker**: escuta a porta e só executa as funções registradas nele. Não há servidor central nem código enviado pela rede.
+
+```mermaid
+flowchart LR
+    subgraph A["Máquina A — coordenador"]
+        P["programa.exe<br/>main do MiniPar"]
+        L["executor local<br/>(threads)"]
+        C1["conexão TCP<br/>destino B:7501"]
+        C2["conexão TCP<br/>destino B:7502"]
+        P -- "fork ... on local" --> L
+        P -- "fork ... on B:7501" --> C1
+        P -- "fork ... on B:7502" --> C2
+    end
+    subgraph B["Máquina B — workers (mesmo executável)"]
+        W1["programa.exe --minipar-worker 7501"]
+        W2["programa.exe --minipar-worker 7502"]
+    end
+    C1 <-- "frames HELLO/TASK/RESULT" --> W1
+    C2 <-- "frames HELLO/TASK/RESULT" --> W2
+```
+
+- Um destino (`host:porta`) é **um processo worker** e recebe **uma conexão persistente**, aberta no primeiro `start` para ele. Várias tarefas podem estar pendentes na mesma conexão.
+- Um worker roda cada `TASK` numa thread própria. Quatro destinos na mesma máquina são quatro processos que dividem os núcleos dela: **worker não é núcleo** (ver o benchmark do `RUN-05`).
+- `local` não usa rede: a tarefa vai para o executor de threads do próprio coordenador.
+
+Sequência de um `fork`/`join` remoto e da queda do worker:
+
+```mermaid
+sequenceDiagram
+    participant M as main (coordenador)
+    participant R as runtime (A)
+    participant W as worker (B)
+    M->>R: start("avaliar_lote", args, B:7501)
+    R-->>M: TaskHandle task-1 (sem esperar a rede)
+    R->>W: HELLO {build_id, request_id}
+    W-->>R: HELLO_OK {worker_id = host:pid, build_id}
+    R->>W: TASK {task_id: task-1, function_id, args}
+    Note over W: executa numa thread e registra TASK/RESULT no stderr
+    W-->>R: RESULT {task_id: task-1, status: ok, result}
+    M->>R: join(task-1)
+    R-->>M: valor
+    Note over R,W: se a conexão cai com tarefas pendentes, cada join devolve WORKER_LOST;<br/>se o worker não responde, o join devolve TIMEOUT (60 s por padrão)
+```
+
+## 5. Protocolo (resumo de C-FJ-v1 §2.6)
+
+O texto normativo é o [contrato C-FJ-v1 §2.6](../docs/02_CONTRATOS_TECNICOS.md): campos de cada mensagem, exemplos JSON e regras de versão. Resumo para operação:
 
 - **TCP com conexão persistente por destino.** Frame = 4 bytes de tamanho big-endian + JSON UTF-8, com 1 a 8 MiB.
 - **Mensagens:** `HELLO` (`build_id`) → `HELLO_OK` (`worker_id = host:pid`), depois `TASK` (`task_id`, `function_id`, `args`) → `RESULT` (`status` ok/error). `ERROR` fecha a conexão. `protocol_version` é conferido em toda mensagem, nos dois lados.
+- **Handshake:** o coordenador espera o `HELLO_OK` por até 5 s. O `build_id` do programa gerado é o SHA-256 do fonte MiniPar (`src/codegen.py`): coordenador e worker precisam vir **do mesmo fonte**, senão `VERSION_MISMATCH`.
 - **Envio:** o coordenador nunca envia na thread do `start`; uma thread escritora por conexão envia os `TASK` na ordem. Coordenador e worker usam `SO_SNDTIMEO` = `MINIPAR_RT_SEND_TIMEOUT_MS` (padrão 10000 ms): um envio sem progresso por esse tempo fecha a conexão (pendentes → `WORKER_LOST`). O limite é por falta de progresso, não pelo tempo total, então mensagens grandes em rede lenta não são cortadas enquanto avançam.
 - **Resultado grande:** `RESULT` que passaria de 8 MiB volta como `status` `error` / `TASK_FAILED`.
 - **Worker:** registra em stderr `worker_id`, endereço do coordenador, `task_id`, função, resultado e duração de cada tarefa.
 - **Segurança:** o worker só executa funções compiladas e registradas no binário; nenhum código chega pela rede. Ele não tem autenticação nem criptografia: é para uso em rede local de laboratório, nunca exposto à internet.
 
-## 5. Testes
+Erros que o `join` pode devolver (no programa gerado, o `join` do coordenador imprime `[minipar_rt] join task-N falhou: <CÓDIGO>: <mensagem>` em stderr e sai com exit 1):
+
+| Código | Quando acontece | Exemplo de causa na prática |
+|---|---|---|
+| `BAD_DESTINATION` | Destino que não é `local` nem `IPv4:porta` | Erro de digitação no destino lido do `input()` |
+| `WORKER_UNAVAILABLE` | Conexão recusada/inalcançável ou handshake sem resposta | Worker não iniciado, porta errada, firewall bloqueando |
+| `VERSION_MISMATCH` | `build_id` ou `protocol_version` diferente | Worker compilado de outro fonte ou de outro commit |
+| `WORKER_LOST` | A conexão caiu com a tarefa pendente | Worker encerrado (Ctrl+C, kill) ou envio parado por mais de `MINIPAR_RT_SEND_TIMEOUT_MS` |
+| `TIMEOUT` | O `join` passou do limite | Worker vivo que não responde; máquina que saiu da rede sem fechar a conexão |
+| `TASK_FAILED` | A função lançou exceção, ou o resultado passou de 8 MiB | Divisão por zero dentro da tarefa |
+| `UNKNOWN_FUNCTION` | `function_id` não registrado no worker | Não acontece com o mesmo executável; indica binários diferentes |
+| `PROTOCOL_ERROR` | Frame ou JSON inválido | Outro serviço escutando a mesma porta |
+| `INVALID_HANDLE` | `join` de um handle já coletado ou desconhecido | Erro de programa, não de rede |
+
+Variáveis de ambiente (lidas pelo coordenador e pelo worker; nada é persistido no sistema):
+
+| Variável | Padrão | Efeito |
+|---|---|---|
+| `MINIPAR_RT_REMOTE_TIMEOUT_MS` | `60000` | Limite do `join` remoto sem timeout explícito (o `join(h)` do MiniPar) |
+| `MINIPAR_RT_SEND_TIMEOUT_MS` | `10000` | Tempo máximo de envio sem progresso antes de fechar a conexão |
+
+## 6. Testes
+
+| Nível | Comando (da raiz) | O que prova | Card |
+|---|---|---|---|
+| Unidade + protocolo + remoto no loopback | `python runtime/tests/run_tests.py` | API local, frames, worker, falhas de rede, interop com o C++ gerado | RUN-01/02/04 |
+| MiniPar → C++ gerado → runtime | `python runtime/tests/interop_codegen.py` | O compilador gera chamadas certas ao runtime (local, worker, queda) | RUN-04 |
+| Programas de teste | `python tests/2026_2/test08/run_t08.py` (e `test09/run_t09.py`, `test10/run_t10.py`) | T08–T10 com oráculo, nos modos `seq`, `par` local e `par` com workers no loopback | T08/T09/T10 |
+| Benchmark e falhas | `python tests/2026_2/bench/run_bench.py [--rapido]` | Tempos com a mesma carga, speedup, e falhas F1–F3 repetidas | RUN-05 |
+| Integração dos três eixos | `python scripts/smoke_int01.py` | Compilador + runtime + serviço da Web juntos | INT-01 |
+| **Dois computadores** | seção 7 | Execução entre máquinas diferentes | RUN-03/06 |
+
+Todos usam só portas de `127.0.0.1`, exceto a seção 7. Nenhum deles prova execução entre computadores.
 
 ```powershell
 python runtime/tests/run_tests.py                 # compila com -Wall -Wextra -Werror e executa tudo
@@ -154,10 +241,85 @@ python runtime/tests/interop_codegen.py [--port-base 7100]     # só com o CORE-
 
 Resultado em 30/10/2026 (Windows 11, G++ 16.2.0 UCRT64): `run_tests.py` com as 6 etapas PASS (17/17 casos do `test_interop.cpp`); `interop_codegen.py` com (a), (b) e (c) PASS, rodado na **integração local** RUN-03 + `dev` + #17 + #18. Em 05/11/2026, com o #17 e o #18 já em `dev`, os dois scripts foram repetidos na branch sincronizada, sem integração local: 6/6 etapas e (a), (b), (c) PASS. Sem o `CORE-07` na árvore, o `interop_codegen.py` dá `BLOCKED`. Nada disso prova execução em dois computadores (RUN-03).
 
-## 6. Limitações conhecidas
+## 7. Deploy em dois computadores
+
+Roteiro para rodar **qualquer programa MiniPar com `fork ... on <IP:porta>`** com o coordenador na máquina A e os workers na máquina B. O exemplo usa o Teste 8 (4 workers); a demo do `RUN-03` segue o mesmo esquema com uma porta só ([roteiro dela](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)).
+
+**7.1 Pré-requisitos (nas duas máquinas)**
+
+- Mesma rede local, de laboratório ou doméstica. Nada de VPN pública nem porta aberta para a internet.
+- O **mesmo commit** do repositório (`git rev-parse HEAD` igual nos dois lados).
+- Python 3.10+ e G++ com C++20. No Windows, o MSYS2 UCRT64 (`C:\msys64\ucrt64\bin`) no PATH **só da janela**: `$env:PATH = "C:\msys64\ucrt64\bin;$env:PATH"`.
+- O IP de B na rede local (`ipconfig` no Windows, `ip -4 addr` no Linux).
+
+**7.2 Compilar nas duas máquinas** (o mesmo fonte gera o mesmo `build_id`):
+
+```powershell
+python main.py tests/2026_2/test08/teste8_avaliadores.minipar teste8      # gera output/teste8.exe
+Get-FileHash output/teste8.exe -Algorithm SHA256                          # anotar (Linux: sha256sum)
+```
+
+**7.3 Liberar as portas em B só para A, só durante o teste** (PowerShell como administrador, na máquina B):
+
+```powershell
+New-NetFirewallRule -DisplayName "MiniPar workers (temporaria)" -Direction Inbound -Protocol TCP `
+  -LocalPort 7201-7204 -RemoteAddress <IP-de-A> -Profile Private -Action Allow
+```
+
+No Linux com ufw: `sudo ufw allow from <IP-de-A> to any port 7201:7204 proto tcp`. Se o Windows mostrar o aviso do firewall ao iniciar o worker, marque **só "Redes privadas"**.
+
+**7.4 Subir os workers em B**, um terminal por porta, cada um com seu log:
+
+```powershell
+output\teste8.exe --minipar-worker 7201 --bind <IP-de-B> 2> output\worker_7201.log
+# repetir para 7202, 7203 e 7204
+```
+
+Cada log começa com `[minipar_worker <host-B>:<pid>] escutando em <IP-de-B>:7201 (... build_id=...)`.
+
+**7.5 Rodar o coordenador em A:**
+
+```powershell
+"par`n2000000`n<IP-de-B>:7201`n<IP-de-B>:7202`n<IP-de-B>:7203`n<IP-de-B>:7204" | output\teste8.exe | Tee-Object output\coordenador_A.txt
+```
+
+Oráculo: `TOTAL 160`, `UNICOS 160`, `DUPLICADOS 0`, `PERDIDOS 0` e `SOMA_NOTAS` igual à do modo `seq` rodado em A (`"seq`n2000000`nlocal`nlocal`nlocal`nlocal" | output\teste8.exe`). Nos logs de B, cada worker mostra `conexao de <IP-de-A>:<porta> aceita` e um `TASK`/`RESULT ok` de `avaliar_lote`. Para medir tempos com repetição, use o `run_bench.py --destinos-rede` ([bench](../tests/2026_2/bench/README.md#cenário-em-dois-computadores-par_rede)).
+
+**7.6 Queda de worker:** rode o coordenador de novo com uma carga maior na 2ª linha (por exemplo `20000000`, para a tarefa durar alguns segundos) e, quando os logs de B mostrarem `TASK ... inicio`, pressione Ctrl+C num worker:
+
+```powershell
+"par`n20000000`n<IP-de-B>:7201`n<IP-de-B>:7202`n<IP-de-B>:7203`n<IP-de-B>:7204" | output\teste8.exe 2>&1 | Tee-Object output\coordenador_A_queda.txt
+$LASTEXITCODE                                                              # esperado: 1
+```
+
+O coordenador tem de terminar com `[minipar_rt] join task-N falhou: WORKER_LOST: ...` e exit 1, sem travar. Suba o worker de novo antes de repetir.
+
+**7.7 Encerrar e guardar a evidência:**
+
+```powershell
+Remove-NetFirewallRule -DisplayName "MiniPar workers (temporaria)"           # em B
+python runtime/tools/mascarar_log.py output\worker_7201.log docs\evidencias\RUN-06\worker_7201_B.log --host <hostname-de-B>=pc-B
+python runtime/tools/mascarar_log.py output\coordenador_A.txt docs\evidencias\RUN-06\coordenador_A.txt --host <hostname-de-A>=pc-A
+python runtime/tools/mascarar_log.py output\coordenador_A_queda.txt docs\evidencias\RUN-06\coordenador_A_queda.txt --host <hostname-de-B>=pc-B
+```
+
+O `mascarar_log.py` troca o 3º octeto dos IPs por `x` (`192.168.x.31`), os hostnames pelos apelidos e as pastas de usuário por `<home>`. Ele sai com exit 1 se sobrar um IP sem máscara. Confira o arquivo antes de commitar. Preencha o registro em [`docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md`](../docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md).
+
+**7.8 Problemas comuns**
+
+| Sintoma | Causa provável | O que fazer |
+|---|---|---|
+| `WORKER_UNAVAILABLE ... conexao recusada` | Worker não iniciado, porta errada ou `--bind` em `127.0.0.1` | Conferir a 1ª linha do log de B; usar `--bind <IP-de-B>` |
+| `WORKER_UNAVAILABLE` depois de ~5 s, sem `conexao ... aceita` no log de B | Firewall de B descartando os pacotes | Refazer 7.3 com o IP certo de A; perfil de rede "Privada" |
+| `VERSION_MISMATCH` | Executáveis de fontes ou commits diferentes | Mesmo commit e recompilar nas duas máquinas (7.2) |
+| `nao foi possivel escutar` no worker | Porta já em uso ou IP do `--bind` não é de B | Outra porta, ou conferir o IP com `ipconfig` |
+| O `join` demora 60 s e termina em `TIMEOUT` | B saiu da rede sem fechar a conexão | Comportamento esperado; para testes, `MINIPAR_RT_REMOTE_TIMEOUT_MS` menor só no coordenador |
+| Duas máquinas com o mesmo hostname | Clonagem de imagem do laboratório | Usar os IPs dos logs para provar que são máquinas diferentes |
+
+## 8. Limitações conhecidas
 
 - Destino só IPv4 (`host:porta`); IPv6 literal não é aceito.
 - Uma tarefa que estoura o `timeout` continua executando; não existe cancelamento (o contrato não pede).
-- Worker sem autenticação/TLS (ver seção 4).
+- Worker sem autenticação/TLS (ver seção 5).
 - Um worker que para de ler só é detectado depois de `MINIPAR_RT_SEND_TIMEOUT_MS` sem progresso no envio; se o worker ainda lê mas nunca responde, quem limita é o timeout do `join` (60 s remoto por padrão).
 - Threads ociosas do executor e de conexões ficam vivas até o fim do processo; programas de demonstração encerram com `std::_Exit` depois de imprimir tudo.

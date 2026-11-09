@@ -2,6 +2,7 @@ _CPP_HEADER = """\
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <mutex>
 #include <vector>
 #include <thread>
 #include <memory>
@@ -14,8 +15,11 @@ _CPP_HEADER = """\
 #include <cstddef>
 #include <iomanip>
 #include <limits>
+#include <algorithm>
 #include <locale>
 #include <stdexcept>
+
+inline std::mutex __minipar_print_mutex;
 
 // Ativo apenas durante wrappers de tarefa e suas branches par.
 inline thread_local bool __fj_in_task = false;
@@ -29,8 +33,64 @@ inline thread_local bool __fj_in_task = false;
   #include <sys/socket.h>
   #include <arpa/inet.h>
   #include <unistd.h>
+  #include <fcntl.h>
   #define CLOSE_SOCK close
 #endif
+
+#ifdef _WIN32
+using MiniParSocket = SOCKET;
+constexpr MiniParSocket MINIPAR_INVALID_SOCKET = INVALID_SOCKET;
+#else
+using MiniParSocket = int;
+constexpr MiniParSocket MINIPAR_INVALID_SOCKET = -1;
+#endif
+
+inline void __minipar_channel_timeout(MiniParSocket sock) {
+#ifdef _WIN32
+    DWORD timeout_ms = 5000;
+    int send_ok = setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+    int recv_ok = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+#else
+    timeval timeout{5, 0};
+    int send_ok = setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
+    int recv_ok = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+#endif
+    if (send_ok != 0 || recv_ok != 0)
+        throw std::runtime_error("c_channel: configurar timeout falhou");
+}
+
+inline bool __minipar_channel_connect(MiniParSocket sock, sockaddr_in& address) {
+#ifdef _WIN32
+    u_long nonblocking = 1;
+    if (ioctlsocket(sock, FIONBIO, &nonblocking) != 0) return false;
+#else
+    int flags = fcntl(sock, F_GETFL, 0);
+    if (flags < 0 || fcntl(sock, F_SETFL, flags | O_NONBLOCK) != 0) return false;
+#endif
+    int connected = connect(sock, (sockaddr*)&address, sizeof(address));
+    if (connected != 0) {
+        fd_set writable;
+        FD_ZERO(&writable);
+        FD_SET(sock, &writable);
+        timeval wait{0, 100000};
+        int selected = select(static_cast<int>(sock + 1), nullptr, &writable, nullptr, &wait);
+        int error = 0;
+#ifdef _WIN32
+        int length = sizeof(error);
+#else
+        socklen_t length = sizeof(error);
+#endif
+        connected = selected > 0 && getsockopt(sock, SOL_SOCKET, SO_ERROR,
+            (char*)&error, &length) == 0 && error == 0 ? 0 : -1;
+    }
+#ifdef _WIN32
+    nonblocking = 0;
+    if (ioctlsocket(sock, FIONBIO, &nonblocking) != 0) return false;
+#else
+    if (fcntl(sock, F_SETFL, flags) != 0) return false;
+#endif
+    return connected == 0;
+}
 
 // Helper para Random nativo
 double random_val() { return (double)rand() / RAND_MAX; }
@@ -180,46 +240,97 @@ public:
     MiniParChannel(std::string ip, int port) : ip(ip), port(port) {}
 
     void sendData(std::string msg) {
-        int sock = socket(AF_INET, SOCK_STREAM, 0);
-        if (sock < 0) return;
-        struct sockaddr_in serv_addr;
+        struct sockaddr_in serv_addr{};
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
-        inet_pton(AF_INET, ip.c_str(), &serv_addr.sin_addr);
-        
-        for(int i=0; i<50; i++) {
-            if (connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) >= 0) {
-                send(sock, msg.c_str(), msg.length(), 0);
-                break;
+        if (inet_pton(AF_INET, ip.c_str(), &serv_addr.sin_addr) != 1)
+            throw std::runtime_error("c_channel: endereco IPv4 invalido");
+
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+        for(int i=0; i<50 && std::chrono::steady_clock::now() < deadline; i++) {
+            // Winsock nao permite reutilizar um socket depois de connect() falhar.
+            MiniParSocket sock = socket(AF_INET, SOCK_STREAM, 0);
+            if (sock == MINIPAR_INVALID_SOCKET)
+                throw std::runtime_error("c_channel: socket falhou");
+            if (__minipar_channel_connect(sock, serv_addr)) {
+                try { __minipar_channel_timeout(sock); }
+                catch (...) { CLOSE_SOCK(sock); throw; }
+                size_t sent = 0;
+                while (sent < msg.size()) {
+                    int chunk = static_cast<int>(std::min(msg.size() - sent,
+                        static_cast<size_t>(std::numeric_limits<int>::max())));
+                    int n = send(sock, msg.data() + sent, chunk, 0);
+                    if (n <= 0) {
+                        CLOSE_SOCK(sock);
+                        throw std::runtime_error("c_channel: envio incompleto");
+                    }
+                    sent += static_cast<size_t>(n);
+                }
+                // Uma conexao representa uma mensagem. O ACK impede que o proximo
+                // connect alcance o listener anterior durante sua troca.
+#ifdef _WIN32
+                int stopped = shutdown(sock, SD_SEND);
+#else
+                int stopped = shutdown(sock, SHUT_WR);
+#endif
+                char ack = 0;
+                int acknowledged = stopped == 0 ? recv(sock, &ack, 1, 0) : -1;
+                CLOSE_SOCK(sock);
+                if (acknowledged != 1 || ack != 1)
+                    throw std::runtime_error("c_channel: mensagem nao confirmada");
+                return;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            CLOSE_SOCK(sock);
+            if (std::chrono::steady_clock::now() < deadline)
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
-        CLOSE_SOCK(sock);
+        throw std::runtime_error("c_channel: conexao falhou no limite de espera");
     }
 
     std::string receiveData() {
-        int server_fd = socket(AF_INET, SOCK_STREAM, 0);
-        if (server_fd < 0) return "";
+        MiniParSocket server_fd = socket(AF_INET, SOCK_STREAM, 0);
+        if (server_fd == MINIPAR_INVALID_SOCKET)
+            throw std::runtime_error("c_channel: socket listener falhou");
         int opt = 1;
         setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
         
-        struct sockaddr_in address;
+        struct sockaddr_in address{};
         address.sin_family = AF_INET;
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_port = htons(port);
         
-        if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) { CLOSE_SOCK(server_fd); return ""; }
-        if (listen(server_fd, 3) < 0) { CLOSE_SOCK(server_fd); return ""; }
-        
-        int new_socket = accept(server_fd, nullptr, nullptr);
-        if (new_socket < 0) { CLOSE_SOCK(server_fd); return ""; }
-        
-        char buffer[4096] = {0};
-        recv(new_socket, buffer, 4096, 0);
-        std::string result(buffer);
-        
-        CLOSE_SOCK(new_socket);
+        if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) != 0) {
+            CLOSE_SOCK(server_fd);
+            throw std::runtime_error("c_channel: bind falhou");
+        }
+        if (listen(server_fd, 3) != 0) {
+            CLOSE_SOCK(server_fd);
+            throw std::runtime_error("c_channel: listen falhou");
+        }
+        // receive() espera ate o usuario fornecer dados ao emissor.
+        // O timeout de I/O so comeca depois de accept().
+        MiniParSocket new_socket = accept(server_fd, nullptr, nullptr);
+        if (new_socket == MINIPAR_INVALID_SOCKET) {
+            CLOSE_SOCK(server_fd);
+            throw std::runtime_error("c_channel: accept falhou");
+        }
+        try { __minipar_channel_timeout(new_socket); }
+        catch (...) { CLOSE_SOCK(new_socket); CLOSE_SOCK(server_fd); throw; }
+        std::string result;
+        char buffer[4096];
+        int n;
+        while ((n = recv(new_socket, buffer, sizeof(buffer), 0)) > 0)
+            result.append(buffer, static_cast<size_t>(n));
         CLOSE_SOCK(server_fd);
+        if (n < 0) {
+            CLOSE_SOCK(new_socket);
+            throw std::runtime_error("c_channel: recebimento incompleto");
+        }
+        char ack = 1;
+        int acknowledged = send(new_socket, &ack, 1, 0);
+        CLOSE_SOCK(new_socket);
+        if (acknowledged != 1)
+            throw std::runtime_error("c_channel: confirmacao falhou");
         return result;
     }
 };

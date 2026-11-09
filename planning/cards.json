@@ -1,8 +1,8 @@
 {
   "project": "MINIPAR-2026.2",
-  "version": "0.1",
-  "as_of": "2026-10-15",
-  "note": "Backlog proposto. Sem responsáveis nominais B/C, sem Issues criadas; DEPENDÊNCIAS NÃO LIBERAM automaticamente execução. Datas agressivas sujeitas a revisão no G0.",
+  "version": "0.2",
+  "as_of": "2026-11-05",
+  "note": "Estado conferido em 05/11/2026 contra os PRs mergeados em dev (59ea77d) pelo card DOC-03; CORE-09 atualizado em 06/11 (merge do #35). DONE só com PR mergeado e evidência, exceto card de configuração/coordenação sem artefato no repositório (hoje só SET-03), aceito por evidência registrada em docs/14 §2.1; `status_note` registra exceções, recortes PARTIAL e pendências. `ready` não foi alterado (autorização do coordenador). Sem Issues criadas.",
   "statuses": [
     "BACKLOG",
     "READY",
@@ -27,10 +27,10 @@
         "raiz ativa"
       ],
       "estimate_hours": 2,
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "ready": true,
       "issue_url": null,
-      "pr_url": null,
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/1",
       "evidence": [
         "docs/auditorias/SET-01_VALIDACAO_ESTRUTURAL.md"
       ]
@@ -52,10 +52,10 @@
         "main.py"
       ],
       "estimate_hours": 4,
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "ready": true,
       "issue_url": null,
-      "pr_url": null,
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/1",
       "evidence": [
         "docs/auditorias/SET-02_AMBIENTE_E_SMOKE.md"
       ]
@@ -74,11 +74,15 @@
         "planning/"
       ],
       "estimate_hours": 1,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [
+        "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md",
+        "docs/14_PRODUCT_E_SPRINT_BACKLOGS.md"
+      ],
+      "status_note": "EXCEÇÃO à regra de DONE com PR: card de configuração/coordenação, sem artefato no repositório. Aceite por evidências em docs/14 §2.1: acesso de escrita dos três e PRs mergeados de cada um; branches/dev/revisão (ADR-019); dois hosts usados no RUN-03 (04/11). Sem registro escrito da confirmação de horas; entregável 'repositório privado' diverge (ADR-018)."
     },
     {
       "id": "CON-01",
@@ -95,7 +99,7 @@
         "docs/02_CONTRATOS_TECNICOS.md"
       ],
       "estimate_hours": 3,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": true,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7",
@@ -124,7 +128,8 @@
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/3",
       "evidence": [
         "docs/02_CONTRATOS_TECNICOS.md"
-      ]
+      ],
+      "status_note": "PRs complementares: #25."
     },
     {
       "id": "CON-03",
@@ -147,7 +152,8 @@
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/2",
       "evidence": [
         "docs/02_CONTRATOS_TECNICOS.md"
-      ]
+      ],
+      "status_note": "PRs complementares: #25."
     },
     {
       "id": "CORE-01",
@@ -166,7 +172,7 @@
         "scripts/"
       ],
       "estimate_hours": 3,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": true,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/6",
@@ -192,11 +198,14 @@
         "src/codegen.py"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/16",
+      "evidence": [
+        "docs/auditorias/CORE-02_TAC_QUICKSORT.md",
+        "docs/CR-CORE02-TAC-STATUS.md"
+      ]
     },
     {
       "id": "CORE-03",
@@ -219,11 +228,13 @@
         "docs/auditorias/CORE-03_*"
       ],
       "estimate_hours": 6,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": [],
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/14",
+      "evidence": [
+        "docs/auditorias/CORE-03_STRINGS_T11.md"
+      ],
       "scope_authorization": "26/10/2026: coordenador autoriza auditoria/correção e atualização do PR #14, incluindo testes, BNF e evidências. Listas textuais completas ficam em PEND-T11-03; ready/status e aprovação contratual não são alterados por esta manutenção."
     },
     {
@@ -249,11 +260,14 @@
         "tests/2026_2/core0405/"
       ],
       "estimate_hours": 6,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": [],
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/15",
+      "evidence": [
+        "docs/auditorias/CORE-04-05_FORK_JOIN.md",
+        "docs/CR-CORE05-FJ-DECISOES.md"
+      ],
       "scope_authorization": "26/10/2026: coordenador autoriza corrigir o PR #15, integrar CORE-03 sem rebase e publicar um commit na branch original. Extensão cobre BNF, guardas mínimas contra backend prematuro, testes e evidências; não libera CORE-06/07 nem altera ready/status/aprovações."
     },
     {
@@ -277,11 +291,14 @@
         "docs/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": [],
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/15",
+      "evidence": [
+        "docs/auditorias/CORE-04-05_FORK_JOIN.md",
+        "docs/CR-CORE05-FJ-DECISOES.md"
+      ],
       "scope_authorization": "26/10/2026: coordenador autoriza corrigir o PR #15, integrar CORE-03 sem rebase e publicar um commit na branch original. Extensão cobre BNF, guardas mínimas contra backend prematuro, testes e evidências; não libera CORE-06/07 nem altera ready/status/aprovações."
     },
     {
@@ -300,7 +317,7 @@
         "src/tac.py"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17",
@@ -336,12 +353,13 @@
         "src/cpp_template.py"
       ],
       "estimate_hours": 6,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/18",
       "evidence": [
-        "docs/auditorias/CORE-07_RESULTADOS.json"
+        "docs/auditorias/CORE-07_RESULTADOS.json",
+        "docs/auditorias/CORE-07_BACKEND_RUNTIME.md"
       ],
       "local_execution": {
         "date": "2026-10-30",
@@ -366,7 +384,8 @@
         "evidence": "docs/auditorias/CORE-07_INTEGRACAO_DEV.md",
         "pending": "DONE depende da validacao do dono (A); prova do codigo gerado entre dois computadores pendente (RUN-03 provou o runtime)"
       },
-      "scope_authorization": "05/11/2026: coordenador autorizou integrar eixo-a/CORE-07-backend-runtime e corrigir CLI, backend, servico (src/service.py, CORE-08) e testes de bloqueios superados (core04/05, core06, core08), conforme docs/auditorias/CORE-07_INTEGRACAO_DEV.md; registrado no card a pedido da review do PR #18. Ratificacoes contratuais seguem pendentes."
+      "scope_authorization": "05/11/2026: coordenador autorizou integrar eixo-a/CORE-07-backend-runtime e corrigir CLI, backend, servico (src/service.py, CORE-08) e testes de bloqueios superados (core04/05, core06, core08), conforme docs/auditorias/CORE-07_INTEGRACAO_DEV.md; registrado no card a pedido da review do PR #18. Ratificacoes contratuais seguem pendentes.",
+      "status_note": "PRs complementares: #29."
     },
     {
       "id": "CORE-08",
@@ -385,16 +404,17 @@
         "app.py"
       ],
       "estimate_hours": 5,
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/19",
       "evidence": [
         "docs/auditorias/CORE-08_SERVICO_FASES.md",
         "docs/auditorias/CORE-08_RESULTADOS.json",
         "docs/CR-CORE08-DIAGNOSTICOS.md"
       ],
-      "authorization": "30/10/2026: coordenador autoriza implementacao local CORE-08; sem stage/commit/push/PR/merge, sem promover dependencias ou ready. PARTIAL: catalogo C-WEB incompleto e CORE-06/07 nao integrados."
+      "authorization": "30/10/2026: coordenador autoriza implementacao local CORE-08; sem stage/commit/push/PR/merge, sem promover dependencias ou ready. PARTIAL: catalogo C-WEB incompleto e CORE-06/07 nao integrados.",
+      "status_note": "PRs complementares: #34."
     },
     {
       "id": "CORE-09",
@@ -416,11 +436,12 @@
         "static/"
       ],
       "estimate_hours": 3,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/35",
+      "evidence": [],
+      "status_note": "Mergeado em 06/11. DEF-01 (T01) segue aberto (CORE-10)."
     },
     {
       "id": "CORE-10",
@@ -441,11 +462,14 @@
         "scripts/"
       ],
       "estimate_hours": 3,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/38",
+      "evidence": [
+        "docs/auditorias/CORE-10_REGRESSAO_FINAL_T01_T07.md"
+      ],
+      "status_note": "T03, T05, T06 e T07 PASS; T04 PARTIAL (sem tolerância); T01/T02 FAIL intermitentes (DEF-01/02 abertos, Eixo A)."
     },
     {
       "id": "WEB-01",
@@ -462,11 +486,13 @@
         "web_didatica/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/12",
+      "evidence": [
+        "web_didatica/README.md"
+      ]
     },
     {
       "id": "WEB-02",
@@ -483,11 +509,13 @@
         "web_didatica/"
       ],
       "estimate_hours": 7,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/13",
+      "evidence": [
+        "web_didatica/README.md"
+      ]
     },
     {
       "id": "WEB-03",
@@ -505,11 +533,13 @@
         "web_didatica/"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/30",
+      "evidence": [
+        "web_didatica/README.md"
+      ]
     },
     {
       "id": "WEB-04",
@@ -526,11 +556,13 @@
         "web_didatica/"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/31",
+      "evidence": [
+        "web_didatica/README.md"
+      ]
     },
     {
       "id": "T11-01",
@@ -548,11 +580,13 @@
         "tests/2026_2/test11/"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/26",
+      "evidence": [
+        "tests/2026_2/test11/README.md"
+      ]
     },
     {
       "id": "T11-02",
@@ -569,11 +603,13 @@
         "tests/2026_2/test11/"
       ],
       "estimate_hours": 8,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/27",
+      "evidence": [
+        "tests/2026_2/test11/README.md"
+      ]
     },
     {
       "id": "T11-03",
@@ -591,11 +627,14 @@
         "docs/evidencias/"
       ],
       "estimate_hours": 5,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/28",
+      "evidence": [
+        "tests/2026_2/test11/README.md",
+        "tests/2026_2/test11/evidencias"
+      ]
     },
     {
       "id": "WEB-05",
@@ -614,11 +653,15 @@
         "web_didatica/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/33",
+      "evidence": [
+        "docs/relatorio/WEB-05_INTERFACE_WEB_DIDATICA.md",
+        "docs/relatorio/WEB-05_TESTE11_MINICOMPILADOR.md",
+        "docs/evidencias/WEB-05/README.md"
+      ]
     },
     {
       "id": "RUN-01",
@@ -635,7 +678,7 @@
         "runtime/"
       ],
       "estimate_hours": 7,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/8",
@@ -659,7 +702,7 @@
         "runtime/"
       ],
       "estimate_hours": 8,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/9",
@@ -694,7 +737,8 @@
         "docs/evidencias/RUN-03_DOIS_COMPUTADORES.md",
         "docs/evidencias/RUN-03/worker_B.log",
         "runtime/examples/demo_distribuida.cpp"
-      ]
+      ],
+      "status_note": "Evidência só do lado do worker (máquina B); o log do coordenador entra no RUN-06."
     },
     {
       "id": "RUN-04",
@@ -714,7 +758,7 @@
         "docs/"
       ],
       "estimate_hours": 4,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": true,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20",
@@ -740,14 +784,15 @@
         "tests/2026_2/test08/"
       ],
       "estimate_hours": 6,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/21",
       "evidence": [
         "tests/2026_2/test08/README.md",
         "tests/2026_2/test08/run_t08.py"
-      ]
+      ],
+      "status_note": "Cenário remoto só no loopback; execução entre computadores provada pelo RUN-03 e pelo RUN-05/06."
     },
     {
       "id": "T09-01",
@@ -764,14 +809,15 @@
         "tests/2026_2/test09/"
       ],
       "estimate_hours": 6,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/22",
       "evidence": [
         "tests/2026_2/test09/README.md",
         "tests/2026_2/test09/run_t09.py"
-      ]
+      ],
+      "status_note": "Mergeado como PARTIAL: cenário remoto só no loopback."
     },
     {
       "id": "T10-01",
@@ -788,14 +834,15 @@
         "tests/2026_2/test10/"
       ],
       "estimate_hours": 7,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/23",
       "evidence": [
         "tests/2026_2/test10/README.md",
         "tests/2026_2/test10/run_t10.py"
-      ]
+      ],
+      "status_note": "Mergeado como PARTIAL: cenário remoto só no loopback; ADR-014 (saída do Sierpinski) em aberto."
     },
     {
       "id": "RUN-05",
@@ -814,11 +861,15 @@
         "docs/evidencias/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/36",
+      "evidence": [
+        "tests/2026_2/bench/README.md",
+        "docs/evidencias/RUN-05_BENCHMARKS.md"
+      ],
+      "status_note": "Tempos e falhas F1–F3 PASS nesta máquina; cenário par_rede (dois computadores) pendente."
     },
     {
       "id": "RUN-06",
@@ -836,11 +887,12 @@
         "docs/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "IN_PROGRESS",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/37",
+      "evidence": [],
+      "status_note": "Documentação em revisão; falta a reprodução em dois PCs por outro integrante."
     },
     {
       "id": "INT-01",
@@ -861,14 +913,15 @@
         "scripts/"
       ],
       "estimate_hours": 3,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": true,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24",
       "evidence": [
         "docs/auditorias/INT-01_SMOKE_INTEGRACAO.md",
         "scripts/smoke_int01.py"
-      ]
+      ],
+      "status_note": "Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback."
     },
     {
       "id": "INT-02",
@@ -895,7 +948,8 @@
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "status_note": "Depende do CORE-10 (em revisão)."
     },
     {
       "id": "DOC-01",
@@ -912,11 +966,15 @@
         "docs/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/32",
+      "evidence": [
+        "docs/12_BNF_MINIPAR_2026_2.md",
+        "docs/13_PSEUDOCODIGOS_NUCLEO.md",
+        "docs/auditorias/DOC-01_BNF_PSEUDOCODIGOS.md"
+      ]
     },
     {
       "id": "DOC-02",
@@ -937,7 +995,8 @@
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "status_note": "Dependência (INT-01) concluída; sem PR até 05/11."
     },
     {
       "id": "DOC-03",
@@ -955,11 +1014,14 @@
         "planning/"
       ],
       "estimate_hours": 2,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
-      "evidence": []
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/39",
+      "evidence": [
+        "docs/14_PRODUCT_E_SPRINT_BACKLOGS.md",
+        "docs/03_DECISOES.md"
+      ]
     },
     {
       "id": "DOC-04",

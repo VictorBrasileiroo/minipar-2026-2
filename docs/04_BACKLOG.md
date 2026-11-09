@@ -2,6 +2,8 @@
 
 > **PRÉ-ISSUES, v0.1 — 15/10/2026.** Nenhuma GitHub Issue foi criada. Fonte estruturada: `planning/cards.json`. Revisar com os três responsáveis antes de publicar.
 
+> **Estado atualizado em 05/11/2026 (`cards.json` v0.2, card `DOC-03`).** A tabela "Estado em 05/11/2026" abaixo traz o status real de cada card, conferido contra os PRs mergeados em `dev` (`59ea77d`). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+
 ## Regras para usar este backlog
 
 - Cada card tem **um eixo responsável**, prazo-limite, dependências, arquivos autorizados, evidência e critério de aceite. Os nomes de B/C serão decididos no kickoff.
@@ -11,6 +13,56 @@
 - B pode produzir pseudocódigos, UML e consolidar o relatório, mas **A valida detalhes do núcleo, C valida o runtime**; nenhum editor deve inventar implementação.
 - Se um contrato mudar, abrir CR conforme `docs/02_CONTRATOS_TECNICOS.md` e `AGENTS.md`.
 - `estimate_hours` são estimativas de supervisão e execução humana assistida por IA; **não são esforço mensurado** e podem mudar após G0.
+
+## Estado em 05/11/2026
+
+32 `DONE`, 3 `IN_REVIEW`, 1 `IN_PROGRESS`, 7 `BACKLOG` (CORE-09 atualizado em 06/11). `DONE` só com PR mergeado e evidência; o PR listado é o principal do card. Única exceção: o `SET-03`, card de configuração sem artefato no repositório, aceito pelas evidências de [`14_PRODUCT_E_SPRINT_BACKLOGS.md` §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+
+| Card | Eixo | Estado | PR | Observação |
+|---|---|---|---|---|
+| `SET-01` | A | DONE | #1 |  |
+| `SET-02` | A | DONE | #1 |  |
+| `SET-03` | A | DONE (exceção sem PR) | — | Card de configuração/coordenação, sem artefato no repositório. Aceite por evidências em `14_PRODUCT_E_SPRINT_BACKLOGS.md` §2.1: acesso de escrita dos três e PRs de cada um; branches e revisão (ADR-019); dois hosts no RUN-03 (04/11). Confirmação de horas sem registro escrito; entregável "repositório privado" diverge (ADR-018). |
+| `CON-01` | A+C | DONE | #7 |  |
+| `CON-02` | A+B | DONE | #3 | PRs complementares: #25. |
+| `CON-03` | A+B | DONE | #2 | PRs complementares: #25. |
+| `CORE-01` | C | DONE | #6 |  |
+| `CORE-02` | A | DONE | #16 |  |
+| `CORE-03` | A | DONE | #14 |  |
+| `CORE-04` | A | DONE | #15 |  |
+| `CORE-05` | A | DONE | #15 |  |
+| `CORE-06` | A | DONE | #17 |  |
+| `CORE-07` | A | DONE | #18 | PRs complementares: #29. |
+| `CORE-08` | A | DONE | #19 | PRs complementares: #34. |
+| `CORE-09` | A | DONE | #35 | Mergeado em 06/11. DEF-01 (T01) segue aberto (CORE-10). |
+| `CORE-10` | C | IN_REVIEW | #38 | T03, T05, T06 e T07 PASS; T04 PARTIAL (sem tolerância); T01/T02 FAIL intermitentes (DEF-01/02 abertos, Eixo A). |
+| `WEB-01` | B | DONE | #12 |  |
+| `WEB-02` | B | DONE | #13 |  |
+| `WEB-03` | B | DONE | #30 |  |
+| `WEB-04` | B | DONE | #31 |  |
+| `T11-01` | B | DONE | #26 |  |
+| `T11-02` | B | DONE | #27 |  |
+| `T11-03` | B | DONE | #28 |  |
+| `WEB-05` | B | DONE | #33 |  |
+| `RUN-01` | C | DONE | #8 |  |
+| `RUN-02` | C | DONE | #9 |  |
+| `RUN-03` | C | DONE | #10 | Evidência só do lado do worker (máquina B); o log do coordenador entra no RUN-06. |
+| `RUN-04` | C | DONE | #20 |  |
+| `T08-01` | C | DONE | #21 | Cenário remoto só no loopback; execução entre computadores provada pelo RUN-03 e pelo RUN-05/06. |
+| `T09-01` | C | DONE | #22 | Mergeado como PARTIAL: cenário remoto só no loopback. |
+| `T10-01` | C | DONE | #23 | Mergeado como PARTIAL: cenário remoto só no loopback; ADR-014 (saída do Sierpinski) em aberto. |
+| `RUN-05` | C | IN_REVIEW | #36 | Tempos e falhas F1–F3 PASS nesta máquina; cenário par_rede (dois computadores) pendente. |
+| `RUN-06` | C | IN_PROGRESS | #37 | Documentação em revisão; falta a reprodução em dois PCs por outro integrante. |
+| `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
+| `INT-02` | B | BACKLOG | — | Depende do CORE-10 (em revisão). |
+| `DOC-01` | B | DONE | #32 |  |
+| `DOC-02` | B | BACKLOG | — | Dependência (INT-01) concluída; sem PR até 05/11. |
+| `DOC-03` | C | IN_REVIEW | #39 |  |
+| `DOC-04` | B | BACKLOG | — |  |
+| `REL-01` | A | BACKLOG | — |  |
+| `EST-01` | EQUIPE | BACKLOG | — |  |
+| `EST-02` | EQUIPE | BACKLOG | — |  |
+| `ENT-01` | EQUIPE | BACKLOG | — |  |
 
 ## Marcos de controle
 
