@@ -54,7 +54,7 @@
 | `RUN-05` | C | IN_PROGRESS | #36 | PR #36 mergeado em 06/11; medições e falhas locais documentadas. Aceite PARTIAL: par_rede em dois computadores PENDING; merge não conclui o recorte remoto. |
 | `RUN-06` | C | IN_PROGRESS | #37 | Documentação integrada (#37 em 06/11); aprovação do coordenador mantém reprodução por outro integrante e logs dos dois hosts PENDING. |
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
-| `INT-02` | B | BACKLOG | — | CORE-10 integrado (#38). Nenhum PR/branch/evidência específica localizado em 09/11; ready preservado, requer liberação do coordenador. |
+| `INT-02` | B | IN_REVIEW | #44 | PARTIAL. Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. |
 | `DOC-01` | B | DONE | #32 |  |
 | `DOC-02` | B | DONE (integração; aceite conjunto PARTIAL) | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)); aceite técnico conjunto PARTIAL até B corrigir RC-01/RC-02 (§5.2/UC12). Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS. |
 | `DOC-03` | C | DONE | #39 | PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards. |
@@ -566,6 +566,8 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
+
+**Estado atual (09/11/2026):** IN_REVIEW (PARTIAL) · PR [#44](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/44), base `dev`. Dependências no `dev` (CORE-10 #38, DEF-01 #40, DEF-02 #41). `scripts/regressao_int02.py` em `dev` `8d07433`, duas rodadas (T01/T02 ×10 e ×20): T01 30/30 e T02 30/30 PASS (DEF-01/02 resolvidos), T03, T05–T11 PASS, T04 PARTIAL (tolerância); terminal, Web original e Web didática PASS (testes automáticos e checagem visual no navegador); smoke INT-01 A/B/C PASS. Rede real com dois computadores **BLOCKED** nesta rodada (uma máquina): roteiro em `docs/auditorias/INT-02_REGRESSAO_INTEGRAL.md` §5. Resultado: `docs/auditorias/INT-02_RESULTADOS_2026-11-09.json`. Sem DONE antes da rede real e da revisão humana.
 
 #### `DOC-01` — BNF final e pseudocódigos núcleo
 
