@@ -82,11 +82,13 @@ flowchart LR
         UC13(["UC13 Executar tarefa Fork/Join remota"])
         UC14(["UC14 Iniciar worker do binário"])
         UC15(["UC15 Executar runners dos testes 8–11 e smoke"])
+        UC16(["UC16 Executar o binário gerado"])
     end
 
     prog --- UC01
     prog --- UC04
     prog --- UC05
+    prog --- UC16
     ide --- UC06
     est --- UC07
     est --- UC09
@@ -101,12 +103,15 @@ flowchart LR
     UC06 -. «include» .-> UC01
     UC09 -. «include» .-> UC07
     UC09 -. «include» .-> UC03
-    UC07 -. «extend»<br/>se houver erro .-> UC08
+    UC08 -. «extend»<br/>se houver erro .-> UC07
     UC11 -. «include» .-> UC09
     UC05 -. «extend»<br/>teste multi-terminal .-> UC04
-    UC12 -. «extend»<br/>fork sem destino .-> UC03
-    UC13 -. «extend»<br/>fork com on host:porta .-> UC03
-    UC13 -. «include» .-> UC14
+    UC04 -. «include» .-> UC16
+    UC06 -. «include» .-> UC16
+    UC09 -. «include» .-> UC16
+    UC15 -. «include» .-> UC16
+    UC12 -. «extend»<br/>fork sem destino .-> UC16
+    UC13 -. «extend»<br/>fork com on host:porta .-> UC16
     UC15 -. «include» .-> UC01
 
     UC03 --- gpp
@@ -117,8 +122,13 @@ flowchart LR
 com a mesma semântica: atores fora da fronteira do sistema, casos de uso como elipses dentro
 dela, associações em linha cheia e `«include»`/`«extend»` em linha tracejada, apontando do caso
 base para o incluído (include) e do caso que estende para o base (extend), como na UML.
-`UC12`/`UC13` estendem `UC03` porque o comportamento de tarefa só existe no binário gerado
-quando o programa usa `fork`/`join`. O CPUlator (UC11) é usado **fora** do sistema: a Web
+Separação entre geração e execução: `UC03` só gera o `.cpp` e o binário; `UC16` é a execução
+desse binário, incluída por todos os casos que o rodam (`UC04`, `UC06`, `UC09`, `UC15`) e usada
+diretamente pelo programador. `UC12`/`UC13` estendem `UC16` porque `fork`/`join` acontecem
+**durante a execução**, no ponto em que o programa chega a um `fork` (sem destino ou com
+`on "host:porta"`). Iniciar o worker (`UC14`) é **pré-condição** de `UC13`, feita antes pelo
+operador em outro processo; por isso não há `«include»` entre eles. O CPUlator (UC11) é usado
+**fora** do sistema: a Web
 didática extrai o `.arm` da saída do binário; a execução no simulador é manual (C-T11-v1 §3.7).
 
 ### 2.2 Descrição dos casos de uso
@@ -136,10 +146,11 @@ didática extrai o `.arm` da saída do binário; a execução no simulador é ma
 | UC09 | Estudante | `POST /api/v1/compile` → `service.compile_program`; `POST /api/v1/execute` → `service.execute` | Binário da própria requisição executado com stdin e limite de tempo |
 | UC10 | Estudante | `GET /api/v1/artifacts/<id>/<tipo>` → `service.get_artifact` | Download do `.cpp`, `.tac` ou binário |
 | UC11 | Estudante | `GET /exemplos/t11.json`, depois UC09; `arm.js` `armDaExecucao` | Seção ARM extraída da saída; cópia para o CPUlator |
-| UC12 | (extensão) | `fork f(args)` → `minipar_rt::start(id, args)` | Tarefa em thread do `Executor` |
-| UC13 | (extensão) | `fork f(args) on "host:porta"` → `minipar_rt::start(id, args, Destination)` | Tarefa executada no worker remoto pelo protocolo C-FJ-v1 §2.6 |
+| UC12 | (extensão de UC16) | `fork f(args)` → `minipar_rt::start(id, args)` | Tarefa em thread do `Executor` |
+| UC13 | (extensão de UC16) | `fork f(args) on "host:porta"` → `minipar_rt::start(id, args, Destination)`. Pré-condição: worker já iniciado (UC14) | Tarefa executada no worker remoto pelo protocolo C-FJ-v1 §2.6 |
 | UC14 | Operador | `<binario> --minipar-worker <porta> [--bind <ip>]` → `worker_main_if_requested` | Processo worker aceitando `HELLO`/`TASK` |
 | UC15 | QA | `tests/2026_2/test08/run_t08.py`, `test09/run_t09.py`, `test10/run_t10.py`, `test11/verificar_t11.py`, `scripts/smoke_int01.py` | Relatórios e oráculos dos testes |
+| UC16 | Programador; incluído por UC04, UC06, UC09, UC15 | `output/<saida>.exe` (terminal), `menu.executar_binario`, `app.compile_code`, `service.execute`, runners | Saída do programa; com `fork`/`join`, tarefas locais (UC12) ou remotas (UC13) |
 
 ---
 
@@ -1419,7 +1430,7 @@ seguintes `skipped`; o servidor responde HTTP 200 mesmo assim (C-WEB-v1 §1.8). 
 (`main.compile_file`) segue a mesma ordem de fases, mas apaga e regrava `output/<nome>.*`, usa
 `Parser` com `exit_on_error=True` e `TACGenerator.generate`/`CppCodeGenerator.generate`.
 
-### 5.2 Fork/Join local e remoto no binário gerado (UC12, UC13)
+### 5.2 Fork/Join local e remoto no binário gerado (UC16 com UC12, UC13)
 
 ```mermaid
 sequenceDiagram

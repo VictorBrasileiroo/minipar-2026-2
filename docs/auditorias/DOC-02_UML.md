@@ -6,10 +6,24 @@ Base: `origin/dev` em `8d07433` (09/11/2026; branch criada sobre `59ea77d` e atu
 
 **Atualização de 09/11:** o `dev` recebeu o `DOC-03`, que criou `docs/14_PRODUCT_E_SPRINT_BACKLOGS.md`; a UML passou de `14_` para `docs/15_UML_MINIPAR_2026_2.md`. As mudanças de código que vieram junto (`CORE-09`, `DEF-01`, `DEF-02`) foram refletidas: `main.compile_file` captura o `SystemExit` do parser, `print` é atômico (`__minipar_print_mutex`) e `app.py` ganhou `_requested_test_path` e nomes `ide_<uuid>` em `/api/compile`.
 
+**Ajustes da revisão do PR (09/11):** o revisor apontou dois erros nas relações do diagrama de
+casos de uso (seção 2), ambos corrigidos:
+
+| Apontado na revisão | Antes | Depois |
+|---|---|---|
+| `«extend»` invertido | `UC07 → UC08` | `UC08 → UC07`: o diagnóstico (UC08) estende a inspeção (UC07) quando há erro |
+| Fork/Join ligado à geração | `UC12`/`UC13` estendiam `UC03` (gerar C++ e binário) | Novo `UC16 Executar o binário gerado`, incluído por `UC04`, `UC06`, `UC09` e `UC15` e usado pelo programador; `UC12`/`UC13` estendem `UC16` |
+
+Na mesma conferência foi corrigido um terceiro erro do mesmo tipo, que não estava na revisão:
+`UC13 «include» UC14` dizia que a tarefa remota inicia o worker, mas quem inicia o worker é o
+operador, antes e em outro processo. A aresta foi retirada e `UC14` passou a constar como
+**pré-condição** de `UC13` (nota 2.1 e tabela 2.2). Os diagramas de classes, componentes e
+sequência não mudaram.
+
 ### Implementado
 
 - [`docs/15_UML_MINIPAR_2026_2.md`](../15_UML_MINIPAR_2026_2.md): UML **derivada do código**, em Mermaid:
-  - **Casos de uso** (seção 2): 7 atores, 15 casos de uso com `«include»`/`«extend»` e tabela
+  - **Casos de uso** (seção 2): 7 atores, 16 casos de uso com `«include»`/`«extend»` e tabela
     que liga cada caso ao ponto de entrada real (comando, função ou rota).
   - **Componentes** (seção 3): camadas apresentação → serviços → núcleo → TAC → backend →
     runtime, com as interfaces C-WEB-v1, HTTP `/api/v1`, CLI, C-FJ-v1 §2.3 e §2.6; tabela de
@@ -120,6 +134,12 @@ nenhum texto em negrito indevido. Essa verificação encontrou e corrigiu dois p
 rótulo de relação com `:` (erro de parse) e `__init__` virando negrito (trocado pela notação
 UML de construtor, `+Classe(...)`). A página de teste não foi versionada; para repetir, basta
 renderizar cada bloco ` ```mermaid ` com `mermaid.render`, ou abrir o arquivo no GitHub.
+
+Depois dos ajustes da revisão (09/11), a renderização foi repetida: **17/17 sem erro**, e os
+identificadores das arestas no SVG do diagrama de casos de uso confirmam o sentido novo
+(`L_UC08_UC07`, `L_UC12_UC16`, `L_UC13_UC16`, `L_UC04/UC06/UC09/UC15_UC16`, `L_prog_UC16`),
+sem `UC07→UC08`, sem `UC12/UC13→UC03` e sem `UC13→UC14`. As sondas continuam `853/853 PASS`
+(a revisão não mexeu nos diagramas de classes; `DOC-02_RESULTADOS.json` ficou igual).
 
 Oráculo: o código em `8d07433` (`src/`, `main.py`, `menu.py`, `app.py`,
 `test_orchestrator.py`, `program_analyzer.py`, `web_didatica/server.py`,
