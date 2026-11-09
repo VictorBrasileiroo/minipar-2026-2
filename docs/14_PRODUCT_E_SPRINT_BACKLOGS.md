@@ -22,9 +22,9 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | PB-03 | Compilador corrigido: TAC autêntico (sem hardcode), strings e coleções para o T11 | P0 | CORE-02, CORE-03 | **Entregue** |
 | PB-04 | Linguagem com Fork/Join: BNF, Lexer/Parser/AST, semântico, TAC e backend C++ que chama o runtime | P0 | CORE-04, CORE-05, CORE-06, CORE-07 | **Entregue** |
 | PB-05 | Runtime de tarefas local e remoto (TCP, worker pré-compilado, falhas explícitas) | P0 | RUN-01, RUN-02, RUN-04 | **Entregue** |
-| PB-06 | Execução provada entre dois computadores reais | P0 | RUN-03, RUN-06 | **Parcial**: prova da demo feita (RUN-03); reprodução documentada por outro integrante pendente (RUN-06) |
+| PB-06 | Execução provada entre dois computadores reais | P0 | RUN-03, RUN-06 | **Parcial**: prova da demo feita (RUN-03); Teste 8 entre dois PCs com logs dos dois lados em 09/11 (RUN-06); falta a queda em rede com `WORKER_LOST` e a reprodução só com o README |
 | PB-07 | Programas paralelos T08, T09 e T10 em MiniPar, com oráculo | P0 | T08-01, T09-01, T10-01 | **Entregue** (T09/T10 com cenário remoto só no loopback; saída do Sierpinski depende da ADR-014) |
-| PB-08 | Desempenho e falhas medidos de forma justa | P0 | RUN-05 | **Em revisão**: medido numa máquina; cenário em dois PCs pendente |
+| PB-08 | Desempenho e falhas medidos de forma justa | P0 | RUN-05 | **Em revisão**: medido numa máquina; `par_rede` em dois PCs medido em 09/11 (uma rodada) |
 | PB-09 | Teste 11: MiniCompilador escrito em MiniPar, com ARMv7 validado no CPUlator | P0 | T11-01, T11-02, T11-03 | **Entregue** |
 | PB-10 | Web didática com fases reais (tokens, AST, símbolos, TAC, C++), compilar, executar e baixar | P0 | WEB-01 a WEB-04, CORE-08 | **Entregue** |
 | PB-11 | Interfaces antigas (terminal e Web 2026.1) preservadas | P0 | CORE-09 | **Entregue** (#35, 06/11) |
@@ -113,8 +113,8 @@ Divergência registrada, sem efeito no estado do card: o entregável fala em "re
 | WEB-05 | B | Documentação da Web e do T11 | DONE | #33 (05/11) |
 | DOC-01 | B | BNF final e pseudocódigos | DONE | #32 (05/11) |
 | CORE-10 | C | Regressão final T01–T07 | IN_REVIEW | #38 |
-| RUN-05 | C | Benchmarks e falhas | IN_REVIEW (`par_rede` pendente) | #36 |
-| RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (reprodução pendente) | #37 |
+| RUN-05 | C | Benchmarks e falhas | IN_REVIEW (`par_rede` PASS em 09/11) | #36 |
+| RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (dois PCs PASS em 09/11; queda PARTIAL; README com ajustes pendentes) | #37 |
 | DOC-03 | C | Product/Sprint Backlogs e decisões | IN_REVIEW | #39 |
 | CORE-09 | A | Interfaces antigas preservadas | DONE | #35 (06/11) |
 | INT-02 | B | Regressão integral e rede real | BACKLOG (depende do CORE-10) | — |
@@ -135,7 +135,7 @@ Divergência registrada, sem efeito no estado do card: o entregável fala em "re
 ## 3. Observações do processo
 
 - **Revisão como gargalo.** A regra de um revisor que não é o autor (ADR-019) e o merge em pilha (RUN-04 → T08 → T09 → T10) fizeram vários cards prontos esperarem dias pela revisão de uma dependência. A integração local antecipada (Eixo C, 30/10) achou defeitos de integração antes do merge.
-- **Prova em rede depende de agenda.** As provas com duas máquinas (RUN-03 em 04/11; RUN-05 `par_rede` e RUN-06 pendentes) exigem duas pessoas e duas máquinas ao mesmo tempo. Convém juntá-las numa sessão só.
+- **Prova em rede depende de agenda.** As provas com duas máquinas (RUN-03 em 04/11; RUN-05 `par_rede` e RUN-06 numa sessão só em 09/11) exigem duas pessoas e duas máquinas ao mesmo tempo. Convém juntá-las numa sessão só.
 - **Planilha × Git.** Em 05/11 a planilha ainda mostrava como "Planejado" cards de A e B já mergeados. Este documento e o `cards.json` seguem o Git.
 
 ## 4. Como atualizar
