@@ -1,4 +1,4 @@
-﻿{
+{
     "checked_at":  "2026-11-09T08:26:31.2394977-03:00",
     "base":  "8d0743302ffe29e012ef4a3a4cc1eeba0281637c",
     "repository":  {
@@ -658,5 +658,51 @@
                                       ],
                           "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42"
                       }
-                  ]
+                  ],
+    "doc02_sync": {
+    "dev": "a7454bc89f8c7c854e578f7b03fa91bced059ff5",
+    "pr": {
+        "headRefOid": "4cdae737f5eec029ab434485128fc7bc3761dad8",
+        "mergeCommit": {
+            "oid": "a7454bc89f8c7c854e578f7b03fa91bced059ff5"
+        },
+        "mergedAt": "2026-11-09T11:34:25Z",
+        "number": 42,
+        "reviews": [
+            {
+                "id": "PRR_kwDOVLhZY88AAAABWzT5xg",
+                "author": {
+                    "login": "VictorBrasileiroo"
+                },
+                "authorAssociation": "OWNER",
+                "body": "Riquelme, revisei o DOC-02 e está bem encaminhado. Só encontrei um ajuste nas relações dos casos de uso:\n\n- A relação `extend` entre UC07 e UC08 está invertida: é o UC08 que estende o UC07 quando há erro.\n- UC12 e UC13 estão estendendo UC03 (geração C++/binário), mas Fork/Join acontece durante a execução. Vale ajustar essas relações para não confundir geração com execução.\n\nO restante está ok para mim. Pode corrigir esses pontos na mesma branch e atualizar as evidências pertinentes. Depois disso, podemos aprovar e fazer o merge.",
+                "submittedAt": "2026-11-09T11:24:17Z",
+                "includesCreatedEdit": false,
+                "reactionGroups": [],
+                "state": "CHANGES_REQUESTED",
+                "commit": {
+                    "oid": "a346a59293a70569d2c43ee5b35d1fbc40fa244c"
+                }
+            },
+            {
+                "id": "PRR_kwDOVLhZY88AAAABWzYc7Q",
+                "author": {
+                    "login": "VictorBrasileiroo"
+                },
+                "authorAssociation": "OWNER",
+                "body": "pode dale",
+                "submittedAt": "2026-11-09T11:31:33Z",
+                "includesCreatedEdit": false,
+                "reactionGroups": [],
+                "state": "APPROVED",
+                "commit": {
+                    "oid": "4cdae737f5eec029ab434485128fc7bc3761dad8"
+                }
+            }
+        ],
+        "state": "MERGED",
+        "url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42"
+    },
+    "c_review": "PENDING: no C review found in PR"
+}
 }

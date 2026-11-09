@@ -2,7 +2,7 @@
 
 > **PRÉ-ISSUES, v0.1 — 15/10/2026.** Nenhuma GitHub Issue foi criada. Fonte estruturada: `planning/cards.json`. Revisar com os três responsáveis antes de publicar.
 
-> **Estado atualizado em 09/11/2026 (`cards.json` v0.3, REL-PRE autorizado pelo coordenador).** A tabela abaixo foi conferida contra `dev` (`8d07433`) e o GitHub; ver [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+> **Estado atualizado em 09/11/2026 (`cards.json` v0.3, REL-PRE autorizado pelo coordenador).** A tabela abaixo foi conferida contra `dev` (`a7454bc`, após #42) e o GitHub; ver [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 ## Regras para usar este backlog
 
@@ -16,7 +16,7 @@
 
 ## Estado em 09/11/2026
 
-34 `DONE`, 1 `IN_REVIEW`, 2 `IN_PROGRESS`, 6 `BACKLOG`. Estados de card e resultados de teste são distintos: RUN-05/06 têm PRs integrados, mas aceite incompleto; T09/T10 preservam PARTIAL. `ready` não foi liberado nesta auditoria. SET-03 mantém a exceção documentada em [Product/Sprint Backlogs §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+35 `DONE`, 0 `IN_REVIEW`, 2 `IN_PROGRESS`, 6 `BACKLOG`. Estados de card e resultados de teste são distintos: RUN-05/06 têm PRs integrados, mas aceite incompleto; T09/T10 preservam PARTIAL. `ready` não foi liberado nesta auditoria. SET-03 mantém a exceção documentada em [Product/Sprint Backlogs §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 | Card | Eixo | Estado | PR | Observação |
 |---|---|---|---|---|
@@ -56,9 +56,9 @@
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
 | `INT-02` | B | BACKLOG | — | CORE-10 integrado (#38). Nenhum PR/branch/evidência específica localizado em 09/11; ready preservado, requer liberação do coordenador. |
 | `DOC-01` | B | DONE | #32 |  |
-| `DOC-02` | B | IN_REVIEW | #42 | PR #42 aberto, head a346a59; parecer estático do Eixo A em REL-PRE, ajustes documentais e review C pendentes. Sem aprovação automática; artefatos ainda na branch do autor. |
+| `DOC-02` | B | DONE (integração; aceite conjunto PARTIAL) | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C não localizada, aceite técnico conjunto PARTIAL. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS. |
 | `DOC-03` | C | DONE | #39 | PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards. |
-| `DOC-04` | B | BACKLOG | — | Nenhum PR/branch/relatório completo localizado em 09/11. DOC-03 integrado; dependências abertas: INT-02, DOC-02 e aceite RUN-06. |
+| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; INT-02, aceite RUN-06 e revisão C da UML continuam pendentes. |
 | `REL-01` | A | BACKLOG | — |  |
 | `EST-01` | EQUIPE | BACKLOG | — |  |
 | `EST-02` | EQUIPE | BACKLOG | — |  |

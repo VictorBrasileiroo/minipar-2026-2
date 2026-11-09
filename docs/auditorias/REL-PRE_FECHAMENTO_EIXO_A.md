@@ -3,6 +3,8 @@
 **Data:** 09/11/2026 · **Responsável:** coordenação / Eixo A · **Entrega oficial:** 11/11/2026.
 **Branch:** `eixo-a/REL-PRE-fechamento-tecnico`, criada após fast-forward de `dev` para `8d0743302ffe29e012ef4a3a4cc1eeba0281637c`.
 **Autorização:** solicitação explícita do coordenador para auditoria e correções documentais compartilhadas. REL-PRE é este fechamento, não um novo card funcional; `ready` dos 43 cards existentes foi preservado.
+**Sincronização posterior (09/11):** `dev` em `a7454bc89f8c7c854e578f7b03fa91bced059ff5` integrada na branch REL-PRE. #42 aprovado por A em `4cdae73` e mergeado às 11:34:25Z; revisão C não localizada. As execuções nativas anteriores continuam vinculadas a `8d07433`; somente validações documentais foram repetidas.
+
 **Resultado:** fechamento PARTIAL. Correções DEF-01/02 integradas e verificadas; decisões, provas externas e revisão documental final continuam pendentes. Não é release pronta.
 
 ## 1. Fontes e estado verificável
@@ -11,7 +13,7 @@ Lidos AGENTS, MEMORY, planejamento, contratos, backlog, validação e documento 
 
 - `git fetch origin --prune`, `git switch dev`, `git merge --ff-only origin/dev` e criação da branch concluídos. Árvore inicial limpa. Branches remotas históricas de cards mergeados ainda existem; não foram removidas. `main` não foi promovida.
 - GitHub: branch padrão `dev`, visibilidade **PUBLIC**; zero Issues retornadas. `#40`/`#41` são números de PRs, não Issues encontradas. Fonte operacional continua sendo [cards.json](../../planning/cards.json).
-- PRs #1–#41 constam mergeados; único PR aberto localizado: [DOC-02 #42](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42), base `dev`, autor José Riquelme, head `a346a59293a70569d2c43ee5b35d1fbc40fa244c`, sem reviews/checks retornados na consulta.
+- Fotografia inicial, anterior à sincronização: PRs #1–#41 mergeados; PR então aberto: [DOC-02 #42](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42), base `dev`, autor José Riquelme, head `a346a59293a70569d2c43ee5b35d1fbc40fa244c`, sem reviews/checks retornados na consulta.
 - Nenhuma branch, PR ou evidência específica de INT-02/DOC-04 localizada. Há seções WEB-05 no relatório, não um DOC-04 consolidado. Isto descreve o repositório consultado, não afirma ausência de trabalho local de outra pessoa.
 - Fotografia com datas de merge, hashes e reviews: [REL-PRE_GITHUB.json](REL-PRE_GITHUB.json). Resultados locais persistidos, com comandos/saídas e caminhos pessoais substituídos: [REL-PRE_RESULTADOS.json](REL-PRE_RESULTADOS.json).
 
@@ -26,15 +28,15 @@ Lidos AGENTS, MEMORY, planejamento, contratos, backlog, validação e documento 
 | C-FJ-v1 / CON-01 | DONE | APPROVED por Victor em `a0fd60f`, #7; merge 26/10. Corrigido registro FROZEN, sem mudar contrato |
 | C-WEB v1.1 | DONE na ratificação documental | #34: proposta de B e aprovações A/C em `204fe48`; merge 05/11. Registro de aceite corrigido; ressalvas preservadas |
 | DOC-03 | DONE | #39 aprovado e mergeado 06/11; espelhos atualizados conforme fatos posteriores |
-| DOC-02 | PARTIAL / IN_REVIEW | #42, 853/853 sondas reexecutadas; parecer A com ajustes (§5); review C e merge pendentes |
+| DOC-02 | DONE de integração / aceite conjunto PARTIAL | #42 aprovado por A em 4cdae73 e mergeado em a7454bc (09/11); ajustes conferidos, 853/853 sondas repetidas; revisão C PENDING |
 | INT-02 | PENDING | sem PR/evidência específica localizada; CORE-10 já integrado, não é mais dependência em revisão |
-| DOC-04 | PENDING | sem relatório completo/PR localizado; depende de INT-02/DOC-02 e aceite RUN-06 |
+| DOC-04 | PENDING | sem relatório completo/PR localizado; DOC-02 já integrado; depende de INT-02 e aceite RUN-06; revisão C da UML pendente |
 | RUN-05 | PARTIAL | #36 integrado; `par_rede` PENDING, sem benchmark novo nesta auditoria |
 | RUN-06 | PARTIAL | #37 integrado como documentação; review A explicitamente mantém reprodução por outro integrante e logs A/B PENDING |
 | ADR-018 | PENDING | divergência PUBLIC versus proposta de privacidade; direitos não comprovados (§4) |
 | REL-01 | BLOCKED para início | DOC-04 não entregue e `ready=false`; não foi iniciado, tag não criada |
 
-Estados de card no JSON continuam no vocabulário existente: 34 DONE, 2 IN_PROGRESS, 1 IN_REVIEW e 6 BACKLOG. RUN-05 permanece IN_PROGRESS porque a entrega é parcial apesar do merge; RUN-06 também. T09/T10 mantêm DONE de integração com PARTIAL explícito em `status_note`, conforme DOC-03 aprovado. Não confundir essas contagens com testes aceitos.
+Estados de card no JSON continuam no vocabulário existente: 35 DONE, 2 IN_PROGRESS, 0 IN_REVIEW e 6 BACKLOG. RUN-05 permanece IN_PROGRESS porque a entrega é parcial apesar do merge; RUN-06 também. T09/T10 mantêm DONE de integração com PARTIAL explícito em `status_note`, conforme DOC-03 aprovado. Não confundir essas contagens com testes aceitos.
 
 ## 2. T04 — auditoria numérica e proposta para decisão
 
@@ -81,9 +83,11 @@ O snapshot local não contém licença/autorizações localizadas; [proveniênci
 
 As alternativas e riscos estão na atualização da [ADR-018](../03_DECISOES.md): obter autorização escrita com escopo, restringir acesso por decisão explícita, ou negociar pacote entregável sem redistribuição não autorizada. Créditos não substituem permissão. Privacidade nova não desfaz cópias anteriores. Nenhuma visibilidade, licença, atribuição de titularidade ou história Git foi alterada.
 
-## 5. Parecer técnico DOC-02 — PR #42, head a346a59
+## 5. Parecer técnico DOC-02 — histórico de a346a59 e integração de 4cdae73
 
-**Conclusão A:** material útil e substancialmente aderente ao núcleo; ajustes documentais abaixo precisam ser tratados antes do aceite técnico final. Nenhuma review/aprovação foi enviada ao GitHub e nenhum arquivo do PR foi modificado.
+**Estado atual:** PR #42 aprovado por Victor/A em `4cdae73` e integrado em `a7454bc`. Os dois ajustes de casos de uso foram corrigidos: UC08 estende UC07; UC12/UC13 estendem UC16 (execução). A inclusão UC13→UC14 também foi removida pelo autor, com worker como pré-condição. O apontamento sobre cobertura de `MiniParChannel` abaixo é uma observação histórica de REL-PRE; não foi exigido na review humana nem bloqueou o merge. Revisão C ainda não localizada. O parecer abaixo se refere ao head anterior e não reabre automaticamente o PR integrado.
+
+**Conclusão da inspeção anterior (a346a59):** material útil e substancialmente aderente ao núcleo; ajustes documentais abaixo precisam ser tratados antes do aceite técnico final. Nenhuma review/aprovação foi enviada ao GitHub e nenhum arquivo do PR foi modificado.
 
 Conferidos componentes (§3), léxico/AST/parser/semântico/geradores (§4.1–4.7), CLI/Web original (§4.8.1), sequência serviço (§5.1) e observações de arquitetura (§7). São coerentes: AST→TAC e AST→C++ independentes; `CppTaskContext` no semântico consumido pelo backend; CLI/Web original por subprocesso e Web didática pelo serviço; mutex do DEF-02; geração nativa via `compile_cpp`/`run_bounded`; isolamento por requisição; registro de artefatos em memória e CPUlator externo/manual.
 
@@ -126,7 +130,7 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 8. Dependências externas abertas
 
-- **B/Riquelme:** ajustes DOC-02 e revisão por A/C; disponibilizar INT-02 e DOC-04 com relatório/capa/links/anexos. Resultados de A/C devem entrar com seus limites.
+- **B/Riquelme:** DOC-02 integrado e aprovado por A; falta registro da revisão C. Disponibilizar INT-02 e DOC-04 com relatório/capa/links/anexos. Resultados de A/C devem entrar com seus limites.
 - **C/Erasmo + outro integrante:** RUN-05 `par_rede`; reprodução RUN-06 por não autor com logs dos dois lados, falha e resultados; T09/T10 específicos em dois hosts se exigidos no aceite adotado.
 - **Professor:** confirmar representação visual alternativa da ADR-014; interpretação do despacho remoto explícito (PEND-FJ-05) permanece sem confirmação docente localizada.
 - **Titulares do legado/coordenação:** direitos de uso/redistribuição e origem do snapshot.
@@ -135,10 +139,14 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 9. Checklist para iniciar REL-01 e handoff
 
-O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; revisar/integrar DOC-02; concluir INT-02 e provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
+O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado, registrar revisão C; concluir INT-02 e provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
 
-**Arquivos alterados:** README; contratos (somente registros de estado/aprovação); decisões; backlog; validação/aceite; checklist; Product/Sprint Backlogs; cards; este relatório; sonda documental e JSONs de GitHub/resultados. Não foi atualizado o conteúdo das evidências históricas CORE-01/CORE-10/DEF nem documentos do PR #42.
+**Arquivos alterados:** README; contratos (somente registros de estado/aprovação); decisões; backlog; validação/aceite; checklist; Product/Sprint Backlogs; cards; este relatório; sonda documental e JSONs de GitHub/resultados. Não foi atualizado o conteúdo das evidências históricas CORE-01/CORE-10/DEF; na sincronização, apenas os registros de estado/cabeçalho/handoff do DOC-02 foram atualizados, preservando diagramas e resultados do autor.
 
 **Documentos verificados sem edição:** AGENTS, MEMORY, planejamento geral, mestre, proveniência, BNF/pseudocódigos, CR-CORE05 e relatórios/evidências dos três eixos. **AGENTS.md e MEMORY.md não precisam mudar:** não houve nova regra, convenção, arquitetura ou fluxo; ownership e regra 11 foram aplicados. BNF/pseudocódigos continuam correspondentes porque não houve mudança de produção. README/CR-CORE08 receberam contexto atual para remover afirmações de aceite ainda pendente já superadas pelo #34.
 
-**Impacto de interface:** nenhum; não mudou sintaxe, assinatura, campo, protocolo ou contrato congelado. **Próximos consumidores:** coordenador (decisões), B (DOC-02/INT-02/DOC-04), C (provas remotas/RUN-06) e revisor independente deste PR. Nenhum merge, tag, promoção de branch, aprovação de PR alheio ou declaração de entrega pronta foi realizado.
+**Impacto de interface:** nenhum; não mudou sintaxe, assinatura, campo, protocolo ou contrato congelado. **Próximos consumidores:** coordenador (decisões), B (DOC-02/INT-02/DOC-04), C (provas remotas/RUN-06) e revisor independente deste PR. Nenhum merge de PR pelo agente, tag, promoção de branch, aprovação automática de PR alheio ou declaração de entrega pronta foi realizado. A sincronização integrou origin/dev apenas na branch REL-PRE, conforme solicitação.
+
+## 10. Handoff da sincronização com DOC-02 integrado
+
+Documentos de estado atualizados: cards, backlog, Product/Sprint Backlogs, checklist, README, cabeçalho UML e handoff DOC-02, este relatório e evidências REL-PRE. Diagramas, scripts produtivos, contratos e decisões T04/T10/ADR-018 preservados. Validações reexecutadas: DOC-02 853/853; DOC-01 117/117; planejamento/JSON/links/diff e preservação de pendências conforme registro de sincronização no JSON. Não reexecutados binários, CPUlator, rede real, benchmarks ou Mermaid. `AGENTS.md`/`MEMORY.md` revisados, sem mudança necessária: apenas sincronização de estado, sem alterar regras, arquitetura ou fluxo. Próximos consumidores: C (revisão UML) e B (INT-02/DOC-04); REL-01 continua bloqueado.

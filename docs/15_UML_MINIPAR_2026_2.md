@@ -1,7 +1,7 @@
 # UML do MiniPar 2026.2 — casos de uso, componentes e classes
 
 **Card:** `DOC-02` (Eixo B) · **Base:** `origin/dev` em `8d07433` (09/11/2026) ·
-**Revisão técnica pendente:** Eixo A (núcleo, serviço e geradores) e Eixo C (runtime e runners).
+**Estado de integração (REL-PRE):** DOC-02 integrado pelo PR #42 em 09/11/2026 (`a7454bc`). Victor/A aprovou `4cdae73` após os ajustes dos casos de uso. **Revisão específica C (runtime e runners): PENDING**, não localizada na consulta ao PR; aceite técnico conjunto permanece PARTIAL. A base de código modelada acima continua `8d07433`; sincronização documental não altera os diagramas.
 
 Este documento modela o sistema **como ele está implementado**. Cada classe, atributo, método,
 rota e mensagem citado aqui existe no código da base acima. Nada foi acrescentado para

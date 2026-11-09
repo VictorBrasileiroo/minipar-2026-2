@@ -19,6 +19,8 @@ Evoluir o compilador MiniPar 2026.1, preservando Lexer, Parser/AST, análise sem
 
 **MANDATORY:** toda implementação, correção, refatoração ou alteração relevante exige verificar a documentação impactada e a necessidade de atualizar `AGENTS.md`, conforme a [regra 11](AGENTS.md). As atualizações necessárias integram a mesma entrega/PR; a dispensa de atualização deve ser justificada explicitamente no resumo final.
 
+UML integrada: [casos de uso, componentes e classes](docs/15_UML_MINIPAR_2026_2.md), DOC-02/PR #42 (09/11, `a7454bc`), com aprovação A. Revisão C ainda pendente; demais limitações do fechamento permanecem no [REL-PRE](docs/auditorias/REL-PRE_FECHAMENTO_EIXO_A.md).
+
 ## Papéis
 
 - **Eixo A — Núcleo:** responsável definido: coordenador do trio. Responsável por Lexer, Parser, AST, semântico, TAC, backend C++ e integração do núcleo com o runtime. Disponibilidade-alvo: **até 3h/dia**.

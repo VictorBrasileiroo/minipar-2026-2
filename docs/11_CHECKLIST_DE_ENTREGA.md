@@ -1,6 +1,6 @@
 # Checklist acadêmico e técnico para 11/11/2026
 
-> Revisão REL-PRE (09/11/2026), base `8d07433`: [relatório consolidado](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Itens marcados referem-se ao escopo de evidência indicado, sem declarar a entrega pronta. Rede específica T08–T10, confirmação gráfica, UML, relatório e reprodução final continuam pendentes.
+> Revisão REL-PRE (09/11/2026), base de execução `8d07433`, sincronizada documentalmente com `a7454bc` (#42): [relatório consolidado](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Itens marcados referem-se ao escopo de evidência indicado, sem declarar a entrega pronta. Rede específica T08–T10, confirmação gráfica, revisão C da UML, relatório e reprodução final continuam pendentes. DOC-02 integrado no #42 com aprovação A.
 
 > Checklist não é comprovação. Só marcar `[x]` após verificar arquivo, teste e evidência. Requisitos não concluídos permanecem abertos.
 
@@ -55,7 +55,7 @@
 - [x] Pseudocódigo tabela de símbolos.
 - [x] Product Backlog.
 - [x] Sprint Backlogs.
-- [ ] UML casos de uso.
+- [x] UML casos de uso (ajustes aprovados por A no #42; integrado em 09/11).
 - [ ] UML componentes.
 - [ ] UML classes dos componentes.
 - [ ] Testes de integração documentados.
@@ -83,7 +83,8 @@ Marcas do núcleo: PRs #14–#19/#29 e regressão REL-PRE; `par`/Fork/Join demon
 - [ ] Aprovar e integrar o PR REL-PRE por revisor distinto do autor.
 - [ ] Coordenador decidir critério T04 e aceite interno ADR-014; confirmação docente separada.
 - [ ] Coordenador registrar tratamento ADR-018 com evidência de direitos/acesso.
-- [ ] B concluir DOC-02 com ajustes do parecer A e revisão C; merge revisado.
+- [x] DOC-02: ajustes dos casos de uso aprovados por A e PR #42 integrado (09/11, a7454bc).
+- [ ] C registrar revisão das seções runtime/runners da UML; o merge do #42 não é evidência dessa revisão.
 - [ ] B apresentar INT-02 em base integrada, oráculos, três interfaces e rede real; A/C revisar.
 - [ ] C concluir RUN-06 por outro integrante, logs dos dois hosts; tratar RUN-05 par_rede ainda PENDING.
 - [ ] B consolidar DOC-04 com capa/link, anexos e limitações; revisão conjunta e merge.

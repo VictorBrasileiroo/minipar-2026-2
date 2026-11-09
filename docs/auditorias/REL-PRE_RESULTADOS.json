@@ -1943,5 +1943,42 @@
     },
     "rendering": "UNTESTED in REL-PRE",
     "negative_controls": "UNTESTED in REL-PRE"
+  },
+  "doc02_sync": {
+    "dev": "a7454bc89f8c7c854e578f7b03fa91bced059ff5",
+    "head": "4cdae737f5eec029ab434485128fc7bc3761dad8",
+    "uml_probe": {
+      "passed": 853,
+      "total": 853,
+      "exit": 0,
+      "groups": {
+        "aresta": 107,
+        "classe": 106,
+        "cobertura-arquivo": 30,
+        "cobertura-classe": 69,
+        "documento": 1,
+        "heranca": 40,
+        "membro": 500
+      },
+      "full_result": "docs/auditorias/DOC-02_RESULTADOS.json",
+      "reexecution_sha256": "2fc64cb5bd55b72f0ba77fdcdef5eb6cd8f8fb8bbbcddb359ddf6c1bc3d5a2b1",
+      "matches_integrated_result": true
+    },
+    "bnf_probe": {
+      "passed": 117,
+      "total": 117,
+      "exit": 0
+    },
+    "acceptance": "DONE integration; joint review PARTIAL; C PENDING",
+    "native_results": "Historical at 8d07433; not reexecuted",
+    "documentary_checks": {
+      "cards_and_dag": "PASS",
+      "json": "PASS",
+      "relative_links": "PASS",
+      "unchanged_ready_dependencies_deadlines": "PASS",
+      "other_card_states_preserved": "PASS",
+      "T04_T10_ADR018_unchanged": "PASS",
+      "protected_paths": "PASS"
+    }
   }
 }
