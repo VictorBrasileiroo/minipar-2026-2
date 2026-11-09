@@ -1,6 +1,6 @@
 # HANDOFF — INT-02 — Regressão integral T01–T11 e três interfaces
 
-**Responsável:** Eixo B (Riquelme) · **Branch:** `eixo-b/INT-02-regressao-integral` (base `dev`) · **Data:** 09/11/2026
+**Responsável:** Eixo B (Riquelme) · **Branch/PR:** `eixo-b/INT-02-regressao-integral`, PR [#44](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/44) (base `dev`) · **Data:** 09/11/2026
 **Base medida:** `dev` em `8d07433` (merge do DEF-02, #41), com CORE-10 (#38), DEF-01 (#40) e DEF-02 (#41) integrados
 **Contratos usados:** C-FJ-v1 (§2), C-WEB-v1 (§1), C-T11-v1 (§3), oráculos de `docs/05_VALIDACAO_E_ACEITE.md` §2
 **Consumidores:** Eixo A (compilador) e Eixo C (runtime) validam os seus recortes; `DOC-04` (relatório); `EST-01/02` (apresentação)
