@@ -54,7 +54,7 @@
 | `RUN-05` | C | IN_REVIEW | #36 | Tempos e falhas F1–F3 PASS nesta máquina; cenário par_rede (dois computadores) pendente. |
 | `RUN-06` | C | IN_PROGRESS | #37 | Documentação em revisão; falta a reprodução em dois PCs por outro integrante. |
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
-| `INT-02` | B | BACKLOG | — | Depende do CORE-10 (em revisão). |
+| `INT-02` | B | IN_PROGRESS | — | Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. |
 | `DOC-01` | B | DONE | #32 |  |
 | `DOC-02` | B | BACKLOG | — | Dependência (INT-01) concluída; sem PR até 05/11. |
 | `DOC-03` | C | IN_REVIEW | #39 |  |
@@ -564,6 +564,8 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
+
+**Estado atual (09/11/2026):** IN_PROGRESS · branch `eixo-b/INT-02-regressao-integral`. Dependências no `dev` (CORE-10 #38, DEF-01 #40, DEF-02 #41). `scripts/regressao_int02.py` em `dev` `8d07433`, duas rodadas (T01/T02 ×10 e ×20): T01 30/30 e T02 30/30 PASS (DEF-01/02 resolvidos), T03, T05–T11 PASS, T04 PARTIAL (tolerância); terminal, Web original e Web didática PASS (testes automáticos e checagem visual no navegador); smoke INT-01 A/B/C PASS. Rede real com dois computadores **BLOCKED** nesta rodada (uma máquina): roteiro em `docs/auditorias/INT-02_REGRESSAO_INTEGRAL.md` §5. Resultado: `docs/auditorias/INT-02_RESULTADOS_2026-11-09.json`. Sem DONE antes da rede real e da revisão humana.
 
 #### `DOC-01` — BNF final e pseudocódigos núcleo
 

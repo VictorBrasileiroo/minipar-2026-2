@@ -944,12 +944,15 @@
         "scripts/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "IN_PROGRESS",
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": [],
-      "status_note": "Depende do CORE-10 (em revisão)."
+      "evidence": [
+        "docs/auditorias/INT-02_REGRESSAO_INTEGRAL.md",
+        "docs/auditorias/INT-02_RESULTADOS_2026-11-09.json"
+      ],
+      "status_note": "Regressão em dev 8d07433 (09/11): T01 30/30 e T02 30/30 PASS, T03, T05–T11 PASS, T04 PARTIAL (tolerância); três interfaces PASS; smoke INT-01 PASS. Rede real (dois PCs) BLOCKED nesta rodada: roteiro no §5 do relatório."
     },
     {
       "id": "DOC-01",
