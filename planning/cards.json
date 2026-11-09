@@ -1,8 +1,8 @@
 {
   "project": "MINIPAR-2026.2",
-  "version": "0.2",
-  "as_of": "2026-11-05",
-  "note": "Estado conferido em 05/11/2026 contra os PRs mergeados em dev (59ea77d) pelo card DOC-03; CORE-09 atualizado em 06/11 (merge do #35). DONE só com PR mergeado e evidência, exceto card de configuração/coordenação sem artefato no repositório (hoje só SET-03), aceito por evidência registrada em docs/14 §2.1; `status_note` registra exceções, recortes PARTIAL e pendências. `ready` não foi alterado (autorização do coordenador). Sem Issues criadas.",
+  "version": "0.3",
+  "as_of": "2026-11-09",
+  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas.",
   "statuses": [
     "BACKLOG",
     "READY",
@@ -441,7 +441,7 @@
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/35",
       "evidence": [],
-      "status_note": "Mergeado em 06/11. DEF-01 (T01) segue aberto (CORE-10)."
+      "status_note": "Interfaces integradas (#35). DEF-01/02 corrigidos e aprovados nos PRs #40/#41; nova regressão em REL-PRE (09/11)."
     },
     {
       "id": "CORE-10",
@@ -462,14 +462,14 @@
         "scripts/"
       ],
       "estimate_hours": 3,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/38",
       "evidence": [
         "docs/auditorias/CORE-10_REGRESSAO_FINAL_T01_T07.md"
       ],
-      "status_note": "T03, T05, T06 e T07 PASS; T04 PARTIAL (sem tolerância); T01/T02 FAIL intermitentes (DEF-01/02 abertos, Eixo A)."
+      "status_note": "Relatório integrado (#38 em 06/11), não aceite integral dos testes. Resultado histórico T01/T02 FAIL preservado; após #40/#41, REL-PRE: T01 10/10 e T02 10/10 PASS; T04 PARTIAL."
     },
     {
       "id": "WEB-01",
@@ -792,7 +792,7 @@
         "tests/2026_2/test08/README.md",
         "tests/2026_2/test08/run_t08.py"
       ],
-      "status_note": "Cenário remoto só no loopback; execução entre computadores provada pelo RUN-03 e pelo RUN-05/06."
+      "status_note": "Provas do programa no loopback. RUN-03 demonstra a demo entre dois computadores; RUN-05 par_rede e reprodução RUN-06 ainda PENDING."
     },
     {
       "id": "T09-01",
@@ -861,7 +861,7 @@
         "docs/evidencias/"
       ],
       "estimate_hours": 4,
-      "status": "IN_REVIEW",
+      "status": "IN_PROGRESS",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/36",
@@ -869,7 +869,7 @@
         "tests/2026_2/bench/README.md",
         "docs/evidencias/RUN-05_BENCHMARKS.md"
       ],
-      "status_note": "Tempos e falhas F1–F3 PASS nesta máquina; cenário par_rede (dois computadores) pendente."
+      "status_note": "PR #36 mergeado em 06/11; medições e falhas locais documentadas. Aceite PARTIAL: par_rede em dois computadores PENDING; merge não conclui o recorte remoto."
     },
     {
       "id": "RUN-06",
@@ -891,8 +891,11 @@
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/37",
-      "evidence": [],
-      "status_note": "Documentação em revisão; falta a reprodução em dois PCs por outro integrante."
+      "evidence": [
+        "runtime/README.md",
+        "docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md"
+      ],
+      "status_note": "Documentação integrada (#37 em 06/11); aprovação do coordenador mantém reprodução por outro integrante e logs dos dois hosts PENDING."
     },
     {
       "id": "INT-01",
@@ -949,7 +952,7 @@
       "issue_url": null,
       "pr_url": null,
       "evidence": [],
-      "status_note": "Depende do CORE-10 (em revisão)."
+      "status_note": "CORE-10 integrado (#38). Nenhum PR/branch/evidência específica localizado em 09/11; ready preservado, requer liberação do coordenador."
     },
     {
       "id": "DOC-01",
@@ -991,12 +994,12 @@
         "docs/"
       ],
       "estimate_hours": 4,
-      "status": "BACKLOG",
+      "status": "IN_REVIEW",
       "ready": false,
       "issue_url": null,
-      "pr_url": null,
+      "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42",
       "evidence": [],
-      "status_note": "Dependência (INT-01) concluída; sem PR até 05/11."
+      "status_note": "PR #42 aberto, head a346a59; parecer estático do Eixo A em REL-PRE, ajustes documentais e review C pendentes. Sem aprovação automática; artefatos ainda na branch do autor."
     },
     {
       "id": "DOC-03",
@@ -1014,14 +1017,15 @@
         "planning/"
       ],
       "estimate_hours": 2,
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/39",
       "evidence": [
         "docs/14_PRODUCT_E_SPRINT_BACKLOGS.md",
         "docs/03_DECISOES.md"
-      ]
+      ],
+      "status_note": "PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards."
     },
     {
       "id": "DOC-04",
@@ -1048,7 +1052,8 @@
       "ready": false,
       "issue_url": null,
       "pr_url": null,
-      "evidence": []
+      "evidence": [],
+      "status_note": "Nenhum PR/branch/relatório completo localizado em 09/11. DOC-03 integrado; dependências abertas: INT-02, DOC-02 e aceite RUN-06."
     },
     {
       "id": "REL-01",

@@ -31,7 +31,7 @@ Revisão do card `DOC-03` contra o que foi implementado e mergeado em `dev` (`59
 | ID | Estado inicial | Estado em 05/11 | Evidência / observação |
 |---|---|---|---|
 | ADR-008 | PROPOSTA | **CONFIRMADA** | Implementada no runtime: workers do mesmo binário, mensagens identificadas por `task_id` (RUN-02 #9, RUN-04 #20); usada pelo backend (CORE-07 #18) e provada entre dois computadores (RUN-03 #10) |
-| ADR-009 | PROPOSTA | **CONFIRMADA** | C-FJ-v1 aprovado por A e mergeado (CON-01 #7, 26/10); frames e `join` por ID/timeout implementados (RUN-02 #9). Pendência: o cabeçalho do C-FJ-v1 em `02_CONTRATOS_TECNICOS.md` §2 ainda diz "proposta de congelamento"; registrar `v1 FROZEN` como o #25 fez para C-WEB/C-T11 (coordenador) |
+| ADR-009 | PROPOSTA | **CONFIRMADA** | C-FJ-v1 aprovado por A e mergeado (CON-01 #7, 26/10); frames e `join` por ID/timeout implementados (RUN-02 #9). Atualização REL-PRE em 09/11: cabeçalho e aprovação em §2.10 corrigidos para `v1 FROZEN` com a review real do #7; sem mudança de contrato |
 | ADR-010 | PROPOSTA | **CONFIRMADA** | Serviço único de fases (CORE-08 #19) consumido pela Web didática real (WEB-03 #30, WEB-04 #31); fixtures só no desenvolvimento (WEB-01 #12) |
 | ADR-011 | PROPOSTA | **CONFIRMADA** | MiniCompilador escrito em MiniPar, sem backend ARM no hospedeiro (T11-01/02/03 #26–#28) |
 | ADR-012 | EM ABERTO | **CONFIRMADA**: exportação pelo executor | C-T11-v1 §3.6.1 (PR #2, `v1 FROZEN` em 22/10): o `.arm` é o bloco copiado da saída, como na referência do professor; PEND-T11-02 resolvida, com pedido de registro nesta ADR (C-T11-v1, quadro de pendências) |
@@ -57,3 +57,26 @@ Revisão do card `DOC-03` contra o que foi implementado e mergeado em `dev` (`59
 ```
 
 **Alterações já aprovadas em documento mestre não devem ser "redecididas" por agentes por conveniência.** Quando as evidências contrariarem uma decisão, abrir ADR/CR e solicitar revisão ao trio.
+
+## Revisão REL-PRE — 09/11/2026 (decisões ainda não tomadas)
+
+### ADR-014 — proposta de resolução em duas etapas
+
+- **Estado:** EM ABERTO. Parecer técnico favorável ao recorte calculado; não é aceite do coordenador nem do professor.
+- Referência e requisito: documento mestre §8.5 e [Python fornecido](fontes/Teste10_Python_referencia.py): Turtle, grau 4; a referência só desenha após cinco joins e omite Sierpinski na carga sequencial.
+- Implementado (#23): seis forks antes dos joins; Sierpinski iterativo em MiniPar retorna ASCII; harness produz SVG a partir desse texto; modos seq/par executam as mesmas seis chamadas. Não há janela Turtle no binário.
+- Evidência adicional REL-PRE: grau 4 real, 81×81 e 4096 células cheias, igual ao oráculo recursivo. Isso prova o cálculo; não demonstra aceite do formato nem seis computadores/núcleos exclusivos.
+- **Proposta para decisão do coordenador:** aceitar internamente ASCII + SVG externo como representação visual, registrar a divergência de Turtle e manter confirmação docente PENDING. Só registrar CONFIRMADA internamente após aprovação explícita. Se o professor exigir janela nativa, reabrir escopo por card autorizado; nenhuma renderização nova nesta entrega.
+- Próxima evidência externa: resposta do professor com data/autor e demonstração do SVG; T10 em duas máquinas continua UNTESTED.
+
+### ADR-018 — divergência de privacidade e direitos sobre o legado
+
+- **Estado:** DIVERGENTE / PENDING de decisão da coordenação. GitHub consultado em 09/11: PUBLIC, branch padrão dev. A linha inicial era PROPOSTA de privacidade; não foi encontrada decisão posterior que documente sua substituição.
+- Proveniência: [estado da base §6](08_ESTADO_DA_BASE_2026_1.md), `luizwhirl/minipar-improvement`, main consultada em 15/10/2026; sem licença declarada na consulta original. Nenhum LICENSE/LICENÇA/COPYING versionado foi localizado no snapshot local. Isso não prova inexistência de autorização fora do repositório.
+- Riscos concretos: exposição do snapshot e derivados sem permissão de redistribuição comprovada; atribuição incompleta; circulação de PDFs/referências e dados de logs. Acesso público ao repositório de origem, crédito acadêmico e eventual autorização de uso em aula não demonstram, por si, permissão para redistribuir.
+- Alternativa A: obter autorização escrita dos titulares, delimitando cópia, derivados, acesso público e materiais anexos; registrar origem e créditos com evidência, sem relicenciar material alheio.
+- Alternativa B: decidir acesso privado/restrito enquanto esclarece direitos; registrar eventual conflito com o acesso exigido na entrega. Mudar visibilidade exige ação explícita da coordenação; não remove clones anteriores.
+- Alternativa C: negociar com titulares/professor um pacote entregável sem material não autorizado, mantendo origem rastreável. Remoção do legado ou reescrita de histórico exige autorização e planejamento próprios; snapshot imutável não foi tocado.
+- Nesta entrega: nenhuma alteração de visibilidade, licença, histórico ou declaração de autorização. Coordenador escolhe tratamento e apresenta a evidência; nenhuma alternativa foi executada.
+
+Detalhamento, números do XOR, parecer DOC-02 e dependências: [relatório REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md).

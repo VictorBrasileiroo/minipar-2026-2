@@ -1,6 +1,8 @@
 ﻿# CR-CORE08-DIAGNOSTICOS — proposta mínima, 30/10/2026
 
-**Estado: PROPOSTA, não aprovada e não aplicada ao catálogo C-WEB.** Fornecedor A; consumidor José Riquelme/B. O pedido do coordenador autoriza implementar o CORE-08 localmente, sem congelar CON-02 nem inferir aprovação desta CR.
+**Estado atual (registro REL-PRE, 09/11/2026): RATIFICADA no PR [#34](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/34), mergeado em 05/11/2026.** Proposta do consumidor José Riquelme/B; aprovações de Erasmo/C e Victor/A sobre `204fe48`. Ver quadro atualizado em [contratos §1.12](02_CONTRATOS_TECNICOS.md) e [evidência GitHub](auditorias/REL-PRE_GITHUB.json). Envelopes e APIs permanecem iguais; ressalvas de rastreabilidade FJ-SEM-06/07/08 preservadas na review. Nenhuma nova regra é ratificada por esta atualização.
+
+**Histórico da proposta, preservado abaixo:** antes do #34, a autorização de implementação local não equivalia à aprovação contratual. As menções abaixo a ratificação pendente descrevem esse estágio, já superado pelas aprovações citadas.
 
 ## Contrato anterior e lacuna
 

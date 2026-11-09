@@ -1,0 +1,662 @@
+﻿{
+    "checked_at":  "2026-11-09T08:26:31.2394977-03:00",
+    "base":  "8d0743302ffe29e012ef4a3a4cc1eeba0281637c",
+    "repository":  {
+                       "defaultBranchRef":  {
+                                                "name":  "dev"
+                                            },
+                       "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2",
+                       "visibility":  "PUBLIC"
+                   },
+    "pull_requests":  {
+                          "value":  [
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/DOC-02-uml",
+                                            "mergedAt":  null,
+                                            "number":  42,
+                                            "state":  "OPEN",
+                                            "title":  "Eixo b/doc 02 uml",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/DEF-02-print-atomico",
+                                            "mergedAt":  "2026-11-06T20:15:44Z",
+                                            "number":  41,
+                                            "state":  "MERGED",
+                                            "title":  "fix(DEF-02): saída atômica de print em par",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/41"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/DEF-01-estabilizar-t01",
+                                            "mergedAt":  "2026-11-06T19:28:38Z",
+                                            "number":  40,
+                                            "state":  "MERGED",
+                                            "title":  "fix(DEF-01): estabilizar comunicação herdada do T01",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/40"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/DOC-03-backlogs",
+                                            "mergedAt":  "2026-11-06T17:49:02Z",
+                                            "number":  39,
+                                            "state":  "MERGED",
+                                            "title":  "docs(DOC-03): Product/Sprint Backlogs, estado real dos cards e das ADRs",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/39"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/CORE-10-regressao-final",
+                                            "mergedAt":  "2026-11-06T17:48:30Z",
+                                            "number":  38,
+                                            "state":  "MERGED",
+                                            "title":  "test(CORE-10): regressão final T01–T07 com os oráculos do CORE-01",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/38"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/RUN-06-doc-runtime",
+                                            "mergedAt":  "2026-11-06T17:48:57Z",
+                                            "number":  37,
+                                            "state":  "MERGED",
+                                            "title":  "docs(RUN-06): protocolo, topologia, deploy em dois PCs e testes do runtime",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/37"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/RUN-05-benchmarks",
+                                            "mergedAt":  "2026-11-06T17:48:34Z",
+                                            "number":  36,
+                                            "state":  "MERGED",
+                                            "title":  "feat(RUN-05): benchmarks seq/par com carga equivalente e falhas repetíveis [PARTIAL]",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/36"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-09-regressao-interfaces",
+                                            "mergedAt":  "2026-11-06T15:42:56Z",
+                                            "number":  35,
+                                            "state":  "MERGED",
+                                            "title":  "CORE-09: preservar terminal e Web original",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/35"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/CR-CORE08-catalogo-v1.1",
+                                            "mergedAt":  "2026-11-05T18:30:10Z",
+                                            "number":  34,
+                                            "state":  "MERGED",
+                                            "title":  "docs(CR-CORE08): catálogo C-WEB v1.1 de diagnósticos",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/34"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/WEB-05-documentar-interface-t11",
+                                            "mergedAt":  "2026-11-05T18:30:35Z",
+                                            "number":  33,
+                                            "state":  "MERGED",
+                                            "title":  "docs(WEB-05): seções do relatório da Web didática e do Teste 11 com c…",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/33"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/DOC-01-bnf-pseudocodigos",
+                                            "mergedAt":  "2026-11-05T18:30:14Z",
+                                            "number":  32,
+                                            "state":  "MERGED",
+                                            "title":  "docs(DOC-01): BNF 2026.2 e pseudocódigos núcleo derivados do código",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/32"
+                                        },
+                                        {
+                                            "baseRefName":  "eixo-b/WEB-03-integracao-servico-real",
+                                            "headRefName":  "eixo-b/WEB-04-compilar-executar-baixar",
+                                            "mergedAt":  "2026-11-05T16:55:02Z",
+                                            "number":  31,
+                                            "state":  "MERGED",
+                                            "title":  "feat(WEB-04): compilar, executar e baixar o binário atual na Web didá…",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/31"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/WEB-03-integracao-servico-real",
+                                            "mergedAt":  "2026-11-05T16:55:19Z",
+                                            "number":  30,
+                                            "state":  "MERGED",
+                                            "title":  "feat(WEB-03): integrar a Web didática ao serviço real de análise",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/30"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/CORE-07-ajustes-review",
+                                            "mergedAt":  "2026-11-05T13:03:30Z",
+                                            "number":  29,
+                                            "state":  "MERGED",
+                                            "title":  "fix(CORE-07): ajustes pedidos na review do PR #18",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/29"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/T11-03-cpulator-evidencias",
+                                            "mergedAt":  "2026-11-04T13:08:39Z",
+                                            "number":  28,
+                                            "state":  "MERGED",
+                                            "title":  "test(T11-03): executar os .arm no CPUlator e arquivar evidências",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/28"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/T11-02-semantica-arm",
+                                            "mergedAt":  "2026-11-04T13:03:23Z",
+                                            "number":  27,
+                                            "state":  "MERGED",
+                                            "title":  "feat(T11-02): semântica, tabela de símbolos e Assembly ARMv7 do T11",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/27"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/T11-01-mvp-minicompilador",
+                                            "mergedAt":  "2026-11-04T12:59:53Z",
+                                            "number":  26,
+                                            "state":  "MERGED",
+                                            "title":  "feat(T11-01): MVP do MiniCompilador em MiniPar",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/26"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/CON-02-03-registrar-frozen",
+                                            "mergedAt":  "2026-11-05T13:05:10Z",
+                                            "number":  25,
+                                            "state":  "MERGED",
+                                            "title":  "docs(CON-02/03): registrar C-WEB-v1 e C-T11-v1 como v1 FROZEN",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/25"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/INT-01-smoke-integracao",
+                                            "mergedAt":  "2026-11-05T18:28:17Z",
+                                            "number":  24,
+                                            "state":  "MERGED",
+                                            "title":  "feat(INT-01): smoke de integração dos três eixos",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/T10-01-dois-fractais",
+                                            "mergedAt":  "2026-11-05T18:07:27Z",
+                                            "number":  23,
+                                            "state":  "MERGED",
+                                            "title":  "feat(T10-01): Teste 10 com avaliações, Mandelbrot e Sierpinski [PARTIAL]",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/23"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/T09-01-mandelbrot",
+                                            "mergedAt":  "2026-11-05T18:06:17Z",
+                                            "number":  22,
+                                            "state":  "MERGED",
+                                            "title":  "feat(T09-01): Teste 9 com avaliações e Mandelbrot ASCII [PARTIAL]",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/22"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/T08-01-160-avaliacoes",
+                                            "mergedAt":  "2026-11-05T18:02:14Z",
+                                            "number":  21,
+                                            "state":  "MERGED",
+                                            "title":  "feat(T08-01): Teste 8 com 160 avaliações em quatro trabalhadores",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/21"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/RUN-04-handoff-runtime",
+                                            "mergedAt":  "2026-11-05T18:01:56Z",
+                                            "number":  20,
+                                            "state":  "MERGED",
+                                            "title":  "feat(RUN-04): teste de contrato da API usada pelo backend CORE-07",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/20"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-08-servico-fases",
+                                            "mergedAt":  "2026-11-03T22:23:05Z",
+                                            "number":  19,
+                                            "state":  "MERGED",
+                                            "title":  "feat(CORE-08): expor serviço de análise, compilação e execução para a Web",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/19"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-07-backend-runtime",
+                                            "mergedAt":  "2026-11-05T12:54:26Z",
+                                            "number":  18,
+                                            "state":  "MERGED",
+                                            "title":  "feat(CORE-07): integrar backend C++ ao runtime Fork/Join",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/18"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-06-tac-fork-join-par",
+                                            "mergedAt":  "2026-11-05T11:44:06Z",
+                                            "number":  17,
+                                            "state":  "MERGED",
+                                            "title":  "feat(CORE-06): TAC autêntico para Fork/Join, par e for-in",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/17"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-02-tac-quicksort-review",
+                                            "mergedAt":  "2026-10-29T14:08:36Z",
+                                            "number":  16,
+                                            "state":  "MERGED",
+                                            "title":  "fix(CORE-02): TAC autêntico e Quicksort iterativo seguro",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/16"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-04-05-fork-join",
+                                            "mergedAt":  "2026-10-29T14:21:50Z",
+                                            "number":  15,
+                                            "state":  "MERGED",
+                                            "title":  "feat(CORE-04/05): suporte sintático e semântico a Fork/Join",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/15"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-a/CORE-03-strings-t11",
+                                            "mergedAt":  "2026-10-28T18:27:57Z",
+                                            "number":  14,
+                                            "state":  "MERGED",
+                                            "title":  "feat(CORE-03): primitivas de strings para o Teste 11",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/14"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/WEB-02-ast-interativa",
+                                            "mergedAt":  "2026-10-23T15:58:55Z",
+                                            "number":  13,
+                                            "state":  "MERGED",
+                                            "title":  "Eixo b/web 02 ast interativa",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/13"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/WEB-01-fixtures",
+                                            "mergedAt":  "2026-10-23T15:54:09Z",
+                                            "number":  12,
+                                            "state":  "MERGED",
+                                            "title":  "feat(WEB-01): fixtures mock e wireframe navegável da Web didática",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/12"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/status-cards-m1",
+                                            "mergedAt":  "2026-10-23T15:53:48Z",
+                                            "number":  11,
+                                            "state":  "MERGED",
+                                            "title":  "chore(planning): estado dos cards do Eixo C no Marco 1",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/11"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/RUN-03-prova-dois-computadores",
+                                            "mergedAt":  "2026-11-04T17:17:03Z",
+                                            "number":  10,
+                                            "state":  "MERGED",
+                                            "title":  "feat(RUN-03): prova de execução em dois computadores reais",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/10"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/RUN-02-protocolo-tcp-worker",
+                                            "mergedAt":  "2026-10-26T16:02:21Z",
+                                            "number":  9,
+                                            "state":  "MERGED",
+                                            "title":  "feat(RUN-02): protocolo TCP enquadrado e worker pré-compilado",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/9"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/RUN-01-runtime-local",
+                                            "mergedAt":  "2026-10-26T16:02:14Z",
+                                            "number":  8,
+                                            "state":  "MERGED",
+                                            "title":  "feat(RUN-01): runtime local de start/join com isolamento",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/8"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/CON-01-contrato-fork-join",
+                                            "mergedAt":  "2026-10-26T16:02:06Z",
+                                            "number":  7,
+                                            "state":  "MERGED",
+                                            "title":  "docs(CON-01): propor congelamento do contrato C-FJ-v1",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-c/CORE-01-baseline-t01-t07",
+                                            "mergedAt":  "2026-10-23T15:52:29Z",
+                                            "number":  6,
+                                            "state":  "MERGED",
+                                            "title":  "test(CORE-01): baseline reprodutível dos testes T01–T07",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/6"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "docs/manutencao-documentacao-mandatory",
+                                            "mergedAt":  "2026-10-19T14:49:28Z",
+                                            "number":  5,
+                                            "state":  "MERGED",
+                                            "title":  "chore(docs): update documentation policies and add MEMORY.md for mand…",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/5"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "docs/branch-padrao-dev",
+                                            "mergedAt":  "2026-10-22T12:18:17Z",
+                                            "number":  4,
+                                            "state":  "MERGED",
+                                            "title":  "docs: adotar dev como branch padrão e exigir um revisor",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/4"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/CON-02-contrato-web",
+                                            "mergedAt":  "2026-10-22T23:35:00Z",
+                                            "number":  3,
+                                            "state":  "MERGED",
+                                            "title":  "docs(CON-02): propor congelamento do contrato C-WEB-v1",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/3"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "eixo-b/CON-03-contrato-t11",
+                                            "mergedAt":  "2026-10-22T13:30:25Z",
+                                            "number":  2,
+                                            "state":  "MERGED",
+                                            "title":  "docs(CON-03): propor congelamento do contrato C-T11-v1",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/2"
+                                        },
+                                        {
+                                            "baseRefName":  "dev",
+                                            "headRefName":  "setup/ambiente-baseline",
+                                            "mergedAt":  "2026-10-17T11:34:12Z",
+                                            "number":  1,
+                                            "state":  "MERGED",
+                                            "title":  "Setup/ambiente baseline",
+                                            "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/1"
+                                        }
+                                    ],
+                          "Count":  42
+                      },
+    "issues":  {
+                   "value":  [
+
+                             ],
+                   "Count":  0
+               },
+    "decisions":  [
+                      {
+                          "headRefOid":  "a0fd60f16bdac7eb90ae0923b9e885cf202c508b",
+                          "mergedAt":  "2026-10-26T16:02:06Z",
+                          "number":  7,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABT3XE3Q",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "Tudo certo! Antes do merge, só dá um reforço nos detalhes de tipagem do task, retorno do join, wrappers e isolamento das funções durante a integração com o compilador.",
+                                              "submittedAt":  "2026-10-23T12:17:23Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "COMMENTED",
+                                              "commit":  {
+                                                             "oid":  "6856a20ef9e2e6ea9a5016d442677848a5157819"
+                                                         }
+                                          },
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABUQNNYw",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "Tudo certo!",
+                                              "submittedAt":  "2026-10-26T15:00:50Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "a0fd60f16bdac7eb90ae0923b9e885cf202c508b"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7"
+                      },
+                      {
+                          "headRefOid":  "204fe48aed85f8f12337e5efe90649ef9e65ff4d",
+                          "mergedAt":  "2026-11-05T18:30:10Z",
+                          "number":  34,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWRthGQ",
+                                              "author":  {
+                                                             "login":  "erasmossj"
+                                                         },
+                                              "authorAssociation":  "COLLABORATOR",
+                                              "body":  "## Review (Eixo C, consulta sobre FJ-SEM pedida em §1.12): aprovado, com uma ressalva de rastreabilidade\n\nConferi o catálogo v1.1 contra o `dev` atual (o `src/` não mudou desde `87ab432`) e contra o C-FJ-v1 §2.2.2 e §2.2.5.\n\n### Significados de `SEM_FJ_*` (o que o §1.12 pede ao C)\n| Código | Regra no C-FJ-v1 | Emissão em `src/semantic.py` | Conferido |\n|---|---|---|---|\n| `SEM_FJ_01` | FJ-SEM-01 (§2.2.2) | `:423`, `:426` | ok |\n| `SEM_ARITY` para FJ-SEM-02 | FJ-SEM-02 | `:429` | ok (`SEM_FJ_02` não é emitido, como o PR diz) |\n| `SEM_FJ_03` | FJ-SEM-03 | `:454`, `:458` | ok |\n| `SEM_FJ_04` | FJ-SEM-04 (destino/timeout) | `:418`, `:460` | ok |\n| `SEM_FJ_05` | FJ-SEM-05 + §2.2.5 | `:364`, `:505–513`, `:643`, `:653`, `:703`, `:705` | ok. Rejeitar `input`/`send`/`receive`/`c_channel` é a decisão do PEND-FJ-06 registrada em `docs/CR-CORE05-FJ-DECISOES.md` |\n| `SEM_FJ_06` | FJ-SEM-06 | `:357`, `:545`, `:557` | ok, ver ressalva 2 |\n| `SEM_FJ_07` | **não existe no §2.2.2** | `:479` | ver ressalva 1 |\n| `SEM_FJ_08` | **não existe no §2.2.2** | `:464` | ver ressalva 1 |\n\nTambém conferi `SEM_RESERVED_NAME` (`:217`), `SEM_INHERITANCE_CYCLE` (`:236`), `SEM_UNSUPPORTED_FEATURE` (`:519`, `:529`, `:633`), o tipo `\"task\"` (`:152`) e o `_unsupported` do `src/service.py:50–61`, que extrai a linha de `Linha N:` e `CORE-07 linha N:`. Todos batem com o texto da tabela.\n\n### Ressalvas (não bloqueiam a v1.1)\n1. **FJ-SEM-07 e FJ-SEM-08 não estão no C-FJ-v1.** O §2.2.2 define só de FJ-SEM-01 a FJ-SEM-06. As regras 07 e 08 vêm da `docs/CR-CORE05-FJ-DECISOES.md` (linhas 12, 14 e 48–49), que ainda diz \"ratificação por A/C pendente\". Sugestão: na tabela do §1.5, citar essa CR como origem das duas linhas (\"extensão proposta na CR-CORE05-FJ-DECISOES\"), como o DOC-01 (#32) já faz na BNF. Do lado do C, **ratifico as duas restrições** (handle de `fork` descartado e `join` de `none` usado como valor). Elas protegem o runtime de tarefas órfãs e de valores `none` em aritmética. Falta o A registrar a parte dele.\n2. **`SEM_FJ_06` cobre mais que o texto do FJ-SEM-06.** O §2.2.2 fala só de argumento/retorno que não cruza a rede. O código também usa `SEM_FJ_06` para aritmética com objeto, canal ou handle (`:545`, `:557`). A tabela do PR já descreve isso corretamente; vale só uma nota \"(extensão do CORE-05)\" para quem ler o C-FJ-v1 sozinho.\n3. Ligação com o INT-01: este PR resolve o INT01-03 (fase com erro e `diagnostics=[]`). Depois do merge, eu atualizo a auditoria do INT-01.\n\n### Linha sugerida para o §1.12\n| C — consulta sobre FJ-SEM | Erasmo (Eixo C) | Confirmou `SEM_FJ_01`, `_03`–`_06` contra o C-FJ-v1 §2.2.2/§2.2.5 e `src/semantic.py`; ratificou FJ-SEM-07/08 da CR-CORE05-FJ-DECISOES, com a origem citada no §1.5 | 05/11/2026 |\n\nPode colar essa linha no lugar do *pendente* do C. A aprovação do A (dono da interface) continua necessária antes do merge.\n",
+                                              "submittedAt":  "2026-11-05T18:27:26Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "204fe48aed85f8f12337e5efe90649ef9e65ff4d"
+                                                         }
+                                          },
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWRtr2Q",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "Minha parte está ok!",
+                                              "submittedAt":  "2026-11-05T18:27:39Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "204fe48aed85f8f12337e5efe90649ef9e65ff4d"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/34"
+                      },
+                      {
+                          "headRefOid":  "754e39e1b8c4b8e731dd37819a1dec9783069256",
+                          "mergedAt":  "2026-11-06T17:48:57Z",
+                          "number":  37,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWbi9nA",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "O README está bem completo e o roteiro de execução em dois computadores está claro.\n\nNão identifiquei nenhuma correção de implementação que justifique bloquear a documentação. Só precisamos garantir que:\n\n- O #37 seja integrado depois do #36, atualizando a base para `dev`.\n- A reprodução por outro integrante e os logs das duas máquinas permaneçam registrados como pendentes até serem executados.\n- Os logs sejam conferidos manualmente antes da publicação, já que a ferramenta de anonimização não garante remover todos os hostnames automaticamente.\n\nNão precisa refazer a documentação nem criar novos testes agora. Podemos integrar o material como documentação pronta, mantendo o aceite final do RUN-06 pendente da reprodução real.",
+                                              "submittedAt":  "2026-11-06T12:45:33Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "754e39e1b8c4b8e731dd37819a1dec9783069256"
+                                                         }
+                                          },
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWfnziw",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "",
+                                              "submittedAt":  "2026-11-06T17:47:10Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "754e39e1b8c4b8e731dd37819a1dec9783069256"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/37"
+                      },
+                      {
+                          "headRefOid":  "6aef55e7526bb0603cf3922d9be3fe45d953c5c4",
+                          "mergedAt":  "2026-11-06T17:49:02Z",
+                          "number":  39,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWbjpeQ",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "Os Product/Sprint Backlogs e o histórico das decisões estão bem organizados e representam o progresso do projeto.\n\nPeço apenas um ajuste importante de consistência: o SET-03 aparece como DONE sem PR próprio, enquanto a regra documental afirma que todo DONE exige PR mergeado. Como esse card é de configuração/coordenação, podemos registrar explicitamente essa exceção e as evidências que sustentam o aceite.\n\nOs demais casos com implementação mergeada e limitações PARTIAL já estão suficientemente documentados. Não precisa reestruturar os backlogs nem revisar todos os estados novamente.\n\nCom esse ajuste, considero o PR pronto para aprovação.",
+                                              "submittedAt":  "2026-11-06T12:46:42Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "COMMENTED",
+                                              "commit":  {
+                                                             "oid":  "c340455e8c11a53082f7c5b187d4c0099bd9a416"
+                                                         }
+                                          },
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWfn9uw",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "",
+                                              "submittedAt":  "2026-11-06T17:47:24Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "6aef55e7526bb0603cf3922d9be3fe45d953c5c4"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/39"
+                      },
+                      {
+                          "headRefOid":  "f6a761714b46d4b54138c6c0cdabd567c42f3b8d",
+                          "mergedAt":  "2026-11-06T19:28:38Z",
+                          "number":  40,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWgo87g",
+                                              "author":  {
+                                                             "login":  "erasmossj"
+                                                         },
+                                              "authorAssociation":  "COLLABORATOR",
+                                              "body":  "Boa correção, Victor. O diagnóstico (socket reutilizado após `connect()` falho no Winsock + corrida entre mensagens) está bem documentado, e o ACK resolve a corrida de forma limpa. Reproduzi aqui:\n\n- `python -B -m unittest tests/test_def01_channel.py` → **PASS**\n- `python -B scripts/baseline_t01_t07.py --only T01 --repeat 10` → **PASS 10/10** (Python 3.14.7, g++ UCRT64 16.2.0)\n\n## Bloqueante (só este)\n\n**O limite de 5 s no `accept` do `receiveData()` quebra o T01 interativo.** No T01, o servidor chama `receive(requisicao)` logo no início, enquanto o cliente ainda espera o usuário digitar os três `input`. Se a pessoa demorar mais de 5 s, o `select` estoura, a exceção sai da thread e o processo aborta. Reproduzi com o binário gerado pelo baseline, atrasando a entrada:\n\n```\n$ (sleep 7; printf \u0027+\\n2\\n3\\n\u0027) | t01_r1.exe\n==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): terminate called after throwing an instance of \u0027std::runtime_error\u0027\n  what():  c_channel: timeout ou falha ao aguardar conexao\nexit=127\n```\n\nO baseline não pega isso porque injeta o stdin na hora. Na apresentação, com alguém digitando, isso aparece.\n\nSugestão: deixar a espera por conexão no listener sem limite (como antes) ou com um limite bem maior, e manter os 5 s só nas fases de leitura dos dados e do ACK, depois do `accept`. O ACK já fecha a janela da corrida, então o timeout do `accept` não é necessário para o DEF-01. Vale um teste com entrada atrasada (ex.: 7 s) para cobrir o caso.\n\n## Opcionais (não bloqueiam)\n\n- `__minipar_channel_connect` espera só 100 ms por tentativa. Em loopback está ok; entre máquinas (T adicional 1, 3 computadores) o retry até 5 s cobre, mas o remetente ainda falha se o outro PC subir mais de 5 s depois. Antes também era ~5 s (e a mensagem se perdia em silêncio), então não é regressão. Só fica registrado para o INT-02.\n- O `SO_REUSEADDR` continua sem checar retorno. Não faz diferença prática.\n\nAjustado o ponto do `accept`, aprovo.\n",
+                                              "submittedAt":  "2026-11-06T19:09:34Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "CHANGES_REQUESTED",
+                                              "commit":  {
+                                                             "oid":  "1927c1c4d901e22cc95fa40676d5160167889075"
+                                                         }
+                                          },
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWg3f6g",
+                                              "author":  {
+                                                             "login":  "erasmossj"
+                                                         },
+                                              "authorAssociation":  "COLLABORATOR",
+                                              "body":  "Ajuste conferido. Removido só o `select()` antes do `accept()`, e o novo teste cobre a entrada atrasada. Reproduzi: unittest 2/2 PASS, T01 10/10 PASS e o binário com stdin atrasado em 7 s deu `Resultado: 5` com exit 0. Aprovado. (Detalhe sem importância: `import re` ficou sem uso no teste.)",
+                                              "submittedAt":  "2026-11-06T19:28:26Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "f6a761714b46d4b54138c6c0cdabd567c42f3b8d"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/40"
+                      },
+                      {
+                          "headRefOid":  "d6362adebce22aec89d1e92ae9b14ceca757ea49",
+                          "mergedAt":  "2026-11-06T20:15:44Z",
+                          "number":  41,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWhPbLA",
+                                              "author":  {
+                                                             "login":  "erasmossj"
+                                                         },
+                                              "authorAssociation":  "COLLABORATOR",
+                                              "body":  "Correção limpa e mínima: buffer por \\`print\\` + escrita sob mutex, sem mexer em formatação (os números já eram formatados em \\`ostringstream\\` próprio e não há estado global no \\`std::cout\\`). Reproduzi no Windows/UCRT64 (g++ 16.2.0, Python 3.14.7):\n\n- \\`python -B -m unittest discover -s tests/2026_2/core07 -p test_print_atomic.py\\` → **2 PASS**\n- \\`python -B scripts/baseline_t01_t07.py --only T02 --repeat 20\\` → **20/20 PASS**\n- \\`--only T01 --repeat 3\\` → **3/3 PASS**; \\`tests/test_def01_channel.py\\` → **PASS**\n\nAprovado. Opcional, não bloqueia:\n- O teste usa \\`tempfile.TemporaryDirectory(dir=ROOT / \"output\")\\`, e \\`output/\\` é ignorado pelo Git. Em clone novo a pasta não existe e o teste quebra com \\`FileNotFoundError\\` (aqui tive que criar antes). Um \\`(ROOT / \"output\").mkdir(exist_ok=True)\\` resolve.\n- O prompt do \\`input()\\` (\\`std::cout \u003c\u003c prompt\\`) continua fora do mutex. Já está registrado nas limitações, então tudo bem.",
+                                              "submittedAt":  "2026-11-06T20:02:44Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "APPROVED",
+                                              "commit":  {
+                                                             "oid":  "d6362adebce22aec89d1e92ae9b14ceca757ea49"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/41"
+                      },
+                      {
+                          "headRefOid":  "a346a59293a70569d2c43ee5b35d1fbc40fa244c",
+                          "mergedAt":  null,
+                          "number":  42,
+                          "reviews":  [
+                                          {
+                                              "id":  "PRR_kwDOVLhZY88AAAABWzT5xg",
+                                              "author":  {
+                                                             "login":  "VictorBrasileiroo"
+                                                         },
+                                              "authorAssociation":  "OWNER",
+                                              "body":  "Riquelme, revisei o DOC-02 e está bem encaminhado. Só encontrei um ajuste nas relações dos casos de uso:\n\n- A relação `extend` entre UC07 e UC08 está invertida: é o UC08 que estende o UC07 quando há erro.\n- UC12 e UC13 estão estendendo UC03 (geração C++/binário), mas Fork/Join acontece durante a execução. Vale ajustar essas relações para não confundir geração com execução.\n\nO restante está ok para mim. Pode corrigir esses pontos na mesma branch e atualizar as evidências pertinentes. Depois disso, podemos aprovar e fazer o merge.",
+                                              "submittedAt":  "2026-11-09T11:24:17Z",
+                                              "includesCreatedEdit":  false,
+                                              "reactionGroups":  [
+
+                                                                 ],
+                                              "state":  "CHANGES_REQUESTED",
+                                              "commit":  {
+                                                             "oid":  "a346a59293a70569d2c43ee5b35d1fbc40fa244c"
+                                                         }
+                                          }
+                                      ],
+                          "url":  "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/42"
+                      }
+                  ]
+}

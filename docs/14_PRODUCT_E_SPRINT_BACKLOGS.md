@@ -1,6 +1,6 @@
 # Product Backlog e Sprint Backlogs — MiniPar 2026.2
 
-**Card:** `DOC-03` (Eixo C) · **Estado conferido em:** 05/11/2026, `dev` em `59ea77d` (CORE-09 atualizado em 06/11) · **Fonte estruturada:** [`planning/cards.json`](../planning/cards.json) v0.2
+**Card:** `DOC-03` (Eixo C) · **Estado conferido em:** 09/11/2026, `dev` em `8d07433` (REL-PRE autorizado pelo coordenador) · **Fonte estruturada:** [`planning/cards.json`](../planning/cards.json) v0.3
 **Exigência:** relatório final, itens "Product Backlog" e "Sprint Backlog" (doc 00 §12.1; doc 11).
 
 Regras deste documento:
@@ -15,7 +15,7 @@ Regras deste documento:
 
 O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar (doc 00 e doc 01), ordenados por prioridade. Cada item é atendido por um ou mais cards.
 
-| # | Item de produto (épico) | Prioridade | Cards | Estado em 05/11 |
+| # | Item de produto (épico) | Prioridade | Cards | Estado em 09/11 |
 |---|---|---|---|---|
 | PB-01 | Base 2026.1 importada, ambiente reproduzível (Python + G++ C++20) | P0 | SET-01, SET-02, SET-03 | **Entregue** |
 | PB-02 | Contratos entre eixos congelados: Fork/Join (C-FJ-v1), serviço Web (C-WEB-v1), Teste 11 (C-T11-v1) | P0 | CON-01, CON-02, CON-03 | **Entregue** |
@@ -24,20 +24,20 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | PB-05 | Runtime de tarefas local e remoto (TCP, worker pré-compilado, falhas explícitas) | P0 | RUN-01, RUN-02, RUN-04 | **Entregue** |
 | PB-06 | Execução provada entre dois computadores reais | P0 | RUN-03, RUN-06 | **Parcial**: prova da demo feita (RUN-03); reprodução documentada por outro integrante pendente (RUN-06) |
 | PB-07 | Programas paralelos T08, T09 e T10 em MiniPar, com oráculo | P0 | T08-01, T09-01, T10-01 | **Entregue** (T09/T10 com cenário remoto só no loopback; saída do Sierpinski depende da ADR-014) |
-| PB-08 | Desempenho e falhas medidos de forma justa | P0 | RUN-05 | **Em revisão**: medido numa máquina; cenário em dois PCs pendente |
+| PB-08 | Desempenho e falhas medidos de forma justa | P0 | RUN-05 | **Parcial**: #36 integrado em 06/11; medido numa máquina; cenário em dois PCs PENDING |
 | PB-09 | Teste 11: MiniCompilador escrito em MiniPar, com ARMv7 validado no CPUlator | P0 | T11-01, T11-02, T11-03 | **Entregue** |
 | PB-10 | Web didática com fases reais (tokens, AST, símbolos, TAC, C++), compilar, executar e baixar | P0 | WEB-01 a WEB-04, CORE-08 | **Entregue** |
 | PB-11 | Interfaces antigas (terminal e Web 2026.1) preservadas | P0 | CORE-09 | **Entregue** (#35, 06/11) |
-| PB-12 | Regressão: testes herdados T01–T07 e integração dos três eixos | P0 | CORE-01, CORE-10, INT-01, INT-02 | **Parcial**: baseline, regressão final (em revisão) e smoke feitos; regressão integral (INT-02) não iniciada |
-| PB-13 | Documentação: BNF, pseudocódigos, UML, backlogs, relatório | P0 | DOC-01 a DOC-04, WEB-05 | **Parcial**: BNF/pseudocódigos e seções da Web/T11 entregues; UML e relatório não iniciados; backlogs neste card |
+| PB-12 | Regressão: testes herdados T01–T07 e integração dos três eixos | P0 | CORE-01, CORE-10, INT-01, INT-02 | **Parcial**: baseline, regressão #38 e smoke integrados; DEF-01/02 corrigidos (#40/#41); INT-02 sem evidência disponível em 09/11 |
+| PB-13 | Documentação: BNF, pseudocódigos, UML, backlogs, relatório | P0 | DOC-01 a DOC-04, WEB-05 | **Parcial**: BNF/pseudocódigos e seções da Web/T11 entregues; UML em revisão (#42); relatório completo sem PR; backlogs integrados (#39) |
 | PB-14 | Release candidata, estudo e entrega final | P0 | REL-01, EST-01, EST-02, ENT-01 | **Não iniciado** |
 
-**Defeitos conhecidos no Product Backlog** (sem card até 05/11; detalhes no [CORE-10](auditorias/CORE-10_REGRESSAO_FINAL_T01_T07.md)):
+**Defeitos e pendências no Product Backlog** (estado atualizado em 09/11; detalhes no [CORE-10](auditorias/CORE-10_REGRESSAO_FINAL_T01_T07.md)):
 
 | ID | Defeito | Severidade | Dono sugerido |
 |---|---|---|---|
-| DEF-01 | T01: canal TCP herdado perde mensagem e o receptor trava (cerca de 1 em 3 execuções) | P1 | Eixo A (CORE-09 ou card novo) |
-| DEF-02 | `print` não atômico entre threads: saída do T02 se mistura | P2 | Eixo A |
+| DEF-01 | DONE: correção #40 integrada e aprovada; T01 10/10 PASS em REL-PRE (loopback) | P1 | Eixo A (CORE-09 ou card novo) |
+| DEF-02 | DONE: correção #41 integrada e aprovada; T02 10/10 PASS em REL-PRE | P2 | Eixo A |
 | T04-TOL | Falta a tolerância numérica do T04 (XOR) | — | A + C |
 
 ## 2. Sprint Backlogs
@@ -107,22 +107,22 @@ Divergência registrada, sem efeito no estado do card: o entregável fala em "re
 
 **Meta:** T01–T11 e três interfaces demonstrados ou com falhas registradas; documentação e release candidata.
 
-| Card | Eixo | Entrega | Estado em 05/11 | PR |
+| Card | Eixo | Entrega | Estado em 09/11 | PR |
 |---|---|---|---|---|
 | CORE-06 | A | TAC de Fork/Join e `par` | DONE | #17 (05/11) |
 | WEB-05 | B | Documentação da Web e do T11 | DONE | #33 (05/11) |
 | DOC-01 | B | BNF final e pseudocódigos | DONE | #32 (05/11) |
-| CORE-10 | C | Regressão final T01–T07 | IN_REVIEW | #38 |
-| RUN-05 | C | Benchmarks e falhas | IN_REVIEW (`par_rede` pendente) | #36 |
-| RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (reprodução pendente) | #37 |
-| DOC-03 | C | Product/Sprint Backlogs e decisões | IN_REVIEW | #39 |
+| CORE-10 | C | Regressão final T01–T07 | DONE (relatório; T04 PARTIAL) | #38 (06/11) |
+| RUN-05 | C | Benchmarks e falhas | IN_PROGRESS / PARTIAL (`par_rede` PENDING) | #36 integrado (06/11) |
+| RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (reprodução PENDING) | #37 integrado (06/11) |
+| DOC-03 | C | Product/Sprint Backlogs e decisões | DONE | #39 (06/11) |
 | CORE-09 | A | Interfaces antigas preservadas | DONE | #35 (06/11) |
-| INT-02 | B | Regressão integral e rede real | BACKLOG (depende do CORE-10) | — |
-| DOC-02 | B | UML | BACKLOG | — |
+| INT-02 | B | Regressão integral e rede real | BACKLOG (CORE-10 integrado; sem PR até 09/11) | — |
+| DOC-02 | B | UML | IN_REVIEW (parecer A em REL-PRE; review C pendente) | #42 |
 | DOC-04 | B | Relatório completo | BACKLOG (depende de DOC-02, DOC-03, INT-02, RUN-06) | — |
 | REL-01 | A | Release candidata | BACKLOG (depende do DOC-04) | — |
 
-**Resultado parcial:** 4/12 concluídos (CORE-09 em 06/11) e 4 com PR aberto (CORE-10, RUN-05, RUN-06, DOC-03); o marco venceu em 03/11 com 9 cards abertos. Ordem pelas dependências: CORE-10 → INT-02; DOC-02 e RUN-06 → DOC-04 → REL-01.
+**Resultado em 09/11:** 6/12 concluídos; RUN-05/06 têm PR integrado com aceite parcial; DOC-02 está em revisão; INT-02, DOC-04 e REL-01 permanecem no backlog. O prazo original de 03/11 não foi reescrito. Ordem pelas dependências: CORE-10 → INT-02; DOC-02 e RUN-06 → DOC-04 → REL-01.
 
 ### Sprint 4 — Estudo e entrega (04/11 a 11/11)
 
@@ -131,6 +131,8 @@ Divergência registrada, sem efeito no estado do card: o entregável fala em "re
 | EST-01 | Trio | Estudo de módulos e roteiro individual | 08/11 | BACKLOG (depende do REL-01) |
 | EST-02 | Trio | Ensaio completo e contingência de demo | 10/11 | BACKLOG |
 | ENT-01 | Trio | Entrega final | 11/11 | BACKLOG |
+
+Ver [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md) para medições posteriores a DEF-01/02, decisões e dependências externas. Os resultados antigos não foram apagados.
 
 ## 3. Observações do processo
 

@@ -2,11 +2,11 @@
 
 > **PRÉ-ISSUES, v0.1 — 15/10/2026.** Nenhuma GitHub Issue foi criada. Fonte estruturada: `planning/cards.json`. Revisar com os três responsáveis antes de publicar.
 
-> **Estado atualizado em 05/11/2026 (`cards.json` v0.2, card `DOC-03`).** A tabela "Estado em 05/11/2026" abaixo traz o status real de cada card, conferido contra os PRs mergeados em `dev` (`59ea77d`). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+> **Estado atualizado em 09/11/2026 (`cards.json` v0.3, REL-PRE autorizado pelo coordenador).** A tabela abaixo foi conferida contra `dev` (`8d07433`) e o GitHub; ver [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 ## Regras para usar este backlog
 
-- Cada card tem **um eixo responsável**, prazo-limite, dependências, arquivos autorizados, evidência e critério de aceite. Os nomes de B/C serão decididos no kickoff.
+- Cada card tem **um eixo responsável**, prazo-limite, dependências, arquivos autorizados, evidência e critério de aceite. B = José Riquelme; C = Erasmo, conforme contratos e PRs.
 - `ready=false` no JSON até a Definition of Ready ser comprovada. Não começar código só porque existe prazo.
 - `BACKLOG` → `READY` → `IN_PROGRESS` → `IN_REVIEW` → `DONE`. `BLOCKED` é um impedimento rastreável, jamais uma conclusão.
 - Eixo **A é dono de `src/`**. Execução de baseline/regressão por C **não autoriza C a alterar o compilador**; C abre defeito para A.
@@ -14,15 +14,15 @@
 - Se um contrato mudar, abrir CR conforme `docs/02_CONTRATOS_TECNICOS.md` e `AGENTS.md`.
 - `estimate_hours` são estimativas de supervisão e execução humana assistida por IA; **não são esforço mensurado** e podem mudar após G0.
 
-## Estado em 05/11/2026
+## Estado em 09/11/2026
 
-32 `DONE`, 3 `IN_REVIEW`, 1 `IN_PROGRESS`, 7 `BACKLOG` (CORE-09 atualizado em 06/11). `DONE` só com PR mergeado e evidência; o PR listado é o principal do card. Única exceção: o `SET-03`, card de configuração sem artefato no repositório, aceito pelas evidências de [`14_PRODUCT_E_SPRINT_BACKLOGS.md` §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+34 `DONE`, 1 `IN_REVIEW`, 2 `IN_PROGRESS`, 6 `BACKLOG`. Estados de card e resultados de teste são distintos: RUN-05/06 têm PRs integrados, mas aceite incompleto; T09/T10 preservam PARTIAL. `ready` não foi liberado nesta auditoria. SET-03 mantém a exceção documentada em [Product/Sprint Backlogs §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 | Card | Eixo | Estado | PR | Observação |
 |---|---|---|---|---|
 | `SET-01` | A | DONE | #1 |  |
 | `SET-02` | A | DONE | #1 |  |
-| `SET-03` | A | DONE (exceção sem PR) | — | Card de configuração/coordenação, sem artefato no repositório. Aceite por evidências em `14_PRODUCT_E_SPRINT_BACKLOGS.md` §2.1: acesso de escrita dos três e PRs de cada um; branches e revisão (ADR-019); dois hosts no RUN-03 (04/11). Confirmação de horas sem registro escrito; entregável "repositório privado" diverge (ADR-018). |
+| `SET-03` | A | DONE | — | EXCEÇÃO à regra de DONE com PR: card de configuração/coordenação, sem artefato no repositório. Aceite por evidências em docs/14 §2.1: acesso de escrita dos três e PRs mergeados de cada um; branches/dev/revisão (ADR-019); dois hosts usados no RUN-03 (04/11). Sem registro escrito da confirmação de horas; entregável 'repositório privado' diverge (ADR-018). |
 | `CON-01` | A+C | DONE | #7 |  |
 | `CON-02` | A+B | DONE | #3 | PRs complementares: #25. |
 | `CON-03` | A+B | DONE | #2 | PRs complementares: #25. |
@@ -34,8 +34,8 @@
 | `CORE-06` | A | DONE | #17 |  |
 | `CORE-07` | A | DONE | #18 | PRs complementares: #29. |
 | `CORE-08` | A | DONE | #19 | PRs complementares: #34. |
-| `CORE-09` | A | DONE | #35 | Mergeado em 06/11. DEF-01 (T01) segue aberto (CORE-10). |
-| `CORE-10` | C | IN_REVIEW | #38 | T03, T05, T06 e T07 PASS; T04 PARTIAL (sem tolerância); T01/T02 FAIL intermitentes (DEF-01/02 abertos, Eixo A). |
+| `CORE-09` | A | DONE | #35 | Interfaces integradas (#35). DEF-01/02 corrigidos e aprovados nos PRs #40/#41; nova regressão em REL-PRE (09/11). |
+| `CORE-10` | C | DONE | #38 | Relatório integrado (#38 em 06/11), não aceite integral dos testes. Resultado histórico T01/T02 FAIL preservado; após #40/#41, REL-PRE: T01 10/10 e T02 10/10 PASS; T04 PARTIAL. |
 | `WEB-01` | B | DONE | #12 |  |
 | `WEB-02` | B | DONE | #13 |  |
 | `WEB-03` | B | DONE | #30 |  |
@@ -48,21 +48,23 @@
 | `RUN-02` | C | DONE | #9 |  |
 | `RUN-03` | C | DONE | #10 | Evidência só do lado do worker (máquina B); o log do coordenador entra no RUN-06. |
 | `RUN-04` | C | DONE | #20 |  |
-| `T08-01` | C | DONE | #21 | Cenário remoto só no loopback; execução entre computadores provada pelo RUN-03 e pelo RUN-05/06. |
+| `T08-01` | C | DONE | #21 | Provas do programa no loopback. RUN-03 demonstra a demo entre dois computadores; RUN-05 par_rede e reprodução RUN-06 ainda PENDING. |
 | `T09-01` | C | DONE | #22 | Mergeado como PARTIAL: cenário remoto só no loopback. |
 | `T10-01` | C | DONE | #23 | Mergeado como PARTIAL: cenário remoto só no loopback; ADR-014 (saída do Sierpinski) em aberto. |
-| `RUN-05` | C | IN_REVIEW | #36 | Tempos e falhas F1–F3 PASS nesta máquina; cenário par_rede (dois computadores) pendente. |
-| `RUN-06` | C | IN_PROGRESS | #37 | Documentação em revisão; falta a reprodução em dois PCs por outro integrante. |
+| `RUN-05` | C | IN_PROGRESS | #36 | PR #36 mergeado em 06/11; medições e falhas locais documentadas. Aceite PARTIAL: par_rede em dois computadores PENDING; merge não conclui o recorte remoto. |
+| `RUN-06` | C | IN_PROGRESS | #37 | Documentação integrada (#37 em 06/11); aprovação do coordenador mantém reprodução por outro integrante e logs dos dois hosts PENDING. |
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
-| `INT-02` | B | BACKLOG | — | Depende do CORE-10 (em revisão). |
+| `INT-02` | B | BACKLOG | — | CORE-10 integrado (#38). Nenhum PR/branch/evidência específica localizado em 09/11; ready preservado, requer liberação do coordenador. |
 | `DOC-01` | B | DONE | #32 |  |
-| `DOC-02` | B | BACKLOG | — | Dependência (INT-01) concluída; sem PR até 05/11. |
-| `DOC-03` | C | IN_REVIEW | #39 |  |
-| `DOC-04` | B | BACKLOG | — |  |
+| `DOC-02` | B | IN_REVIEW | #42 | PR #42 aberto, head a346a59; parecer estático do Eixo A em REL-PRE, ajustes documentais e review C pendentes. Sem aprovação automática; artefatos ainda na branch do autor. |
+| `DOC-03` | C | DONE | #39 | PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards. |
+| `DOC-04` | B | BACKLOG | — | Nenhum PR/branch/relatório completo localizado em 09/11. DOC-03 integrado; dependências abertas: INT-02, DOC-02 e aceite RUN-06. |
 | `REL-01` | A | BACKLOG | — |  |
 | `EST-01` | EQUIPE | BACKLOG | — |  |
 | `EST-02` | EQUIPE | BACKLOG | — |  |
 | `ENT-01` | EQUIPE | BACKLOG | — |  |
+
+> As fichas e medições datadas abaixo preservam o histórico. Para o estado corrente, prevalece o quadro de 09/11 acima (inclusive CON-01 e INT-01 já integrados).
 
 ## Marcos de controle
 
@@ -637,7 +639,7 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** IN_REVIEW · PR [#6](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/6). Baseline executada em `56c3a1c` com `scripts/baseline_t01_t07.py`: T03, T05, T06 e T07 (ordenação) PASS; T04 PARTIAL (tolerância não acordada); T01 FAIL intermitente (4/10) e T02 FAIL intermitente (9/10); TAC fixo e acesso fora dos limites do T07 confirmados. Defeitos DEF-01..04 encaminhados ao A em `docs/auditorias/CORE-01_BASELINE_T01_T07.md`. Sem DONE até revisão.
+**Estado histórico (22/10/2026):** IN_REVIEW · PR [#6](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/6). Baseline executada em `56c3a1c` com `scripts/baseline_t01_t07.py`: T03, T05, T06 e T07 (ordenação) PASS; T04 PARTIAL (tolerância não acordada); T01 FAIL intermitente (4/10) e T02 FAIL intermitente (9/10); TAC fixo e acesso fora dos limites do T07 confirmados. Defeitos DEF-01..04 encaminhados ao A em `docs/auditorias/CORE-01_BASELINE_T01_T07.md`. Sem DONE até revisão.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
@@ -675,7 +677,7 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** IN_REVIEW (draft) · PR [#8](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/8), empilhado sobre o `CON-01`; merge só depois do contrato aprovado. `ready=false` enquanto o `CON-01` não congelar. `python runtime/tests/run_tests.py`: 15 casos locais + probe do `join_or_exit` PASS; suíte local repetida 30× sem falha.
+**Estado histórico (22/10/2026):** IN_REVIEW (draft) · PR [#8](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/8), empilhado sobre o `CON-01`; merge só depois do contrato aprovado. `ready=false` enquanto o `CON-01` não congelar. `python runtime/tests/run_tests.py`: 15 casos locais + probe do `join_or_exit` PASS; suíte local repetida 30× sem falha.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
@@ -695,7 +697,7 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** IN_REVIEW (draft) · PR [#9](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/9), empilhado sobre `CON-01`/`RUN-01`. Fragmentação, frame inválido, worker indisponível, tarefas fora de ordem e worker morto testados contra dois processos worker **no loopback** (7 + 15 casos PASS). Prova de protocolo, não de duas máquinas.
+**Estado histórico (22/10/2026):** IN_REVIEW (draft) · PR [#9](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/9), empilhado sobre `CON-01`/`RUN-01`. Fragmentação, frame inválido, worker indisponível, tarefas fora de ordem e worker morto testados contra dois processos worker **no loopback** (7 + 15 casos PASS). Prova de protocolo, não de duas máquinas.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
@@ -859,7 +861,7 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (05/11/2026, após o merge do WEB-03 #30 e do WEB-04 #31):** IN_REVIEW · PR [#24](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24), base `dev`, sincronizado após o merge do RUN-04 (#20). `python scripts/smoke_int01.py` (Python com Flask, `requeriments.txt`) na branch sincronizada: A PASS, B PASS, **C PASS** (C1–C9: `web_didatica/server.py` pelo cliente de teste do Flask, sem porta; analyze, compile e execute do programa Fork/Join com `stdout` igual ao oráculo, download do binário e erros HTTP). Três execuções iguais; resultado anexado em `docs/auditorias/INT-01_RESULTADOS_2026-11-05.json`. Exit 0 só com tudo PASS (3 para BLOCKED/PARTIAL). Não marcar DONE antes da revisão humana. O segmento A continua só no loopback (INT01-05).
+**Estado histórico (05/11/2026, após o merge do WEB-03 #30 e do WEB-04 #31):** IN_REVIEW · PR [#24](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/24), base `dev`, sincronizado após o merge do RUN-04 (#20). `python scripts/smoke_int01.py` (Python com Flask, `requeriments.txt`) na branch sincronizada: A PASS, B PASS, **C PASS** (C1–C9: `web_didatica/server.py` pelo cliente de teste do Flask, sem porta; analyze, compile e execute do programa Fork/Join com `stdout` igual ao oráculo, download do binário e erros HTTP). Três execuções iguais; resultado anexado em `docs/auditorias/INT-01_RESULTADOS_2026-11-05.json`. Exit 0 só com tudo PASS (3 para BLOCKED/PARTIAL). Não marcar DONE antes da revisão humana. O segmento A continua só no loopback (INT01-05).
 
 **Estado anterior (05/11/2026, antes do WEB-03):** BLOCKED. A PASS, B PASS (inclusive B8, Fork/Join pelo serviço), C BLOCKED (`WEB-03` não iniciado, Eixo B).
 
@@ -941,7 +943,7 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 
 **Evidência mínima de conclusão:** PR/commit associado, comandos e saídas do teste ou artefato documental revisado, status real PASS/FAIL/BLOCKED, e handoff ao consumidor.
 
-**Estado atual (22/10/2026):** IN_REVIEW · PR [#7](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7). Proposta de congelamento C-FJ-v1 revisão 1 do C em `docs/02_CONTRATOS_TECNICOS.md` §2 (API, protocolo e erros implementados no `RUN-01`/`RUN-02`; sintaxe MiniPar proposta para decisão do A). Aguarda aprovação do A para `v1 FROZEN`.
+**Estado histórico (22/10/2026):** IN_REVIEW · PR [#7](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7). Proposta de congelamento C-FJ-v1 revisão 1 do C em `docs/02_CONTRATOS_TECNICOS.md` §2 (API, protocolo e erros implementados no `RUN-01`/`RUN-02`; sintaxe MiniPar proposta para decisão do A). Aguarda aprovação do A para `v1 FROZEN`.
 
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
