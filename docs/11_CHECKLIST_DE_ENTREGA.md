@@ -1,6 +1,6 @@
 # Checklist acadêmico e técnico para 11/11/2026
 
-> Revisão REL-PRE (09/11/2026), base de execução `8d07433`, sincronizada documentalmente com `a7454bc` (#42): [relatório consolidado](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Itens marcados referem-se ao escopo de evidência indicado, sem declarar a entrega pronta. Rede específica T08–T10, confirmação gráfica, revisão C da UML, relatório e reprodução final continuam pendentes. DOC-02 integrado no #42 com aprovação A.
+> Revisão REL-PRE (09/11/2026), base de execução `8d07433`, sincronizada documentalmente com `a7454bc` (#42): [relatório consolidado](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Itens marcados referem-se ao escopo de evidência indicado, sem declarar a entrega pronta. Rede específica T08–T10, confirmação gráfica, correção RC-01/RC-02 da UML, relatório e reprodução final continuam pendentes. DOC-02 integrado no #42 com aprovação A; revisão C registrada em 09/11 com ressalvas ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)).
 
 > Checklist não é comprovação. Só marcar `[x]` após verificar arquivo, teste e evidência. Requisitos não concluídos permanecem abertos.
 
@@ -56,8 +56,8 @@
 - [x] Product Backlog.
 - [x] Sprint Backlogs.
 - [x] UML casos de uso (ajustes aprovados por A no #42; integrado em 09/11).
-- [ ] UML componentes.
-- [ ] UML classes dos componentes.
+- [x] UML componentes (A no #42; revisão C de 09/11 sem ressalva no runtime).
+- [x] UML classes dos componentes (A no #42; revisão C de 09/11 com omissões menores RC-03/RC-04, não bloqueantes).
 - [ ] Testes de integração documentados.
 - [ ] Tecnologias e ambiente declarados.
 - [ ] Prints passo a passo dos programas exigidos.
@@ -84,7 +84,8 @@ Marcas do núcleo: PRs #14–#19/#29 e regressão REL-PRE; `par`/Fork/Join demon
 - [ ] Coordenador decidir critério T04 e aceite interno ADR-014; confirmação docente separada.
 - [ ] Coordenador registrar tratamento ADR-018 com evidência de direitos/acesso.
 - [x] DOC-02: ajustes dos casos de uso aprovados por A e PR #42 integrado (09/11, a7454bc).
-- [ ] C registrar revisão das seções runtime/runners da UML; o merge do #42 não é evidência dessa revisão.
+- [x] C registrar revisão das seções runtime/runners da UML: [parecer C](auditorias/DOC-02_REVISAO_C_RUNTIME.md), 09/11, APROVADO COM RESSALVAS.
+- [ ] B corrigir RC-01/RC-02 (§5.2 e UC12) na UML e repetir a sonda; C revisar a correção.
 - [ ] B apresentar INT-02 em base integrada, oráculos, três interfaces e rede real; A/C revisar.
 - [ ] C concluir RUN-06 por outro integrante, logs dos dois hosts; tratar RUN-05 par_rede ainda PENDING.
 - [ ] B consolidar DOC-04 com capa/link, anexos e limitações; revisão conjunta e merge.

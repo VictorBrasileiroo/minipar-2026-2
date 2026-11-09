@@ -2,7 +2,7 @@
   "project": "MINIPAR-2026.2",
   "version": "0.3",
   "as_of": "2026-11-09",
-  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas. Sincronização posterior com dev a7454bc (#42): DOC-02 integrado, revisão C explicitamente pendente; demais estados e ready preservados.",
+  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas. Sincronização posterior com dev a7454bc (#42): DOC-02 integrado; revisão C registrada em 09/11 com ressalvas (RC-01/RC-02 a corrigir por B); demais estados e ready preservados.",
   "statuses": [
     "BACKLOG",
     "READY",
@@ -1001,9 +1001,10 @@
       "evidence": [
         "docs/15_UML_MINIPAR_2026_2.md",
         "docs/auditorias/DOC-02_UML.md",
-        "docs/auditorias/DOC-02_RESULTADOS.json"
+        "docs/auditorias/DOC-02_RESULTADOS.json",
+        "docs/auditorias/DOC-02_REVISAO_C_RUNTIME.md"
       ],
-      "status_note": "PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C não localizada, aceite técnico conjunto PARTIAL. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS."
+      "status_note": "PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS (DOC-02_REVISAO_C_RUNTIME.md). Aceite técnico conjunto PARTIAL até B corrigir RC-01/RC-02 (§5.2/UC12). Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS."
     },
     {
       "id": "DOC-03",
@@ -1057,7 +1058,7 @@
       "issue_url": null,
       "pr_url": null,
       "evidence": [],
-      "status_note": "Nenhum PR/branch/relatório completo localizado na auditoria REL-PRE. DOC-02 (#42) e DOC-03 integrados; INT-02 e aceite RUN-06 continuam abertos; revisão C da UML pendente."
+      "status_note": "Nenhum PR/branch/relatório completo localizado na auditoria REL-PRE. DOC-02 (#42) e DOC-03 integrados; INT-02 e aceite RUN-06 continuam abertos; revisão C da UML registrada com ressalvas, correção RC-01/RC-02 por B pendente."
     },
     {
       "id": "REL-01",

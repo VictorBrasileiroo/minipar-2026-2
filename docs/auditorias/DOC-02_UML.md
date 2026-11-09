@@ -4,7 +4,7 @@
 
 Base: `origin/dev` em `8d07433` (09/11/2026; branch criada sobre `59ea77d` e atualizada com o `dev`). Dependência do card: `INT-01` integrado (PR #24, merge `3940ae7`).
 
-**Estado após integração (REL-PRE, 09/11):** PR #42 mergeado em `a7454bc` às 11:34:25Z; review APPROVED de Victor/A sobre `4cdae73` às 11:31:33Z. DONE de integração; revisão C não localizada, aceite conjunto PARTIAL. Fonte: [snapshot de sincronização REL-PRE](REL-PRE_GITHUB.json). Sondas reexecutadas na árvore sincronizada: 853/853 PASS. As seções de implementação/verificação originais abaixo preservam o histórico.
+**Estado após integração (REL-PRE, 09/11):** PR #42 mergeado em `a7454bc` às 11:34:25Z; review APPROVED de Victor/A sobre `4cdae73` às 11:31:33Z. DONE de integração; revisão C registrada em 09/11 como APROVADO COM RESSALVAS ([parecer C](DOC-02_REVISAO_C_RUNTIME.md)), com RC-01/RC-02 a corrigir por B; aceite conjunto PARTIAL até essa correção. Fonte: [snapshot de sincronização REL-PRE](REL-PRE_GITHUB.json). Sondas reexecutadas na árvore sincronizada: 853/853 PASS. As seções de implementação/verificação originais abaixo preservam o histórico.
 
 **Atualização de 09/11 (histórico anterior ao merge):** o `dev` recebeu o `DOC-03`, que criou `docs/14_PRODUCT_E_SPRINT_BACKLOGS.md`; a UML passou de `14_` para `docs/15_UML_MINIPAR_2026_2.md`. As mudanças de código que vieram junto (`CORE-09`, `DEF-01`, `DEF-02`) foram refletidas: `main.compile_file` captura o `SystemExit` do parser, `print` é atômico (`__minipar_print_mutex`) e `app.py` ganhou `_requested_test_path` e nomes `ide_<uuid>` em `/api/compile`.
 
@@ -54,7 +54,7 @@ Todos dentro de `docs/`, único caminho autorizado pelo card.
 
 ### Verificação documental — MANDATORY (histórico da entrega original)
 
-Os estados descritos nesta seção são anteriores ao merge. O estado atual está no registro REL-PRE no início deste handoff: cards/backlogs/checklist/README foram sincronizados, DOC-02 integrado e revisão C ainda pendente.
+Os estados descritos nesta seção são anteriores ao merge. O estado atual está no registro REL-PRE no início deste handoff: cards/backlogs/checklist/README foram sincronizados, DOC-02 integrado e revisão C registrada com ressalvas ([parecer C](DOC-02_REVISAO_C_RUNTIME.md)).
 
 - **Documentos verificados e impacto identificado:**
   - `docs/00_DOCUMENTO_MESTRE_INICIAL.md` §11 (componentes e diagramas exigidos): usado como
@@ -65,7 +65,7 @@ Os estados descritos nesta seção são anteriores ao merge. O estado atual est�
   - `docs/12_BNF_MINIPAR_2026_2.md` e `docs/13_PSEUDOCODIGOS_NUCLEO.md` (`DOC-01`):
     referenciados nos diagramas do Lexer e do Parser; sem conflito; sem alteração.
   - `docs/11_CHECKLIST_DE_ENTREGA.md` (itens UML casos de uso, componentes e classes):
-    na entrega original não marcados; após #42, casos de uso conferidos/aprovados por A e marcados em REL-PRE; componentes/classes continuam abertos pela revisão C pendente.
+    na entrega original não marcados; após #42, casos de uso conferidos/aprovados por A e marcados em REL-PRE; componentes/classes marcados após a revisão C de 09/11 (componentes sem ressalva; classes com omissões menores RC-03/RC-04).
   - `docs/relatorio/README.md` (índice das seções do relatório): lista só arquivos de
     `docs/relatorio/`; os documentos 12/13 do `DOC-01` também não estão lá. Mantido sem
     alteração; o `DOC-04` decide como incorporar 12, 13, 14 (DOC-03) e 15.
@@ -150,7 +150,7 @@ Oráculo: o código em `8d07433` (`src/`, `main.py`, `menu.py`, `app.py`,
 `web_didatica/static/js/`, `runtime/include/minipar_rt/`,
 `tests/2026_2/test11/minicompilador.minipar`).
 
-**Status atual:** `DONE` de integração (#42, `a7454bc`); **aceite técnico conjunto PARTIAL**. Diagramas e evidências integrados, com aprovação A após os ajustes. Revisão específica C permanece PENDING; a consulta ao PR não contém essa aprovação. Resultados do autor: 853/853, controle negativo e 17/17 renderizados; sondas 853/853 reexecutadas por REL-PRE, sem repetir renderização.
+**Status atual:** `DONE` de integração (#42, `a7454bc`); **aceite técnico conjunto PARTIAL**. Diagramas e evidências integrados, com aprovação A após os ajustes. Revisão específica C registrada em 09/11 como APROVADO COM RESSALVAS ([parecer C](DOC-02_REVISAO_C_RUNTIME.md)); RC-01/RC-02 (§5.2/UC12) aguardam correção por B. Resultados do autor: 853/853, controle negativo e 17/17 renderizados; sondas 853/853 reexecutadas por REL-PRE, sem repetir renderização.
 
 ### Regressões executadas
 
@@ -158,7 +158,7 @@ Oráculo: o código em `8d07433` (`src/`, `main.py`, `menu.py`, `app.py`,
 
 ### Pendências, riscos e limitações
 
-- **Revisão A:** APPROVED no #42 em `4cdae73`. **Revisão C** (runtime e runners): PENDING, não localizada; impede declarar aceite técnico conjunto completo.
+- **Revisão A:** APPROVED no #42 em `4cdae73`. **Revisão C** (runtime e runners): APROVADO COM RESSALVAS em 09/11 ([parecer C](DOC-02_REVISAO_C_RUNTIME.md)). RC-01 (`join` gerado usa `__fj_join`) e RC-02 (fork sem destino passa `Destination::parse("local")`) impedem declarar aceite técnico conjunto completo até a correção por B; RC-03..RC-06 são omissões menores recomendadas.
 - As sondas conferem **existência**, não semântica: um método listado na classe certa com
   papel descrito errado no texto não é detectado. Em C++, JS e MiniPar a busca é por nome no
   arquivo, não restrita ao corpo da classe. As relações de associação/uso (`..>`, `-->`)

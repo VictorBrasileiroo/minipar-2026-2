@@ -56,9 +56,9 @@
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
 | `INT-02` | B | BACKLOG | — | CORE-10 integrado (#38). Nenhum PR/branch/evidência específica localizado em 09/11; ready preservado, requer liberação do coordenador. |
 | `DOC-01` | B | DONE | #32 |  |
-| `DOC-02` | B | DONE (integração; aceite conjunto PARTIAL) | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C não localizada, aceite técnico conjunto PARTIAL. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS. |
+| `DOC-02` | B | DONE (integração; aceite conjunto PARTIAL) | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)); aceite técnico conjunto PARTIAL até B corrigir RC-01/RC-02 (§5.2/UC12). Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS. |
 | `DOC-03` | C | DONE | #39 | PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards. |
-| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; INT-02, aceite RUN-06 e revisão C da UML continuam pendentes. |
+| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; INT-02, aceite RUN-06 e a correção RC-01/RC-02 da UML (revisão C registrada em 09/11) continuam pendentes. |
 | `REL-01` | A | BACKLOG | — |  |
 | `EST-01` | EQUIPE | BACKLOG | — |  |
 | `EST-02` | EQUIPE | BACKLOG | — |  |
