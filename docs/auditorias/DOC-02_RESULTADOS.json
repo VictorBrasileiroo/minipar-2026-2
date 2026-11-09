@@ -1,7 +1,7 @@
 {
  "card": "DOC-02",
- "passed": 852,
- "total": 852,
+ "passed": 853,
+ "total": 853,
  "results": [
   {
    "group": "documento",
@@ -2874,6 +2874,12 @@
   {
    "group": "membro",
    "case": "bloco 11: app.compile_code",
+   "status": "PASS",
+   "detail": "method"
+  },
+  {
+   "group": "membro",
+   "case": "bloco 11: app._requested_test_path",
    "status": "PASS",
    "detail": "method"
   },

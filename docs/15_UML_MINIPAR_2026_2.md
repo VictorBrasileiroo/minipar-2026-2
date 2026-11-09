@@ -1,6 +1,6 @@
 # UML do MiniPar 2026.2 — casos de uso, componentes e classes
 
-**Card:** `DOC-02` (Eixo B) · **Base:** `origin/dev` em `59ea77d` (05/11/2026) ·
+**Card:** `DOC-02` (Eixo B) · **Base:** `origin/dev` em `8d07433` (09/11/2026) ·
 **Revisão técnica pendente:** Eixo A (núcleo, serviço e geradores) e Eixo C (runtime e runners).
 
 Este documento modela o sistema **como ele está implementado**. Cada classe, atributo, método,
@@ -595,8 +595,9 @@ classDiagram
 ```
 
 Descida recursiva com um método por nível de precedência (`_parse_or` → `_parse_primary`).
-Em erro, `_fail` monta o diagnóstico `SYN_*`; com `exit_on_error=True` (CLI) imprime e encerra
-o processo, com `exit_on_error=False` (serviço) lança `ParseError`. Pseudocódigo em
+Em erro, `_fail` monta o diagnóstico `SYN_*`; com `exit_on_error=True` (CLI) imprime e lança
+`SystemExit(1)`, que `main.compile_file` captura para devolver `False` sem fechar o menu; com
+`exit_on_error=False` (serviço) lança `ParseError`. Pseudocódigo em
 [`13_PSEUDOCODIGOS_NUCLEO.md`](13_PSEUDOCODIGOS_NUCLEO.md).
 
 ### 4.4 Analisador semântico e tabela de símbolos
@@ -804,7 +805,9 @@ Duas rotas de geração convivem em `generate_text`:
 
 - **Programa sem `fork`/`join`:** tradução direta da AST (`_translate_statement`,
   `_translate_expression`) com o prólogo `_CPP_HEADER` (funções nativas, `MiniParChannel`
-  para `c_channel`/`send`/`receive`).
+  para `c_channel`/`send`/`receive`). Cada `print` monta a linha num `std::ostringstream` e a
+  escreve sob `__minipar_print_mutex`, para que linhas de threads de `par` não se misturem
+  (`DEF-02`).
 - **Programa com `fork`/`join` (CORE-07):** `CppTaskContext` prova os tipos C++ de cada função
   de tarefa (`CppType`; recusa com `CppProofError`) e `_fj_program` gera as funções tipadas, os
   invólucros `__fj_wrap_<f>(const TaskArgs&)`, o `register_function` de cada uma, o
@@ -942,6 +945,7 @@ classDiagram
         +session_ready()
         +session_clear()
         +compile_code()
+        -_requested_test_path() tuple
     }
     main ..> menu : opção 1
     main ..> app : opção 2 (porta 5000)
@@ -963,7 +967,10 @@ classDiagram
 | `/api/test_spec` | POST | `get_test_spec_api` |
 | `/api/session` | GET | `get_session` |
 | `/api/session/join`, `/create`, `/ready`, `/clear` | POST | `session_join`, `session_create`, `session_ready`, `session_clear` |
-| `/api/compile` | POST | `compile_code` (grava em `temp_code/`, roda `python main.py`, executa `output/<nome>.exe`) |
+| `/api/compile` | POST | `compile_code` (valida o JSON, grava em `temp_code/ide_<uuid>.minipar`, roda `main.py <arquivo> ide_<uuid>` com o mesmo Python, executa `output/ide_<uuid>.exe`) |
+
+`get_test`, `get_test_spec_api` e `session_create` só aceitam um nome `.minipar` contido em
+`tests/`, conferido por `_requested_test_path`.
 
 #### 4.8.2 Web didática
 
@@ -1409,7 +1416,7 @@ sequenceDiagram
 
 Em qualquer fase com erro, o serviço para, devolve `ok: false` com o diagnóstico e as fases
 seguintes `skipped`; o servidor responde HTTP 200 mesmo assim (C-WEB-v1 §1.8). A CLI
-(`main.compile_file`) segue a mesma ordem de fases, mas grava em `output/<nome>.*`, usa
+(`main.compile_file`) segue a mesma ordem de fases, mas apaga e regrava `output/<nome>.*`, usa
 `Parser` com `exit_on_error=True` e `TACGenerator.generate`/`CppCodeGenerator.generate`.
 
 ### 5.2 Fork/Join local e remoto no binário gerado (UC12, UC13)

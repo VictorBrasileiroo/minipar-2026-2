@@ -1,6 +1,6 @@
 """DOC-02 — sondas que confrontam os diagramas de classes UML com o código.
 
-Lê os blocos ```mermaid classDiagram``` de docs/14_UML_MINIPAR_2026_2.md e confere:
+Lê os blocos ```mermaid classDiagram``` de docs/15_UML_MINIPAR_2026_2.md e confere:
 
   * classe: cada classe com ``%% @fonte Nome caminho [caminho ...]`` existe no(s) arquivo(s);
   * membro: cada atributo, método e valor de enumeração listado existe na classe/módulo;
@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DOC = ROOT / "docs" / "14_UML_MINIPAR_2026_2.md"
+DOC = ROOT / "docs" / "15_UML_MINIPAR_2026_2.md"
 EXTERNAL = {"Exception", "ValueError", "Error"}  # tipos da linguagem/biblioteca padrão
 
 # Arquivos que precisam ser citados por algum @fonte (cobertura de módulos).
