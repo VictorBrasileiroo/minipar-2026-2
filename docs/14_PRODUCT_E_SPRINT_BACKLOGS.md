@@ -28,7 +28,7 @@ O Product Backlog tem os itens de produto que o MiniPar 2026.2 precisa entregar 
 | PB-09 | Teste 11: MiniCompilador escrito em MiniPar, com ARMv7 validado no CPUlator | P0 | T11-01, T11-02, T11-03 | **Entregue** |
 | PB-10 | Web didática com fases reais (tokens, AST, símbolos, TAC, C++), compilar, executar e baixar | P0 | WEB-01 a WEB-04, CORE-08 | **Entregue** |
 | PB-11 | Interfaces antigas (terminal e Web 2026.1) preservadas | P0 | CORE-09 | **Entregue** (#35, 06/11) |
-| PB-12 | Regressão: testes herdados T01–T07 e integração dos três eixos | P0 | CORE-01, CORE-10, INT-01, INT-02 | **Parcial**: baseline, regressão #38 e smoke integrados; DEF-01/02 corrigidos (#40/#41); INT-02 sem evidência disponível em 09/11 |
+| PB-12 | Regressão: testes herdados T01–T07 e integração dos três eixos | P0 | CORE-01, CORE-10, INT-01, INT-02 | **Parcial**: baseline, regressão #38 e smoke integrados; DEF-01/02 corrigidos (#40/#41); INT-02 integrado (#44, 09/11) como PARTIAL: rede real em dois PCs pendente |
 | PB-13 | Documentação: BNF, pseudocódigos, UML, backlogs, relatório | P0 | DOC-01 a DOC-04, WEB-05 | **Parcial**: BNF/pseudocódigos e seções da Web/T11 entregues; UML integrada (#42), revisão C com ressalvas (RC-01/RC-02 a corrigir); relatório completo sem PR; backlogs integrados (#39) |
 | PB-14 | Release candidata, estudo e entrega final | P0 | REL-01, EST-01, EST-02, ENT-01 | **Não iniciado** |
 
@@ -117,12 +117,12 @@ Divergência registrada, sem efeito no estado do card: o entregável fala em "re
 | RUN-06 | C | Protocolo, topologia, deploy | IN_PROGRESS (reprodução PENDING) | #37 integrado (06/11) |
 | DOC-03 | C | Product/Sprint Backlogs e decisões | DONE | #39 (06/11) |
 | CORE-09 | A | Interfaces antigas preservadas | DONE | #35 (06/11) |
-| INT-02 | B | Regressão integral e rede real | BACKLOG (CORE-10 integrado; sem PR até 09/11) | — |
+| INT-02 | B | Regressão integral e rede real | IN_PROGRESS (integrado; aceite PARTIAL: rede real BLOCKED) | #44 (09/11, 249afaa) |
 | DOC-02 | B | UML | DONE de integração (aceite conjunto PARTIAL: review C com ressalvas RC-01/RC-02) | #42 (09/11, a7454bc) |
 | DOC-04 | B | Relatório completo | BACKLOG (depende de DOC-02, DOC-03, INT-02, RUN-06) | — |
 | REL-01 | A | Release candidata | BACKLOG (depende do DOC-04) | — |
 
-**Resultado em 09/11:** 7/12 integrados/concluídos; RUN-05/06 têm PR integrado com aceite parcial; DOC-02 integrado com review A e revisão C com ressalvas (09/11); INT-02, DOC-04 e REL-01 permanecem no backlog. O prazo original de 03/11 não foi reescrito. Ordem pelas dependências: CORE-10 e DOC-02 já integrados; INT-02 e aceite RUN-06 → DOC-04 → REL-01; correção RC-01/RC-02 da UML (B) continua explícita.
+**Resultado em 09/11:** 7/12 integrados/concluídos; RUN-05/06 e INT-02 (#44) têm PR integrado com aceite parcial (rede real em dois PCs pendente); DOC-02 integrado com review A e revisão C com ressalvas (09/11); DOC-04 e REL-01 permanecem no backlog. O prazo original de 03/11 não foi reescrito. Ordem pelas dependências: CORE-10, DOC-02 e INT-02 já integrados; rede real (INT-02/RUN-05/RUN-06) → DOC-04 → REL-01; correção RC-01/RC-02 da UML (B) continua explícita.
 
 ### Sprint 4 — Estudo e entrega (04/11 a 11/11)
 

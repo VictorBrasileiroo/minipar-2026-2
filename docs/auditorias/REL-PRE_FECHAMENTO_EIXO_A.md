@@ -29,14 +29,14 @@ Lidos AGENTS, MEMORY, planejamento, contratos, backlog, validação e documento 
 | C-WEB v1.1 | DONE na ratificação documental | #34: proposta de B e aprovações A/C em `204fe48`; merge 05/11. Registro de aceite corrigido; ressalvas preservadas |
 | DOC-03 | DONE | #39 aprovado e mergeado 06/11; espelhos atualizados conforme fatos posteriores |
 | DOC-02 | DONE de integração / aceite conjunto PARTIAL | #42 aprovado por A em 4cdae73 e mergeado em a7454bc (09/11); ajustes conferidos, 853/853 sondas repetidas; revisão C APROVADO COM RESSALVAS (§11), RC-01/RC-02 a corrigir por B |
-| INT-02 | PENDING | sem PR/evidência específica localizada; CORE-10 já integrado, não é mais dependência em revisão |
+| INT-02 | PARTIAL (integrado) | #44 aprovado por A e mergeado em `249afaa` (09/11, depois desta fotografia): T01–T03/T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real BLOCKED. Validação C do recorte de runtime em §12 |
 | DOC-04 | PENDING | sem relatório completo/PR localizado; DOC-02 já integrado; depende de INT-02 e aceite RUN-06; correção RC-01/RC-02 da UML pendente (revisão C registrada, §11) |
 | RUN-05 | PARTIAL | #36 integrado; `par_rede` PENDING, sem benchmark novo nesta auditoria |
 | RUN-06 | PARTIAL | #37 integrado como documentação; review A explicitamente mantém reprodução por outro integrante e logs A/B PENDING |
 | ADR-018 | PENDING | divergência PUBLIC versus proposta de privacidade; direitos não comprovados (§4) |
 | REL-01 | BLOCKED para início | DOC-04 não entregue e `ready=false`; não foi iniciado, tag não criada |
 
-Estados de card no JSON continuam no vocabulário existente: 35 DONE, 2 IN_PROGRESS, 0 IN_REVIEW e 6 BACKLOG. RUN-05 permanece IN_PROGRESS porque a entrega é parcial apesar do merge; RUN-06 também. T09/T10 mantêm DONE de integração com PARTIAL explícito em `status_note`, conforme DOC-03 aprovado. Não confundir essas contagens com testes aceitos.
+Estados de card no JSON continuam no vocabulário existente: 35 DONE, 3 IN_PROGRESS, 0 IN_REVIEW e 5 BACKLOG (após integrar o #44). RUN-05 permanece IN_PROGRESS porque a entrega é parcial apesar do merge; RUN-06 e INT-02 (rede real BLOCKED) também. T09/T10 mantêm DONE de integração com PARTIAL explícito em `status_note`, conforme DOC-03 aprovado. Não confundir essas contagens com testes aceitos.
 
 ## 2. T04 — auditoria numérica e proposta para decisão
 
@@ -101,7 +101,7 @@ A revisão C do runtime (§4.9/§5.2) foi feita depois desta inspeção (§11). 
 
 Sonda do autor fixada no commit acima: **853/853 PASS**, exit 0 reexecutado localmente. O comando inicialmente foi rejeitado pela revisão automática de segurança por executar código da branch externa; após aprovação manual específica do usuário, a ação exata foi repetida e passou. O código foi carregado em memória para apontar `--doc` à cópia de inspeção; produção e PR permaneceram intactos. Resultado completo local em `output/rel_pre/doc02_review/results.json`; resumo versionado no JSON REL-PRE. A sonda confirma nomes, membros, cobertura e herança; não prova semântica das relações. Não repetidos os mutantes do autor.
 
-INT-02/DOC-04: indisponíveis no remoto consultado, portanto avaliação de suas evidências **BLOCKED por ausência de entrega acessível**; nenhuma evidência inventada ou aprovada. O smoke local REL-PRE não substitui o card INT-02 de B.
+INT-02/DOC-04: indisponíveis no remoto consultado na inspeção original, portanto avaliação de suas evidências **BLOCKED por ausência de entrega acessível**; nenhuma evidência inventada ou aprovada. O smoke local REL-PRE não substitui o card INT-02 de B. Depois, o INT-02 foi integrado no #44 (ver §12); DOC-04 continua sem entrega.
 
 ## 6. Verificações realmente executadas
 
@@ -130,7 +130,7 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 8. Dependências externas abertas
 
-- **B/Riquelme:** DOC-02 integrado e aprovado por A; revisão C registrada (§11); corrigir RC-01/RC-02 na UML. Disponibilizar INT-02 e DOC-04 com relatório/capa/links/anexos. Resultados de A/C devem entrar com seus limites.
+- **B/Riquelme:** DOC-02 integrado e aprovado por A; revisão C registrada (§11); corrigir RC-01/RC-02 na UML. INT-02 integrado (#44, §12); falta a rede real com C. Disponibilizar DOC-04 com relatório/capa/links/anexos. Resultados de A/C devem entrar com seus limites.
 - **C/Erasmo + outro integrante:** RUN-05 `par_rede`; reprodução RUN-06 por não autor com logs dos dois lados, falha e resultados; T09/T10 específicos em dois hosts se exigidos no aceite adotado.
 - **Professor:** confirmar representação visual alternativa da ADR-014; interpretação do despacho remoto explícito (PEND-FJ-05) permanece sem confirmação docente localizada.
 - **Titulares do legado/coordenação:** direitos de uso/redistribuição e origem do snapshot.
@@ -139,7 +139,7 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 9. Checklist para iniciar REL-01 e handoff
 
-O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado e revisão C registrada (§11), B corrigir RC-01/RC-02; concluir INT-02 e provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
+O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado e revisão C registrada (§11), B corrigir RC-01/RC-02; INT-02 integrado (#44), concluir sua rede real e as provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
 
 **Arquivos alterados:** README; contratos (somente registros de estado/aprovação); decisões; backlog; validação/aceite; checklist; Product/Sprint Backlogs; cards; este relatório; sonda documental e JSONs de GitHub/resultados. Não foi atualizado o conteúdo das evidências históricas CORE-01/CORE-10/DEF; na sincronização, apenas os registros de estado/cabeçalho/handoff do DOC-02 foram atualizados, preservando diagramas e resultados do autor.
 
@@ -156,6 +156,20 @@ Documentos de estado atualizados: cards, backlog, Product/Sprint Backlogs, check
 **Responsável:** Erasmo (Eixo C), na branch REL-PRE a pedido da coordenação. Nenhum código, contrato, diagrama ou `ready` alterado.
 
 - **Revisão C da UML (runtime e runners):** [parecer](DOC-02_REVISAO_C_RUNTIME.md), **APROVADO COM RESSALVAS**. Componentes e classes do runtime conferem com `runtime/include/minipar_rt/` e com o gerador. Duas imprecisões a corrigir por B: RC-01 (o `join` gerado passa por `__fj_join`; dentro de tarefa vira `TASK_FAILED`, não `exit 1`) e RC-02 (fork sem destino passa `Destination::parse("local")`). RC-03..RC-06 são omissões menores. Aceite conjunto do DOC-02 continua PARTIAL até a correção.
-- **Verificações executadas** (Windows 11, G++ 16.2.0 UCRT64, Python 3.14.7, sem `.venv` nesta máquina): `runtime/tests/run_tests.py` 6/6 etapas PASS (17/17 casos de interop); `runtime/tests/interop_codegen.py` (a)/(b)/(c) PASS; `docs/auditorias/DOC-02_sondas_uml.py` 853/853 PASS. Tudo em loopback; **não prova dois computadores**.
+- **Verificações executadas** (Windows 11, G++ 16.2.0 UCRT64, Python 3.14.7, antes de criar a `.venv` da §12): `runtime/tests/run_tests.py` 6/6 etapas PASS (17/17 casos de interop); `runtime/tests/interop_codegen.py` (a)/(b)/(c) PASS; `docs/auditorias/DOC-02_sondas_uml.py` 853/853 PASS. Tudo em loopback; **não prova dois computadores**.
 - **Continuam PENDING para C:** RUN-05 `par_rede` e reprodução RUN-06 por outro integrante com logs dos dois hosts. Exigem dois computadores físicos; não foram executados nesta contribuição.
-- **Estados atualizados:** cards (DOC-02, DOC-04, nota), backlog, Product/Sprint Backlogs, checklist (UML componentes/classes e item de revisão C marcados; item novo para a correção de B), README, cabeçalho da UML e handoff DOC-02. `AGENTS.md`/`MEMORY.md` revisados: sem mudança de regra, arquitetura ou fluxo, portanto não precisam mudar.
+- **Estados atualizados (1ª contribuição, `4b1f03d`):** cards (DOC-02, DOC-04, nota), backlog, Product/Sprint Backlogs, checklist (UML componentes/classes e item de revisão C marcados; item novo para a correção de B), README, cabeçalho da UML e handoff DOC-02. `AGENTS.md`/`MEMORY.md` revisados: sem mudança de regra, arquitetura ou fluxo, portanto não precisam mudar.
+
+## 12. Sincronização com o INT-02 (#44) e validação C (09/11)
+
+**Responsável:** Erasmo (Eixo C). O #44 foi aprovado por Victor/A e mergeado em `dev` (`249afaa`, 12:04Z) depois da fotografia do §1. Isso deixou este PR em conflito com o `dev`.
+
+- **Merge do `dev` na branch (`f6ffb72`):** conflitos só na linha/card do INT-02 em `docs/04_BACKLOG.md` e `planning/cards.json`. Fiquei com o texto do #44, que é o resultado real; nada do REL-PRE foi perdido. Isto também resolve a INT02-04 do relatório INT-02: CORE-10 `DONE` e DEF-01/02 corrigidos chegam ao `dev` com este PR.
+- **Estado do INT-02:** IN_PROGRESS (integrado, aceite PARTIAL), na mesma regra do RUN-05: o merge não fecha a rede real, BLOCKED no #44. Contagem dos cards: 35 DONE, 3 IN_PROGRESS, 0 IN_REVIEW, 5 BACKLOG.
+- **Validação C do runtime** (o card pede que A e C validem): [INT-02_VALIDACAO_C.md](INT-02_VALIDACAO_C.md) e [JSON](INT-02_VALIDACAO_C_RESULTADOS.json).
+  - Comando: `scripts/regressao_int02.py --only T08,T09,T10,INT-01`, em `f6ffb72`; o código é igual ao de `8d07433` (só o orquestrador foi adicionado).
+  - Resultado: T08 32 + 1 INFO, T09 54/54, T10 126/126, smoke A 8 + B 8 + C 9, iguais ao INT-02, numa segunda máquina.
+  - Ambiente: Python 3.12.10 e Flask 3.0.0 numa `.venv` local criada pelo guia de setup.
+  - Só loopback.
+- **Atualizados:** cards (INT-02, DOC-04), backlog (tabela e ficha do INT-02), Product/Sprint Backlogs, checklist (INT-02 entregue e validado; item novo para a rede real) e este relatório (§1, §5, §8, §9).
+- **Não alterados:** código, contratos, testes, o relatório INT-02 do B e os diagramas. `AGENTS.md`/`MEMORY.md` revisados, sem mudança necessária.

@@ -2,7 +2,7 @@
   "project": "MINIPAR-2026.2",
   "version": "0.3",
   "as_of": "2026-11-09",
-  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas. Sincronização posterior com dev a7454bc (#42): DOC-02 integrado; revisão C registrada em 09/11 com ressalvas (RC-01/RC-02 a corrigir por B); demais estados e ready preservados.",
+  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas. Sincronização posterior com dev a7454bc (#42): DOC-02 integrado; revisão C registrada em 09/11 com ressalvas (RC-01/RC-02 a corrigir por B). Merge de dev 249afaa (#44): INT-02 integrado como IN_PROGRESS/PARTIAL (rede real pendente) com validação C do runtime; demais estados e ready preservados.",
   "statuses": [
     "BACKLOG",
     "READY",
@@ -947,15 +947,17 @@
         "scripts/"
       ],
       "estimate_hours": 4,
-      "status": "IN_REVIEW",
+      "status": "IN_PROGRESS",
       "ready": false,
       "issue_url": null,
       "pr_url": "https://github.com/VictorBrasileiroo/minipar-2026-2/pull/44",
       "evidence": [
         "docs/auditorias/INT-02_REGRESSAO_INTEGRAL.md",
-        "docs/auditorias/INT-02_RESULTADOS_2026-11-09.json"
+        "docs/auditorias/INT-02_RESULTADOS_2026-11-09.json",
+        "docs/auditorias/INT-02_VALIDACAO_C.md",
+        "docs/auditorias/INT-02_VALIDACAO_C_RESULTADOS.json"
       ],
-      "status_note": "PARTIAL. Regressão em dev 8d07433 (09/11): T01 30/30 e T02 30/30 PASS, T03, T05–T11 PASS, T04 PARTIAL (tolerância); três interfaces PASS; smoke INT-01 PASS. Rede real (dois PCs) BLOCKED nesta rodada: roteiro no §5 do relatório."
+      "status_note": "PARTIAL. Regressão em dev 8d07433 (09/11): T01 30/30 e T02 30/30 PASS, T03, T05–T11 PASS, T04 PARTIAL (tolerância); três interfaces PASS; smoke INT-01 PASS. Rede real (dois PCs) BLOCKED nesta rodada: roteiro no §5 do relatório. PR #44 aprovado por A e mergeado em dev (249afaa, 09/11 12:04Z); validação C do runtime em 09/11 (INT-02_VALIDACAO_C.md): T08 32+1 INFO, T09 54/54, T10 126/126, smoke 25/25, iguais ao INT-02. Sem DONE antes da rede real."
     },
     {
       "id": "DOC-01",
@@ -1061,7 +1063,7 @@
       "issue_url": null,
       "pr_url": null,
       "evidence": [],
-      "status_note": "Nenhum PR/branch/relatório completo localizado na auditoria REL-PRE. DOC-02 (#42) e DOC-03 integrados; INT-02 e aceite RUN-06 continuam abertos; revisão C da UML registrada com ressalvas, correção RC-01/RC-02 por B pendente."
+      "status_note": "Nenhum PR/branch/relatório completo localizado na auditoria REL-PRE. DOC-02 (#42), DOC-03 e INT-02 (#44, PARTIAL) integrados; rede real do INT-02 e aceite RUN-06 continuam abertos; revisão C da UML registrada com ressalvas, correção RC-01/RC-02 por B pendente."
     },
     {
       "id": "REL-01",

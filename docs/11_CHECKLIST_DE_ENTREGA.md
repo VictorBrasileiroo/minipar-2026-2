@@ -86,7 +86,8 @@ Marcas do núcleo: PRs #14–#19/#29 e regressão REL-PRE; `par`/Fork/Join demon
 - [x] DOC-02: ajustes dos casos de uso aprovados por A e PR #42 integrado (09/11, a7454bc).
 - [x] C registrar revisão das seções runtime/runners da UML: [parecer C](auditorias/DOC-02_REVISAO_C_RUNTIME.md), 09/11, APROVADO COM RESSALVAS.
 - [ ] B corrigir RC-01/RC-02 (§5.2 e UC12) na UML e repetir a sonda; C revisar a correção.
-- [ ] B apresentar INT-02 em base integrada, oráculos, três interfaces e rede real; A/C revisar.
+- [x] B apresentar INT-02 em base integrada com oráculos e três interfaces (#44, 09/11); A aprovou no #44 e C validou o runtime ([validação C](auditorias/INT-02_VALIDACAO_C.md)).
+- [ ] INT-02: rede real em dois computadores (B + C, roteiro do §5 do INT-02 = `runtime/README.md` §7).
 - [ ] C concluir RUN-06 por outro integrante, logs dos dois hosts; tratar RUN-05 par_rede ainda PENDING.
 - [ ] B consolidar DOC-04 com capa/link, anexos e limitações; revisão conjunta e merge.
 - [ ] Confirmar CPUlator humano e PEND-T11-04 (Java caso 2) ou registrar a limitação explicitamente para decisão.

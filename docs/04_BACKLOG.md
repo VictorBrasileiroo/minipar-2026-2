@@ -54,11 +54,11 @@
 | `RUN-05` | C | IN_PROGRESS | #36 | PR #36 mergeado em 06/11; medições e falhas locais documentadas. Aceite PARTIAL: par_rede em dois computadores PENDING; merge não conclui o recorte remoto. |
 | `RUN-06` | C | IN_PROGRESS | #37 | Documentação integrada (#37 em 06/11); aprovação do coordenador mantém reprodução por outro integrante e logs dos dois hosts PENDING. |
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
-| `INT-02` | B | IN_REVIEW | #44 | PARTIAL. Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. |
+| `INT-02` | B | IN_PROGRESS | #44 | PARTIAL. Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. #44 aprovado por A e mergeado (`249afaa`); [validação C](auditorias/INT-02_VALIDACAO_C.md) do runtime PASS em loopback. |
 | `DOC-01` | B | DONE | #32 |  |
 | `DOC-02` | B | DONE (integração; aceite conjunto PARTIAL) | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)); aceite técnico conjunto PARTIAL até B corrigir RC-01/RC-02 (§5.2/UC12). Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos; 853/853 sondas PASS. |
 | `DOC-03` | C | DONE | #39 | PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards. |
-| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; INT-02, aceite RUN-06 e a correção RC-01/RC-02 da UML (revisão C registrada em 09/11) continuam pendentes. |
+| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; rede real do INT-02 (#44 integrado como PARTIAL), aceite RUN-06 e a correção RC-01/RC-02 da UML (revisão C registrada em 09/11) continuam pendentes. |
 | `REL-01` | A | BACKLOG | — |  |
 | `EST-01` | EQUIPE | BACKLOG | — |  |
 | `EST-02` | EQUIPE | BACKLOG | — |  |
@@ -568,6 +568,8 @@ Handoff: [CORE-07_BACKEND_RUNTIME.md](auditorias/CORE-07_BACKEND_RUNTIME.md).
 **Antes de iniciar:** confirmar que todos os contratos consumidos estão congelados ou existe fixture/mock aprovado. Nunca tocar arquivos de outro eixo por conveniência.
 
 **Estado atual (09/11/2026):** IN_REVIEW (PARTIAL) · PR [#44](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/44), base `dev`. Dependências no `dev` (CORE-10 #38, DEF-01 #40, DEF-02 #41). `scripts/regressao_int02.py` em `dev` `8d07433`, duas rodadas (T01/T02 ×10 e ×20): T01 30/30 e T02 30/30 PASS (DEF-01/02 resolvidos), T03, T05–T11 PASS, T04 PARTIAL (tolerância); terminal, Web original e Web didática PASS (testes automáticos e checagem visual no navegador); smoke INT-01 A/B/C PASS. Rede real com dois computadores **BLOCKED** nesta rodada (uma máquina): roteiro em `docs/auditorias/INT-02_REGRESSAO_INTEGRAL.md` §5. Resultado: `docs/auditorias/INT-02_RESULTADOS_2026-11-09.json`. Sem DONE antes da rede real e da revisão humana.
+
+**Atualização REL-PRE (09/11/2026):** #44 aprovado por Victor/A (11:55Z) e mergeado em `dev` (`249afaa`, 12:04Z); estado passa a IN_PROGRESS (integrado, aceite PARTIAL). Validação C do recorte de runtime em [`INT-02_VALIDACAO_C.md`](auditorias/INT-02_VALIDACAO_C.md): T08 32 + 1 INFO, T09 54/54, T10 126/126 e smoke 25/25, iguais ao INT-02, numa segunda máquina e só em loopback. Falta a rede real (B + C).
 
 #### `DOC-01` — BNF final e pseudocódigos núcleo
 
