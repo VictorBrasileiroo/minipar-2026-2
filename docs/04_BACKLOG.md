@@ -48,11 +48,11 @@
 | `RUN-02` | C | DONE | #9 |  |
 | `RUN-03` | C | DONE | #10 | Evidência só do lado do worker (máquina B); o log do coordenador entra no RUN-06. |
 | `RUN-04` | C | DONE | #20 |  |
-| `T08-01` | C | DONE | #21 | Provas do programa no loopback. RUN-03 demonstra a demo entre dois computadores; RUN-05 par_rede e reprodução RUN-06 ainda PENDING. |
+| `T08-01` | C | DONE | #21 | Provas do programa no loopback. RUN-03 demonstra a demo entre dois computadores; Teste 8 e RUN-05 par_rede em dois PCs PASS em 09/11 (#45, em revisão); reprodução RUN-06 só com o README PENDING. |
 | `T09-01` | C | DONE | #22 | Mergeado como PARTIAL: cenário remoto só no loopback. |
 | `T10-01` | C | DONE | #23 | Mergeado como PARTIAL: cenário remoto só no loopback; ADR-014 (saída do Sierpinski) em aberto. |
-| `RUN-05` | C | IN_PROGRESS | #36 | PR #36 mergeado em 06/11; medições e falhas locais documentadas. Aceite PARTIAL: par_rede em dois computadores PENDING; merge não conclui o recorte remoto. |
-| `RUN-06` | C | IN_PROGRESS | #37 | Documentação integrada (#37 em 06/11); aprovação do coordenador mantém reprodução por outro integrante e logs dos dois hosts PENDING. |
+| `RUN-05` | C | IN_PROGRESS | #36 | PR #36 mergeado em 06/11; medições e falhas locais documentadas. `par_rede` em dois computadores PASS em 09/11 (uma rodada; CPU de B não registrada), registrado no #45, em revisão; merge do #36 não concluía o recorte remoto. |
+| `RUN-06` | C | IN_PROGRESS | #37 | Documentação integrada (#37 em 06/11). Execução em dois PCs PASS em 09/11 com logs dos dois lados (#45, em revisão); queda em rede PARTIAL (`WORKER_UNAVAILABLE`, não `WORKER_LOST`); README §7 corrigido com os 6 ajustes da execução; falta uma reprodução só com o README, por outro integrante. |
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
 | `INT-02` | B | IN_PROGRESS | #44 | PARTIAL. Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. #44 aprovado por A e mergeado (`249afaa`); [validação C](auditorias/INT-02_VALIDACAO_C.md) do runtime PASS em loopback. |
 | `DOC-01` | B | DONE | #32 |  |

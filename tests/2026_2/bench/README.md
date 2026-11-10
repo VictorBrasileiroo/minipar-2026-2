@@ -51,12 +51,14 @@ Portas: `port-base+1` a `port-base+13` em `127.0.0.1` (padrão 7501–7513). Se 
 
 ### Cenário em dois computadores (`par_rede`)
 
-1. As duas máquinas no **mesmo commit**. Compile nas duas: `python main.py tests/2026_2/test08/teste8_avaliadores.minipar bench_t08`. O `build_id` é o SHA-256 do fonte, então o mesmo fonte gera binários compatíveis.
-2. Na máquina B, libere as portas 7501–7504 no firewall só durante o teste (roteiro em [`runtime/README.md`](../../../runtime/README.md)) e suba 4 workers, um por terminal:
-   `output/bench_t08.exe --minipar-worker 7501 --bind <IP-de-B>` (e 7502, 7503, 7504).
-3. Na máquina A:
-   `python tests/2026_2/bench/run_bench.py --carga 5000000 --reps 7 --destinos-rede <IP-de-B>:7501,<IP-de-B>:7502,<IP-de-B>:7503,<IP-de-B>:7504`
-4. Guarde os logs dos workers de B e mascare-os antes de anexar (`runtime/tools/mascarar_log.py`, RUN-06). O `bench.json` e o `resumo.md` de A já saem anonimizados (seção 5).
+Os workers são os mesmos do roteiro de dois computadores do runtime ([`runtime/README.md` §7](../../../runtime/README.md#7-deploy-em-dois-computadores)). Foi assim na rodada de 09/11 ([`RUN-05_BENCHMARKS.md`](../../../docs/evidencias/RUN-05_BENCHMARKS.md) §3.1).
+
+1. Nas duas máquinas, prepare a janela, compile e confira o commit (§7.1 e §7.2). O bench compila em A o próprio `bench_t08.exe`. Como o `build_id` é o SHA-256 do fonte, ele conversa com o `teste8.exe` dos workers de B.
+2. Na máquina B, libere as portas 7201–7204 só para A e só durante o teste (§7.3) e suba os 4 workers (§7.4).
+3. Na máquina A, com o `$DEST` do §7.1:
+   `python tests/2026_2/bench/run_bench.py --carga 5000000 --reps 7 --reps-falhas 5 --destinos-rede ($DEST -join ",")`
+   Os outros cenários e as falhas F1–F3 continuam usando as portas `port-base+1..13` no loopback de A, sem passar por B.
+4. Mascare os logs dos workers de B antes de anexar (§7.7, `runtime/tools/mascarar_log.py`). O `bench.json` e o `resumo.md` de A já saem anonimizados (seção 5). Faça a queda de worker do §7.6 só depois do bench terminar.
 
 ## 5. Saída
 

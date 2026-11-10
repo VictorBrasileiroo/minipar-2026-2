@@ -1,0 +1,41 @@
+[minipar_worker pc-B:15128] escutando em 192.168.x.22:7203 (host=pc-B pid=15128 build_id=69d0f55f9f4d9e149f97818b34ca455aecb1515e1567660c8044069f843759b1)
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:50572 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:50572: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 415 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:50572 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55181 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55181: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 809 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55181 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55196 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55196: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 805 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55196 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55209 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55209: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 864 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55209 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55224 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55224: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 773 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55224 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55239 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55239: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 785 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55239 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55253 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55253: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 760 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55253 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55267 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55267: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 888 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55267 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55282 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:55282: inicio
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 816 ms
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:55282 encerrada
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:60208 aceita (build_id ok)
+[minipar_worker pc-B:15128] TASK task-3 fn=avaliar_lote de 192.168.x.105:60208: inicio
+[minipar_worker pc-B:15128] conexao de 192.168.x.105:60208 encerrada
+[minipar_worker pc-B:15128] RESULT task-3 fn=avaliar_lote ok em 3188 ms (nao entregue: conexao fechada ou parada)

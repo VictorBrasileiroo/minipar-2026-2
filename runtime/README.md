@@ -245,72 +245,155 @@ Resultado em 30/10/2026 (Windows 11, G++ 16.2.0 UCRT64): `run_tests.py` com as 6
 
 Roteiro para rodar **qualquer programa MiniPar com `fork ... on <IP:porta>`** com o coordenador na máquina A e os workers na máquina B. O exemplo usa o Teste 8 (4 workers); a demo do `RUN-03` segue o mesmo esquema com uma porta só ([roteiro dela](../docs/evidencias/RUN-03_DOIS_COMPUTADORES.md)).
 
-**7.1 Pré-requisitos (nas duas máquinas)**
+Os comandos são para PowerShell (Windows PowerShell 5.1 ou PowerShell 7) e foram executados entre dois PCs em 09/11/2026 ([`RUN-06`](../docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md)). Logs e saídas ficam na pasta **Downloads** de cada máquina, em `minipar-evidencias\RUN-06\`, para facilitar juntar tudo no fim.
+
+**7.1 Pré-requisitos e preparação da janela (nas duas máquinas)**
 
 - Mesma rede local, de laboratório ou doméstica. Nada de VPN pública nem porta aberta para a internet.
-- O **mesmo commit** do repositório (`git rev-parse HEAD` igual nos dois lados).
-- Python 3.10+ e G++ com C++20. No Windows, o MSYS2 UCRT64 (`C:\msys64\ucrt64\bin`) no PATH **só da janela**: `$env:PATH = "C:\msys64\ucrt64\bin;$env:PATH"`.
-- O IP de B na rede local (`ipconfig` no Windows, `ip -4 addr` no Linux).
+- O **mesmo commit** do repositório (`git rev-parse HEAD` igual nos dois lados). Sem Git (projeto baixado em ZIP), compare o SHA-256 de `tests/2026_2/test08/teste8_avaliadores.minipar`: o `build_id` é o hash do fonte.
+- Python 3.10+ e G++ com C++20. No Windows, o MSYS2 UCRT64 (`C:\msys64\ucrt64\bin`).
+- O IP de A e o IP de B na rede local (`ipconfig` no Windows, `ip -4 addr` no Linux).
+
+Em **toda janela nova** do PowerShell, rode este bloco. Antes, troque o caminho do repositório e os dois IPs:
+
+```powershell
+cd C:\caminho\do\minipar-2026-2             # raiz do repositório (a pasta com main.py e runtime\)
+$IP_A = "192.168.0.10"                      # IP de A (coordenador)
+$IP_B = "192.168.0.20"                      # IP de B (workers)
+$env:PATH = "C:\msys64\ucrt64\bin;$env:PATH"   # G++ só nesta janela
+$OutputEncoding = [Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)
+$EVID = Join-Path (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path 'minipar-evidencias\RUN-06'
+New-Item -ItemType Directory -Force $EVID | Out-Null
+$DEST = 7201..7204 | ForEach-Object { "${IP_B}:$_" }
+git rev-parse --short HEAD; $EVID
+```
+
+- **Rode da raiz do repositório.** Fora dela, `git` responde `fatal: not a git repository` e os caminhos `output\...` e `runtime\...` não existem.
+- **Não pule a linha do `$OutputEncoding`.** No Windows PowerShell 5.1 com o console em UTF-8 (página 65001), o texto passado por `|` ao `.exe` chega com um BOM. O programa lê `\ufeffpar`, não reconhece o modo e roda **sequencial sem erro**: sai `TOTAL 160` e `SOMA_NOTAS` certos sem nenhum worker usado (falso positivo).
+- Escreva `"${IP_B}:7201"`, com chaves. Em `"$IP_B:7201"`, o PowerShell lê `$IP_B:` como outra variável e o destino sai vazio.
+- As variáveis só valem na janela onde foram criadas. Se fechar a janela, rode o bloco de novo.
+
+No Linux, o equivalente da pasta é `EVID="$(xdg-user-dir DOWNLOAD 2>/dev/null || echo ~/Downloads)/minipar-evidencias/RUN-06"; mkdir -p "$EVID"`, e os comandos abaixo trocam `output\teste8.exe` por `output/teste8.exe`.
 
 **7.2 Compilar nas duas máquinas** (o mesmo fonte gera o mesmo `build_id`):
 
 ```powershell
-python main.py tests/2026_2/test08/teste8_avaliadores.minipar teste8      # gera output/teste8.exe
-Get-FileHash output/teste8.exe -Algorithm SHA256                          # anotar (Linux: sha256sum)
+python main.py tests/2026_2/test08/teste8_avaliadores.minipar teste8      # gera output\teste8.exe
+(Get-FileHash output\teste8.exe -Algorithm SHA256).Hash.Substring(0,16)   # anotar (Linux: sha256sum)
+hostname                                                                  # anotar: o de B entra no 7.7
 ```
 
-**7.3 Liberar as portas em B só para A, só durante o teste** (PowerShell como administrador, na máquina B):
+O SHA-256 do `.exe` pode mudar entre máquinas e compilações (o linker grava data e hora); o que precisa ser igual é o `build_id`, que aparece na 1ª linha do log de cada worker.
+
+**7.3 Liberar as portas em B só para A, só durante o teste** (PowerShell **como administrador**, na máquina B, com o IP de A escrito no comando):
 
 ```powershell
 New-NetFirewallRule -DisplayName "MiniPar workers (temporaria)" -Direction Inbound -Protocol TCP `
   -LocalPort 7201-7204 -RemoteAddress <IP-de-A> -Profile Private -Action Allow
 ```
 
-No Linux com ufw: `sudo ufw allow from <IP-de-A> to any port 7201:7204 proto tcp`. Se o Windows mostrar o aviso do firewall ao iniciar o worker, marque **só "Redes privadas"**.
+No Linux com ufw: `sudo ufw allow from <IP-de-A> to any port 7201:7204 proto tcp`. Se o Windows mostrar o aviso do firewall ao iniciar o worker, marque **só "Redes privadas"**. Depois volte para a janela normal, preparada no 7.1.
 
-**7.4 Subir os workers em B**, um terminal por porta, cada um com seu log:
+**7.4 Subir os workers em B**, os quatro numa janela só, em segundo plano, cada um com seu log:
 
 ```powershell
-output\teste8.exe --minipar-worker 7201 --bind <IP-de-B> 2> output\worker_7201.log
-# repetir para 7202, 7203 e 7204
+$W = foreach ($p in 7201..7204) {
+  Start-Process output\teste8.exe -ArgumentList "--minipar-worker $p --bind $IP_B" `
+    -RedirectStandardError "$EVID\worker_${p}_B.log" -WindowStyle Hidden -PassThru }
+Start-Sleep 1; $W | Format-Table Id, HasExited                # os 4 com HasExited False
+Get-Content "$EVID\worker_720*_B.log"
 ```
 
-Cada log começa com `[minipar_worker <host-B>:<pid>] escutando em <IP-de-B>:7201 (... build_id=...)`.
+Cada log começa com `[minipar_worker <host-B>:<pid>] escutando em <IP-de-B>:720N (... build_id=...)`. Os workers rodam ocultos: um Ctrl+C na janela não os derruba, e o `$W` guarda os PIDs para o 7.6 e o 7.7. Se a janela for fechada, encerre-os com `Get-Process teste8 | Stop-Process`. Rodar o 7.4 de novo **sobrescreve** os logs: renomeie-os antes, se quiser guardar.
+
+No Linux: `for p in 7201 7202 7203 7204; do output/teste8.exe --minipar-worker $p --bind <IP-de-B> 2> "$EVID/worker_${p}_B.log" & done`.
 
 **7.5 Rodar o coordenador em A:**
 
 ```powershell
-"par`n2000000`n<IP-de-B>:7201`n<IP-de-B>:7202`n<IP-de-B>:7203`n<IP-de-B>:7204" | output\teste8.exe | Tee-Object output\coordenador_A.txt
+"seq`n2000000`nlocal`nlocal`nlocal`nlocal" | output\teste8.exe 2>&1 | ForEach-Object { "$_" } | Out-File -Encoding utf8 "$EVID\coordenador_A_seq.txt"
+(@("par", "2000000") + $DEST) -join "`n" | output\teste8.exe 2>&1 | ForEach-Object { "$_" } | Out-File -Encoding utf8 "$EVID\coordenador_A.txt"
+"exit par = $LASTEXITCODE"                                                 # esperado: 0
+Select-String "$EVID\coordenador_A*.txt" -Pattern "^MODO|TOTAL|UNICOS|DUPLICADOS|PERDIDOS|SOMA_NOTAS" | ForEach-Object { "$($_.Filename): $($_.Line)" }
 ```
 
-Oráculo: `TOTAL 160`, `UNICOS 160`, `DUPLICADOS 0`, `PERDIDOS 0` e `SOMA_NOTAS` igual à do modo `seq` rodado em A (`"seq`n2000000`nlocal`nlocal`nlocal`nlocal" | output\teste8.exe`). Nos logs de B, cada worker mostra `conexao de <IP-de-A>:<porta> aceita` e um `TASK`/`RESULT ok` de `avaliar_lote`. Para medir tempos com repetição, use o `run_bench.py --destinos-rede` ([bench](../tests/2026_2/bench/README.md#cenário-em-dois-computadores-par_rede)).
+O `ForEach-Object { "$_" } | Out-File -Encoding utf8` grava em UTF-8, que é o que o `mascarar_log.py` lê. No Windows PowerShell 5.1, `Tee-Object` e `>` gravariam UTF-16, e a linha de erro viria com o prefixo `NativeCommandError` do PowerShell.
 
-**7.6 Queda de worker:** rode o coordenador de novo com uma carga maior na 2ª linha (por exemplo `20000000`, para a tarefa durar alguns segundos) e, quando os logs de B mostrarem `TASK ... inicio`, pressione Ctrl+C num worker:
+Oráculo: `MODO par` (sem caractere estranho antes de `par`), `TOTAL 160`, `UNICOS 160`, `DUPLICADOS 0`, `PERDIDOS 0` e `SOMA_NOTAS` igual nos dois arquivos. **Em B**, confira que a execução passou pelos workers:
 
 ```powershell
-"par`n20000000`n<IP-de-B>:7201`n<IP-de-B>:7202`n<IP-de-B>:7203`n<IP-de-B>:7204" | output\teste8.exe 2>&1 | Tee-Object output\coordenador_A_queda.txt
-$LASTEXITCODE                                                              # esperado: 1
+Select-String "$EVID\worker_720*_B.log" -Pattern "aceita|RESULT" | ForEach-Object { "$($_.Filename): $($_.Line)" }
 ```
 
-O coordenador tem de terminar com `[minipar_rt] join task-N falhou: WORKER_LOST: ...` e exit 1, sem travar. Suba o worker de novo antes de repetir.
+Cada worker mostra `conexao de <IP-de-A>:<porta> aceita` e um `TASK`/`RESULT ok` de `avaliar_lote`. Sem essas linhas, o `par` não usou a rede, mesmo com o oráculo certo.
 
-**7.7 Encerrar e guardar a evidência:**
+Para medir tempos com repetição, rode em A o bench com os mesmos workers (o `bench_t08.exe` vem do mesmo fonte, então o `build_id` é igual). A saída fica em `output\bench\run-<data>\`:
 
 ```powershell
-Remove-NetFirewallRule -DisplayName "MiniPar workers (temporaria)"           # em B
-python runtime/tools/mascarar_log.py output\worker_7201.log docs\evidencias\RUN-06\worker_7201_B.log --host <hostname-de-B>=pc-B
-python runtime/tools/mascarar_log.py output\coordenador_A.txt docs\evidencias\RUN-06\coordenador_A.txt --host <hostname-de-A>=pc-A
-python runtime/tools/mascarar_log.py output\coordenador_A_queda.txt docs\evidencias\RUN-06\coordenador_A_queda.txt --host <hostname-de-B>=pc-B
+python tests/2026_2/bench/run_bench.py --carga 5000000 --reps 7 --reps-falhas 5 --destinos-rede ($DEST -join ",")
 ```
 
-O `mascarar_log.py` troca o 3º octeto dos IPs por `x` (`192.168.x.31`), os hostnames pelos apelidos e as pastas de usuário por `<home>`. Ele sai com exit 1 se sobrar um IP sem máscara. Confira o arquivo antes de commitar. Preencha o registro em [`docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md`](../docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md).
+Detalhes no [bench](../tests/2026_2/bench/README.md#cenário-em-dois-computadores-par_rede).
+
+**7.6 Queda de worker.** Faça só **depois** do 7.5 e do bench terminarem. Primeiro **em B**, na janela do 7.4: o comando abaixo espera o próximo `TASK ... inicio` no log do worker 7201 e encerra esse worker pelo PID. Assim a queda acontece com a tarefa em andamento, sem depender de um Ctrl+C na hora certa.
+
+```powershell
+$log = "$EVID\worker_7201_B.log"; $n = (Select-String $log -Pattern "inicio").Count
+"vigia armado: pode rodar o coordenador em A"
+while ((Select-String $log -Pattern "inicio").Count -eq $n) { Start-Sleep -Milliseconds 200 }
+Stop-Process -Id $W[0].Id; "worker 7201 encerrado"
+```
+
+Se o vigia for armado com o bench ainda rodando, ele encerra o worker numa rodada do bench. Aí a queda vira `WORKER_UNAVAILABLE` (worker já fora do ar), e não `WORKER_LOST`. Foi o que aconteceu em 09/11.
+
+Depois, **em A**, com uma carga maior na 2ª linha, para a tarefa durar alguns segundos:
+
+```powershell
+(@("par", "20000000") + $DEST) -join "`n" | output\teste8.exe 2>&1 | ForEach-Object { "$_" } | Out-File -Encoding utf8 "$EVID\coordenador_A_queda.txt"
+"exit queda = $LASTEXITCODE"; Get-Content "$EVID\coordenador_A_queda.txt"   # esperado: 1
+```
+
+O coordenador tem de terminar com `[minipar_rt] join task-N falhou: WORKER_LOST: ...` e exit 1, sem travar. Para repetir, suba os workers de novo (7.4).
+
+**7.7 Encerrar e guardar a evidência.** Em **B**:
+
+```powershell
+$W | Stop-Process -ErrorAction SilentlyContinue
+Get-ChildItem $EVID -File | ForEach-Object {
+  python runtime/tools/mascarar_log.py $_.FullName "$EVID\publicar\$($_.Name)" --host "$env:COMPUTERNAME=pc-B" }
+```
+
+Remova a regra na janela de administrador: `Remove-NetFirewallRule -DisplayName "MiniPar workers (temporaria)"`.
+
+Em **A**, troque `<hostname-de-B>` pelo que o `hostname` mostrou em B no 7.2. Ele aparece no `worker_id` das mensagens de `WORKER_LOST`.
+
+```powershell
+Get-ChildItem $EVID -File | ForEach-Object {
+  python runtime/tools/mascarar_log.py $_.FullName "$EVID\publicar\$($_.Name)" --host "$env:COMPUTERNAME=pc-A" --host "<hostname-de-B>=pc-B" }
+```
+
+O `mascarar_log.py` troca o 3º octeto dos IPs por `x` (`192.168.x.31`), os hostnames pelos apelidos e as pastas de usuário por `<home>`. Ele imprime `ATENCAO: IPv4 sem mascara` e sai com exit 1 se sobrar um IP sem máscara.
+
+Para juntar a evidência:
+
+1. Leve a pasta `publicar` de B para A (pendrive, e-mail, zip).
+2. Copie os arquivos de `publicar` das duas máquinas para `docs/evidencias/RUN-06/`. Os `.log` estão no `.gitignore`: use `git add -f`.
+3. Confira os arquivos antes de commitar. **Nunca** commite os originais, fora de `publicar`: eles têm IP completo e hostname.
+4. Preencha o registro em [`docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md`](../docs/evidencias/RUN-06_REPRODUCAO_DOIS_PCS.md).
+
+O `bench.json` e o `resumo.md` do bench já saem anonimizados.
 
 **7.8 Problemas comuns**
 
 | Sintoma | Causa provável | O que fazer |
 |---|---|---|
+| `fatal: not a git repository` ou `output\teste8.exe` não encontrado | Janela fora da raiz do repositório | `cd` para a pasta com `main.py` (7.1) |
+| `MODO` com um caractere invisível antes de `par`/`seq`; coordenador termina rápido e os logs de B não mostram `conexao ... aceita` | BOM no stdin (Windows PowerShell 5.1, console em UTF-8): o programa rodou **sequencial** | Rodar a linha do `$OutputEncoding` do 7.1 e repetir |
+| Destino vazio (`:7201`) ou `BAD_DESTINATION` | `"$IP_B:7201"` sem chaves, ou `$IP_B` não definido nesta janela | Usar `"${IP_B}:7201"` ou o `$DEST` do 7.1 |
+| Arquivo em `publicar` com letras separadas por caracteres nulos | Arquivo gravado em UTF-16 (`Tee-Object` ou `>` no Windows PowerShell 5.1); o `mascarar_log.py` lê UTF-8, então **os IPs não são mascarados** e ele não acusa | Gravar com `ForEach-Object { "$_" } \| Out-File -Encoding utf8`, como no 7.5 |
 | `WORKER_UNAVAILABLE ... conexao recusada` | Worker não iniciado, porta errada ou `--bind` em `127.0.0.1` | Conferir a 1ª linha do log de B; usar `--bind <IP-de-B>` |
-| `WORKER_UNAVAILABLE` depois de ~5 s, sem `conexao ... aceita` no log de B | Firewall de B descartando os pacotes | Refazer 7.3 com o IP certo de A; perfil de rede "Privada" |
+| `WORKER_UNAVAILABLE ... tempo de conexao esgotado (3000 ms)`, sem `conexao ... aceita` no log de B | Firewall de B descartando os pacotes, ou o worker daquela porta fora do ar (B descarta pacotes para porta fechada em vez de recusar) | Conferir `$W \| Format-Table Id, HasExited` em B; refazer 7.3 com o IP certo de A; perfil de rede "Privada" |
+| A queda dá `WORKER_UNAVAILABLE` em vez de `WORKER_LOST` | O vigia do 7.6 encerrou o worker antes (por exemplo, armado durante o bench) | Subir os workers de novo (7.4), armar o vigia e só então rodar a queda em A |
 | `VERSION_MISMATCH` | Executáveis de fontes ou commits diferentes | Mesmo commit e recompilar nas duas máquinas (7.2) |
 | `nao foi possivel escutar` no worker | Porta já em uso ou IP do `--bind` não é de B | Outra porta, ou conferir o IP com `ipconfig` |
 | O `join` demora 60 s e termina em `TIMEOUT` | B saiu da rede sem fechar a conexão | Comportamento esperado; para testes, `MINIPAR_RT_REMOTE_TIMEOUT_MS` menor só no coordenador |

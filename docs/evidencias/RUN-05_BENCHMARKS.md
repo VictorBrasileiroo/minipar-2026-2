@@ -1,6 +1,6 @@
 # RUN-05 — Benchmarks e falhas distribuídas repetíveis
 
-**Card:** `RUN-05` · **Eixo:** C (Erasmo) · **Data:** 05/11/2026 · **Base medida:** `dev` em `59ea77d`
+**Card:** `RUN-05` · **Eixo:** C (Erasmo) · **Data:** 05/11/2026 (rodada `par_rede`: 09/11/2026) · **Base medida:** `dev` em `59ea77d` (`par_rede`: `43a7c34`)
 **Critério de aceite:** cargas sequencial e paralela equivalentes; relatório sem confundir workers com núcleos físicos.
 **Harness:** [`tests/2026_2/bench/run_bench.py`](../../tests/2026_2/bench/run_bench.py) (método em [`tests/2026_2/bench/README.md`](../../tests/2026_2/bench/README.md)).
 
@@ -12,9 +12,9 @@
 | Tempos repetidos, speedup e redução (doc 05 §5) | **PASS** nesta máquina | Três rodadas independentes, 7 medições cada, mais 1 aquecimento descartado (seção 3) |
 | Registro do ambiente: CPU, núcleos físicos × threads lógicas, SO, compilador, flags, commit, binário | **PASS** | Seção 2 e o campo `ambiente` de cada JSON |
 | Falhas repetíveis F1–F3 | **PASS** | 3 rodadas × 5 repetições de cada falha, sem travar (seção 4) |
-| Cenário `par_rede` (workers em outro computador) | **PENDENTE** | Precisa da segunda máquina; roteiro pronto (bench README §4 e `runtime/README.md` §7). A execução entre computadores já foi provada pelo `RUN-03`, com a demo |
+| Cenário `par_rede` (workers em outro computador) | **PASS** (1 rodada) | 09/11: 7 medições + aquecimento com os 4 workers na máquina B, todas iguais ao oráculo (seção 3.1), na mesma sessão do [`RUN-06`](RUN-06_REPRODUCAO_DOIS_PCS.md) |
 
-O card fica `PARTIAL` até a rodada `par_rede`: o critério de aceite está atendido nesta máquina, mas o tempo com workers em outro computador ainda não foi medido.
+O critério de aceite está atendido nesta máquina e o tempo com workers em outro computador foi medido em 09/11 (uma rodada, seção 3.1).
 
 ## 2. Ambiente
 
@@ -47,8 +47,25 @@ Mínimos e máximos de cada cenário estão nos resumos: [rodada 1](RUN-05/rodad
 
 - **`par_local` é estável** (speedup 3,37–3,48 nas três rodadas, desvio ≤ 0,04 s). Com 4 trabalhadores, o teto teórico é 4. Duas causas conhecidas explicam parte da diferença: a partida do processo entra no tempo, e as 4 fatias não têm exatamente o mesmo custo (cada nota itera `carga + s % carga` vezes). O processador também mistura núcleos de desempenho diferente; essa causa é possível, mas **não foi medida**.
 - **`par_loopback` varia entre rodadas** (2,19 a 3,50; desvio de até 0,26 s). Os 4 workers são processos que dividem os mesmos núcleos da máquina e ainda pagam serialização JSON e TCP local. Na rodada 1 a máquina estava sem outra tarefa; nas rodadas 2 e 3 havia edição de arquivos em paralelo (a compilação levou 14 s, contra 8 s na rodada 1). As três rodadas ficam registradas: a rodada 1 **não** é apresentada como o resultado "verdadeiro".
-- **Workers não são núcleos.** Os cenários `par_local` e `par_loopback` usam 4 trabalhadores numa máquina com 12 núcleos físicos. O speedup mede o paralelismo dentro de **um** computador, não ganho de distribuição em rede. Só o cenário `par_rede` (pendente) usa a CPU de outra máquina.
+- **Workers não são núcleos.** Os cenários `par_local` e `par_loopback` usam 4 trabalhadores numa máquina com 12 núcleos físicos. O speedup mede o paralelismo dentro de **um** computador, não ganho de distribuição em rede. Só o cenário `par_rede` (seção 3.1) usa a CPU de outra máquina.
 - Speedup acima de 1 não era exigido (T08 README §3); o requisito é a carga ser a mesma, e isso foi conferido em todas as execuções.
+
+### 3.1 Rodada em dois computadores (`par_rede`, 09/11)
+
+Coordenador na máquina A (a mesma das seções 2 e 3: Core Ultra 5 135U, Windows 11, G++ 16.2.0, commit `43a7c34`) e 4 workers na máquina B (`192.168.x.22:7201`–`7204`), na rede local. Os workers são o `teste8.exe` do `RUN-06`; o `bench_t08.exe` de A vem do mesmo fonte, então o `build_id` é igual e o handshake passou. Comando: `run_bench.py --carga 5000000 --reps 7 --reps-falhas 5 --destinos-rede <4 destinos de B>`.
+
+| Cenário | Mediana (s) | Mín | Máx | Desvio | Speedup | Redução |
+|---|---|---|---|---|---|---|
+| `seq` (A) | 2,493 | 2,480 | 2,506 | 0,010 | — | — |
+| `par_local` (A) | 0,738 | 0,726 | 0,785 | 0,020 | 3,38 | 70,4 % |
+| `par_loopback` (A) | 0,747 | 0,742 | 0,759 | 0,006 | 3,34 | 70,0 % |
+| `par_rede` (A → B) | 1,068 | 0,978 | 1,380 | 0,135 | **2,33** | 57,2 % |
+
+Todas as execuções bateram com o oráculo (`SOMA_NOTAS 7557`, 160 ids sem perda nem duplicata), e F1–F3 deram PASS de novo (5× cada). Nos logs de B, cada worker registrou 8 conexões vindas de A (aquecimento + 7), todas com `RESULT ok` ([`RUN-06/worker_720N_B.log`](RUN-06/)).
+
+**Leitura:** o `par_rede` foi mais lento que o `par_loopback` (1,068 s contra 0,747 s) e variou mais (desvio 0,135 s). A diferença inclui a conexão e o handshake pela rede local e a CPU de B, que **não foi registrada**; por isso este número não compara as duas CPUs. É uma rodada só, com 7 medições.
+
+Arquivos: [`RUN-05/rede_20261109-142925.json`](RUN-05/rede_20261109-142925.json) e [`.md`](RUN-05/rede_20261109-142925.md).
 
 ## 4. Falhas repetíveis
 
@@ -80,4 +97,4 @@ Arquivos: [`RUN-05/`](RUN-05/) (3 JSON e 3 resumos).
 - Uma máquina, Windows. Linux não foi medido.
 - Tempo de parede do processo inteiro: inclui a partida do executável e, no `par_loopback`, a conexão e o handshake com os 4 workers.
 - 7 medições por rodada mostram a variação, mas não dão intervalo de confiança.
-- Sem `par_rede`, nada aqui mede ganho entre computadores.
+- O `par_rede` tem uma rodada só, e a CPU, o SO e o G++ da máquina B não foram registrados.
