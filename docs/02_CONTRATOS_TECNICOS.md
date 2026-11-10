@@ -1,6 +1,6 @@
-# Contratos Técnicos e Fronteiras entre Eixos — v0.1 PROPOSTA
+# Contratos Técnicos e Fronteiras entre Eixos — contratos v1 e revisões registradas
 
-**Estado:** rascunho detalhado **não congelado**. Deve ser aprovado por A+B+C até o gate G0 (18/10/2026) antes de alterações incompatíveis. Este documento define **interfaces pretendidas**, não afirma que o código as implementa.
+**Estado documental (09/11/2026):** C-WEB-v1, C-FJ-v1 e C-T11-v1 congelados pelos PRs #3, #7 e #2. C-WEB v1.1 ratificada no #34. Registro de aprovações existentes, sem mudar assinaturas, campos, protocolo ou regras congeladas. O congelamento não prova implementação ou aceite integral. Pendências históricas são contextualizadas em [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md).
 
 ## 0. Regras comuns
 
@@ -537,23 +537,23 @@ Código: string exata `"print(y);\n"` (com `\n` final; o `source_hash` depende d
 
 Mudança aditiva e compatível: envelopes, funções e regras de fase não mudam. Acrescenta os códigos do catálogo v1.1 (1.5), o tipo `"task"` em `semantic.symbols` e os nós `ForkExpr`/`JoinExpr` (1.4). A proposta, o motivo e a evidência estão em `docs/CR-CORE08-DIAGNOSTICOS.md`. A implementação entrou no `dev` com o PR #19 (`CORE-08`, commit `c485819`). Depois do `CORE-06` (PR #17) e do `CORE-07` (PR #18), `TAC_UNSUPPORTED_FEATURE` e `CPP_UNSUPPORTED_FEATURE` deixaram de recusar todo Fork/Join e passaram a cobrir só as recusas reais descritas em 1.5. O `CPP_UNSUPPORTED_FEATURE` também passou a cobrir o `CppProofError` (`docs/auditorias/CORE-07_INTEGRACAO_DEV.md`).
 
-A v1.1 só vale depois das três decisões abaixo. Até lá, o serviço já emite esses códigos, mas eles não fazem parte do contrato.
+A v1.1 foi ratificada no PR [#34](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/34), sobre `204fe48`: proposta do consumidor B, aprovação de C às 18:27:26Z e de A às 18:27:39Z em 05/11/2026; merge `ca225e7` às 18:30:10Z. Atualização de rastreabilidade, sem ampliar o catálogo. As ressalvas de C sobre a origem FJ-SEM-07/08 e a extensão de FJ-SEM-06 permanecem registradas na review e em REL-PRE.
 
 | Parte | Responsável | Decisão | Data |
 |---|---|---|---|
 | B — consumidor | José Riquelme | Ratificou neste PR, depois de conferir no commit `c485819` que os casos da revisão do PR #19 trazem diagnóstico | 03/11/2026 |
-| A — fornecedor | Coordenador | *pendente* | |
-| C — consulta sobre FJ-SEM | Eixo C | *pendente* | |
+| A — fornecedor | Coordenador (Victor) | APPROVED no PR #34 em `204fe48` | 05/11/2026 |
+| C — consulta sobre FJ-SEM | Erasmo | APPROVED no PR #34, com ressalvas de rastreabilidade FJ-SEM-06/07/08 | 05/11/2026 |
 
 ---
 
 ## 2. C-FJ-v1 — Fork/Join, execução local e remota
 
-**Estado:** `v1 — PROPOSTA DE CONGELAMENTO, revisão 2` (23/10/2026), redigida pelo C (Erasmo) no card `CON-01`. A revisão 1 é de 22/10/2026; a revisão 2 atende à revisão do PR #7 (tipagem do `task`, retorno do `join`, wrappers e isolamento), alinhada ao que o A implementou no `CORE-04`/`CORE-05` (PR #15), e registra os ajustes de robustez do `RUN-02` (envio assíncrono com limite, `RESULT` grande, versão em toda mensagem). Passa a `v1 FROZEN` quando A aprovar o PR (quadro em 2.10). Até lá, nenhum lado trata as sintaxes abaixo como definitivas.
+**Estado:** `v1 FROZEN`, revisão 2 (23/10/2026), aprovado por Victor (A) no PR [#7](https://github.com/VictorBrasileiroo/minipar-2026-2/pull/7) em 26/10/2026, review sobre `a0fd60f` às 15:00:50Z; merge às 16:02:06Z (`759dd05`). A revisão 2 do C detalhou tipagem de `task`, retorno de `join`, wrappers, isolamento e robustez do RUN-02. Este fechamento corrige apenas o registro de estado; alterações futuras seguem CR (seção 4).
 
 **Fornecedores conjuntos:** A (linguagem, semântico e código gerado: `CORE-04`, `CORE-05`, `CORE-06`, `CORE-07`) e C (runtime: `RUN-01`, `RUN-02`, `RUN-03`, `RUN-04`). **Consumidores:** A (backend) e os testes 8–10 do C. **Prazo:** contrato no Marco 1 (22/10).
 
-**Divisão de responsabilidades nesta proposta.** As seções 2.3 a 2.7 (API C++, tipos, erros e protocolo) são a parte do C: estão **implementadas e testadas** em `runtime/` nos cards `RUN-01` e `RUN-02` (prova isolada em C++, sem `src/`). A seção 2.2 (sintaxe e semântica MiniPar) é **proposta do C para decisão do A**: A pode trocar palavras-chave ou a forma da produção sem mudar a API, desde que mantenha os efeitos de 2.1.
+**Divisão de responsabilidades (texto histórico da proposta aprovada no #7).** As seções 2.3 a 2.7 (API C++, tipos, erros e protocolo) são a parte do C: estão **implementadas e testadas** em `runtime/` nos cards `RUN-01` e `RUN-02` (prova isolada em C++, sem `src/`). A seção 2.2 (sintaxe e semântica MiniPar) é **proposta do C para decisão do A**: A pode trocar palavras-chave ou a forma da produção sem mudar a API, desde que mantenha os efeitos de 2.1.
 
 ### 2.1 Modelo semântico alvo
 
@@ -810,7 +810,7 @@ O `MiniParChannel` herdado usa TCP com listener por mensagem, separado do runtim
 |---|---|---|---|
 | C — runtime | Erasmo | Proposta revisão 1: API, tipos, erros e protocolo implementados e testados (`RUN-01`/`RUN-02`); linguagem proposta para decisão do A | 22/10/2026 |
 | C — runtime | Erasmo | Revisão 2: tipo `task`, retorno do `join`, wrappers e isolamento detalhados (2.2.3–2.2.5) conforme `CORE-04`/`05`; envio assíncrono com limite, `RESULT` grande e versão em toda mensagem (2.3, 2.5, 2.6); PEND-FJ-06/07 | 23/10/2026 |
-| A — linguagem e backend | Coordenador (Victor) | *pendente* | |
+| A — linguagem e backend | Coordenador (Victor) | APPROVED no PR #7, revisão 2 em `a0fd60f`; merge em `759dd05` | 26/10/2026 |
 
 Mudança depois do congelamento segue a seção 4 (CR). Funções novas no runtime que não mudam as assinaturas acima entram como `v1.1` aditiva.
 
@@ -1519,11 +1519,11 @@ Data:
 
 | ID | Decisão | Donos | Prazo |
 |---|---|---|---|
-| CT-01 | Sintaxe definitiva Fork/Join na BNF 2026.2 — proposta do C em C-FJ-v1 §2.2 (revisão 2, 23/10), adotada pelo A no `CORE-04`/`05` (PR #15), aguardando aprovação formal do A | A+C | 18/10 |
-| CT-02 | API runtime C++ final e registry de workers — proposta em C-FJ-v1 §2.3–2.5, implementada no `RUN-01`/`RUN-02`, aguardando A | A+C | 18/10 |
+| CT-01 | Sintaxe definitiva Fork/Join na BNF 2026.2 — proposta do C em C-FJ-v1 §2.2 (revisão 2, 23/10), aprovada por A no #7 (26/10), adotada no `CORE-04`/`05` (#15); v1 FROZEN | A+C | 18/10 |
+| CT-02 | API runtime C++ final e registry de workers — proposta em C-FJ-v1 §2.3–2.5, aprovada por A no #7 (26/10); implementada no `RUN-01`/`RUN-02` | A+C | 18/10 |
 | CT-03 | Estrutura JSON e API da Web — **congelada** em C-WEB-v1 (PR #3, 22/10) | A+B | 18/10 |
 | CT-04 | Primitivas para strings/coleções Teste 11 — **congeladas** em C-T11-v1 §3.3–3.5 (revisão 2, PR #2, 22/10) | A+B | 18/10 |
-| CT-05 | Modelo de deploy dos workers entre hosts — proposta em C-FJ-v1 §2.2.3 e §2.6: mesmo binário compilado em cada máquina, modo `--minipar-worker`, `build_id` conferido no `HELLO` | C+A | 18/10 |
+| CT-05 | Modelo de deploy dos workers entre hosts — aprovado no #7; descrito em C-FJ-v1 §2.2.3 e §2.6: mesmo binário compilado em cada máquina, modo `--minipar-worker`, `build_id` conferido no `HELLO` | C+A | 18/10 |
 | CT-06 | CPUlator e escrita `.arm` — **congelada** em C-T11-v1 §3.6–3.7 (PR #2, 22/10), alinhada à referência do professor; escrita direta desnecessária (PEND-T11-02 resolvida em 22/10) | B+A | 19/10 |
 | CT-07 | Saída gráfica do T10 | C | 20/10 |
 

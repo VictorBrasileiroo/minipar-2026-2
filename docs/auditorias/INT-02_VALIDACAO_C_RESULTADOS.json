@@ -1,0 +1,72 @@
+{
+  "card": "INT-02 (validação C do recorte de runtime)",
+  "revisor": "Eixo C (Erasmo)",
+  "data": "2026-11-09",
+  "comando": ".venv/Scripts/python.exe -B scripts/regressao_int02.py --only T08,T09,T10,INT-01",
+  "base_git": "f6ffb7208f15ccf5d0fa7b2c87b3a5a5ae60c9e3",
+  "arvore_limpa_no_inicio": true,
+  "codigo_igual_a_8d07433": "git diff 8d07433 f6ffb72 em src/ runtime/ tests/ scripts/ web_didatica/ e interfaces: só scripts/regressao_int02.py (orquestrador) adicionado",
+  "ambiente": {
+    "python": "3.12.10",
+    "gxx": "g++.EXE (Rev3, Built by MSYS2 project) 16.2.0",
+    "plataforma": "Windows-11-10.0.26300-SP0",
+    "cpus_logicas": 14
+  },
+  "etapas": [
+    {
+      "id": "T08",
+      "status": "PASS",
+      "exit": 0,
+      "segundos": 9.7
+    },
+    {
+      "id": "T09",
+      "status": "PASS",
+      "exit": 0,
+      "segundos": 11.4
+    },
+    {
+      "id": "T10",
+      "status": "PASS",
+      "exit": 0,
+      "segundos": 12.4
+    },
+    {
+      "id": "INT-01",
+      "status": "PASS",
+      "exit": 0,
+      "segundos": 26.2
+    }
+  ],
+  "contagens": {
+    "T08": {
+      "PASS": 32,
+      "INFO": 1
+    },
+    "T09": {
+      "PASS": 54
+    },
+    "T10": {
+      "PASS": 126
+    },
+    "INT-01": {
+      "A": {
+        "status": "PASS",
+        "checks": 8
+      },
+      "B": {
+        "status": "PASS",
+        "checks": 8
+      },
+      "C": {
+        "status": "PASS",
+        "checks": 9
+      }
+    }
+  },
+  "exit": 0,
+  "limites": [
+    "somente 127.0.0.1 (loopback); nao prova execucao entre computadores",
+    "rede real do INT-02, RUN-05 par_rede e RUN-06 continuam pendentes"
+  ]
+}

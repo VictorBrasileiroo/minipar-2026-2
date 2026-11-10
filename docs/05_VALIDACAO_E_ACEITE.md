@@ -1,6 +1,6 @@
 # Plano de testes, oráculos, evidências e aceite — v0.1
 
-> Nenhum teste oficial 2026.2 está **automaticamente aprovado** por aparecer nesta matriz. Resultados de auditoria foram feitos em **cópia experimental C++14**, não no código novo.
+> Nenhum teste está automaticamente aprovado por aparecer nesta matriz. A auditoria inicial em C++14 é histórica; a tabela abaixo foi atualizada em 09/11/2026 com evidências no código ativo. Resultados antigos e novos permanecem separados.
 
 ## 1. Protocolo de prova
 
@@ -18,23 +18,23 @@ Status na baseline e no novo branch não devem ser confundidos. Um resultado da 
 
 | Teste | Dono | Oráculo central | Pontos que invalidam PASS | Estado do NOVO repo |
 |---|---|---|---|---|
-| T01 Calculadora cliente-servidor | A | `+`, `2`, `3` → `5` e troca real entre processos | Retorno fixo, timeout sem tratamento, socket não comprovado | UNTESTED |
-| T02 Fatorial/Fibonacci | A | fatorial 5 = 120; Fibonacci `0,1,1,2,3,5,8,13` | Threads aparentes sem prova, valor errado | UNTESTED |
-| T03 Neurônio | A | convergência e valores coerentes do algoritmo | Somente `exit 0`, sem observar treinamento | UNTESTED |
-| T04 XOR | A | classificação correta da XOR, comparar saídas numéricas com tolerância acordada | Divergências ignoradas sem tolerância/justificativa | UNTESTED |
-| T05 Recomendação | A | produtos e probabilidades com entradas fixadas | Histórico/entrada desconhecidos, texto gerado artificialmente | UNTESTED |
-| T06 Quicksort OO | A | vetor numericamente ordenado, inclusive negativos | saída específica hardcoded | UNTESTED |
-| T07 Quicksort iterativo/TAC | A | ordenação verdadeira e TAC derivado da AST | `EXPECTED_QUICKSORT_TAC`; acesso fora de limites | UNTESTED |
-| T08 4 avaliadores | C + A | 40 alunos × 4 atividades = 160, 4 trabalhos, 160 resultados | perda/duplicata, falso fork/join | UNTESTED |
-| T09 5 trabalhos | C + A | T08 + Mandelbrot ASCII calculado | fractal fixo, quinta tarefa serializada | UNTESTED |
-| T10 6 trabalhos | C + A | T09 + Sierpinski visual, cargas comparáveis | Sierpinski só depois de join sem registrar; benchmark injusto | UNTESTED |
-| T11 MiniCompilador | B + A | `22`, `-84`, `22`, tokens/AST/TAC/símbolos/ARM | lógica em Python em lugar de MiniPar; `.arm` não executado | UNTESTED |
+| T01 Calculadora cliente-servidor | A | `+`, `2`, `3` → `5` e troca real entre processos | Retorno fixo, timeout sem tratamento, socket não comprovado | PASS (loopback, 10/10) |
+| T02 Fatorial/Fibonacci | A | fatorial 5 = 120; Fibonacci `0,1,1,2,3,5,8,13` | Threads aparentes sem prova, valor errado | PASS (10/10) |
+| T03 Neurônio | A | convergência e valores coerentes do algoritmo | Somente `exit 0`, sem observar treinamento | PASS |
+| T04 XOR | A | classificação correta da XOR, comparar saídas numéricas com tolerância acordada | Divergências ignoradas sem tolerância/justificativa | PARTIAL (decisão numérica PENDING) |
+| T05 Recomendação | A | produtos e probabilidades com entradas fixadas | Histórico/entrada desconhecidos, texto gerado artificialmente | PASS (entrada derivada CORE-01) |
+| T06 Quicksort OO | A | vetor numericamente ordenado, inclusive negativos | saída específica hardcoded | PASS |
+| T07 Quicksort iterativo/TAC | A | ordenação verdadeira e TAC derivado da AST | `EXPECTED_QUICKSORT_TAC`; acesso fora de limites | PASS (ordenação, mutação TAC e limites) |
+| T08 4 avaliadores | C + A | 40 alunos × 4 atividades = 160, 4 trabalhos, 160 resultados | perda/duplicata, falso fork/join | PARTIAL (provas locais; rede específica pendente) |
+| T09 5 trabalhos | C + A | T08 + Mandelbrot ASCII calculado | fractal fixo, quinta tarefa serializada | PARTIAL (loopback) |
+| T10 6 trabalhos | C + A | T09 + Sierpinski visual, cargas comparáveis | Sierpinski só depois de join sem registrar; benchmark injusto | PARTIAL (formato/rede pendentes) |
+| T11 MiniCompilador | B + A | `22`, `-84`, `22`, tokens/AST/TAC/símbolos/ARM | lógica em Python em lugar de MiniPar; `.arm` não executado | PARTIAL (CPUlator documentado; conferência humana/Java pendentes) |
 
 ### Particularidades
 
 **T01**: executar loopback e ao menos uma prova de comunicação em hosts distintos se apropriado. A primeira auditoria observou timeout inicial da calculadora; não declarar estabilidade por uma execução bem-sucedida.
 
-**T04**: auditoria viu resultado XOR numérico diferente do referencial (`0.00684395,0.986493,0.98925,0.0140296` contra `0.0089,0.9769,0.9758,0.0291`). A classificação booleana funcionou. Definir tolerância antes de aceitar resultados, considerando inicialização e treino.
+**T04**: auditoria viu resultado XOR numérico diferente do referencial (`0.00684395,0.986493,0.98925,0.0140296` contra `0.0089,0.9769,0.9758,0.0291`). A classificação booleana funcionou. REL-PRE confirmou pesos fixos e 20000 épocas: não há evidência para atribuir a diferença a aleatoriedade. Proposta pendente do coordenador: comparar a tradução independente do mesmo algoritmo com meia unidade da impressão (6 algarismos significativos) e, separadamente, manter FAIL da equivalência ao histórico a 4 casas (±0,00005 mais arredondamento da impressão atual). Não adotar 0,02 apenas por cobrir a divergência. Detalhes e limitações no [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md).
 
 **T07**: mutação adversarial obrigatória: substituir o corpo de `quicksort_iterativo` por outro comportamento e verificar que TAC muda. Compilar com verificação de índices/sanitizer quando possível.
 
@@ -91,7 +91,8 @@ Comparar exatamente a **mesma carga**. Se comparação da referência é injusta
 | Data/commit | T01 | T02 | T03 | T04 | T05 | T06 | T07 | T08 | T09 | T10 | T11 | Observações |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 15/10 antes da importação | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | UNTESTED | Início do novo repo; não confundir com rodada 2 |
-| (preencher) | | | | | | | | | | | | |
+| 05/11 · 59ea77d (CORE-10, histórico) | FAIL | FAIL | PASS | PARTIAL | PASS | PASS | PASS | PARTIAL | PARTIAL | PARTIAL | PARTIAL | Não transfere provas de rede/CPUlator entre escopos |
+| 09/11 · 8d07433 (REL-PRE) | PASS 10/10 loopback | PASS 10/10 | PASS | PARTIAL | PASS* | PASS | PASS** | PARTIAL*** | PARTIAL*** | PARTIAL*** | PARTIAL*** | * entrada derivada; ** TAC mutado/limites; *** evidências anteriores inspecionadas, exceto T10 grau 4 seq reexecutado |
 
 ## 8. Gates de evidência
 
@@ -105,3 +106,7 @@ Comparar exatamente a **mesma carga**. Se comparação da referência é injusta
 ### Ficha de evidência
 
 Usar `docs/templates/TEMPLATE_RELATORIO_TESTE.md`. Para qualquer `PASS`, anexar **resultado + oráculo + artefatos**. Nada de aprovar um programa porque pareceu funcionar.
+
+## 9. Evidência do fechamento REL-PRE (09/11/2026)
+
+Base `8d07433`, Windows 11, Python 3.12.4, G++ UCRT64 16.2.0 (Rev6). Baseline completa: exit 1 **por T04 PARTIAL**, sem FAIL novo. Smoke INT-01: 25/25 PASS, exit 0 (CLI, serviço, HTTP via cliente Flask, worker loopback). T10 grau 4 sequencial: PASS do cálculo 81×81/4096, sem inferir aceite gráfico. [Resultados e comandos](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md) e [JSON](auditorias/REL-PRE_RESULTADOS.json). A matriz adota o requisito completo; cards integrados podem ter escopos PARTIAL. Nenhum aceite docente, prova em duas máquinas ou CPUlator foi reexecutado nesta auditoria.

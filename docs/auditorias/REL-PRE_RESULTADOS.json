@@ -1,0 +1,1984 @@
+{
+  "base": "8d0743302ffe29e012ef4a3a4cc1eeba0281637c",
+  "date": "2026-11-09",
+  "baseline": {
+    "exit": 1,
+    "overall": {
+      "T01": "PASS",
+      "T02": "PASS",
+      "T03": "PASS",
+      "T04": "PARTIAL",
+      "T05": "PASS",
+      "T06": "PASS",
+      "T07": "PASS"
+    },
+    "tools": {
+      "python": "3.12.4",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cxx": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "cxx_version": "g++.exe (Rev6, Built by MSYS2 project) 16.2.0"
+    },
+    "results": [
+      {
+        "id": "T01",
+        "attempt": 1,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r1"
+          ],
+          "returncode": 0,
+          "exe_sha256": "b7731778d5cd0bafe1c7c10a2e36941ce8a02d597d71dc1d55d69cb05540368e",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r1\\output\\t01_r1.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.606
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 2,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r2"
+          ],
+          "returncode": 0,
+          "exe_sha256": "8964d178c32d30c5520cb78775a068cc846273a56d130f9af80eea6520e62ec9",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r2\\output\\t01_r2.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.491
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 3,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r3"
+          ],
+          "returncode": 0,
+          "exe_sha256": "38bfe7920cb687d8ba2a98d917ab7296053b5a94030c2615defc172163bbc378",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r3\\output\\t01_r3.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.504
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 4,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r4"
+          ],
+          "returncode": 0,
+          "exe_sha256": "9bfdc5c7939e70b13450c0bc8752918065de3456d25b0793cdb2983281c27db3",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r4\\output\\t01_r4.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.494
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 5,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r5"
+          ],
+          "returncode": 0,
+          "exe_sha256": "a2adb77f51c61e5e4860c653cbf7e7c7bea2bfd7ae6a08ddafb7b59420bebbe7",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r5\\output\\t01_r5.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.526
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 6,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r6"
+          ],
+          "returncode": 0,
+          "exe_sha256": "ddfa9fd87c1ddb54ecd07506dc75b8bf88960e1e12b4163efc71750ffef5bc24",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r6\\output\\t01_r6.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.316
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 7,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r7"
+          ],
+          "returncode": 0,
+          "exe_sha256": "a3b5cfeab7ecb02bd2e00b94a05df6bc9e2f1b23ab8bd34bd1edcac50e03ab9d",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r7\\output\\t01_r7.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.304
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 8,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r8"
+          ],
+          "returncode": 0,
+          "exe_sha256": "b0dda8d239f81cd928748d40bca09a44758f5527b97612ca0f2d85f65b029b1a",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r8\\output\\t01_r8.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.501
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 9,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r9"
+          ],
+          "returncode": 0,
+          "exe_sha256": "aec09eedb50928f188291aaf7716022f0f7207b8f1cf7d9699bb1f2b6d6272d8",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r9\\output\\t01_r9.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.273
+        }
+      },
+      {
+        "id": "T01",
+        "attempt": 10,
+        "source": "tests\\teste1_calculadora_cliente_servidor.minipar",
+        "source_sha256": "67adf92e955d79b4bb0350dbbfebde9334e9ff5f5554cb49a38a1805245387e3",
+        "status": "PASS",
+        "reason": "servidor recebeu '+ 2 3' pelo canal 5101 e cliente recebeu 5 pelo canal 5102 (loopback)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste1_calculadora_cliente_servidor.minipar",
+            "t01_r10"
+          ],
+          "returncode": 0,
+          "exe_sha256": "4ca425a45221590bbe376efc0e141afb1b33af59e10a0cba47bae4d8ff97e6b8",
+          "tac_sha256": "0fd0de735b3ca590d33b46ef7ad7864ece6c35c139d4a3fc1a4fc6d33a9eb3a4"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t01_r10\\output\\t01_r10.exe"
+          ],
+          "stdin": "+\n2\n3\n",
+          "returncode": 0,
+          "stdout": "==== Calculadora cliente-servidor ====\nOpcoes: +, -, *, /\nOperacao (+,-,*,/): Operando 1: Operando 2: Servidor recebeu: + 2 3\nResultado: 5.000000\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.484
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 1,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r1"
+          ],
+          "returncode": 0,
+          "exe_sha256": "1309179a302bbf8ca0bf3ad24e78d2ca0fff3ae70383a57fdc547ff34f108964",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r1\\output\\t02_r1.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.047
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 2,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r2"
+          ],
+          "returncode": 0,
+          "exe_sha256": "84543887c39fe3a3869e6c8e49a259436de7f8729d336ad3ea6871d9681cc5e3",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r2\\output\\t02_r2.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.048
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 3,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r3"
+          ],
+          "returncode": 0,
+          "exe_sha256": "d71efdf4e51df7e0de9e7a908589829a2a5ceae6941abb24a5fa8df547d50b98",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r3\\output\\t02_r3.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.049
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 4,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r4"
+          ],
+          "returncode": 0,
+          "exe_sha256": "f7f6a3d35ac1de6a32959dab1b255cdd1356e711930ddbaf6646e688553e7ec6",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r4\\output\\t02_r4.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.041
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 5,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r5"
+          ],
+          "returncode": 0,
+          "exe_sha256": "c50d6d0f912506ff4a37ca743a375f289323dec0ea9f00b956bb0f0e9f4bfc6e",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r5\\output\\t02_r5.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.049
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 6,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r6"
+          ],
+          "returncode": 0,
+          "exe_sha256": "e09b96da677cc404450e66045534e5fb85e9588d8255913f15fb69ad2a3f537d",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r6\\output\\t02_r6.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fatorial de 5: 120\nFibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.051
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 7,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r7"
+          ],
+          "returncode": 0,
+          "exe_sha256": "381db69bf3f36363cf4604dcb468ad046454c8a550c2b2dd55b92052da71a3d3",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r7\\output\\t02_r7.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.063
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 8,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r8"
+          ],
+          "returncode": 0,
+          "exe_sha256": "9b1239ad7b912d0686768dfaa61ae42e95efd464394bcb249c4184ba58119ba0",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r8\\output\\t02_r8.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fatorial de 5: 120\nFibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.049
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 9,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r9"
+          ],
+          "returncode": 0,
+          "exe_sha256": "272019bd3adf072d2c05a5bf122ef9a6da3f7ce2288ab92e92927ed29c4de846",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r9\\output\\t02_r9.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.052
+        }
+      },
+      {
+        "id": "T02",
+        "attempt": 10,
+        "source": "tests\\teste2_fatorial_fibonacci_par.minipar",
+        "source_sha256": "854259c08699360f0c84f4d424d89ef0a0b74c1318936b0e937f8417d634f7fa",
+        "status": "PASS",
+        "reason": "fatorial 5 = 120 e Fibonacci 0,1,1,2,3,5,8,13",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste2_fatorial_fibonacci_par.minipar",
+            "t02_r10"
+          ],
+          "returncode": 0,
+          "exe_sha256": "76e3a11f7315e724d8b74ecf8e7f661b4b4d7cf2feccab5b12c23d5985d10c23",
+          "tac_sha256": "da8b117c56631f7b5f1d61d4729697df1cd082eb9ab33b3409924d10ee85b29c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t02_r10\\output\\t02_r10.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Fibonacci:\n0\n1\n1\n2\n3\n5\n8\n13\nFatorial de 5: 120\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.066
+        }
+      },
+      {
+        "id": "T03",
+        "attempt": 0,
+        "source": "tests\\teste3_neuronio.minipar",
+        "source_sha256": "646d48202307445e156d736afb4720e1b206e851346fed0f3b74295cfddc7d9f",
+        "status": "PASS",
+        "reason": "iterações 1, 50 e 51 com saída/erro/pesos iguais ao esperado (4 casas), convergência na 51 e valor desejado 0; formato textual difere do .expected.txt da referência Python",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste3_neuronio.minipar",
+            "t03"
+          ],
+          "returncode": 0,
+          "exe_sha256": "68bcff38aa99ede3c7a1accd9281eb2d2172b9092c083f163c7e7c1352862dc7",
+          "tac_sha256": "e5ff539cd23e2be75e9c2011413f092a789bc3578cab730fdd4b21e6d514c48d"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t03\\output\\t03.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "==== Teste 3: neuronio simples com classes e objetos ====\nEntrada: 1 Saida desejada: 0\nIteracao: 1\nSoma ponderada: 1\nSaida: 1\nErro: -1\nPeso entrada: 0.5\nPeso bias: 0.5\nIteracao: 2\nSoma ponderada: 0.98\nSaida: 1\nErro: -1\nPeso entrada: 0.49\nPeso bias: 0.49\nIteracao: 3\nSoma ponderada: 0.96\nSaida: 1\nErro: -1\nPeso entrada: 0.48\nPeso bias: 0.48\nIteracao: 4\nSoma ponderada: 0.94\nSaida: 1\nErro: -1\nPeso entrada: 0.47\nPeso bias: 0.47\nIteracao: 5\nSoma ponderada: 0.92\nSaida: 1\nErro: -1\nPeso entrada: 0.46\nPeso bias: 0.46\nIteracao: 6\nSoma ponderada: 0.9\nSaida: 1\nErro: -1\nPeso entrada: 0.45\nPeso bias: 0.45\nIteracao: 7\nSoma ponderada: 0.88\nSaida: 1\nErro: -1\nPeso entrada: 0.44\nPeso bias: 0.44\nIteracao: 8\nSoma ponderada: 0.86\nSaida: 1\nErro: -1\nPeso entrada: 0.43\nPeso bias: 0.43\nIteracao: 9\nSoma ponderada: 0.84\nSaida: 1\nErro: -1\nPeso entrada: 0.42\nPeso bias: 0.42\nIteracao: 10\nSoma ponderada: 0.82\nSaida: 1\nErro: -1\nPeso entrada: 0.41\nPeso bias: 0.41\nIteracao: 11\nSoma ponderada: 0.8\nSaida: 1\nErro: -1\nPeso entrada: 0.4\nPeso bias: 0.4\nIteracao: 12\nSoma ponderada: 0.78\nSaida: 1\nErro: -1\nPeso entrada: 0.39\nPeso bias: 0.39\nIteracao: 13\nSoma ponderada: 0.76\nSaida: 1\nErro: -1\nPeso entrada: 0.38\nPeso bias: 0.38\nIteracao: 14\nSoma ponderada: 0.74\nSaida: 1\nErro: -1\nPeso entrada: 0.37\nPeso bias: 0.37\nIteracao: 15\nSoma ponderada: 0.72\nSaida: 1\nErro: -1\nPeso entrada: 0.36\nPeso bias: 0.36\nIteracao: 16\nSoma ponderada: 0.7\nSaida: 1\nErro: -1\nPeso entrada: 0.35\nPeso bias: 0.35\nIteracao: 17\nSoma ponderada: 0.68\nSaida: 1\nErro: -1\nPeso entrada: 0.34\nPeso bias: 0.34\nIteracao: 18\nSoma ponderada: 0.66\nSaida: 1\nErro: -1\nPeso entrada: 0.33\nPeso bias: 0.33\nIteracao: 19\nSoma ponderada: 0.64\nSaida: 1\nErro: -1\nPeso entrada: 0.32\nPeso bias: 0.32\nIteracao: 20\nSoma ponderada: 0.62\nSaida: 1\nErro: -1\nPeso entrada: 0.31\nPeso bias: 0.31\nIteracao: 21\nSoma ponderada: 0.6\nSaida: 1\nErro: -1\nPeso entrada: 0.3\nPeso bias: 0.3\nIteracao: 22\nSoma ponderada: 0.58\nSaida: 1\nErro: -1\nPeso entrada: 0.29\nPeso bias: 0.29\nIteracao: 23\nSoma ponderada: 0.56\nSaida: 1\nErro: -1\nPeso entrada: 0.28\nPeso bias: 0.28\nIteracao: 24\nSoma ponderada: 0.54\nSaida: 1\nErro: -1\nPeso entrada: 0.27\nPeso bias: 0.27\nIteracao: 25\nSoma ponderada: 0.52\nSaida: 1\nErro: -1\nPeso entrada: 0.26\nPeso bias: 0.26\nIteracao: 26\nSoma ponderada: 0.5\nSaida: 1\nErro: -1\nPeso entrada: 0.25\nPeso bias: 0.25\nIteracao: 27\nSoma ponderada: 0.48\nSaida: 1\nErro: -1\nPeso entrada: 0.24\nPeso bias: 0.24\nIteracao: 28\nSoma ponderada: 0.46\nSaida: 1\nErro: -1\nPeso entrada: 0.23\nPeso bias: 0.23\nIteracao: 29\nSoma ponderada: 0.44\nSaida: 1\nErro: -1\nPeso entrada: 0.22\nPeso bias: 0.22\nIteracao: 30\nSoma ponderada: 0.42\nSaida: 1\nErro: -1\nPeso entrada: 0.21\nPeso bias: 0.21\nIteracao: 31\nSoma ponderada: 0.4\nSaida: 1\nErro: -1\nPeso entrada: 0.2\nPeso bias: 0.2\nIteracao: 32\nSoma ponderada: 0.38\nSaida: 1\nErro: -1\nPeso entrada: 0.19\nPeso bias: 0.19\nIteracao: 33\nSoma ponderada: 0.36\nSaida: 1\nErro: -1\nPeso entrada: 0.18\nPeso bias: 0.18\nIteracao: 34\nSoma ponderada: 0.34\nSaida: 1\nErro: -1\nPeso entrada: 0.17\nPeso bias: 0.17\nIteracao: 35\nSoma ponderada: 0.32\nSaida: 1\nErro: -1\nPeso entrada: 0.16\nPeso bias: 0.16\nIteracao: 36\nSoma ponderada: 0.3\nSaida: 1\nErro: -1\nPeso entrada: 0.15\nPeso bias: 0.15\nIteracao: 37\nSoma ponderada: 0.28\nSaida: 1\nErro: -1\nPeso entrada: 0.14\nPeso bias: 0.14\nIteracao: 38\nSoma ponderada: 0.26\nSaida: 1\nErro: -1\nPeso entrada: 0.13\nPeso bias: 0.13\nIteracao: 39\nSoma ponderada: 0.24\nSaida: 1\nErro: -1\nPeso entrada: 0.12\nPeso bias: 0.12\nIteracao: 40\nSoma ponderada: 0.22\nSaida: 1\nErro: -1\nPeso entrada: 0.11\nPeso bias: 0.11\nIteracao: 41\nSoma ponderada: 0.2\nSaida: 1\nErro: -1\nPeso entrada: 0.1\nPeso bias: 0.1\nIteracao: 42\nSoma ponderada: 0.18\nSaida: 1\nErro: -1\nPeso entrada: 0.09\nPeso bias: 0.09\nIteracao: 43\nSoma ponderada: 0.16\nSaida: 1\nErro: -1\nPeso entrada: 0.08\nPeso bias: 0.08\nIteracao: 44\nSoma ponderada: 0.14\nSaida: 1\nErro: -1\nPeso entrada: 0.07\nPeso bias: 0.07\nIteracao: 45\nSoma ponderada: 0.12\nSaida: 1\nErro: -1\nPeso entrada: 0.06\nPeso bias: 0.06\nIteracao: 46\nSoma ponderada: 0.1\nSaida: 1\nErro: -1\nPeso entrada: 0.05\nPeso bias: 0.05\nIteracao: 47\nSoma ponderada: 0.08\nSaida: 1\nErro: -1\nPeso entrada: 0.04\nPeso bias: 0.04\nIteracao: 48\nSoma ponderada: 0.06\nSaida: 1\nErro: -1\nPeso entrada: 0.03\nPeso bias: 0.03\nIteracao: 49\nSoma ponderada: 0.04\nSaida: 1\nErro: -1\nPeso entrada: 0.02\nPeso bias: 0.02\nIteracao: 50\nSoma ponderada: 0.02\nSaida: 1\nErro: -1\nPeso entrada: 0.01\nPeso bias: 0.01\nIteracao: 51\nSoma ponderada: -6.17562e-16\nSaida: 0\nErro: 0\nPeso entrada: -3.08781e-16\nPeso bias: -3.08781e-16\nNeuronio aprendeu dinamicamente.\nIteracoes totais: 51\nPeso final: -3.08781e-16\nPeso bias final: -3.08781e-16\nValor desejado: 0\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.072
+        }
+      },
+      {
+        "id": "T04",
+        "attempt": 0,
+        "source": "tests\\teste4_rede_neural_xor.minipar",
+        "source_sha256": "4cf9d0ccde4ba1ff47224a8bace770b239bf445b3e9a3defe98db2ddfa5ce867",
+        "status": "PARTIAL",
+        "reason": "classificação XOR correta nas 4 entradas; valores numéricos divergem da referência e não há tolerância acordada (doc 05 §2, T04): 00: 0.0068 (ref 0.0089, |d|=0.0021); 01: 0.9865 (ref 0.9769, |d|=0.0096); 10: 0.9892 (ref 0.9758, |d|=0.0134); 11: 0.0140 (ref 0.0291, |d|=0.0151)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste4_rede_neural_xor.minipar",
+            "t04"
+          ],
+          "returncode": 0,
+          "exe_sha256": "e60153b98edcee1a52cd07e6cf9c23e7af1a414a8145f69d56429bcf91dfc185",
+          "tac_sha256": "720fd522c2cf0c7161ac6b703ea53593096f9d81a7a149aff5f674fcf9b7a0f1"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t04\\output\\t04.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "==== Teste 4: rede neural XOR com backpropagation ====\nInput: [0, 0], Predicted Output: 0.00684395\nInput: [0, 1], Predicted Output: 0.986493\nInput: [1, 0], Predicted Output: 0.98925\nInput: [1, 1], Predicted Output: 0.0140296\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.048
+        }
+      },
+      {
+        "id": "T05",
+        "attempt": 0,
+        "source": "tests\\teste5_recomendacao.minipar",
+        "source_sha256": "a6182635e0d0933b0abe82c7a3d15c34683e58df8528bded76fee90b004d7c32",
+        "status": "PASS",
+        "reason": "12 produtos recomendados iguais ao esperado (comparação sem acento), probabilidades em (0.55, 1]; entrada derivada (ver relatório)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste5_recomendacao.minipar",
+            "t05"
+          ],
+          "returncode": 0,
+          "exe_sha256": "9c0474784fa6f78a5158de75b4aa8e719294a1506f6d01429702ca0c06211d8a",
+          "tac_sha256": "f9deb16ef73e0922d57f52a67f76abfee9308d807493c45ac1ef207baebac18f"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t05\\output\\t05.exe"
+          ],
+          "stdin": "1\n0\n0\n0\n0\n1\n0\n0\n0\n1\n0\n0\n1\n0\n0\n0\n",
+          "returncode": 0,
+          "stdout": "==== Teste 5: recomendacao e-commerce com rede neural ====\nInforme o historico de compras (1 = comprou, 0 = nao comprou):\nSmartphone - comprou? (0/1):\nLaptop - comprou? (0/1):\nTablet - comprou? (0/1):\nFones de ouvido - comprou? (0/1):\nCamisa - comprou? (0/1):\nJeans - comprou? (0/1):\nJaqueta - comprou? (0/1):\nSapatos - comprou? (0/1):\nGeladeira - comprou? (0/1):\nMicro-ondas - comprou? (0/1):\nMaquina de lavar - comprou? (0/1):\nAr condicionado - comprou? (0/1):\nFiccao - comprou? (0/1):\nNao-ficcao - comprou? (0/1):\nFiccao cientifica - comprou? (0/1):\nFantasia - comprou? (0/1):\nProdutos recomendados para voce:\nLaptop probabilidade: 0.723522\nTablet probabilidade: 0.711771\nFones de ouvido probabilidade: 0.716263\nCamisa probabilidade: 0.564145\nJaqueta probabilidade: 0.723522\nSapatos probabilidade: 0.711771\nGeladeira probabilidade: 0.716263\nMaquina de lavar probabilidade: 0.7191\nAr condicionado probabilidade: 0.723522\nNao-ficcao probabilidade: 0.716263\nFiccao cientifica probabilidade: 0.564145\nFantasia probabilidade: 0.7191\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.052
+        }
+      },
+      {
+        "id": "T06",
+        "attempt": 0,
+        "source": "tests\\teste6_quicksort_classes.minipar",
+        "source_sha256": "76ae29ffa7445af7d50b2093fd3d212c75929f7432cd2127b7c7153e84287f66",
+        "status": "PASS",
+        "reason": "vetor 10 -3 -40 80 70 -100 ordenado como [-100, -40, -3, 10, 70, 80]",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste6_quicksort_classes.minipar",
+            "t06"
+          ],
+          "returncode": 0,
+          "exe_sha256": "d3994005c7a7e083550a49f8a523bd18f0ee4c8a258ec1780696bf4b466453e9",
+          "tac_sha256": "58793d7a06a903467b5175147db649b8d2bfe07ac5351e74e0b30d4c511b466c"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t06\\output\\t06.exe"
+          ],
+          "stdin": "10 -3 -40 80 70 -100\n",
+          "returncode": 0,
+          "stdout": "==== Ordenacao com Quicksort ====\nInsira os elementos do vetor separados por espaco:\nVetor original: [10, -3, -40, 80, 70, -100]\nVetor ordenado: [-100, -40, -3, 10, 70, 80]\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.044
+        }
+      },
+      {
+        "id": "T07",
+        "attempt": 0,
+        "source": "tests\\teste7_quicksort_iterativo_tac.minipar",
+        "source_sha256": "ac42dd61618155b4056e585d636fae7652be9e8082a199350ae07a57895fb42d",
+        "status": "PASS",
+        "reason": "array [33, 12, 98, 5, 61] ordenado como [5, 12, 33, 61, 98] (somente a ordenação; TAC avaliado à parte)",
+        "compile": {
+          "cmd": [
+            "<repo>\\.venv\\Scripts\\python.exe",
+            "-B",
+            "<repo>\\main.py",
+            "<repo>\\tests\\teste7_quicksort_iterativo_tac.minipar",
+            "t07"
+          ],
+          "returncode": 0,
+          "exe_sha256": "48ffd7f3d4c669995edc1cfbc800c3a02ee3d99759729964c5d39cd1192c4cd2",
+          "tac_sha256": "c6bce0b74dba2af21ffe1f65759ada558ef9865befa812669ec76b6bab66d2e9"
+        },
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t07\\output\\t07.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Array ordenado: [5, 12, 33, 61, 98]\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.037
+        }
+      }
+    ],
+    "extra_checks": [
+      {
+        "check": "T07-TAC-igual-ao-esperado",
+        "status": "INFO",
+        "reason": "TAC gerado diferente ao .expected.tac"
+      },
+      {
+        "check": "T07-TAC-mutacao",
+        "status": "PASS",
+        "compile_exit": 0,
+        "reason": "TAC do programa mutado difere do TAC fixo"
+      },
+      {
+        "check": "T07-limites",
+        "status": "PASS",
+        "run": {
+          "cmd": [
+            "<repo>\\output\\core01\\run-20261109-082212\\t07\\output\\t07_assert.exe"
+          ],
+          "stdin": "",
+          "returncode": 0,
+          "stdout": "Array ordenado: [5, 12, 33, 61, 98]\n",
+          "stderr": "",
+          "timed_out": false,
+          "duration_s": 0.145
+        },
+        "reason": "C++ gerado roda sem violação com -D_GLIBCXX_ASSERTIONS"
+      }
+    ],
+    "t02_exact_lines": [
+      {
+        "attempt": 1,
+        "exact_lines": true
+      },
+      {
+        "attempt": 2,
+        "exact_lines": true
+      },
+      {
+        "attempt": 3,
+        "exact_lines": true
+      },
+      {
+        "attempt": 4,
+        "exact_lines": true
+      },
+      {
+        "attempt": 5,
+        "exact_lines": true
+      },
+      {
+        "attempt": 6,
+        "exact_lines": true
+      },
+      {
+        "attempt": 7,
+        "exact_lines": true
+      },
+      {
+        "attempt": 8,
+        "exact_lines": true
+      },
+      {
+        "attempt": 9,
+        "exact_lines": true
+      },
+      {
+        "attempt": 10,
+        "exact_lines": true
+      }
+    ]
+  },
+  "numeric_and_t10": {
+    "base": "8d07433",
+    "python": "3.12.4",
+    "checks": {
+      "xor_model": true,
+      "xor_classification": true,
+      "t10_degree4": true
+    },
+    "xor": {
+      "source": "tests/teste4_rede_neural_xor.minipar",
+      "source_sha256": "4cf9d0ccde4ba1ff47224a8bace770b239bf445b3e9a3defe98db2ddfa5ce867",
+      "binary_sha256": "460afba1180dee1df8ac341a45f43debebfca7e57ee5bd1ced6b748dfcdbe86a",
+      "build": {
+        "exit": 0,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: <repo>\\tests\\teste4_rede_neural_xor.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\xor.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', '<repo>\\\\output\\\\rel_pre\\\\20261109-082455\\\\xor\\\\output\\\\xor.cpp', '-o', '<repo>\\\\output\\\\rel_pre\\\\20261109-082455\\\\xor\\\\output\\\\xor.exe', '-pthread', '-I', '<repo>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\xor.exe\n=== Processo Finalizado ===\n",
+        "stderr": ""
+      },
+      "execution": {
+        "exit": 0,
+        "stdout": "==== Teste 4: rede neural XOR com backpropagation ====\nInput: [0, 0], Predicted Output: 0.00684395\nInput: [0, 1], Predicted Output: 0.986493\nInput: [1, 0], Predicted Output: 0.98925\nInput: [1, 1], Predicted Output: 0.0140296\n",
+        "stderr": ""
+      },
+      "comparison": [
+        {
+          "native": 0.00684395,
+          "model": 0.006843949363778706,
+          "reference": 0.0089,
+          "absolute_difference": 0.0020560500000000002,
+          "relative_difference": 0.2310168539325843,
+          "model_difference": 6.362212935304146e-10,
+          "print_rounding_bound": 5e-09,
+          "matches_model": true,
+          "matches_reference_4_decimals": false
+        },
+        {
+          "native": 0.986493,
+          "model": 0.9864926370672501,
+          "reference": 0.9769,
+          "absolute_difference": 0.009592999999999963,
+          "relative_difference": 0.00981983826389596,
+          "model_difference": 3.6293274985332857e-07,
+          "print_rounding_bound": 5e-07,
+          "matches_model": true,
+          "matches_reference_4_decimals": false
+        },
+        {
+          "native": 0.98925,
+          "model": 0.9892503459073175,
+          "reference": 0.9758,
+          "absolute_difference": 0.013449999999999962,
+          "relative_difference": 0.013783562205369915,
+          "model_difference": 3.459073175671179e-07,
+          "print_rounding_bound": 5e-07,
+          "matches_model": true,
+          "matches_reference_4_decimals": false
+        },
+        {
+          "native": 0.0140296,
+          "model": 0.014029626978671725,
+          "reference": 0.0291,
+          "absolute_difference": 0.015070400000000001,
+          "relative_difference": 0.5178831615120275,
+          "model_difference": 2.6978671725449987e-08,
+          "print_rounding_bound": 5e-08,
+          "matches_model": true,
+          "matches_reference_4_decimals": false
+        }
+      ],
+      "historical_numeric_status": "FAIL",
+      "acceptance_status": "PARTIAL"
+    },
+    "t10_degree4": {
+      "source": "tests/2026_2/test10/teste10_dois_fractais.minipar",
+      "source_sha256": "ed1306b1bd01892eb8791fadbf6285a795bcd0dfd9e9f9dbd2b1b8aa574517cc",
+      "binary_sha256": "64cab84635c1ed82bc79bdf7ecf13b25b8f6986f6df38fd69326e85ab995dba9",
+      "build": {
+        "exit": 0,
+        "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: <repo>\\tests\\2026_2\\test10\\teste10_dois_fractais.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\t10.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', '<repo>\\\\output\\\\rel_pre\\\\20261109-082455\\\\t10\\\\output\\\\t10.cpp', '-o', '<repo>\\\\output\\\\rel_pre\\\\20261109-082455\\\\t10\\\\output\\\\t10.exe', '-pthread', '-I', '<repo>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\t10.exe\n=== Processo Finalizado ===\n",
+        "stderr": ""
+      },
+      "execution": {
+        "exit": 0,
+        "stdout": "=== TESTE 10: 160 avaliacoes + Mandelbrot + Sierpinski ===\nMODO seq\nAVALIADOR 0 Professor 40\nAVALIADOR 1 Monitor 1 40\nAVALIADOR 2 Monitor 2 40\nAVALIADOR 3 Monitor 3 40\nTOTAL 160\nUNICOS 160\nDUPLICADOS 0\nPERDIDOS 0\nSOMA_NOTAS 7760\n=== MANDELBROT 50x20 max_iter=100 ===\n                                                  \n                                                  \n                                .                 \n                             ..=:.                \n                              @@@:                \n                        +@.@@@@@@@@@. :..         \n                       .@@@@@@@@@@@@@@:           \n                .     #@@@@@@@@@@@@@@@@@:         \n             .@:@@@- :@@@@@@@@@@@@@@@@@@:         \n          - .@@@@@@@@@@@@@@@@@@@@@@@@@@@          \n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.           \n          - .@@@@@@@@@@@@@@@@@@@@@@@@@@@          \n             .@:@@@- :@@@@@@@@@@@@@@@@@@:         \n                .     #@@@@@@@@@@@@@@@@@:         \n                       .@@@@@@@@@@@@@@:           \n                        +@.@@@@@@@@@. :..         \n                              @@@:                \n                             ..=:.                \n                                .                 \n                                                  \n=== FIM MANDELBROT ===\n=== SIERPINSKI grau=4 ===\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n# #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # #\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n#########         ##################         ##################         #########\n# ## ## #         # ## ## ## ## ## #         # ## ## ## ## ## #         # ## ## #\n#########         ##################         ##################         #########\n###   ###         ###   ######   ###         ###   ######   ###         ###   ###\n# #   # #         # #   # ## #   # #         # #   # ## #   # #         # #   # #\n###   ###         ###   ######   ###         ###   ######   ###         ###   ###\n#########         ##################         ##################         #########\n# ## ## #         # ## ## ## ## ## #         # ## ## ## ## ## #         # ## ## #\n#########         ##################         ##################         #########\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n# #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # #\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n###########################                           ###########################\n# ## ## ## ## ## ## ## ## #                           # ## ## ## ## ## ## ## ## #\n###########################                           ###########################\n###   ######   ######   ###                           ###   ######   ######   ###\n# #   # ## #   # ## #   # #                           # #   # ## #   # ## #   # #\n###   ######   ######   ###                           ###   ######   ######   ###\n###########################                           ###########################\n# ## ## ## ## ## ## ## ## #                           # ## ## ## ## ## ## ## ## #\n###########################                           ###########################\n#########         #########                           #########         #########\n# ## ## #         # ## ## #                           # ## ## #         # ## ## #\n#########         #########                           #########         #########\n###   ###         ###   ###                           ###   ###         ###   ###\n# #   # #         # #   # #                           # #   # #         # #   # #\n###   ###         ###   ###                           ###   ###         ###   ###\n#########         #########                           #########         #########\n# ## ## #         # ## ## #                           # ## ## #         # ## ## #\n#########         #########                           #########         #########\n###########################                           ###########################\n# ## ## ## ## ## ## ## ## #                           # ## ## ## ## ## ## ## ## #\n###########################                           ###########################\n###   ######   ######   ###                           ###   ######   ######   ###\n# #   # ## #   # ## #   # #                           # #   # ## #   # ## #   # #\n###   ######   ######   ###                           ###   ######   ######   ###\n###########################                           ###########################\n# ## ## ## ## ## ## ## ## #                           # ## ## ## ## ## ## ## ## #\n###########################                           ###########################\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n# #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # #\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n#########         ##################         ##################         #########\n# ## ## #         # ## ## ## ## ## #         # ## ## ## ## ## #         # ## ## #\n#########         ##################         ##################         #########\n###   ###         ###   ######   ###         ###   ######   ###         ###   ###\n# #   # #         # #   # ## #   # #         # #   # ## #   # #         # #   # #\n###   ###         ###   ######   ###         ###   ######   ###         ###   ###\n#########         ##################         ##################         #########\n# ## ## #         # ## ## ## ## ## #         # ## ## ## ## ## #         # ## ## #\n#########         ##################         ##################         #########\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n# #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # ## #   # #\n###   ######   ######   ######   ######   ######   ######   ######   ######   ###\n#################################################################################\n# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #\n#################################################################################\n=== FIM SIERPINSKI ===\n",
+        "stderr": ""
+      },
+      "dimensions": [
+        81,
+        81
+      ],
+      "filled_cells": 4096
+    },
+    "status": "PASS"
+  },
+  "smoke": {
+    "meta": {
+      "card": "INT-01",
+      "started": "2026-11-09T08:23:11-03:00",
+      "cwd": "<repo>",
+      "int01_head": "8d0743302ffe29e012ef4a3a4cc1eeba0281637c",
+      "python": "3.12.4",
+      "python_exe": "<repo>\\.venv\\Scripts\\python.exe",
+      "gpp": "g++.EXE (Rev6, Built by MSYS2 project) 16.2.0",
+      "platform": "win32",
+      "args": {
+        "port_base": 7500,
+        "only": null,
+        "timeout": 30,
+        "core08_root": null
+      }
+    },
+    "exit_code": 0,
+    "segments": [
+      {
+        "id": "A",
+        "title": "CLI Fork/Join + runtime (local e worker no loopback)",
+        "eixos": "A+C",
+        "status": "PASS",
+        "blocked_reason": null,
+        "notes": [
+          "Worker em 127.0.0.1: prova protocolo/integração no mesmo host, NÃO dois computadores (RUN-03 #10)."
+        ],
+        "checks": [
+          {
+            "id": "A1",
+            "desc": "CLI exit 0 e percorre Fases 1-4 (léxico/sintático, semântico, TAC, C++/g++)",
+            "status": "PASS",
+            "evidence": {
+              "exit": 0,
+              "fases": [
+                "[Fase 1]",
+                "[Fase 2]",
+                "[Fase 3]",
+                "[Fase 4]"
+              ]
+            }
+          },
+          {
+            "id": "A2",
+            "desc": "Artefatos TAC, C++ e .exe existem e não estão vazios",
+            "status": "PASS",
+            "evidence": {
+              "int01_segA.tac": 616,
+              "int01_segA.cpp": 17543,
+              "int01_segA.exe": 363564
+            }
+          },
+          {
+            "id": "A3",
+            "desc": "TAC contém fork soma_quadrados/fib ... on <destino> e 2 joins",
+            "status": "PASS",
+            "evidence": {
+              "fork_lines": [
+                "t10 = fork soma_quadrados(t8) on t9",
+                "t13 = fork fib(t11) on t12"
+              ],
+              "join_lines": [
+                "t14 = join h2",
+                "t15 = join h1"
+              ]
+            }
+          },
+          {
+            "id": "A4",
+            "desc": "C++ gerado usa a API do runtime (include, register_function, worker, start, build_id)",
+            "status": "PASS",
+            "evidence": {
+              "ausentes": []
+            }
+          },
+          {
+            "id": "A5",
+            "desc": "Destino local: stdout == oráculo, exit 0, stderr vazio",
+            "status": "PASS",
+            "evidence": {
+              "exit": 0,
+              "stdout": "832040\n328350\n",
+              "esperado": "832040\n328350\n",
+              "stderr": ""
+            }
+          },
+          {
+            "id": "A6",
+            "desc": "Destino 127.0.0.1:7500: stdout == oráculo, exit 0, stderr vazio",
+            "status": "PASS",
+            "evidence": {
+              "exit": 0,
+              "stdout": "832040\n328350\n",
+              "esperado": "832040\n328350\n",
+              "stderr": ""
+            }
+          },
+          {
+            "id": "A7",
+            "desc": "Log do worker: TASK e RESULT ok de soma_quadrados e fib, emitidos pelo PID do worker",
+            "status": "PASS",
+            "evidence": {
+              "worker_pid": 27696,
+              "tasks": [
+                [
+                  "Br4ZZa",
+                  "27696",
+                  "task-1",
+                  "soma_quadrados"
+                ],
+                [
+                  "Br4ZZa",
+                  "27696",
+                  "task-2",
+                  "fib"
+                ]
+              ],
+              "results": [
+                [
+                  "Br4ZZa",
+                  "27696",
+                  "task-1",
+                  "soma_quadrados",
+                  "ok"
+                ],
+                [
+                  "Br4ZZa",
+                  "27696",
+                  "task-2",
+                  "fib",
+                  "ok"
+                ]
+              ]
+            }
+          },
+          {
+            "id": "A8",
+            "desc": "Controle negativo 127.0.0.1:7501 (sem worker): exit != 0, erro em stderr e sem o resultado do oráculo",
+            "status": "PASS",
+            "evidence": {
+              "exit": 1,
+              "stdout": "",
+              "stderr": "[minipar_rt] join task-2 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7501 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\n"
+            }
+          }
+        ],
+        "data": {
+          "source": "output\\int01\\segA_fork.minipar",
+          "oracle": "832040\n328350\n",
+          "oracle_def": "fib(30), soma_quadrados(100) calculados em Python",
+          "compile": {
+            "cmd": [
+              "<repo>\\.venv\\Scripts\\python.exe",
+              "-B",
+              "main.py",
+              "output\\int01\\segA_fork.minipar",
+              "int01_segA"
+            ],
+            "exit": 0,
+            "duration_ms": 8047,
+            "stdout": "=== Compilador MiniPar ===\n\n=== Compilando: output\\int01\\segA_fork.minipar ===\n[Fase 1] Analise Lexica e Sintatica...\n[Fase 2] Analise Semantica e Tabela de Simbolos...\n[Fase 3] Geracao de Codigo Intermediario (TAC - 3 enderecos)...\n[TAC] Arquivo gerado: output\\int01_segA.tac\n[Fase 4] Transpilacao e Chamada do GCC (-O3)...\n[CODEGEN] Comando: ['C:\\\\msys64\\\\ucrt64\\\\bin\\\\g++.exe', '-std=c++20', '-O3', '<repo>\\\\output\\\\int01_segA.cpp', '-o', '<repo>\\\\output\\\\int01_segA.exe', '-pthread', '-I', '<repo>\\\\runtime\\\\include', '-lws2_32']\n[SUCESSO] Executavel: output\\int01_segA.exe\n=== Processo Finalizado ===\n",
+            "stderr": ""
+          },
+          "run_local": {
+            "stdin": "local",
+            "exit": 0,
+            "stdout": "832040\n328350\n",
+            "stderr": "",
+            "timed_out": false,
+            "duration_ms": 63
+          },
+          "worker": {
+            "cmd": [
+              "<repo>\\output\\int01_segA.exe",
+              "--minipar-worker",
+              "7500",
+              "--bind",
+              "127.0.0.1"
+            ],
+            "pid": 27696,
+            "port": 7500,
+            "log": "output\\int01\\segA_worker.log"
+          },
+          "run_worker": {
+            "stdin": "127.0.0.1:7500",
+            "exit": 0,
+            "stdout": "832040\n328350\n",
+            "stderr": "",
+            "timed_out": false,
+            "duration_ms": 31
+          },
+          "worker_log_excerpt": [
+            "[minipar_worker Br4ZZa:27696] escutando em 127.0.0.1:7500 (host=Br4ZZa pid=27696 build_id=d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1)",
+            "[minipar_worker Br4ZZa:27696] TASK task-1 fn=soma_quadrados de 127.0.0.1:53805: inicio",
+            "[minipar_worker Br4ZZa:27696] TASK task-2 fn=fib de 127.0.0.1:53805: inicio",
+            "[minipar_worker Br4ZZa:27696] RESULT task-1 fn=soma_quadrados ok em 0 ms",
+            "[minipar_worker Br4ZZa:27696] RESULT task-2 fn=fib ok em 0 ms"
+          ],
+          "run_sem_worker": {
+            "stdin": "127.0.0.1:7501",
+            "exit": 1,
+            "stdout": "",
+            "stderr": "[minipar_rt] join task-2 falhou: WORKER_UNAVAILABLE: worker 127.0.0.1:7501 indisponivel: conexao recusada ou inalcancavel: erro de socket 10061\n"
+          },
+          "duration_ms": 10281
+        }
+      },
+      {
+        "id": "B",
+        "title": "Serviço C-WEB-v1 (CORE-08, src/service.py)",
+        "eixos": "A+B",
+        "status": "PASS",
+        "blocked_reason": null,
+        "notes": [],
+        "checks": [
+          {
+            "id": "B1",
+            "desc": "Subprocesso isolado importa src.service do CORE-08 e chama a API sem exceção",
+            "status": "PASS",
+            "evidence": {
+              "service_file": "<repo>\\src\\service.py",
+              "cwd": "<repo>"
+            }
+          },
+          {
+            "id": "B2",
+            "desc": "Envelope minipar.compile.v1 de analyze conforme C-WEB-v1 §1.3/1.4",
+            "status": "PASS",
+            "evidence": {
+              "problemas": [],
+              "request_id": "f17ecb799dee4361a910de457ef63d75",
+              "duration_ms": 0,
+              "phases": {
+                "lexer": "ok",
+                "parser": "ok",
+                "semantic": "ok",
+                "tac": "ok",
+                "cpp": "ok",
+                "gpp": "skipped"
+              }
+            }
+          },
+          {
+            "id": "B3",
+            "desc": "Envelope minipar.compile.v1 de compile conforme C-WEB-v1 §1.3/1.4",
+            "status": "PASS",
+            "evidence": {
+              "problemas": [],
+              "request_id": "3ff5f2dcdf60457c9087af429bbbf156",
+              "duration_ms": 2782,
+              "phases": {
+                "lexer": "ok",
+                "parser": "ok",
+                "semantic": "ok",
+                "tac": "ok",
+                "cpp": "ok",
+                "gpp": "ok"
+              }
+            }
+          },
+          {
+            "id": "B4",
+            "desc": "request_id distintos e source_hash igual entre analyze e compile",
+            "status": "PASS",
+            "evidence": {
+              "analyze": "f17ecb799dee4361a910de457ef63d75",
+              "compile": "3ff5f2dcdf60457c9087af429bbbf156",
+              "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4"
+            }
+          },
+          {
+            "id": "B5",
+            "desc": "execute: envelope minipar.execute.v1 completo e stdout == oráculo",
+            "status": "PASS",
+            "evidence": {
+              "stdout": "ola int01\n328350\n832040\n",
+              "esperado": "ola int01\n328350\n832040\n",
+              "exit_code": 0,
+              "chaves_extras_ou_faltando": []
+            }
+          },
+          {
+            "id": "B6",
+            "desc": "get_artifact cpp/tac/binary: nome, media_type e arquivo no diretório do request_id (§1.7)",
+            "status": "PASS",
+            "evidence": {
+              "cpp": {
+                "ok": true,
+                "path": "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.cpp",
+                "filename": "minipar_3ff5f2dc.cpp",
+                "media_type": "text/x-c++src"
+              },
+              "tac": {
+                "ok": true,
+                "path": "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.tac",
+                "filename": "minipar_3ff5f2dc.tac",
+                "media_type": "text/plain"
+              },
+              "binary": {
+                "ok": true,
+                "path": "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.exe",
+                "filename": "minipar_3ff5f2dc.exe",
+                "media_type": "application/octet-stream"
+              }
+            }
+          },
+          {
+            "id": "B7",
+            "desc": "Erros contratuais: id inválido -> INVALID_ARGUMENT; id desconhecido -> ARTIFACT_NOT_FOUND; kind 'arm' -> INVALID_ARGUMENT",
+            "status": "PASS",
+            "evidence": {
+              "invalid": {
+                "code": "INVALID_ARGUMENT",
+                "message": "ID, stdin ou timeout invalido"
+              },
+              "unknown": {
+                "code": "ARTIFACT_NOT_FOUND",
+                "message": "Artefato nao encontrado"
+              },
+              "bad_kind": {
+                "code": "INVALID_ARGUMENT",
+                "message": "ID ou tipo de artefato invalido"
+              }
+            }
+          },
+          {
+            "id": "B8",
+            "desc": "Programa Fork/Join pelo serviço: compile + execute(local) == oráculo",
+            "status": "PASS",
+            "evidence": {
+              "stdout": "832040\n328350\n",
+              "esperado": "832040\n328350\n"
+            }
+          }
+        ],
+        "data": {
+          "core08_root": "<repo>",
+          "core08_origin": "árvore atual",
+          "core08_head": "8d0743302ffe29e012ef4a3a4cc1eeba0281637c",
+          "int01_tem_service": true,
+          "helper": {
+            "exit": 0,
+            "duration_ms": 12891,
+            "stderr": "",
+            "timed_out": false,
+            "cwd": "<repo>"
+          },
+          "service_sha256": "d6029024145eb01e3255fad27d22db0e95cc9c187ab36462691b68159367c5dd",
+          "python_core08": "3.12.4",
+          "analyze": {
+            "contract": "minipar.compile.v1",
+            "operation": "analyze",
+            "request_id": "f17ecb799dee4361a910de457ef63d75",
+            "ok": true,
+            "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4",
+            "duration_ms": 0,
+            "diagnostics": [],
+            "artifacts": {
+              "cpp_id": null,
+              "tac_id": null,
+              "binary_id": null
+            },
+            "phases": {
+              "lexer": {
+                "status": "ok",
+                "tokens": "<omitido>"
+              },
+              "parser": {
+                "status": "ok",
+                "ast": "<omitido>",
+                "ast_stats": "<omitido>"
+              },
+              "semantic": {
+                "status": "ok",
+                "scopes": "<omitido>",
+                "symbols": "<omitido>"
+              },
+              "tac": {
+                "status": "ok",
+                "text": "<omitido>",
+                "lines": 42
+              },
+              "cpp": {
+                "status": "ok",
+                "text": "<omitido>"
+              },
+              "gpp": {
+                "status": "skipped",
+                "reason": "not_requested"
+              }
+            }
+          },
+          "compile": {
+            "contract": "minipar.compile.v1",
+            "operation": "compile",
+            "request_id": "3ff5f2dcdf60457c9087af429bbbf156",
+            "ok": true,
+            "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4",
+            "duration_ms": 2782,
+            "diagnostics": [],
+            "artifacts": {
+              "cpp_id": "3ff5f2dcdf60457c9087af429bbbf156",
+              "tac_id": "3ff5f2dcdf60457c9087af429bbbf156",
+              "binary_id": "3ff5f2dcdf60457c9087af429bbbf156"
+            },
+            "phases": {
+              "lexer": {
+                "status": "ok",
+                "tokens": "<omitido>"
+              },
+              "parser": {
+                "status": "ok",
+                "ast": "<omitido>",
+                "ast_stats": "<omitido>"
+              },
+              "semantic": {
+                "status": "ok",
+                "scopes": "<omitido>",
+                "symbols": "<omitido>"
+              },
+              "tac": {
+                "status": "ok",
+                "text": "<omitido>",
+                "lines": 42
+              },
+              "cpp": {
+                "status": "ok",
+                "text": "<omitido>"
+              },
+              "gpp": {
+                "status": "ok",
+                "command": [
+                  "C:\\msys64\\ucrt64\\bin\\g++.exe",
+                  "-std=c++20",
+                  "-O3",
+                  "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.cpp",
+                  "-o",
+                  "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.exe",
+                  "-pthread",
+                  "-I",
+                  "<repo>\\runtime\\include",
+                  "-lws2_32"
+                ],
+                "returncode": 0,
+                "stdout": "<omitido>",
+                "stderr": "<omitido>",
+                "duration_ms": "<omitido>",
+                "stdout_truncated": "<omitido>",
+                "stderr_truncated": "<omitido>"
+              }
+            }
+          },
+          "execute": {
+            "contract": "minipar.execute.v1",
+            "artifact_id": "3ff5f2dcdf60457c9087af429bbbf156",
+            "ok": true,
+            "exit_code": 0,
+            "timed_out": false,
+            "duration_ms": 93,
+            "stdout": "ola int01\n328350\n832040\n",
+            "stderr": "",
+            "stdout_truncated": false,
+            "stderr_truncated": false,
+            "error": null
+          },
+          "artifacts": {
+            "cpp": {
+              "ok": true,
+              "path": "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.cpp",
+              "filename": "minipar_3ff5f2dc.cpp",
+              "media_type": "text/x-c++src"
+            },
+            "tac": {
+              "ok": true,
+              "path": "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.tac",
+              "filename": "minipar_3ff5f2dc.tac",
+              "media_type": "text/plain"
+            },
+            "binary": {
+              "ok": true,
+              "path": "<repo>\\output\\web\\3ff5f2dcdf60457c9087af429bbbf156\\program.exe",
+              "filename": "minipar_3ff5f2dc.exe",
+              "media_type": "application/octet-stream"
+            }
+          },
+          "execute_invalid": {
+            "contract": "minipar.execute.v1",
+            "artifact_id": "../x",
+            "ok": false,
+            "exit_code": null,
+            "timed_out": false,
+            "duration_ms": 0,
+            "stdout": "",
+            "stderr": "",
+            "stdout_truncated": false,
+            "stderr_truncated": false,
+            "error": {
+              "code": "INVALID_ARGUMENT",
+              "message": "ID, stdin ou timeout invalido"
+            }
+          },
+          "execute_unknown": {
+            "contract": "minipar.execute.v1",
+            "artifact_id": "00000000000000000000000000000000",
+            "ok": false,
+            "exit_code": null,
+            "timed_out": false,
+            "duration_ms": 0,
+            "stdout": "",
+            "stderr": "",
+            "stdout_truncated": false,
+            "stderr_truncated": false,
+            "error": {
+              "code": "ARTIFACT_NOT_FOUND",
+              "message": "Artefato nao encontrado"
+            }
+          },
+          "artifact_bad_kind": {
+            "ok": false,
+            "error": {
+              "code": "INVALID_ARGUMENT",
+              "message": "ID ou tipo de artefato invalido"
+            }
+          },
+          "oracle_sem_fork": "ola int01\n328350\n832040\n",
+          "fork_analyze": {
+            "contract": "minipar.compile.v1",
+            "operation": "analyze",
+            "request_id": "fb197725ab4b4b86bfe63da3cc28adde",
+            "ok": true,
+            "source_hash": "sha256:d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1",
+            "duration_ms": 0,
+            "diagnostics": [],
+            "artifacts": {
+              "cpp_id": null,
+              "tac_id": null,
+              "binary_id": null
+            },
+            "phases": {
+              "lexer": {
+                "status": "ok",
+                "tokens": "<omitido>"
+              },
+              "parser": {
+                "status": "ok",
+                "ast": "<omitido>",
+                "ast_stats": "<omitido>"
+              },
+              "semantic": {
+                "status": "ok",
+                "scopes": "<omitido>",
+                "symbols": "<omitido>"
+              },
+              "tac": {
+                "status": "ok",
+                "text": "<omitido>",
+                "lines": 46
+              },
+              "cpp": {
+                "status": "ok",
+                "text": "<omitido>"
+              },
+              "gpp": {
+                "status": "skipped",
+                "reason": "not_requested"
+              }
+            }
+          },
+          "fork_compile": {
+            "contract": "minipar.compile.v1",
+            "operation": "compile",
+            "request_id": "fb5f4ca9087e4c4a8ea25fa30b5b1a05",
+            "ok": true,
+            "source_hash": "sha256:d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1",
+            "duration_ms": 9578,
+            "diagnostics": [],
+            "artifacts": {
+              "cpp_id": "fb5f4ca9087e4c4a8ea25fa30b5b1a05",
+              "tac_id": "fb5f4ca9087e4c4a8ea25fa30b5b1a05",
+              "binary_id": "fb5f4ca9087e4c4a8ea25fa30b5b1a05"
+            },
+            "phases": {
+              "lexer": {
+                "status": "ok",
+                "tokens": "<omitido>"
+              },
+              "parser": {
+                "status": "ok",
+                "ast": "<omitido>",
+                "ast_stats": "<omitido>"
+              },
+              "semantic": {
+                "status": "ok",
+                "scopes": "<omitido>",
+                "symbols": "<omitido>"
+              },
+              "tac": {
+                "status": "ok",
+                "text": "<omitido>",
+                "lines": 46
+              },
+              "cpp": {
+                "status": "ok",
+                "text": "<omitido>"
+              },
+              "gpp": {
+                "status": "ok",
+                "command": [
+                  "C:\\msys64\\ucrt64\\bin\\g++.exe",
+                  "-std=c++20",
+                  "-O3",
+                  "<repo>\\output\\web\\fb5f4ca9087e4c4a8ea25fa30b5b1a05\\program.cpp",
+                  "-o",
+                  "<repo>\\output\\web\\fb5f4ca9087e4c4a8ea25fa30b5b1a05\\program.exe",
+                  "-pthread",
+                  "-I",
+                  "<repo>\\runtime\\include",
+                  "-lws2_32"
+                ],
+                "returncode": 0,
+                "stdout": "<omitido>",
+                "stderr": "<omitido>",
+                "duration_ms": "<omitido>",
+                "stdout_truncated": "<omitido>",
+                "stderr_truncated": "<omitido>"
+              }
+            }
+          },
+          "fork_execute": {
+            "contract": "minipar.execute.v1",
+            "artifact_id": "fb5f4ca9087e4c4a8ea25fa30b5b1a05",
+            "ok": true,
+            "exit_code": 0,
+            "timed_out": false,
+            "duration_ms": 141,
+            "stdout": "832040\n328350\n",
+            "stderr": "",
+            "stdout_truncated": false,
+            "stderr_truncated": false,
+            "error": null
+          },
+          "duration_ms": 12969
+        }
+      },
+      {
+        "id": "C",
+        "title": "Web didática chamando o serviço real (WEB-03/WEB-04)",
+        "eixos": "A+B",
+        "status": "PASS",
+        "blocked_reason": null,
+        "notes": [
+          "Cobre server.py e as rotas /api/v1. O front-end (static/js/fonte_real.js, app.js) não é executado: só a existência de fonte_real.js é conferida (C1). O fluxo no navegador fica com o Eixo B (WEB-03/WEB-04)."
+        ],
+        "checks": [
+          {
+            "id": "C1",
+            "desc": "server.py presente e importa src.service; fonte_real.js presente",
+            "status": "PASS",
+            "evidence": {
+              "server_py": true,
+              "py": [
+                "web_didatica/server.py: from src import service",
+                "web_didatica/server.py: compile_program("
+              ],
+              "fonte_real": true
+            }
+          },
+          {
+            "id": "C2",
+            "desc": "POST /api/v1/analyze: HTTP 200",
+            "status": "PASS",
+            "evidence": {
+              "status": 200
+            }
+          },
+          {
+            "id": "C3",
+            "desc": "Envelope minipar.compile.v1 de analyze conforme C-WEB-v1 §1.3/1.4",
+            "status": "PASS",
+            "evidence": {
+              "problemas": [],
+              "request_id": "d73bbef21e8e4b88a869c18ba55231d0",
+              "duration_ms": 16,
+              "phases": {
+                "lexer": "ok",
+                "parser": "ok",
+                "semantic": "ok",
+                "tac": "ok",
+                "cpp": "ok",
+                "gpp": "skipped"
+              }
+            }
+          },
+          {
+            "id": "C4",
+            "desc": "POST /api/v1/compile do programa Fork/Join: HTTP 200",
+            "status": "PASS",
+            "evidence": {
+              "status": 200
+            }
+          },
+          {
+            "id": "C5",
+            "desc": "Envelope minipar.compile.v1 de compile conforme C-WEB-v1 §1.3/1.4",
+            "status": "PASS",
+            "evidence": {
+              "problemas": [],
+              "request_id": "a333403ba3044af6af6d1ba45f25c843",
+              "duration_ms": 9015,
+              "phases": {
+                "lexer": "ok",
+                "parser": "ok",
+                "semantic": "ok",
+                "tac": "ok",
+                "cpp": "ok",
+                "gpp": "ok"
+              }
+            }
+          },
+          {
+            "id": "C6",
+            "desc": "POST /api/v1/execute (destino local): HTTP 200, minipar.execute.v1 completo e stdout == oráculo",
+            "status": "PASS",
+            "evidence": {
+              "status": 200,
+              "stdout": "832040\n328350\n",
+              "esperado": "832040\n328350\n",
+              "exit_code": 0,
+              "timed_out": false,
+              "stderr": "",
+              "truncados": [
+                false,
+                false
+              ]
+            }
+          },
+          {
+            "id": "C7",
+            "desc": "GET /api/v1/artifacts/<id>/binary: anexo com o nome do §1.7 e bytes iguais ao binário registrado",
+            "status": "PASS",
+            "evidence": {
+              "status": 200,
+              "disposition": "attachment; filename=minipar_a333403b.exe",
+              "mimetype": "application/octet-stream",
+              "bytes": 363564,
+              "sha256": "96a5f009eda0187034ea2f8dca9189287b66587ec8f8a1b999cefda54cd91b8c",
+              "sha256_registrado": "96a5f009eda0187034ea2f8dca9189287b66587ec8f8a1b999cefda54cd91b8c"
+            }
+          },
+          {
+            "id": "C8",
+            "desc": "Erros do contrato pelo HTTP (§1.6/§1.8): 400 BAD_REQUEST, 404 ARTIFACT_NOT_FOUND no download, ARTIFACT_NOT_FOUND no envelope do execute",
+            "status": "PASS",
+            "evidence": {
+              "obtido": {
+                "analyze_sem_source": {
+                  "status": 400,
+                  "code": "BAD_REQUEST"
+                },
+                "execute_timeout_31": {
+                  "status": 400,
+                  "code": "BAD_REQUEST"
+                },
+                "artifact_kind_arm": {
+                  "status": 400,
+                  "code": "BAD_REQUEST"
+                },
+                "artifact_inexistente": {
+                  "status": 404,
+                  "code": "ARTIFACT_NOT_FOUND"
+                },
+                "execute_inexistente": {
+                  "status": 200,
+                  "code": "ARTIFACT_NOT_FOUND"
+                }
+              },
+              "divergentes": {}
+            }
+          },
+          {
+            "id": "C9",
+            "desc": "kind 'arm' no download -> 400 BAD_REQUEST (§1.7 + web_didatica/README.md, fora do §1.8)",
+            "status": "PASS",
+            "evidence": {
+              "obtido": {
+                "status": 400,
+                "code": "BAD_REQUEST"
+              },
+              "divergentes": {}
+            }
+          }
+        ],
+        "data": {
+          "server_py": true,
+          "fonte_mock": true,
+          "fonte_real": true,
+          "py_usa_servico": [
+            "web_didatica/server.py: from src import service",
+            "web_didatica/server.py: compile_program("
+          ],
+          "js_chama_api": [],
+          "metodo": "cliente de teste do Flask em subprocesso isolado; nenhum servidor iniciado, nenhuma porta aberta",
+          "helper": {
+            "exit": 0,
+            "duration_ms": 10360,
+            "stderr": "",
+            "timed_out": false
+          },
+          "analyze": {
+            "contract": "minipar.compile.v1",
+            "operation": "analyze",
+            "request_id": "d73bbef21e8e4b88a869c18ba55231d0",
+            "ok": true,
+            "source_hash": "sha256:32d042387264ad98ef75b96eb99d03ac65b0e35ca245e297a503d810f2b87ef4",
+            "duration_ms": 16,
+            "diagnostics": [],
+            "artifacts": {
+              "cpp_id": null,
+              "tac_id": null,
+              "binary_id": null
+            },
+            "phases": {
+              "lexer": {
+                "status": "ok",
+                "tokens": "<omitido>"
+              },
+              "parser": {
+                "status": "ok",
+                "ast": "<omitido>",
+                "ast_stats": "<omitido>"
+              },
+              "semantic": {
+                "status": "ok",
+                "scopes": "<omitido>",
+                "symbols": "<omitido>"
+              },
+              "tac": {
+                "status": "ok",
+                "text": "<omitido>",
+                "lines": 42
+              },
+              "cpp": {
+                "status": "ok",
+                "text": "<omitido>"
+              },
+              "gpp": {
+                "status": "skipped",
+                "reason": "not_requested"
+              }
+            }
+          },
+          "fork_compile": {
+            "contract": "minipar.compile.v1",
+            "operation": "compile",
+            "request_id": "a333403ba3044af6af6d1ba45f25c843",
+            "ok": true,
+            "source_hash": "sha256:d0f3c84a688818da6ec71ed25900d4bd342d4fbbbfe008c5416262061e6b44b1",
+            "duration_ms": 9015,
+            "diagnostics": [],
+            "artifacts": {
+              "cpp_id": "a333403ba3044af6af6d1ba45f25c843",
+              "tac_id": "a333403ba3044af6af6d1ba45f25c843",
+              "binary_id": "a333403ba3044af6af6d1ba45f25c843"
+            },
+            "phases": {
+              "lexer": {
+                "status": "ok",
+                "tokens": "<omitido>"
+              },
+              "parser": {
+                "status": "ok",
+                "ast": "<omitido>",
+                "ast_stats": "<omitido>"
+              },
+              "semantic": {
+                "status": "ok",
+                "scopes": "<omitido>",
+                "symbols": "<omitido>"
+              },
+              "tac": {
+                "status": "ok",
+                "text": "<omitido>",
+                "lines": 46
+              },
+              "cpp": {
+                "status": "ok",
+                "text": "<omitido>"
+              },
+              "gpp": {
+                "status": "ok",
+                "command": [
+                  "C:\\msys64\\ucrt64\\bin\\g++.exe",
+                  "-std=c++20",
+                  "-O3",
+                  "<repo>\\output\\web\\a333403ba3044af6af6d1ba45f25c843\\program.cpp",
+                  "-o",
+                  "<repo>\\output\\web\\a333403ba3044af6af6d1ba45f25c843\\program.exe",
+                  "-pthread",
+                  "-I",
+                  "<repo>\\runtime\\include",
+                  "-lws2_32"
+                ],
+                "returncode": 0,
+                "stdout": "<omitido>",
+                "stderr": "<omitido>",
+                "duration_ms": "<omitido>",
+                "stdout_truncated": "<omitido>",
+                "stderr_truncated": "<omitido>"
+              }
+            }
+          },
+          "fork_execute": {
+            "contract": "minipar.execute.v1",
+            "artifact_id": "a333403ba3044af6af6d1ba45f25c843",
+            "ok": true,
+            "exit_code": 0,
+            "timed_out": false,
+            "duration_ms": 266,
+            "stdout": "832040\n328350\n",
+            "stderr": "",
+            "stdout_truncated": false,
+            "stderr_truncated": false,
+            "error": null
+          },
+          "download": {
+            "status": 200,
+            "disposition": "attachment; filename=minipar_a333403b.exe",
+            "mimetype": "application/octet-stream",
+            "bytes": 363564,
+            "sha256": "96a5f009eda0187034ea2f8dca9189287b66587ec8f8a1b999cefda54cd91b8c",
+            "sha256_registrado": "96a5f009eda0187034ea2f8dca9189287b66587ec8f8a1b999cefda54cd91b8c"
+          },
+          "erros": {
+            "analyze_sem_source": {
+              "status": 400,
+              "code": "BAD_REQUEST"
+            },
+            "execute_timeout_31": {
+              "status": 400,
+              "code": "BAD_REQUEST"
+            },
+            "artifact_kind_arm": {
+              "status": 400,
+              "code": "BAD_REQUEST"
+            },
+            "artifact_inexistente": {
+              "status": 404,
+              "code": "ARTIFACT_NOT_FOUND"
+            },
+            "execute_inexistente": {
+              "status": 200,
+              "code": "ARTIFACT_NOT_FOUND"
+            }
+          },
+          "duration_ms": 10672
+        }
+      }
+    ],
+    "summary": {
+      "A": "PASS",
+      "B": "PASS",
+      "C": "PASS"
+    },
+    "finished": "2026-11-09T08:23:45-03:00"
+  },
+  "doc02": {
+    "head": "a346a59293a70569d2c43ee5b35d1fbc40fa244c",
+    "method": "static inspection and author probe reexecuted",
+    "probe_execution": "PASS after exact manual approval; exit 0",
+    "passed": 853,
+    "total": 853,
+    "groups": {
+      "aresta": 107,
+      "classe": 106,
+      "cobertura-arquivo": 30,
+      "cobertura-classe": 69,
+      "documento": 1,
+      "heranca": 40,
+      "membro": 500
+    },
+    "rendering": "UNTESTED in REL-PRE",
+    "negative_controls": "UNTESTED in REL-PRE"
+  },
+  "doc02_sync": {
+    "dev": "a7454bc89f8c7c854e578f7b03fa91bced059ff5",
+    "head": "4cdae737f5eec029ab434485128fc7bc3761dad8",
+    "uml_probe": {
+      "passed": 853,
+      "total": 853,
+      "exit": 0,
+      "groups": {
+        "aresta": 107,
+        "classe": 106,
+        "cobertura-arquivo": 30,
+        "cobertura-classe": 69,
+        "documento": 1,
+        "heranca": 40,
+        "membro": 500
+      },
+      "full_result": "docs/auditorias/DOC-02_RESULTADOS.json",
+      "reexecution_sha256": "2fc64cb5bd55b72f0ba77fdcdef5eb6cd8f8fb8bbbcddb359ddf6c1bc3d5a2b1",
+      "matches_integrated_result": true
+    },
+    "bnf_probe": {
+      "passed": 117,
+      "total": 117,
+      "exit": 0
+    },
+    "acceptance": "DONE integration; joint review PARTIAL; C PENDING",
+    "native_results": "Historical at 8d07433; not reexecuted",
+    "documentary_checks": {
+      "cards_and_dag": "PASS",
+      "json": "PASS",
+      "relative_links": "PASS",
+      "unchanged_ready_dependencies_deadlines": "PASS",
+      "other_card_states_preserved": "PASS",
+      "T04_T10_ADR018_unchanged": "PASS",
+      "protected_paths": "PASS"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # MiniPar 2026.2 — Compiladores / UFAL
 
-> **Estado verificado em 16/10/2026 (SET-01):** base 2026.1 presente na raiz ativa e preservada em `legacy/`, junto ao planejamento 2026.2. A execução funcional ainda depende da validação de ambiente/baseline; não está homologada neste card.
+> **Estado verificado em 09/11/2026 (REL-PRE):** núcleo, runtime e Web integrados em `dev` (`8d07433`); DEF-01/02 mergeados (#40/#41). Regressão T01–T07: seis PASS, T04 PARTIAL; smoke integrado PASS. [Pendências, evidências e decisões](docs/auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). Entrega global ainda pendente de validações e decisões. A base 2026.1 permanece preservada em `legacy/`.
 > **Entrega da disciplina:** 11/11/2026. **Meta de congelamento funcional:** 03/11/2026.
 > **Estudo e ensaios:** 04–10/11/2026.
 
@@ -12,18 +12,20 @@ Evoluir o compilador MiniPar 2026.1, preservando Lexer, Parser/AST, análise sem
 
 1. [`docs/00_DOCUMENTO_MESTRE_INICIAL.md`](docs/00_DOCUMENTO_MESTRE_INICIAL.md) — o enunciado consolidado, **fonte de requisitos**.
 2. [`docs/01_PLANEJAMENTO_GERAL.md`](docs/01_PLANEJAMENTO_GERAL.md) — **fonte principal para como agir**, prazos, gates, responsáveis, dependências, critérios de parada e contingência.
-3. [`docs/02_CONTRATOS_TECNICOS.md`](docs/02_CONTRATOS_TECNICOS.md) — API e limites de propriedade, ainda com decisões **propostas**.
+3. [`docs/02_CONTRATOS_TECNICOS.md`](docs/02_CONTRATOS_TECNICOS.md) — APIs v1 congeladas e revisões aprovadas; pendências explicitadas.
 4. [`AGENTS.md`](AGENTS.md) e [`MEMORY.md`](MEMORY.md), quando existir — leitura obrigatória antes de iniciar qualquer tarefa; `AGENTS.md` rege pessoas e agentes antes de modificar qualquer arquivo.
 5. [`docs/04_BACKLOG.md`](docs/04_BACKLOG.md) — cards internos com IDs. As GitHub Issues serão criadas **depois** de revisar os documentos.
 6. [`docs/05_VALIDACAO_E_ACEITE.md`](docs/05_VALIDACAO_E_ACEITE.md) e [`docs/06_RISCOS_E_CONTINGENCIAS.md`](docs/06_RISCOS_E_CONTINGENCIAS.md).
 
 **MANDATORY:** toda implementação, correção, refatoração ou alteração relevante exige verificar a documentação impactada e a necessidade de atualizar `AGENTS.md`, conforme a [regra 11](AGENTS.md). As atualizações necessárias integram a mesma entrega/PR; a dispensa de atualização deve ser justificada explicitamente no resumo final.
 
+UML integrada: [casos de uso, componentes e classes](docs/15_UML_MINIPAR_2026_2.md), DOC-02/PR #42 (09/11, `a7454bc`), com aprovação A. Revisão C registrada em 09/11 com ressalvas ([parecer](docs/auditorias/DOC-02_REVISAO_C_RUNTIME.md)); correções aplicadas no PR #43 e aceitas por B (dono) na revisão de 10/11; demais limitações do fechamento permanecem no [REL-PRE](docs/auditorias/REL-PRE_FECHAMENTO_EIXO_A.md).
+
 ## Papéis
 
 - **Eixo A — Núcleo:** responsável definido: coordenador do trio. Responsável por Lexer, Parser, AST, semântico, TAC, backend C++ e integração do núcleo com o runtime. Disponibilidade-alvo: **até 3h/dia**.
-- **Eixo B — Web didática + Teste 11:** pessoa ainda a definir.
-- **Eixo C — Runtime, comunicação distribuída + Testes 8–10:** pessoa ainda a definir.
+- **Eixo B — Web didática + Teste 11:** José Riquelme.
+- **Eixo C — Runtime, comunicação distribuída + Testes 8–10:** Erasmo.
 
 O domínio de código é definido em [`AGENTS.md`](AGENTS.md). Mudanças nos contratos exigem aprovação antes da implementação.
 
@@ -72,10 +74,10 @@ Os arquivos ativos originais já estão na **raiz**. A comparação SHA-256 do S
 ## Como começar
 
 1. Confira branch (a padrão é `dev`; PRs vão para `dev` e exigem ao menos um revisor que não seja o autor), `git status` e a auditoria SET-01: este workspace já tem Git inicializado e remoto configurado. Não reinicialize o repositório nem importe a base novamente.
-2. Leia `docs/10_GUIA_SETUP_REPOSITORIO.md`. As instruções de criação/importação são para uma estrutura nova ainda sem a base; neste workspace o próximo consumidor é SET-02, após revisão/integração do SET-01.
-3. Confira acesso dos colegas e permissões no card SET-03; não foram validados no SET-01.
-4. Na reunião de kickoff, revise os **três contratos**. Não permita que os três agentes alterem `src/` em paralelo.
-5. Execute os cards de preparação e gate G0; **depois** crie as GitHub Issues.
+2. Consulte o [guia de setup](docs/10_GUIA_SETUP_REPOSITORIO.md) para o ambiente; importação e SET-02 já foram integrados. Não repetir a importação.
+3. Confira as evidências de acesso e responsáveis do SET-03 em [Product/Sprint Backlogs §2.1](docs/14_PRODUCT_E_SPRINT_BACKLOGS.md).
+4. Respeite os três contratos congelados e a propriedade dos arquivos. Mudanças incompatíveis exigem CR.
+5. Consulte as [pendências REL-PRE](docs/auditorias/REL-PRE_FECHAMENTO_EIXO_A.md) antes de iniciar REL-01. As Issues continuam não publicadas; o backlog estruturado registra o estado atual.
 
 **Não declare testes aprovados nem código anterior importado até haver execução e evidências no novo repositório.**
 
@@ -118,7 +120,7 @@ indisponibilidade do navegador de automação nesta execução.
 
 ## Validação local do CORE-02
 
-O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo gerador genérico, sem selecionar saída pelo nome da função. Implementação e evidências locais de 23/10/2026: [`CORE-02_TAC_QUICKSORT.md`](docs/auditorias/CORE-02_TAC_QUICKSORT.md). O estado de revisão e publicação está no handoff e no PR #16; a integração depende de decisão humana.
+O T07 ativo usa pilha dinâmica com `append`/`pop`. Seu TAC percorre a AST pelo gerador genérico, sem selecionar saída pelo nome da função. Implementação e evidências locais de 23/10/2026: [`CORE-02_TAC_QUICKSORT.md`](docs/auditorias/CORE-02_TAC_QUICKSORT.md). O PR #16 foi integrado em 29/10; a regressão REL-PRE confirmou ordenação, TAC mutado e limites.
 
 ```powershell
 .\.venv\Scripts\python.exe -B -m unittest discover -s tests -p test_core02_tac.py -v
@@ -131,17 +133,17 @@ Os validadores nativos usam `CXX`, o G++ UCRT64 local ou `--cxx CAMINHO_GPP`, se
 
 ## Backend Fork/Join — CORE-07 (30/10/2026)
 
-Implementação local para revisão em `eixo-a/CORE-07-backend-runtime`: C++ com
+Implementação integrada pelos PRs #18/#29: C++ com
 wrappers tipados, runtime real, mesmo binário coordenador/worker, handles/listas
 e falhas recuperáveis. Execução nativa local e entre processos no loopback
-verificada; prova entre computadores continua pendente.
+verificada. RUN-03 (#10) documenta a demo entre computadores; provas específicas T08–T10 e reprodução RUN-06 continuam pendentes.
 
 **Integração local de 05/11/2026:** `origin/dev` contém CORE-06 (#17).
 A CLI oficial gera TAC real antes do C++ e passa contexto semântico e fonte ao
 backend; o serviço CORE-08 usa o mesmo backend e compilação limitada (120 s,
 64 KB por stream), com includes do runtime. `generate_text` e `generate`
 aceitam `semantic` da mesma AST e `source` (obrigatório em FJ para SHA-256);
-chamadas antigas sem FJ continuam compatíveis. Revisão humana/merge pendentes.
+chamadas antigas sem FJ continuam compatíveis. CORE-07 foi revisado e integrado nos PRs #18/#29.
 Reprodução CLI/API/loopback e relatório em
 [integração CORE-07](docs/auditorias/CORE-07_INTEGRACAO_DEV.md).
 
@@ -158,7 +160,7 @@ Demo observada: `42 14 42`, exit 0. A suíte inicia workers somente em
 incompatíveis e retornos não comprovados são recusados, sem despacho dinâmico.
 Detalhes, limites e regressões no
 [handoff CORE-07](docs/auditorias/CORE-07_BACKEND_RUNTIME.md).
-Estado administrativo e aprovações humanas não foram promovidos.
+Os cards integrados e suas limitações atuais constam no [backlog](docs/04_BACKLOG.md).
 
 ## Validação local do CORE-06
 
@@ -180,8 +182,8 @@ A integração de 04/11/2026 com `origin/dev` em `05b43f9` foi commitada em
 `fef7507`, com ajustes em `14fc239`, preservando o TAC e os imports por pacote
 do serviço CORE-08. `par_return` distingue término de branch do retorno de função;
 recusas TAC com localização na AST informam a linha ao serviço. Histórico,
-regressões e limites estão no handoff. Contratos e card não são declarados
-aprovados/concluídos.
+regressões e limites estão no handoff. CORE-06 foi integrado no PR #17 em 05/11;
+o congelamento do contrato C-FJ-v1 está registrado no [contrato](docs/02_CONTRATOS_TECNICOS.md).
 
 ## Proveniência e direitos
 
@@ -191,18 +193,17 @@ O código herdado está incluído neste workspace. O **commit de origem não foi
 
 ## Documentos não incluídos
 
-O PDF oficial do projeto, a BNF anterior, o exemplo Python do Teste 10 e materiais anteriores de modelagem foram incluídos em `docs/fontes/`, para consulta interna. O **código Java integral do Teste 11 e os códigos completos dos testes 8 e 9 não estão incluídos** neste pacote; também não incluí o vídeo grande. Para publicação pública, confirme antes direitos de compartilhamento das referências.
+O PDF oficial, a BNF anterior, o exemplo Python do Teste 10 e materiais de modelagem estão em [fontes](docs/fontes/). O Java integral, a saída e o ARM de referência do Teste 11 estão em [teste11](docs/fontes/teste11/). Os códigos Python completos dos testes 8 e 9 e o vídeo grande não foram localizados neste pacote. A situação pública e os direitos sobre as referências continuam pendentes na [ADR-018](docs/03_DECISOES.md).
 
-## Serviço de fases CORE-08 (entrega local para revisão)
+## Serviço de fases CORE-08 (integrado)
 
 `src/service.py` fornece `analyze`, `compile_program`, `execute` e `get_artifact` no envelope C-WEB-v1. A análise gera texto sem invocar G++; cada compilação nativa usa diretório próprio em `output/web/<uuid>/`. `CXX` seleciona um executável C++20, sem flags embutidas. Execução usa stdin não interativo, timeout 1–30 s e saídas limitadas a 1 MiB por stream. O registro é local ao processo e retém todas as compilações durante sua vida; não existe limpeza automática nem recuperação do registro após reiniciar.
 
-Estado **PARTIAL** contratual: na integração local de 05/11/2026, Fork/Join
+Na integração de 05/11/2026 e no smoke REL-PRE de 09/11, Fork/Join
 produz TAC, C++ e binário real pelo serviço, com execução e artefatos conferidos.
 Recusas de representação/retorno do backend geram `CPP_UNSUPPORTED_FEATURE`,
 com linha quando disponível, e impedem G++. `analyze` não registra artefatos.
-O catálogo proposto pela CR permanece **dependente de ratificação A+B**, incluindo
-o tipo `task`; esta integração não o aprova nem altera o envelope ou as APIs.
+O catálogo v1.1 da CR, incluindo o tipo `task`, foi ratificado por A/B com consulta C no PR #34 (05/11); o envelope e as APIs permanecem iguais.
 `TAC_UNSUPPORTED_FEATURE` continua aplicável a outras construções não representadas.
 Detalhes e evidências: [integração CORE-06](docs/auditorias/CORE-06_TAC_FORK_JOIN.md),
 [histórico CORE-08](docs/auditorias/CORE-08_SERVICO_FASES.md) e
