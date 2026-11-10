@@ -1,7 +1,7 @@
 # UML do MiniPar 2026.2 — casos de uso, componentes e classes
 
 **Card:** `DOC-02` (Eixo B) · **Base:** `origin/dev` em `8d07433` (09/11/2026) ·
-**Estado de integração (REL-PRE):** DOC-02 integrado pelo PR #42 em 09/11/2026 (`a7454bc`). Victor/A aprovou `4cdae73` após os ajustes dos casos de uso. **Revisão específica C (runtime e runners): APROVADO COM RESSALVAS** em 09/11 ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)). As correções RC-01..RC-06 foram aplicadas no PR #43 (§2.1, §2.2, §4.6, §4.9b, §5.2): sonda 862/862 e sintaxe Mermaid 17/17 sem erro. O aceite técnico conjunto fecha com a aprovação de B, dono do documento, no #43. A base de código modelada continua `8d07433`.
+**Estado de integração (REL-PRE):** DOC-02 integrado pelo PR #42 em 09/11/2026 (`a7454bc`). Victor/A aprovou `4cdae73` após os ajustes dos casos de uso. **Revisão específica C (runtime e runners): APROVADO COM RESSALVAS** em 09/11 ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)). As correções RC-01..RC-06 foram aplicadas no PR #43 (§2.1, §2.2, §4.6, §4.9b, §5.2): sonda 862/862 e sintaxe Mermaid 17/17 sem erro. B, dono do documento, aceitou as correções na revisão do #43 em 10/11/2026 e pediu dois ajustes não bloqueantes na §5.2 (`TIMEOUT` inobservável no código gerado; `BAD_DESTINATION` e `UNKNOWN_FUNCTION` vinda do worker), aplicados no mesmo PR. Aceite técnico conjunto A+B+C registrado. A base de código modelada continua `8d07433`.
 
 Este documento modela o sistema **como ele está implementado**. Cada classe, atributo, método,
 rota e mensagem citado aqui existe no código da base acima. Nada foi acrescentado para
@@ -1486,12 +1486,17 @@ sequenceDiagram
     X->>X: __fj_wrap_f(args)
     X->>A: complete(TaskState, TaskResult)
 
-    Note over M,W: fork f(x) on "host:porta"
-    M->>A: start("f", args, Destination::parse("host:porta"))
-    A->>R: new_task(h, remote=true)
-    A->>CP: connection_for(destino)
-    CP-->>A: RemoteConnection (criada no 1º uso)
-    A->>RC: submit(TaskState, TASK JSON)
+    Note over M,W: fork f(x) on destino
+    M->>A: start("f", args, Destination::parse(destino))
+    alt destino inválido (Kind::Invalid)
+        A->>R: new_task(h, remote=false)
+        A->>A: complete(BAD_DESTINATION), sem conexão nem thread
+    else host:porta
+        A->>R: new_task(h, remote=true)
+        A->>CP: connection_for(destino)
+        CP-->>A: RemoteConnection (criada no 1º uso)
+        A->>RC: submit(TaskState, TASK JSON)
+    end
     A-->>M: TaskHandle
     Note over RC,W: thread de leitura (Executor), uma vez por conexão
     RC->>W: HELLO {build_id, request_id}
@@ -1499,6 +1504,7 @@ sequenceDiagram
     Note over RC,W: só com a conexão Ready a thread escritora envia
     RC->>W: TASK {task_id, function_id, args}
     W->>W: run_task em thread própria → execute
+    Note over W: função ausente → UNKNOWN_FUNCTION, exceção → TASK_FAILED
     W-->>RC: RESULT {task_id, status, result | error, worker_id}
     RC->>A: complete(TaskState, TaskResult)
 
@@ -1515,13 +1521,13 @@ sequenceDiagram
         A->>R: remove a tarefa (handle coletado)
         A-->>M: Value ou erro da tarefa
     else timeout
-        A-->>M: TIMEOUT (handle continua válido)
+        A-->>M: erro TIMEOUT (handle válido só para a API C++)
     end
     alt Value
         M->>M: value_cast ao tipo do join
-    else erro no fluxo principal
+    else erro ou TIMEOUT no fluxo principal
         A->>A: join_or_exit imprime em stderr e encerra com código 1
-    else erro dentro de uma tarefa
+    else erro ou TIMEOUT dentro de uma tarefa
         M->>M: exceção "CODIGO: mensagem" → TASK_FAILED da tarefa mãe
     end
 ```
@@ -1531,6 +1537,12 @@ para o destino: uma thread do `Executor` conecta e faz o `HELLO`, que acontece u
 conexão, enquanto o `start` já devolve o handle. Os `TASK` ficam na fila até a conexão estar
 `Ready` e são enviados pela thread escritora, na ordem dos `start`. Falhas:
 
+- Destino que `Destination::parse` não reconhece (`Kind::Invalid`): a tarefa é concluída na
+  hora com `BAD_DESTINATION`, sem conexão nem thread. Vale para qualquer expressão usada no
+  `on` (UC13).
+- Função não registrada: `UNKNOWN_FUNCTION`. No local, antes do `submit`; no remoto, o worker
+  devolve o código no `RESULT`.
+- Exceção na função, local ou no worker: `TASK_FAILED`.
 - `build_id` ou `protocol_version` diferentes: as tarefas pendentes daquela conexão terminam
   com `VERSION_MISMATCH`.
 - Frame ou mensagem inválidos: `PROTOCOL_ERROR`.
@@ -1538,7 +1550,9 @@ conexão, enquanto o `start` já devolve o handle. Os `TASK` ficam na fila até 
   `WORKER_LOST`.
 - Worker inacessível: `WORKER_UNAVAILABLE`.
 - `join` remoto sem timeout explícito: usa `MINIPAR_RT_REMOTE_TIMEOUT_MS` (padrão 60 s).
-  `TIMEOUT` mantém o handle válido para outro `join`.
+  Na API C++ (`join`), `TIMEOUT` mantém o handle válido para outro `join`. No código gerado
+  isso não é observável: no fluxo principal `join_or_exit` encerra com código 1, e dentro de
+  tarefa a exceção vira `TASK_FAILED`. Nenhum programa MiniPar repete o `join`.
 
 O `join` gerado passa por `__fj_join` (prólogo `_FJ_HEADER`). No fluxo principal ele usa
 `join_or_exit`, que encerra o programa com código 1 em erro. Dentro de uma tarefa, inclusive

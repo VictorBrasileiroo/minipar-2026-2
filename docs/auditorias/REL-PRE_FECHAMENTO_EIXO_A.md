@@ -28,9 +28,9 @@ Lidos AGENTS, MEMORY, planejamento, contratos, backlog, validação e documento 
 | C-FJ-v1 / CON-01 | DONE | APPROVED por Victor em `a0fd60f`, #7; merge 26/10. Corrigido registro FROZEN, sem mudar contrato |
 | C-WEB v1.1 | DONE na ratificação documental | #34: proposta de B e aprovações A/C em `204fe48`; merge 05/11. Registro de aceite corrigido; ressalvas preservadas |
 | DOC-03 | DONE | #39 aprovado e mergeado 06/11; espelhos atualizados conforme fatos posteriores |
-| DOC-02 | DONE de integração / aceite conjunto PARTIAL | #42 aprovado por A em 4cdae73 e mergeado em a7454bc (09/11); ajustes conferidos, 853/853 sondas repetidas; revisão C APROVADO COM RESSALVAS (§11); correções RC-01..RC-06 aplicadas neste PR (§13), aguardam aprovação de B |
+| DOC-02 | DONE | #42 aprovado por A em 4cdae73 e mergeado em a7454bc (09/11); ajustes conferidos, 853/853 sondas repetidas; revisão C APROVADO COM RESSALVAS (§11); correções RC-01..RC-06 aplicadas neste PR (§13) e aceitas por B na revisão de 10/11 (§14) |
 | INT-02 | PARTIAL (integrado) | #44 aprovado por A e mergeado em `249afaa` (09/11, depois desta fotografia): T01–T03/T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real BLOCKED. Validação C do recorte de runtime em §12 |
-| DOC-04 | PENDING | sem relatório completo/PR localizado; DOC-02 já integrado; depende de INT-02 e aceite RUN-06; aprovação de B às correções da UML pendente (§13) |
+| DOC-04 | PENDING | sem relatório completo/PR localizado; DOC-02 já integrado; depende de INT-02 e aceite RUN-06; correções da UML aceitas por B (§14) |
 | RUN-05 | PARTIAL | #36 integrado; `par_rede` PENDING, sem benchmark novo nesta auditoria |
 | RUN-06 | PARTIAL | #37 integrado como documentação; review A explicitamente mantém reprodução por outro integrante e logs A/B PENDING |
 | ADR-018 | PENDING | divergência PUBLIC versus proposta de privacidade; direitos não comprovados (§4) |
@@ -139,7 +139,7 @@ Artefatos nativos e logs brutos permanecem ignorados em `output/`. [JSON consoli
 
 ## 9. Checklist para iniciar REL-01 e handoff
 
-O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado e revisão C registrada (§11) e UML corrigida (§13), B aprovar; INT-02 integrado (#44), concluir sua rede real e as provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
+O [checklist de entrega](../11_CHECKLIST_DE_ENTREGA.md) contém a sequência objetiva: integrar este PR revisado; decidir T04/ADR-014/ADR-018; DOC-02 já integrado e revisão C registrada (§11) e UML corrigida (§13) e aceita por B (§14); INT-02 integrado (#44), concluir sua rede real e as provas externas; consolidar/revisar/integrar DOC-04; então autorizar `ready` de REL-01 e verificar build de checkout limpo. A dependência formal de REL-01 é DOC-04, ainda BACKLOG; o prazo vencido não autoriza pular o gate.
 
 **Arquivos alterados:** README; contratos (somente registros de estado/aprovação); decisões; backlog; validação/aceite; checklist; Product/Sprint Backlogs; cards; este relatório; sonda documental e JSONs de GitHub/resultados. Não foi atualizado o conteúdo das evidências históricas CORE-01/CORE-10/DEF; na sincronização, apenas os registros de estado/cabeçalho/handoff do DOC-02 foram atualizados, preservando diagramas e resultados do autor.
 
@@ -182,4 +182,26 @@ Documentos de estado atualizados: cards, backlog, Product/Sprint Backlogs, check
 - **RC-01/RC-02** (contrariavam o código gerado): `join` via `__fj_join` (fluxo principal → `join_or_exit`; dentro de tarefa → `join` + exceção → `TASK_FAILED`); `fork` sem destino passa `Destination::parse("local")`.
 - **RC-03..RC-06** (omissões): uso do `Executor` pelo remoto e pelo worker; `state_`/`sock_` de `RemoteConnection`; falhas e timeouts na §5.2; runners incluem UC14.
 - **Verificação:** sonda DOC-02 **862/862 PASS** (eram 853: mais 2 classes, 2 membros e 5 arestas). `mermaid.parse` do `mermaid@11.4.1` (a versão do autor): **17/17 sem erro**; o controle negativo pegou 3/3 blocos quebrados. Não houve renderização visual em navegador; o GitHub renderiza na revisão.
-- **Estado:** RC-01..RC-06 resolvidos. O aceite técnico conjunto do DOC-02 fica completo com a aprovação de B no #43. Nenhum código, contrato ou teste alterado.
+- **Estado:** RC-01..RC-06 resolvidos e aceitos por B na revisão de 10/11 (§14).
+
+## 14. Ajustes pedidos na revisão de B ao #43 (10/11)
+
+**Responsável:** Erasmo (Eixo C). Riquelme (B, dono do DOC-02) revisou o head `43a7c34` em 10/11. Aceitou o conteúdo técnico de RC-01..RC-06 e pediu quatro correções bloqueantes e cinco não bloqueantes. Todas foram aplicadas neste PR.
+
+- **Sonda REL-PRE (`REL-PRE_sondas.py`):**
+  - Itens 1 e 2: os filhos Python rodam com `PYTHONUTF8=1` e `PYTHONIOENCODING=utf-8`, e o stdout do script é reconfigurado para UTF-8. O home em forma POSIX também é substituído. Se ainda sobrar `\ufffd` ou o nome do usuário no relatório, o script falha sem gravar o JSON.
+  - Item 8: sem os marcadores do Sierpinski, o T10 grau 4 é registrado como FAIL (`markers_found: false`), sem `IndexError`.
+  - Item 9: leitura do esperado do XOR com `encoding='utf-8'`.
+- **Estados (itens 3, 4 e 7):** cabeçalho do backlog conferido contra `dev` `249afaa` (#44), com a contagem do `cards.json`: 35 DONE, 3 IN_PROGRESS, 0 IN_REVIEW, 5 BACKLOG. Para o DOC-02 foi adotada a opção (b) de B: manter `DONE` e registrar o aceite dele neste PR. As frases "aprovação de B pendente" saíram de cards, README, UML, backlog, checklist, Product/Sprint Backlogs, parecer C e handoff DOC-02. O critério de `DONE` (entregável integrado; resultado de teste à parte) ficou explícito no backlog e no CORE-10. O checklist não chama mais RC-03/RC-04 de pendentes.
+- **UML §5.2 (itens 5 e 6, sugeridos por B):** o diagrama mostra `BAD_DESTINATION` para destino inválido, `UNKNOWN_FUNCTION`/`TASK_FAILED` vindos do worker e o `TIMEOUT` caindo nos ramos de erro (exit 1 no fluxo principal, `TASK_FAILED` dentro de tarefa). O texto diz que o handle reutilizável após `TIMEOUT` só existe na API C++. Conferido em `runtime/include/minipar_rt/api.hpp` (`start`, `join_or_exit`), `core.hpp` (`execute`) e `src/cpp_template.py` (`__fj_join`).
+- **Verificação (Windows 11, Python 3.12 da venv, G++ UCRT64):**
+
+| Comando | Resultado |
+|---|---|
+| `REL-PRE_sondas.py` com `PYTHONIOENCODING=cp1252` no processo pai | exit 0, PASS (XOR modelo/classificação, T10 grau 4 81×81); JSON sem `\ufffd` nem nome do usuário |
+| Filho Python imprimindo `C:\Users\JoséRiquelme`, com locale cp1252 | sem o env da sonda: `Jos\ufffdRiquelme` (o defeito de B); com o env: caminho intacto |
+| `DOC-02_sondas_uml.py` | 862/862 PASS |
+| `mermaid.parse` (`mermaid@11.4.1` + jsdom, pasta isolada fora do repositório) | 17/17 sem erro; controle negativo 17/17 erros detectados |
+| `scripts/validar_planejamento.py` | OK, 43 cards, DAG sem ciclos |
+
+- **Não alterados:** código, contratos, testes e `REL-PRE_RESULTADOS.json` (evidência de `8d07433`, sem `\ufffd` nem caminho pessoal). Não houve renderização visual dos diagramas. `AGENTS.md`/`MEMORY.md` revisados, sem mudança necessária. Nenhum código, contrato ou teste alterado.

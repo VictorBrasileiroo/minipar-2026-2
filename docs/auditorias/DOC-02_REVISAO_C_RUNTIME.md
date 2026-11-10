@@ -60,4 +60,4 @@ A pedido do responsável pelo Eixo C, as correções foram aplicadas por C no pr
 - `mermaid.parse` do `mermaid@11.4.1` (mesma versão do autor), com jsdom e Node 24 numa pasta isolada → **17/17 blocos sem erro de sintaxe**. Controle negativo: 3 blocos quebrados de propósito → 3/3 erros detectados.
 - Não houve renderização visual em navegador: o desenho final das setas não foi inspecionado nesta máquina. Fica para a revisão de B no GitHub, que renderiza Mermaid.
 
-**Estado:** RC-01..RC-06 resolvidos no #43. O aceite técnico conjunto do DOC-02 fica completo quando B aprovar o #43.
+**Estado:** RC-01..RC-06 resolvidos no #43. B (dono) aceitou o conteúdo técnico das correções na revisão do #43 em 10/11/2026; aceite técnico conjunto do DOC-02 registrado. Na mesma revisão, B pediu dois ajustes não bloqueantes na §5.2, aplicados no #43: `TIMEOUT` reutilizável só na API C++ (no código gerado cai em exit 1 ou `TASK_FAILED`) e falhas `BAD_DESTINATION` e `UNKNOWN_FUNCTION` vinda do worker.

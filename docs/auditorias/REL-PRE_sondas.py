@@ -2,6 +2,8 @@
 
 Uso: .venv/Scripts/python.exe -B docs/auditorias/REL-PRE_sondas.py
 Requer CXX e DLLs da toolchain no PATH do processo. Artefatos em output/rel_pre/.
+Funciona em console Windows padrão (cp1252): a saída é forçada para UTF-8 e os filhos
+Python escrevem em UTF-8, para o caminho do home ser removido mesmo com acento.
 Não decide aceite: divergência contra a referência histórica do XOR é registrada.
 """
 import hashlib
@@ -46,12 +48,15 @@ def xor_model():
 
 
 def main():
+    sys.stdout.reconfigure(encoding='utf-8')
     out = ROOT / 'output' / 'rel_pre' / datetime.now().strftime('%Y%m%d-%H%M%S')
     out.mkdir(parents=True, exist_ok=False)
     report = {'base': '8d07433', 'python': platform.python_version(), 'checks': {}}
+    # Sem PYTHONUTF8 o main.py filho escreve no codec do locale e o home com acento vira mojibake.
+    env = {**os.environ, 'PYTHONUTF8': '1', 'PYTHONIOENCODING': 'utf-8'}
     def run(cmd, cwd=ROOT, stdin=None):
         p = subprocess.run(cmd, cwd=cwd, input=stdin, text=True, encoding='utf-8',
-                           errors='replace', capture_output=True, timeout=180)
+                           errors='replace', capture_output=True, timeout=180, env=env)
         return {'exit': p.returncode, 'stdout': p.stdout, 'stderr': p.stderr}
     def compile_and_run(source, name, stdin=''):
         directory = out / name
@@ -69,7 +74,7 @@ def main():
     got = [float(v) for v in re.findall(r'Predicted Output:\s*([0-9.eE+-]+)', xor['execution']['stdout'])]
     model = xor_model()
     reference = [float(v) for v in re.findall(r'Predicted Output:\s*([0-9.eE+-]+)',
-                 (ROOT / 'tests/expected_results/teste4_rede_neural_xor.expected.txt').read_text())]
+                 (ROOT / 'tests/expected_results/teste4_rede_neural_xor.expected.txt').read_text(encoding='utf-8'))]
     if len(got) != 4 or len(reference) != 4:
         raise RuntimeError('XOR sem quatro resultados')
     rows = []
@@ -94,8 +99,12 @@ def main():
                                  'seq\n1000\n50\n20\n100\n4\n' + 'local\n' * 6)
     report['t10_degree4'] = t10_record
     text = t10_record['execution']['stdout']
-    carpet = text.split('=== SIERPINSKI grau=4 ===\n', 1)[1].split('\n=== FIM SIERPINSKI ===', 1)[0].splitlines()
-    t10_record['dimensions'] = [len(carpet), len(carpet[0])]
+    # Sem os marcadores o tapete fica vazio e a sonda registra FAIL em vez de abortar.
+    _, found, tail = text.partition('=== SIERPINSKI grau=4 ===\n')
+    body, closed, _ = tail.partition('\n=== FIM SIERPINSKI ===')
+    carpet = body.splitlines() if found and closed else []
+    t10_record['markers_found'] = bool(found and closed)
+    t10_record['dimensions'] = [len(carpet), len(carpet[0]) if carpet else 0]
     t10_record['filled_cells'] = sum(line.count('#') for line in carpet)
     report['checks']['t10_degree4'] = (t10_record['execution']['exit'] == 0 and
         carpet == t10.sierpinski_recursivo(4) and t10_record['filled_cells'] == 4096 and
@@ -109,10 +118,15 @@ def main():
             return [sanitize(item) for item in value]
         if isinstance(value, str):
             for path, replacement in [(str(ROOT), '<repo>'), (ROOT.as_posix(), '<repo>'),
-                                      (str(Path.home()), '<home>')]:
+                                      (str(Path.home()), '<home>'),
+                                      (Path.home().as_posix(), '<home>')]:
                 value = value.replace(path.replace('\\', '\\\\'), replacement).replace(path, replacement)
         return value
     serialized = json.dumps(sanitize(report), ensure_ascii=False, indent=2)
+    # Não grava evidência que ainda tenha mojibake ou o nome do usuário (caminho pessoal).
+    leaks = [mark for mark in ('\ufffd', Path.home().name) if mark in serialized]
+    if leaks:
+        raise RuntimeError('relatório com possível caminho pessoal; nada foi gravado: %r' % leaks)
     (out / 'results.json').write_text(serialized + '\n', encoding='utf-8')
     print(serialized)
     print('Evidence:', (out / 'results.json').relative_to(ROOT))

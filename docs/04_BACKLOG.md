@@ -2,7 +2,7 @@
 
 > **PRÉ-ISSUES, v0.1 — 15/10/2026.** Nenhuma GitHub Issue foi criada. Fonte estruturada: `planning/cards.json`. Revisar com os três responsáveis antes de publicar.
 
-> **Estado atualizado em 09/11/2026 (`cards.json` v0.3, REL-PRE autorizado pelo coordenador).** A tabela abaixo foi conferida contra `dev` (`a7454bc`, após #42) e o GitHub; ver [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+> **Estado atualizado em 09/11/2026 (`cards.json` v0.3, REL-PRE autorizado pelo coordenador).** A tabela abaixo foi conferida contra `dev` (`249afaa`, após #44), `planning/cards.json` e o GitHub; ver [REL-PRE](auditorias/REL-PRE_FECHAMENTO_EIXO_A.md). As fichas mais abaixo guardam o planejamento original ("Estado inicial"). Product Backlog e Sprint Backlogs: [`14_PRODUCT_E_SPRINT_BACKLOGS.md`](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 ## Regras para usar este backlog
 
@@ -16,7 +16,7 @@
 
 ## Estado em 09/11/2026
 
-35 `DONE`, 0 `IN_REVIEW`, 2 `IN_PROGRESS`, 6 `BACKLOG`. Estados de card e resultados de teste são distintos: RUN-05/06 têm PRs integrados, mas aceite incompleto; T09/T10 preservam PARTIAL. `ready` não foi liberado nesta auditoria. SET-03 mantém a exceção documentada em [Product/Sprint Backlogs §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
+35 `DONE`, 0 `IN_REVIEW`, 3 `IN_PROGRESS`, 5 `BACKLOG`. Estados de card e resultados de teste são distintos. Critério usado neste quadro: `DONE` = entregável do card integrado em `dev` com as revisões exigidas; resultados PARTIAL/FAIL dos testes ficam na observação e não reabrem o card (ex.: CORE-10, T09/T10). `IN_PROGRESS` = PR integrado, mas parte do próprio entregável ainda falta: RUN-05, RUN-06 e INT-02 dependem da execução em rede real entre dois computadores. `ready` não foi liberado nesta auditoria. SET-03 mantém a exceção documentada em [Product/Sprint Backlogs §2.1](14_PRODUCT_E_SPRINT_BACKLOGS.md).
 
 | Card | Eixo | Estado | PR | Observação |
 |---|---|---|---|---|
@@ -35,7 +35,7 @@
 | `CORE-07` | A | DONE | #18 | PRs complementares: #29. |
 | `CORE-08` | A | DONE | #19 | PRs complementares: #34. |
 | `CORE-09` | A | DONE | #35 | Interfaces integradas (#35). DEF-01/02 corrigidos e aprovados nos PRs #40/#41; nova regressão em REL-PRE (09/11). |
-| `CORE-10` | C | DONE | #38 | Relatório integrado (#38 em 06/11), não aceite integral dos testes. Resultado histórico T01/T02 FAIL preservado; após #40/#41, REL-PRE: T01 10/10 e T02 10/10 PASS; T04 PARTIAL. |
+| `CORE-10` | C | DONE | #38 | DONE pelo entregável do card: relatório de regressão integrado (#38 em 06/11). Não indica aceite integral dos testes. Resultado histórico T01/T02 FAIL preservado; após #40/#41, REL-PRE: T01 10/10 e T02 10/10 PASS; T04 PARTIAL. |
 | `WEB-01` | B | DONE | #12 |  |
 | `WEB-02` | B | DONE | #13 |  |
 | `WEB-03` | B | DONE | #30 |  |
@@ -56,9 +56,9 @@
 | `INT-01` | C | DONE | #24 | Segmentos A, B e C PASS em dev (05/11); segmento A só no loopback. |
 | `INT-02` | B | IN_PROGRESS | #44 | PARTIAL. Regressão em `dev` `8d07433` (09/11): T01–T03, T05–T11 PASS, T04 PARTIAL, três interfaces PASS; rede real (dois PCs) pendente. #44 aprovado por A e mergeado (`249afaa`); [validação C](auditorias/INT-02_VALIDACAO_C.md) do runtime PASS em loopback. |
 | `DOC-01` | B | DONE | #32 |  |
-| `DOC-02` | B | DONE (integração; aceite conjunto PARTIAL) | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)); correções RC-01..RC-06 aplicadas por C no #43 (sonda 862/862, Mermaid 17/17); aceite técnico conjunto PARTIAL até B aprovar o #43. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos. |
+| `DOC-02` | B | DONE | #42 | PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS ([parecer](auditorias/DOC-02_REVISAO_C_RUNTIME.md)); correções RC-01..RC-06 aplicadas por C no #43 (sonda 862/862, Mermaid 17/17); B (dono) aceitou o conteúdo técnico das correções na revisão do #43 em 10/11/2026 (sonda 862/862 reexecutada por B); aceite técnico conjunto A+B+C registrado. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos. |
 | `DOC-03` | C | DONE | #39 | PR #39 aprovado e mergeado em 06/11. REL-PRE atualiza estados posteriores; não encerra os aceites parciais dos outros cards. |
-| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; rede real do INT-02 (#44 integrado como PARTIAL), aceite RUN-06 e a aprovação de B às correções da UML no #43 continuam pendentes. |
+| `DOC-04` | B | BACKLOG | — | DOC-02 (#42) e DOC-03 integrados. DOC-04 sem entrega localizada na auditoria; rede real do INT-02 (#44 integrado como PARTIAL) e aceite RUN-06 continuam pendentes; correções da UML aceitas por B no #43 (10/11). |
 | `REL-01` | A | BACKLOG | — |  |
 | `EST-01` | EQUIPE | BACKLOG | — |  |
 | `EST-02` | EQUIPE | BACKLOG | — |  |

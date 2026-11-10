@@ -2,7 +2,7 @@
   "project": "MINIPAR-2026.2",
   "version": "0.3",
   "as_of": "2026-11-09",
-  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas. Sincronização posterior com dev a7454bc (#42): DOC-02 integrado; revisão C registrada em 09/11 com ressalvas e correções RC-01..RC-06 aplicadas no #43 (aprovação de B pendente). Merge de dev 249afaa (#44): INT-02 integrado como IN_PROGRESS/PARTIAL (rede real pendente) com validação C do runtime; demais estados e ready preservados.",
+  "note": "Estado conferido em 09/11/2026 contra dev 8d07433 e GitHub (docs/auditorias/REL-PRE_GITHUB.json). Atualização documental autorizada pelo coordenador em REL-PRE. DONE requer merge e evidência; exceção SET-03 em docs/14 §2.1. Merge não elimina limitações: status_note preserva PARTIAL/PENDING. ready e prazos originais preservados; sem Issues criadas. Sincronização posterior com dev a7454bc (#42): DOC-02 integrado; revisão C registrada em 09/11 com ressalvas e correções RC-01..RC-06 aplicadas no #43 e aceitas por B (dono) na revisão de 10/11/2026. Merge de dev 249afaa (#44): INT-02 integrado como IN_PROGRESS/PARTIAL (rede real pendente) com validação C do runtime; demais estados e ready preservados.",
   "statuses": [
     "BACKLOG",
     "READY",
@@ -469,7 +469,7 @@
       "evidence": [
         "docs/auditorias/CORE-10_REGRESSAO_FINAL_T01_T07.md"
       ],
-      "status_note": "Relatório integrado (#38 em 06/11), não aceite integral dos testes. Resultado histórico T01/T02 FAIL preservado; após #40/#41, REL-PRE: T01 10/10 e T02 10/10 PASS; T04 PARTIAL."
+      "status_note": "DONE pelo entregável do card: relatório de regressão integrado (#38 em 06/11). Não indica aceite integral dos testes. Resultado histórico T01/T02 FAIL preservado; após #40/#41, REL-PRE: T01 10/10 e T02 10/10 PASS; T04 PARTIAL."
     },
     {
       "id": "WEB-01",
@@ -1009,7 +1009,7 @@
         "docs/auditorias/DOC-02_RESULTADOS.json",
         "docs/auditorias/DOC-02_REVISAO_C_RUNTIME.md"
       ],
-      "status_note": "PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS (DOC-02_REVISAO_C_RUNTIME.md). Correções RC-01..RC-06 aplicadas por C no #43 (sonda 862/862, Mermaid 17/17); aceite técnico conjunto PARTIAL até B (dono) aprovar o #43. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos."
+      "status_note": "PR #42 aprovado por Victor em 09/11/2026 sobre 4cdae73 e mergeado em dev (a7454bc, 11:34:25Z). DONE de integração; revisão específica C em 09/11: APROVADO COM RESSALVAS (DOC-02_REVISAO_C_RUNTIME.md). Correções RC-01..RC-06 aplicadas por C no #43 (sonda 862/862, Mermaid 17/17); B (dono) aceitou o conteúdo técnico das correções na revisão do #43 em 10/11/2026 (sonda 862/862 reexecutada por B); aceite técnico conjunto A+B+C registrado. Ajustes UC08/UC07 e UC12/UC13/UC16 conferidos."
     },
     {
       "id": "DOC-03",
@@ -1063,7 +1063,7 @@
       "issue_url": null,
       "pr_url": null,
       "evidence": [],
-      "status_note": "Nenhum PR/branch/relatório completo localizado na auditoria REL-PRE. DOC-02 (#42), DOC-03 e INT-02 (#44, PARTIAL) integrados; rede real do INT-02 e aceite RUN-06 continuam abertos; revisão C da UML registrada e correções aplicadas no #43, aprovação de B pendente."
+      "status_note": "Nenhum PR/branch/relatório completo localizado na auditoria REL-PRE. DOC-02 (#42), DOC-03 e INT-02 (#44, PARTIAL) integrados; rede real do INT-02 e aceite RUN-06 continuam abertos; revisão C da UML registrada e correções do #43 aceitas por B (10/11)."
     },
     {
       "id": "REL-01",
